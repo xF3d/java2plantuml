@@ -13,6 +13,7 @@ public abstract class SetTranslatingComponent<T> implements TranslatingComponent
         this.type = type;
     }
 
+    // needs custom implementation for class & interface
     public void safeAdd(Object object) {
         if (type.isInstance(object)) {
             set.add(type.cast(object));
