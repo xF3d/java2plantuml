@@ -19,6 +19,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import translate.component.RecordWriter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -35,7 +36,7 @@ public class UmlTranslator implements Translator {
     private final Set<EnumDeclaration> enumSet;
     private Boolean error = false;
 
-    private ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
+    public static ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
 
 
     public UmlTranslator() {
@@ -43,10 +44,6 @@ public class UmlTranslator implements Translator {
         interfaceSet = new HashSet<>();
         enumSet = new HashSet<>();
         recordSet = new HashSet<>();
-    }
-
-    public void setConfig(ClassDiagramConfig config) {
-        this.config = config;
     }
 
     @Override
@@ -127,11 +124,14 @@ public class UmlTranslator implements Translator {
 
         if (!config.isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
 
-        writeClasses(sb);
+        writeClasses(sb); // TODO: it doesn't understand inner classes
         writeAssociations(sb);
         writeInterfaces(sb);
         writeEnumerations(sb);
-        writeRecords(sb);
+
+        var recordWriter = new RecordWriter();
+        recordWriter.add(recordSet);
+        recordWriter.write(sb);
 
         sb.append("@enduml");
 

@@ -10,11 +10,9 @@ import java.util.Set;
 public abstract class SetTranslatingComponent<T> implements TranslatingComponent {
     protected final Set<T> set;
     protected final Class<T> type;
-    protected final ClassDiagramConfig config;
 
-    protected SetTranslatingComponent(Class<T> type, ClassDiagramConfig config) {
+    protected SetTranslatingComponent(Class<T> type) {
         this.type = type;
-        this.config = config;
         this.set = new HashSet<>();
     }
 

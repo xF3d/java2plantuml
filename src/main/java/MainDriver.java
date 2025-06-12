@@ -41,7 +41,7 @@ public class MainDriver {
                     .setShowAttributes(true)
                     .setShowColoredAccessSpecifiers(false)
                     .build();
-            umlTranslator.setConfig(config);
+            UmlTranslator.config = config;
 
             FileHandler handler = new FileHandler(umlTranslator);
 
