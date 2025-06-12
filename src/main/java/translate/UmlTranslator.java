@@ -188,7 +188,7 @@ public class UmlTranslator implements Translator {
 
     private void writeClass(ClassOrInterfaceDeclaration c, StringBuilder sb) {
 
-        sb.append("class ");
+        sb.append(c.isAbstract() ? "abstract " : "class ");
         sb.append(c.getName());
         sb.append("{");
         sb.append("\n");
