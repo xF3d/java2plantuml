@@ -10,7 +10,7 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
     @Override
     public void writeComponent(RecordDeclaration element, StringBuilder builder) {
         builder.append("class ");
-        builder.append(element.getName());
+        builder.append(MemberFormatter.fullSimpleName(element));
         builder.append("<<record>>");
         builder.append("{");
         builder.append("\n");
