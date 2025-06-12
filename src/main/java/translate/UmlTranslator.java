@@ -1,32 +1,48 @@
 package translate;
 
 import com.github.javaparser.JavaParser;
+import com.github.javaparser.ParseResult;
+import com.github.javaparser.ParserConfiguration;
+import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.body.*;
+import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.EnumConstantDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
+import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.RecordDeclaration;
+import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.visitor.VoidVisitor;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.EnumSet;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class UmlTranslator implements Translator {
 
-    private Set<ClassOrInterfaceDeclaration> classSet;
-    private Set<ClassOrInterfaceDeclaration> interfaceSet;
-    private Set<EnumDeclaration> enumSet;
-    private Boolean error=false;
+    private final Set<ClassOrInterfaceDeclaration> classSet;
+    private final Set<ClassOrInterfaceDeclaration> interfaceSet;
+    private final Set<RecordDeclaration> recordSet;
+    private final Set<EnumDeclaration> enumSet;
+    private Boolean error = false;
 
-    private ClassDiagramConfig config=new ClassDiagramConfig.DefaultDirector().construct();
+    private ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
 
 
-    public UmlTranslator(){
-        classSet=new HashSet<>();
-        interfaceSet=new HashSet<>();
-        enumSet=new HashSet<>();
+    public UmlTranslator() {
+        classSet = new HashSet<>();
+        interfaceSet = new HashSet<>();
+        enumSet = new HashSet<>();
+        recordSet = new HashSet<>();
     }
 
     public void setConfig(ClassDiagramConfig config) {
@@ -35,8 +51,7 @@ public class UmlTranslator implements Translator {
 
     @Override
     public void addClass(ClassOrInterfaceDeclaration c) {
-        if(!c.isInterface())
-            classSet.add(c);
+        if (!c.isInterface()) classSet.add(c);
     }
 
     @Override
@@ -46,8 +61,12 @@ public class UmlTranslator implements Translator {
 
     @Override
     public void addInterface(ClassOrInterfaceDeclaration i) {
-        if(i.isInterface())
-            interfaceSet.add(i);
+        if (i.isInterface()) interfaceSet.add(i);
+    }
+
+    @Override
+    public void addRecord(RecordDeclaration r) {
+        if (r.isRecordDeclaration()) recordSet.add(r);
     }
 
     @Override
@@ -62,33 +81,42 @@ public class UmlTranslator implements Translator {
 
     @Override
     public void setError(Boolean b) {
-        this.error=b;
+        this.error = b;
     }
 
     @Override
-    public void translateFile(File f)  {
-
-
-        CompilationUnit cu = null;
+    public void translateFile(File f) {
+        JavaParser parser = new JavaParser();
+        parser.getParserConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
+        File file = f.getAbsoluteFile();
         try {
-            cu = JavaParser.parse(new File(f.getAbsolutePath()));
-            for(VoidVisitorAdapter<Void> visitor:config.getVisitorAdapters()){
-                cu.accept(visitor,null);
+            ParseResult<CompilationUnit> result = parser.parse(file);
+            if (result.isSuccessful() && result.getResult().isPresent()) {
+                CompilationUnit cu = result.getResult().get();
+                for (VoidVisitor<Void> visitor : config.getVisitorAdapters()) {
+                    cu.accept(visitor, null);
+                }
+            } else {
+                System.err.println("Parsing failed for: " + file.getPath());
+                List<Problem> problems = result.getProblems();
+                for (Problem problem : problems) {
+                    System.out.println("Problem: " + problem.getMessage());
+                    problem.getLocation().ifPresent(loc -> System.out.println(" at " + loc));
+                }
             }
 
-        } catch (Exception e) {
+
+        } catch (FileNotFoundException e) {
             setError(true);
             e.printStackTrace();
         }
-
-
     }
 
-    public String toPlantUml(){
+    public String toPlantUml() {
 
         StringBuilder sb = new StringBuilder();
 
-        if(error){
+        if (error) {
             sb.append("Error occured while parsing.");
             return sb.toString();
         }
@@ -97,13 +125,13 @@ public class UmlTranslator implements Translator {
         sb.append("\n");
         //this is for removing shapes in attributes/methods visibility
 
-        if(!config.isShowColoredAccessSpecifiers())
-            sb.append("skinparam classAttributeIconSize 0\n");
+        if (!config.isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
 
         writeClasses(sb);
         writeAssociations(sb);
         writeInterfaces(sb);
         writeEnumerations(sb);
+        writeRecords(sb);
 
         sb.append("@enduml");
 
@@ -113,27 +141,30 @@ public class UmlTranslator implements Translator {
     private void writeAssociations(StringBuilder sb) {
 
         HashSet<String> temp = new HashSet<>();
-        for(ClassOrInterfaceDeclaration c: classSet){
+        for (ClassOrInterfaceDeclaration c : classSet) {
             temp.add(c.getNameAsString());
         }
-        for(ClassOrInterfaceDeclaration c: interfaceSet){
+        for (ClassOrInterfaceDeclaration c : interfaceSet) {
             temp.add(c.getNameAsString());
         }
-        for (EnumDeclaration e:enumSet){
-                temp.add(e.getNameAsString());
+        for (EnumDeclaration e : enumSet) {
+            temp.add(e.getNameAsString());
+        }
+        for (RecordDeclaration r : recordSet) {
+            temp.add(r.getNameAsString());
         }
 
-        for(ClassOrInterfaceDeclaration c: classSet){
+        for (ClassOrInterfaceDeclaration c : classSet) {
 
-            for(FieldDeclaration f: c.getFields()){
+            for (FieldDeclaration f : c.getFields()) {
 
-                if(temp.contains(f.getVariables().get(0).getType().asString())){
+                if (temp.contains(f.getVariables().get(0).getType().asString())) {
 
                     sb.append(c.getName().asString());
                     sb.append("--");
 //                    sb.append("\"-");
                     sb.append("\"");
-                    writeModifiers(f.getModifiers(),sb);
+                    writeModifiers(f.getModifiers(), sb);
                     sb.append(f.getVariables().get(0).getName());
                     sb.append("\" ");
                     sb.append(f.getVariables().get(0).getType().asString());
@@ -147,15 +178,15 @@ public class UmlTranslator implements Translator {
     }
 
 
-    private void writeClasses(StringBuilder sb){
+    private void writeClasses(StringBuilder sb) {
 
-        for(ClassOrInterfaceDeclaration c: classSet){
-            writeClass(c,sb);
+        for (ClassOrInterfaceDeclaration c : classSet) {
+            writeClass(c, sb);
         }
 
     }
 
-    private void writeClass(ClassOrInterfaceDeclaration c,StringBuilder sb) {
+    private void writeClass(ClassOrInterfaceDeclaration c, StringBuilder sb) {
 
         sb.append("class ");
         sb.append(c.getName());
@@ -165,20 +196,20 @@ public class UmlTranslator implements Translator {
 //        for(ClassOrInterfaceDeclaration c1:c.get)
 
         //attributes
-        if (config.isShowAttributes()){
+        if (config.isShowAttributes()) {
             writeAttributes(c, sb);
         }
 
-        if(config.isShowMethods()) {
+        if (config.isShowMethods()) {
             //methods
-            writeConstructors(c,sb);
+            writeConstructors(c, sb);
             writeMethods(c, sb);
         }
 
         sb.append("}\n");
 
         //implemented interfaces
-        for(ClassOrInterfaceType e: c.getImplementedTypes()){
+        for (ClassOrInterfaceType e : c.getImplementedTypes()) {
 
             sb.append(c.getName());
             sb.append(" ..|> ");
@@ -187,7 +218,7 @@ public class UmlTranslator implements Translator {
         }
 
         //extended classes
-        for(ClassOrInterfaceType e: c.getExtendedTypes()){
+        for (ClassOrInterfaceType e : c.getExtendedTypes()) {
 
             sb.append(c.getName());
             sb.append(" --|> ");
@@ -197,11 +228,48 @@ public class UmlTranslator implements Translator {
 
     }
 
-    private void writeAttributes(ClassOrInterfaceDeclaration c, StringBuilder sb) {
+    private void writeRecords(StringBuilder sb) {
+        for (RecordDeclaration r : recordSet) {
+            writeRecord(r, sb);
+        }
+    }
 
-        for(FieldDeclaration f : c.getFields()){
+    private void writeRecord(RecordDeclaration r, StringBuilder sb) {
+        sb.append("class ");
+        sb.append(r.getName());
+        sb.append("<<record>>");
+        sb.append("{");
+        sb.append("\n");
 
-            writeField(f,sb);
+        //attributes
+        if (config.isShowAttributes()) {
+            writeAttributes(r, sb);
+        }
+
+        if (config.isShowMethods()) {
+            //methods
+            writeConstructors(r, sb);
+            writeMethods(r, sb);
+        }
+
+        sb.append("}\n");
+
+        //implemented interfaces
+        for (ClassOrInterfaceType e : r.getImplementedTypes()) {
+
+            sb.append(e.getName());
+            sb.append(" --|> ");
+            sb.append(e.getName());
+            sb.append("\n");
+        }
+
+    }
+
+    private void writeAttributes(NodeWithMembers<?> c, StringBuilder sb) {
+
+        for (FieldDeclaration f : c.getFields()) {
+
+            writeField(f, sb);
             sb.append("\n");
         }
 
@@ -209,7 +277,7 @@ public class UmlTranslator implements Translator {
 
     private void writeField(FieldDeclaration f, StringBuilder sb) {
 
-        writeModifiers(f.getModifiers(),sb);
+        writeModifiers(f.getModifiers(), sb);
         sb.append(f.getVariables().get(0).getName());
         sb.append(" : ");
         sb.append(f.getVariables().get(0).getType().asString());
@@ -217,11 +285,11 @@ public class UmlTranslator implements Translator {
     }
 
 
-    private void writeConstructors(ClassOrInterfaceDeclaration c, StringBuilder sb) {
+    private void writeConstructors(NodeWithMembers<?> c, StringBuilder sb) {
 
-        for(ConstructorDeclaration m: c.getConstructors()){
+        for (ConstructorDeclaration m : c.getConstructors()) {
 
-            writeConstructor(m,sb);
+            writeConstructor(m, sb);
             sb.append("\n");
 
         }
@@ -230,11 +298,11 @@ public class UmlTranslator implements Translator {
 
     private void writeConstructor(ConstructorDeclaration m, StringBuilder sb) {
 
-        writeModifiers(m.getModifiers(),sb);
+        writeModifiers(m.getModifiers(), sb);
         sb.append(m.getName());
         sb.append("(");
 
-        for(Parameter p: m.getParameters()){
+        for (Parameter p : m.getParameters()) {
 
             sb.append(p.getName());
             sb.append(" : ");
@@ -242,9 +310,9 @@ public class UmlTranslator implements Translator {
             sb.append(", ");
 
         }
-        if(m.getParameters().size()>0){
-            sb.deleteCharAt(sb.length()-1);
-            sb.deleteCharAt(sb.length()-1);
+        if (m.getParameters().size() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+            sb.deleteCharAt(sb.length() - 1);
         }
         sb.append(")");
 //        sb.append(" : ");
@@ -255,11 +323,11 @@ public class UmlTranslator implements Translator {
     }
 
 
-    private void writeMethods(ClassOrInterfaceDeclaration c, StringBuilder sb) {
+    private void writeMethods(NodeWithMembers<?> c, StringBuilder sb) {
 
-        for(MethodDeclaration m: c.getMethods()){
+        for (MethodDeclaration m : c.getMethods()) {
 
-            writeMethod(m,sb);
+            writeMethod(m, sb);
             sb.append("\n");
 
         }
@@ -268,11 +336,11 @@ public class UmlTranslator implements Translator {
 
     private void writeMethod(MethodDeclaration m, StringBuilder sb) {
 
-        writeModifiers(m.getModifiers(),sb);
+        writeModifiers(m.getModifiers(), sb);
         sb.append(m.getName());
         sb.append("(");
 
-        for(Parameter p: m.getParameters()){
+        for (Parameter p : m.getParameters()) {
 
             sb.append(p.getName());
             sb.append(" : ");
@@ -280,9 +348,9 @@ public class UmlTranslator implements Translator {
             sb.append(", ");
 
         }
-        if(m.getParameters().size()>0){
-            sb.deleteCharAt(sb.length()-1);
-            sb.deleteCharAt(sb.length()-1);
+        if (m.getParameters().size() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+            sb.deleteCharAt(sb.length() - 1);
         }
         sb.append(")");
         sb.append(" : ");
@@ -292,10 +360,10 @@ public class UmlTranslator implements Translator {
 
     }
 
-    private void writeModifiers(EnumSet<Modifier> modifiers, StringBuilder sb) {
+    private void writeModifiers(NodeList<Modifier> modifiers, StringBuilder sb) {
 
-        for(Modifier mod:modifiers){
-            switch (mod){
+        for (Modifier mod : modifiers) {
+            switch (mod.getKeyword()) {
 
 
                 case STATIC:
@@ -328,14 +396,14 @@ public class UmlTranslator implements Translator {
 
     }
 
-    private void writeEnumerations(StringBuilder sb){
+    private void writeEnumerations(StringBuilder sb) {
 
-        for(EnumDeclaration e: enumSet){
+        for (EnumDeclaration e : enumSet) {
             sb.append("enum ");
             sb.append(e.getName());
             sb.append("{\n");
 
-            for(EnumConstantDeclaration c: e.getEntries()){
+            for (EnumConstantDeclaration c : e.getEntries()) {
 
                 sb.append(c.getName());
                 sb.append("\n");
@@ -366,15 +434,15 @@ public class UmlTranslator implements Translator {
 //
 //    }
 
-    private void writeInterfaces(StringBuilder sb){
+    private void writeInterfaces(StringBuilder sb) {
 
-        for(ClassOrInterfaceDeclaration c: interfaceSet){
-            writeInterface(c,sb);
+        for (ClassOrInterfaceDeclaration c : interfaceSet) {
+            writeInterface(c, sb);
         }
 
     }
 
-    private void writeInterface(ClassOrInterfaceDeclaration c,StringBuilder sb) {
+    private void writeInterface(ClassOrInterfaceDeclaration c, StringBuilder sb) {
 
         sb.append("interface ");
         sb.append(c.getName());
@@ -384,19 +452,19 @@ public class UmlTranslator implements Translator {
 //        for(ClassOrInterfaceDeclaration c1:c.get)
 
         //attributes
-        if (config.isShowAttributes()){
+        if (config.isShowAttributes()) {
             writeAttributes(c, sb);
         }
 
-        if(config.isShowMethods()) {
+        if (config.isShowMethods()) {
             //methods
-            writeConstructors(c,sb);
+            writeConstructors(c, sb);
             writeMethods(c, sb);
         }
 
         sb.append("}\n");
 
-        for(ClassOrInterfaceType e: c.getExtendedTypes()){
+        for (ClassOrInterfaceType e : c.getExtendedTypes()) {
 
             sb.append(c.getName());
             sb.append(" --|> ");

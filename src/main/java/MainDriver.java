@@ -5,6 +5,7 @@ import translate.UmlTranslator;
 import visitors.ClassVisitor;
 import visitors.EnumVisitor;
 import visitors.InterfaceVisitor;
+import visitors.RecordVisitor;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -12,25 +13,19 @@ import java.io.FileOutputStream;
 public class MainDriver {
 
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
 
-        String sourcePath="src/main/java/";
-        if(args.length<1){
+        String sourcePath = "src/main/java/";
+        if (args.length < 1) {
             System.out.println("Need to pass path of source as argument");
             System.exit(1);
         }
 
-        for(int i=0;i<args.length;){
+        for (int i = 0; i < args.length; ) {
 
-            switch (args[i]){
-
-                default:
-                    System.out.println(args[i]);
-                    sourcePath=args[i];
-                    i++;
-                    break;
-
-            }
+            System.out.println(args[i]);
+            sourcePath = args[i];
+            i++;
 
         }
 
@@ -41,6 +36,7 @@ public class MainDriver {
                     .withVisitor(new ClassVisitor(umlTranslator))
                     .withVisitor(new InterfaceVisitor(umlTranslator))
                     .withVisitor(new EnumVisitor(umlTranslator))
+                    .withVisitor(new RecordVisitor(umlTranslator))
                     .setShowMethods(true)
                     .setShowAttributes(true)
                     .setShowColoredAccessSpecifiers(false)
@@ -50,10 +46,9 @@ public class MainDriver {
             FileHandler handler = new FileHandler(umlTranslator);
 
             File resourceDir = new File(sourcePath);
-            if(resourceDir.exists()){
+            if (resourceDir.exists()) {
                 new DirectoryExplorer(handler).explore(resourceDir);
-            }
-            else{
+            } else {
                 System.out.println("File/Folder doesn't exist!");
                 System.exit(1);
             }
