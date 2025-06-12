@@ -1,16 +1,21 @@
 package translate.component;
 
+import translate.ClassDiagramConfig;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 public abstract class SetTranslatingComponent<T> implements TranslatingComponent {
-    protected Set<T> set = new HashSet<>();
-    protected Class<T> type;
+    protected final Set<T> set;
+    protected final Class<T> type;
+    protected final ClassDiagramConfig config;
 
-    protected SetTranslatingComponent(Class<T> type) {
+    protected SetTranslatingComponent(Class<T> type, ClassDiagramConfig config) {
         this.type = type;
+        this.config = config;
+        this.set = new HashSet<>();
     }
 
     // needs custom implementation for class & interface
@@ -39,5 +44,5 @@ public abstract class SetTranslatingComponent<T> implements TranslatingComponent
         }
     }
 
-    abstract void writeComponent(T element, StringBuilder builder);
+    public abstract void writeComponent(T element, StringBuilder builder);
 }

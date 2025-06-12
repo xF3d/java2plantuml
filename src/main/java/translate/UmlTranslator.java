@@ -270,7 +270,6 @@ public class UmlTranslator implements Translator {
         for (FieldDeclaration f : c.getFields()) {
 
             writeField(f, sb);
-            sb.append("\n");
         }
 
     }
@@ -281,6 +280,7 @@ public class UmlTranslator implements Translator {
         sb.append(f.getVariables().get(0).getName());
         sb.append(" : ");
         sb.append(f.getVariables().get(0).getType().asString());
+        sb.append("\n");
 
     }
 
@@ -288,10 +288,7 @@ public class UmlTranslator implements Translator {
     private void writeConstructors(NodeWithMembers<?> c, StringBuilder sb) {
 
         for (ConstructorDeclaration m : c.getConstructors()) {
-
             writeConstructor(m, sb);
-            sb.append("\n");
-
         }
 
     }
@@ -315,11 +312,9 @@ public class UmlTranslator implements Translator {
             sb.deleteCharAt(sb.length() - 1);
         }
         sb.append(")");
-//        sb.append(" : ");
-
-//        sb.append(m.getType().asString());
-
-
+        sb.append("\n");
+        //sb.append(" : ");
+        //sb.append(m.getType().asString());
     }
 
 
