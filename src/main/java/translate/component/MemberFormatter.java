@@ -4,12 +4,16 @@ import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithExtends;
 import com.github.javaparser.ast.nodeTypes.NodeWithImplements;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
+import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
+import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
+import com.github.javaparser.ast.nodeTypes.NodeWithType;
+import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import translate.UmlTranslator;
 
@@ -21,26 +25,13 @@ import java.util.Optional;
 public class MemberFormatter {
 
     // processes potential nested classes names
-    public static String fullSimpleName(TypeDeclaration<?> type) {
+    public static String fullSimpleName(Node type) {
         List<String> names = new ArrayList<>();
         Optional<Node> current = Optional.of(type);
 
         while (current.isPresent() && current.get() instanceof TypeDeclaration<?> currentType) {
             names.add(currentType.getNameAsString());
             current = currentType.getParentNode();
-        }
-
-        Collections.reverse(names);
-        return String.join("$", names);
-    }
-
-    public static String fullSimpleName(ClassOrInterfaceType type) {
-        List<String> names = new ArrayList<>();
-
-        ClassOrInterfaceType current = type;
-        while (current != null) {
-            names.add(current.getNameAsString());
-            current = current.getScope().orElse(null);
         }
 
         Collections.reverse(names);
@@ -113,20 +104,35 @@ public class MemberFormatter {
         return sb.toString();
     }
 
-    public static String field(FieldDeclaration field) {
-        return modifiers(field.getModifiers()) +
-                field.getVariable(0).getNameAsString() + " : " +
-                field.getVariable(0).getTypeAsString() + "\n";
+    public static <N extends Node, T extends NodeWithModifiers<N> & NodeWithVariables<N>> String field(T field) {
+        StringBuilder builder = new StringBuilder();
+        String modifiers = modifiers(field.getModifiers());
+        for (var variable : field.getVariables()) {
+            builder.append(modifiers);
+            builder.append(variable(variable));
+            builder.append("\n");
+        }
+
+        return builder.toString();
+    }
+
+    public static <N extends Node, T extends NodeWithSimpleName<N> & NodeWithType<N, ?>> String variable(T declarator) {
+        return declarator.getNameAsString() + " : " + declarator.getTypeAsString();
     }
 
     public static String method(MethodDeclaration method) {
         StringBuilder sb = new StringBuilder();
         sb.append(modifiers(method.getModifiers()));
         sb.append(method.getName()).append("(");
-        method.getParameters().forEach(p -> sb.append(p.getName()).append(" : ").append(p.getType()).append(", "));
+
+        for (Parameter p : method.getParameters()) {
+            sb.append(variable(p)).append(", ");
+        }
+
         if (!method.getParameters().isEmpty()) {
             sb.setLength(sb.length() - 2); // remove trailing comma
         }
+
         sb.append(") : ").append(method.getType().asString()).append("\n");
         return sb.toString();
     }
@@ -135,7 +141,11 @@ public class MemberFormatter {
         StringBuilder sb = new StringBuilder();
         sb.append(modifiers(ctor.getModifiers()));
         sb.append(ctor.getName()).append("(");
-        ctor.getParameters().forEach(p -> sb.append(p.getName()).append(" : ").append(p.getType()).append(", "));
+
+        for (Parameter p : ctor.getParameters()) {
+            sb.append(variable(p)).append(", ");
+        }
+
         if (!ctor.getParameters().isEmpty()) {
             sb.setLength(sb.length() - 2);
         }

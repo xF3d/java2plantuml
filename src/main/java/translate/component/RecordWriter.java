@@ -14,6 +14,11 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
         builder.append("<<record>>");
         builder.append("{");
         builder.append("\n");
+        for (var parameter : element.getParameters()) {
+            builder.append(MemberFormatter.modifiers(parameter.getModifiers()));
+            builder.append(MemberFormatter.variable(parameter));
+            builder.append("\n");
+        }
 
         //attributes
         builder.append(MemberFormatter.node(element));
