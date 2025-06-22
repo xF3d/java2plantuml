@@ -26,7 +26,7 @@ public abstract class SetTranslatingComponent<T extends Node> {
     }
 
     // needs custom implementation for class & interface
-    public void safeAdd(Object object) {
+    public void safeAdd(Node object) {
         if (type.isInstance(object)) {
             set.add(type.cast(object));
         }
