@@ -6,6 +6,7 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
@@ -20,9 +21,11 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import translate.component.MemberFormatter;
 import translate.component.RecordWriter;
+import translate.component.SetTranslatingComponent;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,9 +33,9 @@ import java.util.Set;
 
 public class UmlTranslator implements Translator {
 
+    private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<ClassOrInterfaceDeclaration> classSet;
     private final Set<ClassOrInterfaceDeclaration> interfaceSet;
-    private final Set<RecordDeclaration> recordSet;
     private final Set<EnumDeclaration> enumSet;
     private Boolean error = false;
 
@@ -43,7 +46,8 @@ public class UmlTranslator implements Translator {
         classSet = new HashSet<>();
         interfaceSet = new HashSet<>();
         enumSet = new HashSet<>();
-        recordSet = new HashSet<>();
+
+        componentTranslators.add(new RecordWriter());
     }
 
     @Override
@@ -63,7 +67,7 @@ public class UmlTranslator implements Translator {
 
     @Override
     public void addRecord(RecordDeclaration r) {
-        if (r.isRecordDeclaration()) recordSet.add(r);
+        componentTranslators.forEach((s) -> s.safeAdd(r));
     }
 
     @Override
@@ -119,11 +123,14 @@ public class UmlTranslator implements Translator {
         writeInterfaces(sb);
         writeEnumerations(sb);
 
-        var recordWriter = new RecordWriter();
-        recordWriter.add(recordSet);
-        Map<String, List<String>> map = recordWriter.write();
-        String result = mapWriter(map);
+        HashMap<String, List<String>> finalMap = new HashMap<>();
+        for (var writer : componentTranslators) {
+            Map<String, List<String>> map = writer.write();
+            finalMap.putAll(map);
+        }
 
+
+        String result = mapWriter(finalMap);
         sb.append(result);
         sb.append("@enduml");
 
@@ -159,8 +166,10 @@ public class UmlTranslator implements Translator {
         for (EnumDeclaration e : enumSet) {
             temp.add(MemberFormatter.fullSimpleName(e));
         }
-        for (RecordDeclaration r : recordSet) {
-            temp.add(MemberFormatter.fullSimpleName(r));
+        for (SetTranslatingComponent<?> entry : componentTranslators) {
+            for (Node r : entry.getSet()) {
+                temp.add(MemberFormatter.fullSimpleName(r));
+            }
         }
 
         for (ClassOrInterfaceDeclaration c : classSet) {
@@ -222,43 +231,6 @@ public class UmlTranslator implements Translator {
 
         //extended classes
         sb.append(MemberFormatter.nodeWithExtends(c));
-    }
-
-    private void writeRecords(StringBuilder sb) {
-        for (RecordDeclaration r : recordSet) {
-            writeRecord(r, sb);
-        }
-    }
-
-    private void writeRecord(RecordDeclaration r, StringBuilder sb) {
-        sb.append("class ");
-        sb.append(r.getName());
-        sb.append("<<record>>");
-        sb.append("{");
-        sb.append("\n");
-
-        //attributes
-        if (config.isShowAttributes()) {
-            writeAttributes(r, sb);
-        }
-
-        if (config.isShowMethods()) {
-            //methods
-            writeConstructors(r, sb);
-            writeMethods(r, sb);
-        }
-
-        sb.append("}\n");
-
-        //implemented interfaces
-        for (ClassOrInterfaceType e : r.getImplementedTypes()) {
-
-            sb.append(e.getName());
-            sb.append(" --|> ");
-            sb.append(e.getName());
-            sb.append("\n");
-        }
-
     }
 
     private void writeAttributes(NodeWithMembers<?> c, StringBuilder sb) {

@@ -4,6 +4,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.Name;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class SetTranslatingComponent<T extends Node> {
+    @Getter
     protected final Set<T> set;
     protected final Class<T> type;
 
