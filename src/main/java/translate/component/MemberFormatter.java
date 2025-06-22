@@ -29,9 +29,12 @@ public class MemberFormatter {
         List<String> names = new ArrayList<>();
         Optional<Node> current = Optional.of(type);
 
-        while (current.isPresent() && current.get() instanceof TypeDeclaration<?> currentType) {
-            names.add(currentType.getNameAsString());
-            current = currentType.getParentNode();
+        while (current.isPresent()) {
+            Node node = current.get();
+            if (node instanceof TypeDeclaration<?> typeDecl) {
+                names.add(typeDecl.getNameAsString());
+            }
+            current = node.getParentNode();
         }
 
         Collections.reverse(names);
