@@ -26,6 +26,10 @@ public class MemberFormatter {
 
     // processes potential nested classes names
     public static String fullSimpleName(Node type) {
+        if (type instanceof ClassOrInterfaceType cit) {
+            return cit.getNameWithScope();
+        }
+
         List<String> names = new ArrayList<>();
         Optional<Node> current = Optional.of(type);
 
