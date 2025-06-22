@@ -93,6 +93,18 @@ public class MemberFormatter {
         return builder.toString();
     }
 
+    public static String methods(NodeWithMembers<?> ctor) {
+        StringBuilder builder = new StringBuilder();
+
+        if (UmlTranslator.config.isShowMethods()) {
+            for (var method : ctor.getMethods()) {
+                builder.append(method(method));
+            }
+        }
+
+        return builder.toString();
+    }
+
     public static String modifiers(NodeList<Modifier> modifiers) {
         StringBuilder sb = new StringBuilder();
         boolean hasVisibility = false;
