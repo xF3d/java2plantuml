@@ -95,19 +95,32 @@ public class MemberFormatter {
 
     public static String modifiers(NodeList<Modifier> modifiers) {
         StringBuilder sb = new StringBuilder();
+        boolean hasVisibility = false;
+
         for (Modifier mod : modifiers) {
             var keyword = mod.getKeyword();
             switch (keyword) {
-                case PUBLIC -> sb.append("+ ");
-                case PRIVATE -> sb.append("- ");
-                case PROTECTED -> sb.append("# ");
-                case DEFAULT -> sb.append("~ ");
-                default -> sb
-                        .append("{")
-                        .append(keyword.asString())
-                        .append("} ");
+                case PUBLIC -> {
+                    sb.append("+ ");
+                    hasVisibility = true;
+                }
+                case PRIVATE -> {
+                    sb.append("- ");
+                    hasVisibility = true;
+                }
+                case PROTECTED -> {
+                    sb.append("# ");
+                    hasVisibility = true;
+                }
+                default -> sb.append("{").append(keyword.asString()).append("} ");
             }
         }
+
+        // If no visibility modifier is present, assume package-private
+        if (!hasVisibility) {
+            sb.insert(0, "~ ");
+        }
+
         return sb.toString();
     }
 
