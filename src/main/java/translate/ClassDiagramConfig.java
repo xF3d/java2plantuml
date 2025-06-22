@@ -1,10 +1,14 @@
 package translate;
 
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Setter
+@Getter
 public class ClassDiagramConfig {
 
     private List<VoidVisitorAdapter<Void>> visitorAdapters;
@@ -14,38 +18,6 @@ public class ClassDiagramConfig {
 
     //private constructor, use builder only
     private ClassDiagramConfig(){};
-
-    public List<VoidVisitorAdapter<Void>> getVisitorAdapters() {
-        return visitorAdapters;
-    }
-
-    public void setVisitorAdapters(List<VoidVisitorAdapter<Void>> visitorAdapters) {
-        this.visitorAdapters = visitorAdapters;
-    }
-
-    public boolean isShowMethods() {
-        return showMethods;
-    }
-
-    public void setShowMethods(boolean showMethods) {
-        this.showMethods = showMethods;
-    }
-
-    public boolean isShowAttributes() {
-        return showAttributes;
-    }
-
-    public void setShowAttributes(boolean showAttributes) {
-        this.showAttributes = showAttributes;
-    }
-
-    public boolean isShowColoredAccessSpecifiers() {
-        return showColoredAccessSpecifiers;
-    }
-
-    public void setShowColoredAccessSpecifiers(boolean showColoredAccessSpecifiers) {
-        this.showColoredAccessSpecifiers = showColoredAccessSpecifiers;
-    }
 
     //builder
     public static class Builder implements UmlConfigBuilder{
