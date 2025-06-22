@@ -2,13 +2,10 @@ package translate;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.Serializable;
 
 public interface Translator{
 
