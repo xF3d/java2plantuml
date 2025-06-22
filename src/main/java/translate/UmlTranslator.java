@@ -19,6 +19,7 @@ import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitor;
+import translate.component.EnumWriter;
 import translate.component.MemberFormatter;
 import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
@@ -36,7 +37,6 @@ public class UmlTranslator implements Translator {
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<ClassOrInterfaceDeclaration> classSet;
     private final Set<ClassOrInterfaceDeclaration> interfaceSet;
-    private final Set<EnumDeclaration> enumSet;
     private Boolean error = false;
 
     public static ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
@@ -45,8 +45,8 @@ public class UmlTranslator implements Translator {
     public UmlTranslator() {
         classSet = new HashSet<>();
         interfaceSet = new HashSet<>();
-        enumSet = new HashSet<>();
 
+        componentTranslators.add(new EnumWriter());
         componentTranslators.add(new RecordWriter());
     }
 
@@ -57,7 +57,7 @@ public class UmlTranslator implements Translator {
 
     @Override
     public void addEnum(EnumDeclaration e) {
-        enumSet.add(e);
+        addNode(e);
     }
 
     @Override
@@ -67,12 +67,16 @@ public class UmlTranslator implements Translator {
 
     @Override
     public void addRecord(RecordDeclaration r) {
-        componentTranslators.forEach((s) -> s.safeAdd(r));
+        addNode(r);
     }
 
     @Override
     public void setError(Boolean b) {
         this.error = b;
+    }
+
+    public void addNode(Node node) {
+        componentTranslators.forEach((s) -> s.safeAdd(node));
     }
 
     @Override
@@ -121,17 +125,12 @@ public class UmlTranslator implements Translator {
         writeClasses(sb); // TODO: it doesn't understand inner classes
         writeAssociations(sb);
         writeInterfaces(sb);
-        writeEnumerations(sb);
 
-        HashMap<String, List<String>> finalMap = new HashMap<>();
         for (var writer : componentTranslators) {
             Map<String, List<String>> map = writer.write();
-            finalMap.putAll(map);
+            sb.append(mapWriter(map));
         }
 
-
-        String result = mapWriter(finalMap);
-        sb.append(result);
         sb.append("@enduml");
 
         return sb.toString();
@@ -163,9 +162,7 @@ public class UmlTranslator implements Translator {
         for (ClassOrInterfaceDeclaration c : interfaceSet) {
             temp.add(MemberFormatter.fullSimpleName(c));
         }
-        for (EnumDeclaration e : enumSet) {
-            temp.add(MemberFormatter.fullSimpleName(e));
-        }
+
         for (SetTranslatingComponent<?> entry : componentTranslators) {
             for (Node r : entry.getSet()) {
                 temp.add(MemberFormatter.fullSimpleName(r));
@@ -355,25 +352,6 @@ public class UmlTranslator implements Translator {
                     break;
 
             }
-        }
-
-    }
-
-    private void writeEnumerations(StringBuilder sb) {
-
-        for (EnumDeclaration e : enumSet) {
-            sb.append("enum ");
-            sb.append(MemberFormatter.fullSimpleName(e));
-            sb.append("{\n");
-
-            for (EnumConstantDeclaration c : e.getEntries()) {
-
-                sb.append(c.getName());
-                sb.append("\n");
-
-            }
-
-            sb.append("}\n");
         }
 
     }
