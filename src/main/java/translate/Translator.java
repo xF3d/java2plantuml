@@ -16,8 +16,6 @@ public interface Translator{
     void addEnum(EnumDeclaration c);
     void addInterface(ClassOrInterfaceDeclaration i);
     void addRecord(RecordDeclaration r);
-    void addField(FieldDeclaration f);
-    void addMethod(MethodDeclaration d);
     void setError(Boolean b);
     void translateFile(File f) throws FileNotFoundException;
 

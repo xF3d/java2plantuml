@@ -67,16 +67,6 @@ public class UmlTranslator implements Translator {
     }
 
     @Override
-    public void addField(FieldDeclaration f) {
-
-    }
-
-    @Override
-    public void addMethod(MethodDeclaration d) {
-
-    }
-
-    @Override
     public void setError(Boolean b) {
         this.error = b;
     }
