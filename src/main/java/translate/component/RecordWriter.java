@@ -8,7 +8,8 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
     }
 
     @Override
-    public void writeComponent(RecordDeclaration element, StringBuilder builder) {
+    public String writeComponent(RecordDeclaration element) {
+        StringBuilder builder = new StringBuilder();
         builder.append("class ");
         builder.append(MemberFormatter.fullSimpleName(element));
         builder.append("<<record>>");
@@ -27,5 +28,7 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
 
         //implemented interfaces
         builder.append(MemberFormatter.nodeWithImplements(element));
+
+        return builder.toString();
     }
 }

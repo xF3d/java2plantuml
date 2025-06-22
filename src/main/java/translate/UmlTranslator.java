@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class UmlTranslator implements Translator {
@@ -130,11 +131,30 @@ public class UmlTranslator implements Translator {
 
         var recordWriter = new RecordWriter();
         recordWriter.add(recordSet);
-        recordWriter.write(sb);
+        Map<String, List<String>> map = recordWriter.write();
+        String result = mapWriter(map);
 
+        sb.append(result);
         sb.append("@enduml");
 
         return sb.toString();
+    }
+
+    private String mapWriter(Map<String, List<String>> map) {
+        StringBuilder builder = new StringBuilder();
+        for (var entry : map.entrySet()) {
+            String packageName = entry.getKey();
+            if (toString().isEmpty()) {
+                entry.getValue().forEach(builder::append);
+                continue;
+            }
+
+            builder.append("package ").append(packageName).append(" {\n");
+            entry.getValue().forEach(builder::append);
+            builder.append("}\n");
+        }
+
+        return builder.toString();
     }
 
     private void writeAssociations(StringBuilder sb) {

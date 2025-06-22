@@ -1,13 +1,20 @@
 package translate.component;
 
-import translate.ClassDiagramConfig;
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.expr.Name;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-public abstract class SetTranslatingComponent<T> implements TranslatingComponent {
+public abstract class SetTranslatingComponent<T extends Node> {
     protected final Set<T> set;
     protected final Class<T> type;
 
@@ -35,12 +42,25 @@ public abstract class SetTranslatingComponent<T> implements TranslatingComponent
         return type;
     }
 
-    @Override
-    public void write(StringBuilder builder) {
+    public Map<String, List<String>> write() {
+        HashMap<String, List<String>> map = new HashMap<>();
         for (var element : set) {
-            writeComponent(element, builder);
+            String packageName = element.findCompilationUnit()
+                    .flatMap(CompilationUnit::getPackageDeclaration)
+                    .map(PackageDeclaration::getName)
+                    .map(Name::asString)
+                    .orElse("");
+
+            String clazz = writeComponent(element);
+            map.computeIfAbsent(packageName, (key) -> new ArrayList<>());
+            map.computeIfPresent(packageName, (k, v) -> {
+                v.add(clazz);
+                return v;
+            });
         }
+
+        return map;
     }
 
-    public abstract void writeComponent(T element, StringBuilder builder);
+    public abstract String writeComponent(T element);
 }
