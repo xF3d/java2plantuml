@@ -5,40 +5,32 @@ import java.io.FileFilter;
 
 public class DirectoryExplorer {
 
-    private FileHandler fileHandler;
+    private final FileHandler fileHandler;
 
     public DirectoryExplorer (FileHandler fileHandler){
         this.fileHandler=fileHandler;
     }
 
 
-    FileFilter fileFilter = new FileFilter() {
-        @Override
-        public boolean accept(File pathname) {
+    private static final FileFilter fileFilter = pathname -> pathname.toString().endsWith(".java");
 
-            return pathname.toString().endsWith(".java");
+    public void explore(File file) {
 
+        if (!file.isDirectory()) {
+            fileHandler.handle(file);
+            return;
         }
-    };
 
-    public void explore(File file){
+        File[] files = file.listFiles();
+        if (files == null) {
+            return;
+        }
 
-        if(file.isDirectory()){
-            for(File f : file.listFiles(fileFilter)){
+        for(File f : files) {
+            if(f.isDirectory() || fileFilter.accept(f)){
                 explore(f);
             }
-            for(File f:file.listFiles()){
-                if(f.isDirectory()){
-                    explore(f);
-                }
-            }
         }
-        else{
-
-            fileHandler.handle(file);
-        }
-
-
     }
 
 }
