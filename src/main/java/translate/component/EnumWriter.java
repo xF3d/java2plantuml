@@ -16,16 +16,24 @@ public class EnumWriter extends SetTranslatingComponent<EnumDeclaration> {
         sb.append(MemberFormatter.fullSimpleName(element));
         sb.append("{\n");
 
+        sb.append("__ Entries __");
+
         for (EnumConstantDeclaration c : element.getEntries()) {
             sb.append(c.getName());
             sb.append("\n");
         }
 
+        sb.append("__ Attributes __\n");
+
+        sb.append(MemberFormatter.attributes(element));
+
+        sb.append("__ Methods __\n");
+
         sb.append(MemberFormatter.methods(element));
 
-        sb.append(MemberFormatter.nodeWithImplements(element));
-
         sb.append("}\n");
+
+        sb.append(MemberFormatter.nodeWithImplements(element));
 
         return sb.toString();
     }
