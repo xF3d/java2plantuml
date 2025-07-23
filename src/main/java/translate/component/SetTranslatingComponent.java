@@ -32,13 +32,14 @@ public abstract class SetTranslatingComponent<T extends Node> {
         }
     }
 
+    /*
     public void add(T... elements) {
         set.addAll(Arrays.asList(elements));
     }
 
     public void add(Collection<? extends T> collection) {
         set.addAll(collection);
-    }
+    }*/
 
     public Class<T> type() {
         return type;
