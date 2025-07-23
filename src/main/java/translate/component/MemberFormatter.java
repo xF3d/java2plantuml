@@ -74,19 +74,29 @@ public class MemberFormatter {
     public static String node(NodeWithMembers<?> ctor) {
         StringBuilder builder = new StringBuilder();
 
-        if (UmlTranslator.config.isShowAttributes()) {
-            for (var field : ctor.getFields()) {
-                builder.append(MemberFormatter.field(field));
-            }
-        }
+        builder.append(attributes(ctor));
 
         if (UmlTranslator.config.isShowMethods()) {
             for (var constructor : ctor.getConstructors()) {
                 builder.append(constructor(constructor));
             }
 
+            builder.append(methods(ctor));
+            /*
             for (var method : ctor.getMethods()) {
                 builder.append(method(method));
+            }*/
+        }
+
+        return builder.toString();
+    }
+
+    public static String attributes(NodeWithMembers<?> ctor) {
+        StringBuilder builder = new StringBuilder();
+
+        if (UmlTranslator.config.isShowAttributes()) {
+            for (var field : ctor.getFields()) {
+                builder.append(MemberFormatter.field(field));
             }
         }
 
