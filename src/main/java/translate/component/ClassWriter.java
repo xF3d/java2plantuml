@@ -4,7 +4,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
 public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclaration> {
-    protected ClassWriter() {
+    public ClassWriter() {
         super(ClassOrInterfaceDeclaration.class);
     }
 
