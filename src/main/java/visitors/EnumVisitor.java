@@ -2,7 +2,7 @@ package visitors;
 
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import translate.Translator;
+import translate.translator.Translator;
 
 public class EnumVisitor extends VoidVisitorAdapter<Void> {
 

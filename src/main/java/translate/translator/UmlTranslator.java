@@ -1,4 +1,4 @@
-package translate;
+package translate.translator;
 
 import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
@@ -6,12 +6,10 @@ import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.visitor.VoidVisitor;
+import translate.ClassDiagramConfig;
 import translate.component.ClassWriter;
 import translate.component.EnumWriter;
 import translate.component.InterfaceWriter;

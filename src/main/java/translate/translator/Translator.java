@@ -1,4 +1,4 @@
-package translate;
+package translate.translator;
 
 import com.github.javaparser.ast.Node;
 

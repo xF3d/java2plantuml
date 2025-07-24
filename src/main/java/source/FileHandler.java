@@ -1,6 +1,6 @@
 package source;
 
-import translate.Translator;
+import translate.translator.Translator;
 
 import javax.swing.*;
 import java.io.File;

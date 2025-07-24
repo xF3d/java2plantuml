@@ -3,7 +3,7 @@ package gui;
 import source.DirectoryExplorer;
 import source.FileHandler;
 import translate.ClassDiagramConfig;
-import translate.UmlTranslator;
+import translate.translator.UmlTranslator;
 import visitors.ClassVisitor;
 import visitors.EnumVisitor;
 import visitors.InterfaceVisitor;

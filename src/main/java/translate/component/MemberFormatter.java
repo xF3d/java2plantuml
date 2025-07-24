@@ -15,7 +15,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
-import translate.UmlTranslator;
+import translate.translator.UmlTranslator;
 
 import java.util.ArrayList;
 import java.util.Collections;
