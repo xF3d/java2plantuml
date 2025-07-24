@@ -193,7 +193,6 @@ public class MainFrame extends JFrame {
         return new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                int newWidth = contentPanel.getWidth();
                 topPanel.setSize(new Dimension(Integer.MAX_VALUE, 50));
                 sourceFolderLabel.setSize(new Dimension(Integer.MAX_VALUE, 50));
                 contentPanel.updateUI();
