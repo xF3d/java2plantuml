@@ -17,7 +17,8 @@ repositories {
 
 dependencies {
     testImplementation 'junit:junit:4.13.2' // Updated to latest 4.x
-    implementation 'com.github.javaparser:javaparser-core:3.26.4' // Much newer version
+    implementation 'com.github.javaparser:javaparser-core:3.27.0' // Much newer version
+    implementation 'com.github.javaparser:javaparser-symbol-solver-core:3.27.0'
 }
 
 jar {
