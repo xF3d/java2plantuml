@@ -16,11 +16,6 @@ public class ComplexityTranslator implements Translator {
 
     private Boolean error = false;
     private final Map<String, Node> map = new HashMap<>();
-    private final ComplexityGridPanel output;
-
-    public ComplexityTranslator(ComplexityGridPanel output) {
-        this.output = output;
-    }
 
     @Override
     public void addNode(Node node) {

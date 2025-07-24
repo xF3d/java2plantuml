@@ -121,14 +121,9 @@ public class MainFrame extends JFrame {
             super.getContentPane().remove(toRemove);
         }
 
-        JPanel panel = new JPanel();
-        ComplexityGridPanel mainMetricPanel = new ComplexityGridPanel();
-
-        panel.add(mainMetricPanel, BorderLayout.NORTH);
-
         new Thread(() -> {
             try {
-                ComplexityTranslator umlTranslator = new ComplexityTranslator(mainMetricPanel);
+                ComplexityTranslator umlTranslator = new ComplexityTranslator();
                 ComplexityTranslator.config = new ClassDiagramConfig.Builder()
                         .withVisitor(new ClassVisitor(umlTranslator))
                         .withVisitor(new InterfaceVisitor(umlTranslator))
@@ -144,26 +139,20 @@ public class MainFrame extends JFrame {
                 if (selectedDirectory != null && selectedDirectory.exists()) {
                     new DirectoryExplorer(handler).explore(selectedDirectory);
                 } else {
-                    mainMetricPanel.removeAll();
-                    mainMetricPanel.add(new JLabel("Selected folder is invalid."));
+                    JLabel errorLabel = new JLabel("Selected folder is invalid.");
+                    super.getContentPane().add(errorLabel, BorderLayout.CENTER);
+                    toRemove = errorLabel;
                     return;
                 }
 
                 JList<String> complexityList = umlTranslator.toComplexityList();
-                panel.add(complexityList, BorderLayout.CENTER);
-
-                // Optional: write to file too
-                /*
-                File f = new File("output.puml");
-                try (FileOutputStream fos = new FileOutputStream(f)) {
-                    fos.write(plantUmlOutput.getBytes());
-                }
-
-                outputArea.append("\nUML diagram saved to output.puml\n");*/
+                super.getContentPane().add(complexityList, BorderLayout.CENTER);
+                toRemove = complexityList;
 
             } catch (Exception ex) {
-                mainMetricPanel.removeAll();
-                mainMetricPanel.add(new JLabel("An error occurred: " + ex.getMessage()));
+                JLabel errorLabel = new JLabel("An error occurred: " + ex.getMessage());
+                super.getContentPane().add(errorLabel, BorderLayout.CENTER);
+                toRemove = errorLabel;
                 ex.printStackTrace();
             }
         }).start();
