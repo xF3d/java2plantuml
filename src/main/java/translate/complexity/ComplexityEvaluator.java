@@ -5,10 +5,10 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 
 public interface ComplexityEvaluator {
     interface Clazz {
-        double calculate(Node node);
+        ComplexityMetricResult calculate(Node node);
     }
 
     interface Method {
-        double calculate(MethodDeclaration method);
+        ComplexityMetricResult calculate(MethodDeclaration method);
     }
 }
