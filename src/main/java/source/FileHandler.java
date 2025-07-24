@@ -1,31 +1,31 @@
 package source;
 
-import com.github.javaparser.ast.CompilationUnit;
 import translate.Translator;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 
 public class FileHandler {
 
-    private Translator translator;
+    private final Translator translator;
+    private final JTextArea output;
 
-    public FileHandler(Translator translator){
-        this.translator=translator;
+    public FileHandler(Translator translator, JTextArea output) {
+        this.translator = translator;
+        this.output = output;
     }
 
 
+    void handle(File f) {
 
-    void handle(File f){
+        output.append("File Found: " + f.getName() + "\n");
 
-        System.out.println("File Found: " +f.getName());
-
-        CompilationUnit cu = null;
         try {
             translator.translateFile(new File(f.getAbsolutePath()));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (Exception e){
+        } catch (Exception e) {
             translator.setError(true);
         }
 

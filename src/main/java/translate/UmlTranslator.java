@@ -19,6 +19,7 @@ import translate.component.MemberFormatter;
 import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
 
+import javax.swing.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
@@ -32,9 +33,10 @@ public class UmlTranslator implements Translator {
     private Boolean error = false;
 
     public static ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
+    private final JTextArea output;
 
-
-    public UmlTranslator() {
+    public UmlTranslator(JTextArea outputArea) {
+        output = outputArea;
         componentTranslators.add(new ClassWriter());
         componentTranslators.add(new InterfaceWriter());
         componentTranslators.add(new EnumWriter());
@@ -83,11 +85,11 @@ public class UmlTranslator implements Translator {
                     cu.accept(visitor, null);
                 }
             } else {
-                System.err.println("Parsing failed for: " + file.getPath());
+                output.append("Parsing failed for: " + file.getPath() + "\n");
                 List<Problem> problems = result.getProblems();
                 for (Problem problem : problems) {
-                    System.out.println("Problem: " + problem.getMessage());
-                    problem.getLocation().ifPresent(loc -> System.out.println(" at " + loc));
+                    output.append("Problem: " + problem.getMessage());
+                    problem.getLocation().ifPresent(loc -> System.out.println(" at " + loc + "\n"));
                 }
             }
 
