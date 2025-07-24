@@ -1,13 +1,12 @@
 package translate.translator;
 
 import com.github.javaparser.ast.Node;
-import gui.ComplexityGridPanel;
 import translate.ClassDiagramConfig;
+import translate.complexity.ComplexityEvaluator;
+import translate.complexity.clazz.DITEvaluator;
 import translate.component.MemberFormatter;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +15,9 @@ public class ComplexityTranslator implements Translator {
 
     private Boolean error = false;
     private final Map<String, Node> map = new HashMap<>();
+    private final ComplexityEvaluator.Clazz[] evaluators = {
+            new DITEvaluator()
+    };
 
     @Override
     public void addNode(Node node) {
@@ -29,8 +31,8 @@ public class ComplexityTranslator implements Translator {
     }
 
     @Override
-    public void translateFile(File f) throws FileNotFoundException {
-
+    public ClassDiagramConfig getConfig() {
+        return config;
     }
 
     public JList<String> toComplexityList() {

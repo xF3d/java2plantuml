@@ -1,14 +1,9 @@
 package translate.translator;
 
-import com.github.javaparser.JavaParser;
-import com.github.javaparser.ParseResult;
-import com.github.javaparser.ParserConfiguration;
-import com.github.javaparser.Problem;
-import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
-import com.github.javaparser.ast.visitor.VoidVisitor;
+import gui.Updatable;
 import translate.ClassDiagramConfig;
 import translate.component.ClassWriter;
 import translate.component.EnumWriter;
@@ -18,8 +13,6 @@ import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +25,11 @@ public class UmlTranslator implements Translator {
 
     public static ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
     private final JTextArea output;
+    private final Updatable updatable;
 
-    public UmlTranslator(JTextArea outputArea) {
+    public UmlTranslator(JTextArea outputArea, Updatable updatable) {
         output = outputArea;
+        this.updatable = updatable;
         componentTranslators.add(new ClassWriter());
         componentTranslators.add(new InterfaceWriter());
         componentTranslators.add(new EnumWriter());
@@ -46,6 +41,11 @@ public class UmlTranslator implements Translator {
         this.error = b;
     }
 
+    @Override
+    public ClassDiagramConfig getConfig() {
+        return config;
+    }
+
     private final Set<String> printed = new HashSet<>();
     @Override
     public void addNode(Node node) {
@@ -55,37 +55,10 @@ public class UmlTranslator implements Translator {
         // Class/Interfaces processed twice
         if (printed.add(name)) {
             output.append(type + " Found: " + name + "\n");
+            updatable.update();
         }
 
         componentTranslators.forEach((s) -> s.safeAdd(node));
-    }
-
-    @Override
-    public void translateFile(File f) {
-        JavaParser parser = new JavaParser();
-        parser.getParserConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
-        File file = f.getAbsoluteFile();
-        try {
-            ParseResult<CompilationUnit> result = parser.parse(file);
-            if (result.isSuccessful() && result.getResult().isPresent()) {
-                CompilationUnit cu = result.getResult().get();
-                for (VoidVisitor<Void> visitor : config.getVisitorAdapters()) {
-                    cu.accept(visitor, null);
-                }
-            } else {
-                output.append("Parsing failed for: " + file.getPath() + "\n");
-                List<Problem> problems = result.getProblems();
-                for (Problem problem : problems) {
-                    output.append("Problem: " + problem.getMessage());
-                    problem.getLocation().ifPresent(loc -> System.out.println(" at " + loc + "\n"));
-                }
-            }
-
-
-        } catch (FileNotFoundException e) {
-            setError(true);
-            e.printStackTrace();
-        }
     }
 
     public String toPlantUml() {
