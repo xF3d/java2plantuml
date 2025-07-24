@@ -6,7 +6,7 @@ import translate.Translator;
 
 public class EnumVisitor extends VoidVisitorAdapter<Void> {
 
-    private Translator translator;
+    private final Translator translator;
 
     public EnumVisitor(Translator translator){
         this.translator=translator;
@@ -14,9 +14,7 @@ public class EnumVisitor extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(EnumDeclaration n, Void arg) {
-
-        this.translator.addEnum(n);
+        this.translator.addNode(n);
         super.visit(n, arg);
-
     }
 }

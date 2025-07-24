@@ -44,26 +44,6 @@ public class UmlTranslator implements Translator {
     }
 
     @Override
-    public void addClass(ClassOrInterfaceDeclaration c) {
-        addNode(c);
-    }
-
-    @Override
-    public void addEnum(EnumDeclaration e) {
-        addNode(e);
-    }
-
-    @Override
-    public void addInterface(ClassOrInterfaceDeclaration i) {
-        addNode(i);
-    }
-
-    @Override
-    public void addRecord(RecordDeclaration r) {
-        addNode(r);
-    }
-
-    @Override
     public void setError(Boolean b) {
         this.error = b;
     }

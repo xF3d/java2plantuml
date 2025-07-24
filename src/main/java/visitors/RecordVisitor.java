@@ -5,7 +5,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.Translator;
 
 public class RecordVisitor extends VoidVisitorAdapter<Void> {
-    private Translator translator;
+    private final Translator translator;
 
     public RecordVisitor(Translator translator){
         this.translator=translator;
@@ -13,8 +13,7 @@ public class RecordVisitor extends VoidVisitorAdapter<Void> {
 
     @Override
     public void visit(RecordDeclaration n, Void arg) {
-        this.translator.addRecord(n);
+        this.translator.addNode(n);
         super.visit(n, arg);
     }
-
 }

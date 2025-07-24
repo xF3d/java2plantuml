@@ -6,7 +6,7 @@ import translate.Translator;
 
 public class InterfaceVisitor extends VoidVisitorAdapter<Void> {
 
-    private Translator translator;
+    private final Translator translator;
 
     public InterfaceVisitor(Translator translator){
         this.translator=translator;
@@ -15,9 +15,7 @@ public class InterfaceVisitor extends VoidVisitorAdapter<Void> {
     @Override
     public void visit(ClassOrInterfaceDeclaration n, Void arg) {
 
-        if(n.isInterface()) {
-            this.translator.addInterface(n);
-        }
+        translator.addNode(n);
         super.visit(n, arg);
 
     }
