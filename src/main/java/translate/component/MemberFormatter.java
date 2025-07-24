@@ -1,12 +1,18 @@
 package translate.component;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
+import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.nodeTypes.NodeWithExtends;
 import com.github.javaparser.ast.nodeTypes.NodeWithImplements;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
@@ -23,6 +29,33 @@ import java.util.List;
 import java.util.Optional;
 
 public class MemberFormatter {
+    public static String fullPackageName(Node node) {
+        String packageName = node.findCompilationUnit()
+                .flatMap(CompilationUnit::getPackageDeclaration)
+                .map(PackageDeclaration::getName)
+                .map(Name::asString)
+                .orElse("");
+
+        return packageName + "." + MemberFormatter.fullSimpleName(node);
+    }
+
+    public static String nodeClassType(Node node) {
+        if (node instanceof ClassOrInterfaceDeclaration c) {
+            if (c.isInterface()) {
+                return "Interface";
+            } else if (!c.isInterface() && c.isAbstract()) {
+                return "Abstract class";
+            } else {
+                return "Class";
+            }
+        } else if (node instanceof RecordDeclaration) {
+            return "Record";
+        } else if (node instanceof EnumDeclaration) {
+            return "Enum";
+        }
+
+        return null;
+    }
 
     // processes potential nested classes names
     public static String fullSimpleName(Node type) {
