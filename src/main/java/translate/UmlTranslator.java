@@ -68,6 +68,7 @@ public class UmlTranslator implements Translator {
         this.error = b;
     }
 
+    @Override
     public void addNode(Node node) {
         componentTranslators.forEach((s) -> s.safeAdd(node));
     }
@@ -118,7 +119,7 @@ public class UmlTranslator implements Translator {
         writeAssociations(sb);
 
         for (var writer : componentTranslators) {
-            Map<String, List<String>> map = writer.write();
+            Map<String, List<String>> map = writer.writeUML();
             sb.append(mapWriter(map));
         }
 

@@ -43,7 +43,7 @@ public abstract class SetTranslatingComponent<T extends Node> {
         return type;
     }
 
-    public Map<String, List<String>> write() {
+    public Map<String, List<String>> writeUML() {
         HashMap<String, List<String>> map = new HashMap<>();
         for (var element : set) {
             String packageName = element.findCompilationUnit()
@@ -52,7 +52,7 @@ public abstract class SetTranslatingComponent<T extends Node> {
                     .map(Name::asString)
                     .orElse("");
 
-            String clazz = writeComponent(element);
+            String clazz = writeComponentUML(element);
             map.computeIfAbsent(packageName, (key) -> new ArrayList<>());
             map.computeIfPresent(packageName, (k, v) -> {
                 v.add(clazz);
@@ -63,5 +63,5 @@ public abstract class SetTranslatingComponent<T extends Node> {
         return map;
     }
 
-    public abstract String writeComponent(T element);
+    public abstract String writeComponentUML(T element);
 }

@@ -16,7 +16,7 @@ public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclara
     }
 
     @Override
-    public String writeComponent(ClassOrInterfaceDeclaration element) {
+    public String writeComponentUML(ClassOrInterfaceDeclaration element) {
         StringBuilder builder = new StringBuilder();
         if (element.isAbstract()) {
             builder.append("abstract ");

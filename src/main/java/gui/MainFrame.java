@@ -30,10 +30,10 @@ public class MainFrame extends JFrame {
         outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
 
         selectFolderButton = new JButton("Select Source Folder");
+        selectFolderButton.addActionListener(this::handleFolderSelection);
+
         generateButton = new JButton("Generate UML");
         generateButton.setEnabled(false); // only enabled after folder selected
-
-        selectFolderButton.addActionListener(this::handleFolderSelection);
         generateButton.addActionListener(this::generateUml);
 
         JPanel topPanel = new JPanel();
@@ -58,6 +58,7 @@ public class MainFrame extends JFrame {
     }
 
     private void generateUml(ActionEvent e) {
+        outputArea.setText("");
         outputArea.append("Generating UML...\n");
 
         new Thread(() -> {

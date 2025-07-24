@@ -8,7 +8,7 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
     }
 
     @Override
-    public String writeComponent(RecordDeclaration element) {
+    public String writeComponentUML(RecordDeclaration element) {
         StringBuilder builder = new StringBuilder();
         builder.append("class ");
         builder.append(MemberFormatter.fullSimpleName(element));

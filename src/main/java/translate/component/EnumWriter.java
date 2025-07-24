@@ -9,7 +9,7 @@ public class EnumWriter extends SetTranslatingComponent<EnumDeclaration> {
     }
 
     @Override
-    public String writeComponent(EnumDeclaration element) {
+    public String writeComponentUML(EnumDeclaration element) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("enum ");
