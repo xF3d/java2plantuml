@@ -46,8 +46,17 @@ public class UmlTranslator implements Translator {
         this.error = b;
     }
 
+    private final Set<String> printed = new HashSet<>();
     @Override
     public void addNode(Node node) {
+        String type = MemberFormatter.nodeClassType(node);
+        String name = MemberFormatter.fullPackageName(node);
+
+        // Class/Interfaces processed twice
+        if (printed.add(name)) {
+            output.append(type + " Found: " + name + "\n");
+        }
+
         componentTranslators.forEach((s) -> s.safeAdd(node));
     }
 
