@@ -25,7 +25,7 @@ public class ComplexityTranslator implements Translator {
     private static final ComplexityEvaluator.Clazz[] evaluators = {
             new DITEvaluator(),
             new NOCEvaluator(),
-            new WMCBaseEvaluator("WMC/unity", 20, 0, (a, b) -> ComplexityMetricResult.builder().value(1).build())
+            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build())
     };
 
     @Override
