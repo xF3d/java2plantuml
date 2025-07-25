@@ -7,6 +7,7 @@ import translate.ClassDiagramConfig;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.clazz.DITEvaluator;
+import translate.complexity.clazz.NOCEvaluator;
 import translate.component.MemberFormatter;
 
 import javax.swing.*;
@@ -21,7 +22,8 @@ public class ComplexityTranslator implements Translator {
     private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
 
     private static final ComplexityEvaluator.Clazz[] evaluators = {
-            new DITEvaluator()
+            new DITEvaluator(),
+            new NOCEvaluator()
     };
 
     @Override
