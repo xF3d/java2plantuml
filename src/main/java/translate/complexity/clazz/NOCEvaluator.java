@@ -26,7 +26,6 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
         }
 
         String fullPackageName = MemberFormatter.fullSimpleName(clazz);
-        System.out.println(fullPackageName);
 
         int amount = 0;
         for (var entry : allClazz) {
