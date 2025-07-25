@@ -3,6 +3,7 @@ package gui;
 import source.DirectoryExplorer;
 import source.FileHandler;
 import translate.ClassDiagramConfig;
+import translate.complexity.ComplexityUtils;
 import translate.translator.ComplexityTranslator;
 import translate.translator.UmlTranslator;
 import visitors.ClassVisitor;
@@ -11,10 +12,14 @@ import visitors.InterfaceVisitor;
 import visitors.RecordVisitor;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
 
@@ -73,6 +78,7 @@ public class MainFrame extends JFrame {
     }
 
     private void handleFolderSelection(ActionEvent e) {
+        FrameManager.closeAll();
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int result = chooser.showOpenDialog(this);
@@ -173,9 +179,8 @@ public class MainFrame extends JFrame {
                 }
 
 
-
-                JList<String> complexityList = umlTranslator.toComplexityList();
-                JScrollPane jscroll = new JScrollPane(complexityList);
+                ComplexityUtils.initialize(selectedDirectory);
+                JScrollPane jscroll = getJScrollPane(umlTranslator);
                 bottomPanel.add(jscroll);
                 toRemove = jscroll;
                 contentPanel.updateUI();
@@ -187,6 +192,29 @@ public class MainFrame extends JFrame {
                 ex.printStackTrace();
             }
         }).start();
+    }
+
+    private static JScrollPane getJScrollPane(ComplexityTranslator umlTranslator) {
+        JList<String> complexityList = umlTranslator.getClassJList();
+        complexityList.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() != 2) { // double-click
+                    return;
+                }
+
+                int index = complexityList.locationToIndex(e.getPoint());
+                if (index == -1) {
+                    return;
+                }
+
+                String selectedItem = complexityList.getModel().getElementAt(index);
+                FrameManager.addFrame(
+                    new ClassFrame(selectedItem, umlTranslator)
+                );
+            }
+        });
+
+        return new JScrollPane(complexityList);
     }
 
     public ComponentAdapter componentResized() {
