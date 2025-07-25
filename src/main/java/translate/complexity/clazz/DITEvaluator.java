@@ -43,7 +43,6 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
             return builder.value(depth).build();
         } catch (Throwable e) {
             // we reached a library class
-            e.printStackTrace();
             return builder.value(depth + 1).build();
         }
     }
