@@ -1,4 +1,4 @@
-import gui.MainFrame;
+import gui.frame.MainFrame;
 
 import javax.swing.*;
 

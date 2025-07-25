@@ -1,4 +1,4 @@
-package gui;
+package gui.frame;
 
 import source.DirectoryExplorer;
 import source.FileHandler;
@@ -12,8 +12,6 @@ import visitors.InterfaceVisitor;
 import visitors.RecordVisitor;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
