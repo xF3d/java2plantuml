@@ -4,13 +4,11 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
-import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedClassDeclaration;
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityUtils;
-
-import java.util.Objects;
 
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
     private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
@@ -24,31 +22,27 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
             return builder.value(1).build();
         }
 
+        if (node instanceof ClassOrInterfaceDeclaration coi && coi.isInterface()) {
+            return builder.value(1).build();
+        }
+
+
+        int depth = 0;
         try {
             ClassOrInterfaceDeclaration decl = (ClassOrInterfaceDeclaration) node;
-            ResolvedReferenceTypeDeclaration type = ComplexityUtils.resolve(decl);
+            ResolvedClassDeclaration type = (ResolvedClassDeclaration) ComplexityUtils.resolve(decl);
 
-            int depth = 0;
-            while (type != null) {
-                String qName = type.getQualifiedName();
-                if (qName.equals("java.lang.Object")) break;
-                if (type.getQualifiedName().isEmpty()) break;
+            while (type.getSuperClass().isPresent()) {
                 depth++;
-
-                type = type.getAllAncestors()
-                        .stream()
-                        .map(ResolvedReferenceType::getTypeDeclaration)
-                        .map((optional) -> optional.orElse(null))
-                        .filter(Objects::nonNull)
-                        .filter((typeDecl) -> !typeDecl.isInterface())
-                        .findFirst()
-                        .orElse(null);
+                ResolvedReferenceType whatever = type.getSuperClass().get();
+                type = (ResolvedClassDeclaration) whatever.getTypeDeclaration().get();
             }
 
             return builder.value(depth).build();
-        } catch (Exception e) {
+        } catch (Throwable e) {
+            // we reached a library class
             e.printStackTrace();
-            return builder.value(1).build();
+            return builder.value(depth + 1).build();
         }
     }
 }
