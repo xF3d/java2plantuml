@@ -14,6 +14,12 @@ public class ComplexityGridPanel extends JPanel {
         setLayout(new GridLayout(WIDTH, HEIGHT));
     }
 
+    public void addMetrics(ComplexityMetricResult... manyResults) {
+        for (var result : manyResults) {
+            addMetric(result);
+        }
+    }
+
     public void addMetric(ComplexityMetricResult result) {
         String valueWithColor;
         if (result.getMin() < result.getValue() && result.getValue() < result.getMax()) {
