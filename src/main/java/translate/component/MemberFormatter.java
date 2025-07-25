@@ -21,6 +21,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.type.Type;
 import translate.translator.UmlTranslator;
 
 import java.util.ArrayList;
@@ -35,6 +36,9 @@ public class MemberFormatter {
                 .map(PackageDeclaration::getName)
                 .map(Name::asString)
                 .orElse("");
+
+        if (node instanceof Type)
+            throw new RuntimeException("Doesn't work for TYPE nodes");
 
         return packageName + "." + MemberFormatter.fullSimpleName(node);
     }
@@ -60,7 +64,7 @@ public class MemberFormatter {
     // processes potential nested classes names
     public static String fullSimpleName(Node type) {
         if (type instanceof ClassOrInterfaceType cit) {
-            return cit.getNameWithScope();
+            return cit.getNameWithScope().replace('.', '$');
         }
 
         List<String> names = new ArrayList<>();
