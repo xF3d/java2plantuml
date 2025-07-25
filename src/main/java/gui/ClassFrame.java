@@ -3,7 +3,6 @@ package gui;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class ClassFrame extends JFrame {
     private final ComplexityGridPanel gridInfo = new ComplexityGridPanel();
@@ -14,7 +13,7 @@ public class ClassFrame extends JFrame {
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         super.setSize(1000, 600);
 
-        super.setLayout(new GridLayout(2, 1));
+        super.getContentPane().setLayout(new BoxLayout(super.getContentPane(), BoxLayout.Y_AXIS));
 
         var evaluation = translator.evaluateClass(className);
         gridInfo.addMetrics(evaluation);

@@ -6,12 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ComplexityGridPanel extends JPanel {
-    public static final int WIDTH = 12;
-    public static final int HEIGHT = 2;
 
     public ComplexityGridPanel()   {
-        //grid layout 6x6
-        setLayout(new GridLayout(WIDTH, HEIGHT));
+        setLayout(new RatioGridLayout(5, 5, new RatioGridLayout.Ratio(6, 1)));
     }
 
     public void addMetrics(ComplexityMetricResult... manyResults) {
@@ -28,7 +25,8 @@ public class ComplexityGridPanel extends JPanel {
             valueWithColor = "<font color='red'> " + result.getValue() + "</font>";
         }
 
-        JLabel toAdd = new JLabel("<html>" + result.getName() + " = " + valueWithColor + "</html>");
+        JLabel toAdd = new JLabel("<html><div style='white-space: nowrap;'>" + result.getName() + " = " + valueWithColor + "</div></html>");
+        toAdd.setPreferredSize(new Dimension(toAdd.getPreferredSize().width, 30));
         this.add(toAdd);
     }
 }
