@@ -52,7 +52,7 @@ public class ComplexityTranslator implements Translator {
     public ComplexityMetricResult[] evaluateClass(String fullClassName) {
         ComplexityMetricResult[] result = new ComplexityMetricResult[evaluators.length];
         for (int i = 0; i < evaluators.length; i++) {
-            result[i] = evaluators[i].calculate(classMap.get(fullClassName));
+            result[i] = evaluators[i].calculate(classMap.values(), classMap.get(fullClassName));
         }
 
         return result;

@@ -10,6 +10,8 @@ import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityUtils;
 
+import java.util.Collection;
+
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
     private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
             .name("DIT")
@@ -17,7 +19,7 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
             .min(-1);
 
     @Override
-    public ComplexityMetricResult calculate(Node node) {
+    public ComplexityMetricResult calculate(Collection<Node> list, Node node) {
         if (node instanceof RecordDeclaration || node instanceof EnumDeclaration) {
             return builder.value(1).build();
         }
