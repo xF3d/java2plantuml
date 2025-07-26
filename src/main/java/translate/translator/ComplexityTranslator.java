@@ -6,6 +6,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import translate.ClassDiagramConfig;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.complexity.clazz.CBOEvaluator;
 import translate.complexity.clazz.DITEvaluator;
 import translate.complexity.clazz.NOCEvaluator;
 import translate.complexity.clazz.RFCEvaluator;
@@ -26,7 +27,7 @@ public class ComplexityTranslator implements Translator {
             new DITEvaluator(),
             new NOCEvaluator(),
             new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build()),
-            //new CBOEvaluator()
+            //new CBOEvaluator(),
             new RFCEvaluator()
     };
 
