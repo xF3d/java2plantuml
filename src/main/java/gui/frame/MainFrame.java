@@ -20,8 +20,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class MainFrame extends JFrame {
+    private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
 
     private final JPanel contentPanel = new JPanel();
 
@@ -83,7 +86,6 @@ public class MainFrame extends JFrame {
         if (result != JFileChooser.APPROVE_OPTION) {
             return;
         }
-        //TODO: make button syncronized on a lock
 
         selectedDirectory = chooser.getSelectedFile();
         umlButton.setEnabled(true);
@@ -92,21 +94,18 @@ public class MainFrame extends JFrame {
     }
 
     private void generateUml(ActionEvent e) {
-        if (toRemove != null) {
-            bottomPanel.remove(toRemove);
-        }
 
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false);
         outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
         JScrollPane jScrollPane = new JScrollPane(outputArea);
 
-        bottomPanel.add(jScrollPane);
-
         outputArea.setText("");
         outputArea.append("Generating UML...\n");
 
-        new Thread(() -> {
+        backgroundExecutor.submit(() -> {
+            processInit();
+            bottomPanel.add(jScrollPane);
             try {
                 UmlTranslator umlTranslator = new UmlTranslator(outputArea, contentPanel::updateUI);
                 UmlTranslator.config = new ClassDiagramConfig.Builder()
@@ -143,19 +142,15 @@ public class MainFrame extends JFrame {
                 outputArea.append("An error occurred: " + ex.getMessage() + "\n");
                 ex.printStackTrace();
             }
-        }).start();
+            toRemove = jScrollPane;
 
-        toRemove = jScrollPane;
+        });
     }
 
     private void generateComplexity(ActionEvent e) {
-        if (toRemove != null) {
-            bottomPanel.remove(toRemove);
-        }
-
-        new Thread(() -> {
+        backgroundExecutor.submit(() -> {
+            processInit();
             try {
-                ComplexityUtils.initialize(selectedDirectory);
                 ComplexityTranslator umlTranslator = new ComplexityTranslator();
                 ComplexityTranslator.config = new ClassDiagramConfig.Builder()
                         .withVisitor(new ClassVisitor(umlTranslator))
@@ -189,7 +184,15 @@ public class MainFrame extends JFrame {
                 toRemove = errorLabel;
                 ex.printStackTrace();
             }
-        }).start();
+        });
+
+    }
+
+    private void processInit() {
+        ComplexityUtils.initialize(selectedDirectory);
+        if (toRemove != null) {
+            bottomPanel.remove(toRemove);
+        }
     }
 
     private static JScrollPane getJScrollPane(ComplexityTranslator umlTranslator) {
