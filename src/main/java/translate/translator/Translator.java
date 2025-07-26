@@ -20,8 +20,6 @@ public interface Translator {
     void addNode(Node node);
     void setError(Boolean b);
 
-    ClassDiagramConfig getConfig();
-    void setConfig(ClassDiagramConfig cfg);
 
     default void translateFile(File f) throws FileNotFoundException {
         ParserConfiguration config = new ParserConfiguration()
@@ -35,7 +33,7 @@ public interface Translator {
             ParseResult<CompilationUnit> result = parser.parse(file);
             if (result.isSuccessful() && result.getResult().isPresent()) {
                 CompilationUnit cu = result.getResult().get();
-                for (VoidVisitor<Void> visitor : getConfig().getVisitorAdapters()) {
+                for (VoidVisitor<Void> visitor : TranslatorConfig.config.getVisitorAdapters()) {
                     cu.accept(visitor, null);
                 }
 

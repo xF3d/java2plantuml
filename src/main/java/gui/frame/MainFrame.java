@@ -5,6 +5,7 @@ import source.FileHandler;
 import translate.ClassDiagramConfig;
 import translate.complexity.ComplexityUtils;
 import translate.translator.ComplexityTranslator;
+import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
 import visitors.ClassVisitor;
 import visitors.EnumVisitor;
@@ -108,7 +109,7 @@ public class MainFrame extends JFrame {
             bottomPanel.add(jScrollPane);
             try {
                 UmlTranslator umlTranslator = new UmlTranslator(outputArea, contentPanel::updateUI);
-                umlTranslator.setConfig(
+                TranslatorConfig.config =
                     new ClassDiagramConfig.Builder()
                         .withVisitor(new ClassVisitor(umlTranslator))
                         .withVisitor(new InterfaceVisitor(umlTranslator))
@@ -117,8 +118,7 @@ public class MainFrame extends JFrame {
                         .setShowMethods(true)
                         .setShowAttributes(true)
                         .setShowColoredAccessSpecifiers(false)
-                        .build()
-                );
+                        .build();
 
                 FileHandler handler = new FileHandler(umlTranslator);
 
@@ -154,7 +154,7 @@ public class MainFrame extends JFrame {
             processInit();
             try {
                 ComplexityTranslator complexityTranslator = new ComplexityTranslator();
-                complexityTranslator.setConfig(
+                TranslatorConfig.config =
                     new ClassDiagramConfig.Builder()
                         .withVisitor(new ClassVisitor(complexityTranslator))
                         .withVisitor(new InterfaceVisitor(complexityTranslator))
@@ -163,8 +163,7 @@ public class MainFrame extends JFrame {
                         .setShowMethods(true)
                         .setShowAttributes(true)
                         .setShowColoredAccessSpecifiers(false)
-                        .build()
-                );
+                        .build();
 
                 FileHandler handler = new FileHandler(complexityTranslator);
 

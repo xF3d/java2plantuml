@@ -22,6 +22,8 @@ import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import translate.translator.Translator;
+import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
 
 import java.util.ArrayList;
@@ -113,7 +115,7 @@ public class MemberFormatter {
 
         builder.append(attributes(ctor));
 
-        if (UmlTranslator.config.isShowMethods()) {
+        if (TranslatorConfig.config.isShowMethods()) {
             for (var constructor : ctor.getConstructors()) {
                 builder.append(constructor(constructor));
             }
@@ -131,7 +133,7 @@ public class MemberFormatter {
     public static String attributes(NodeWithMembers<?> ctor) {
         StringBuilder builder = new StringBuilder();
 
-        if (UmlTranslator.config.isShowAttributes()) {
+        if (TranslatorConfig.config.isShowAttributes()) {
             for (var field : ctor.getFields()) {
                 builder.append(MemberFormatter.field(field));
             }
@@ -143,7 +145,7 @@ public class MemberFormatter {
     public static String methods(NodeWithMembers<?> ctor) {
         StringBuilder builder = new StringBuilder();
 
-        if (UmlTranslator.config.isShowMethods()) {
+        if (TranslatorConfig.config.isShowMethods()) {
             for (var method : ctor.getMethods()) {
                 builder.append(method(method));
             }

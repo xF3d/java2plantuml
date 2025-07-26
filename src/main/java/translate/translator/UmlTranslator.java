@@ -23,7 +23,6 @@ public class UmlTranslator implements Translator {
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private Boolean error = false;
 
-    private ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
     private final JTextArea output;
     private final Updatable updatable;
 
@@ -39,16 +38,6 @@ public class UmlTranslator implements Translator {
     @Override
     public void setError(Boolean b) {
         this.error = b;
-    }
-
-    @Override
-    public ClassDiagramConfig getConfig() {
-        return config;
-    }
-
-    @Override
-    public void setConfig(ClassDiagramConfig cfg) {
-        this.config = cfg;
     }
 
     private final Set<String> printed = new HashSet<>();
@@ -79,7 +68,7 @@ public class UmlTranslator implements Translator {
         sb.append("\n");
         //this is for removing shapes in attributes/methods visibility
 
-        if (!config.isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
+        if (!TranslatorConfig.config.isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
 
         writeAssociations(sb);
 
