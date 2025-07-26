@@ -1,7 +1,6 @@
 package translate.complexity.clazz;
 
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.NameExpr;
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public class LOCMNEvaluator implements ComplexityEvaluator.Clazz {
+public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
     private static ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
             .name("LOCMN");
 
