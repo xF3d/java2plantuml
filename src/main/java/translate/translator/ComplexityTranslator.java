@@ -8,6 +8,7 @@ import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.clazz.DITEvaluator;
 import translate.complexity.clazz.NOCEvaluator;
+import translate.complexity.clazz.RFCEvaluator;
 import translate.complexity.clazz.WMCBaseEvaluator;
 import translate.component.MemberFormatter;
 
@@ -25,7 +26,9 @@ public class ComplexityTranslator implements Translator {
     private static final ComplexityEvaluator.Clazz[] evaluators = {
             new DITEvaluator(),
             new NOCEvaluator(),
-            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build())
+            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build()),
+            //new CBOEvaluator()
+            new RFCEvaluator()
     };
 
     @Override
