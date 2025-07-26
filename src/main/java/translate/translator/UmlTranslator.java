@@ -23,7 +23,7 @@ public class UmlTranslator implements Translator {
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private Boolean error = false;
 
-    public static ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
+    private ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
     private final JTextArea output;
     private final Updatable updatable;
 
@@ -44,6 +44,11 @@ public class UmlTranslator implements Translator {
     @Override
     public ClassDiagramConfig getConfig() {
         return config;
+    }
+
+    @Override
+    public void setConfig(ClassDiagramConfig cfg) {
+        this.config = cfg;
     }
 
     private final Set<String> printed = new HashSet<>();

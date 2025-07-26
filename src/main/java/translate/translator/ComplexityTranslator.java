@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ComplexityTranslator implements Translator {
-    public static ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
+    private ClassDiagramConfig config = new ClassDiagramConfig.DefaultDirector().construct();
     private Boolean error = false;
 
     private final Map<String, Node> classMap = new HashMap<>();
@@ -68,6 +68,11 @@ public class ComplexityTranslator implements Translator {
     @Override
     public ClassDiagramConfig getConfig() {
         return config;
+    }
+
+    @Override
+    public void setConfig(ClassDiagramConfig cfg) {
+        this.config = cfg;
     }
 
     public JList<String> getClassJList() {

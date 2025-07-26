@@ -108,7 +108,8 @@ public class MainFrame extends JFrame {
             bottomPanel.add(jScrollPane);
             try {
                 UmlTranslator umlTranslator = new UmlTranslator(outputArea, contentPanel::updateUI);
-                UmlTranslator.config = new ClassDiagramConfig.Builder()
+                umlTranslator.setConfig(
+                    new ClassDiagramConfig.Builder()
                         .withVisitor(new ClassVisitor(umlTranslator))
                         .withVisitor(new InterfaceVisitor(umlTranslator))
                         .withVisitor(new EnumVisitor(umlTranslator))
@@ -116,7 +117,8 @@ public class MainFrame extends JFrame {
                         .setShowMethods(true)
                         .setShowAttributes(true)
                         .setShowColoredAccessSpecifiers(false)
-                        .build();
+                        .build()
+                );
 
                 FileHandler handler = new FileHandler(umlTranslator);
 
@@ -151,18 +153,20 @@ public class MainFrame extends JFrame {
         backgroundExecutor.submit(() -> {
             processInit();
             try {
-                ComplexityTranslator umlTranslator = new ComplexityTranslator();
-                ComplexityTranslator.config = new ClassDiagramConfig.Builder()
-                        .withVisitor(new ClassVisitor(umlTranslator))
-                        .withVisitor(new InterfaceVisitor(umlTranslator))
-                        .withVisitor(new EnumVisitor(umlTranslator))
-                        .withVisitor(new RecordVisitor(umlTranslator))
+                ComplexityTranslator complexityTranslator = new ComplexityTranslator();
+                complexityTranslator.setConfig(
+                    new ClassDiagramConfig.Builder()
+                        .withVisitor(new ClassVisitor(complexityTranslator))
+                        .withVisitor(new InterfaceVisitor(complexityTranslator))
+                        .withVisitor(new EnumVisitor(complexityTranslator))
+                        .withVisitor(new RecordVisitor(complexityTranslator))
                         .setShowMethods(true)
                         .setShowAttributes(true)
                         .setShowColoredAccessSpecifiers(false)
-                        .build();
+                        .build()
+                );
 
-                FileHandler handler = new FileHandler(umlTranslator);
+                FileHandler handler = new FileHandler(complexityTranslator);
 
                 if (selectedDirectory != null && selectedDirectory.exists()) {
                     new DirectoryExplorer(handler).explore(selectedDirectory);
@@ -173,7 +177,7 @@ public class MainFrame extends JFrame {
                     return;
                 }
 
-                JScrollPane jscroll = getJScrollPane(umlTranslator);
+                JScrollPane jscroll = getJScrollPane(complexityTranslator);
                 bottomPanel.add(jscroll);
                 toRemove = jscroll;
                 contentPanel.updateUI();

@@ -19,7 +19,9 @@ public interface Translator {
 
     void addNode(Node node);
     void setError(Boolean b);
+
     ClassDiagramConfig getConfig();
+    void setConfig(ClassDiagramConfig cfg);
 
     default void translateFile(File f) throws FileNotFoundException {
         ParserConfiguration config = new ParserConfiguration()
