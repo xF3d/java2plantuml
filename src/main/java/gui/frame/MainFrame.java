@@ -83,6 +83,7 @@ public class MainFrame extends JFrame {
         if (result != JFileChooser.APPROVE_OPTION) {
             return;
         }
+        //TODO: make button syncronized on a lock
 
         selectedDirectory = chooser.getSelectedFile();
         umlButton.setEnabled(true);
@@ -154,6 +155,7 @@ public class MainFrame extends JFrame {
 
         new Thread(() -> {
             try {
+                ComplexityUtils.initialize(selectedDirectory);
                 ComplexityTranslator umlTranslator = new ComplexityTranslator();
                 ComplexityTranslator.config = new ClassDiagramConfig.Builder()
                         .withVisitor(new ClassVisitor(umlTranslator))
@@ -176,8 +178,6 @@ public class MainFrame extends JFrame {
                     return;
                 }
 
-
-                ComplexityUtils.initialize(selectedDirectory);
                 JScrollPane jscroll = getJScrollPane(umlTranslator);
                 bottomPanel.add(jscroll);
                 toRemove = jscroll;

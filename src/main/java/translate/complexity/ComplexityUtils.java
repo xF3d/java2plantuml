@@ -10,12 +10,14 @@ import com.github.javaparser.symbolsolver.JavaSymbolSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.CombinedTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.JavaParserTypeSolver;
 import com.github.javaparser.symbolsolver.resolution.typesolvers.ReflectionTypeSolver;
+import lombok.Getter;
 
 import java.io.File;
 import java.util.List;
 import java.util.Stack;
 
 public class ComplexityUtils {
+    @Getter
     private static SymbolResolver resolver;
 
     public static void initialize(File projectDirectory) {
@@ -36,6 +38,7 @@ public class ComplexityUtils {
     private static void addJavaParserTypeSolvers(File projectDirectory, CombinedTypeSolver typeSolver) {
         File[] files = projectDirectory.listFiles();
         if (files == null) {
+            System.out.println("Adding source root: " + projectDirectory.getAbsolutePath());
             typeSolver.add(
                     new JavaParserTypeSolver(
                             sourceOf(projectDirectory)
@@ -52,6 +55,7 @@ public class ComplexityUtils {
 
             File srcMainJava = sourceOf(sub);
             if (srcMainJava.exists() && srcMainJava.isDirectory()) {
+                System.out.println("Adding source root: " + srcMainJava.getAbsolutePath());
                 typeSolver.add(new JavaParserTypeSolver(srcMainJava));
                 continue;
             }
@@ -65,6 +69,10 @@ public class ComplexityUtils {
 
     public static ResolvedReferenceTypeDeclaration resolve(Node node) {
         return resolver.resolveDeclaration(node, ResolvedReferenceTypeDeclaration.class);
+    }
+
+    public static <T> T resolve(Node node, Class<T> clazz) {
+        return resolver.resolveDeclaration(node, clazz);
     }
 
     public static File sourceOf(File file) {

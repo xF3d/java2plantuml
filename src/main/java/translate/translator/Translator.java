@@ -4,10 +4,12 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Problem;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import translate.ClassDiagramConfig;
+import translate.complexity.ComplexityUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -20,8 +22,12 @@ public interface Translator {
     ClassDiagramConfig getConfig();
 
     default void translateFile(File f) throws FileNotFoundException {
-        JavaParser parser = new JavaParser();
-        parser.getParserConfiguration().setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17);
+        ParserConfiguration config = new ParserConfiguration()
+                .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17)
+                .setSymbolResolver(ComplexityUtils.getResolver());
+
+        JavaParser parser = new JavaParser(config);
+
         File file = f.getAbsoluteFile();
         try {
             ParseResult<CompilationUnit> result = parser.parse(file);
