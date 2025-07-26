@@ -3,11 +3,10 @@ package translate.translator;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
-import translate.ClassDiagramConfig;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.complexity.clazz.CBOEvaluator;
 import translate.complexity.clazz.DITEvaluator;
+import translate.complexity.clazz.LOCMNEvaluator;
 import translate.complexity.clazz.NOCEvaluator;
 import translate.complexity.clazz.RFCEvaluator;
 import translate.complexity.clazz.WMCBaseEvaluator;
@@ -28,7 +27,8 @@ public class ComplexityTranslator implements Translator {
             new NOCEvaluator(),
             new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build()),
             //new CBOEvaluator(),
-            new RFCEvaluator()
+            new RFCEvaluator(),
+            new LOCMNEvaluator()
     };
 
     @Override
