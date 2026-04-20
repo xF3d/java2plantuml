@@ -1,5 +1,6 @@
 package gui.frame;
 
+import net.sourceforge.plantuml.SourceStringReader;
 import source.DirectoryExplorer;
 import source.FileHandler;
 import translate.ClassDiagramConfig;
@@ -19,6 +20,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.ExecutorService;
@@ -140,6 +142,8 @@ public class MainFrame extends JFrame {
 
                 outputArea.append("\nUML diagram saved to output.puml\n");
 
+                new PlantUMLFrame(plantUmlOutput);
+
             } catch (Exception ex) {
                 outputArea.append("An error occurred: " + ex.getMessage() + "\n");
                 ex.printStackTrace();
@@ -212,9 +216,7 @@ public class MainFrame extends JFrame {
                 }
 
                 String selectedItem = complexityList.getModel().getElementAt(index);
-                FrameManager.addFrame(
-                    new ClassFrame(selectedItem, umlTranslator)
-                );
+                new ClassFrame(selectedItem, umlTranslator);
             }
         });
 

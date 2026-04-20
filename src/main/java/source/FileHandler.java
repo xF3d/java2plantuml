@@ -22,8 +22,5 @@ public class FileHandler {
         } catch (Exception e) {
             translator.setError(true);
         }
-
     }
-
-
 }

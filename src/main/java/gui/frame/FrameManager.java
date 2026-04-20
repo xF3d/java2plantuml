@@ -5,6 +5,9 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles secondary JFrames
+ */
 public class FrameManager {
     private static final List<JFrame> frames = new ArrayList<>();
 

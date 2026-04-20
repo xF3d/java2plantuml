@@ -24,5 +24,7 @@ public class ClassFrame extends JFrame {
         super.getContentPane().add(gridInfo);
         super.getContentPane().add(methodScroll);
         super.setVisible(true);
+
+        FrameManager.addFrame(this);
     }
 }
