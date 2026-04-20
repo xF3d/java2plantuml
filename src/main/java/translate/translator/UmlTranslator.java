@@ -86,7 +86,7 @@ public class UmlTranslator implements Translator {
         StringBuilder builder = new StringBuilder();
         for (var entry : map.entrySet()) {
             String packageName = entry.getKey();
-            if (toString().isEmpty()) {
+            if (packageName.isEmpty()) {
                 entry.getValue().forEach(builder::append);
                 continue;
             }
