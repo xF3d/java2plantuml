@@ -10,6 +10,7 @@ import translate.complexity.clazz.LCOMNEvaluator;
 import translate.complexity.clazz.NOCEvaluator;
 import translate.complexity.clazz.RFCEvaluator;
 import translate.complexity.clazz.WMCBaseEvaluator;
+import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.MemberFormatter;
 
 import javax.swing.*;
@@ -22,13 +23,17 @@ public class ComplexityTranslator implements Translator {
     private final Map<String, Node> classMap = new HashMap<>();
     private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
 
-    private static final ComplexityEvaluator.Clazz[] evaluators = {
+    private static final ComplexityEvaluator.Clazz[] classEvaluators = {
             new DITEvaluator(),
             new NOCEvaluator(),
             new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build()),
             //new CBOEvaluator(),
             new RFCEvaluator(),
             new LCOMNEvaluator()
+    };
+
+    private static final ComplexityEvaluator.Method[] methodEvaluators = {
+            new CyclomaticEvaluator()
     };
 
     @Override
@@ -57,9 +62,21 @@ public class ComplexityTranslator implements Translator {
     }
 
     public ComplexityMetricResult[] evaluateClass(String fullClassName) {
-        ComplexityMetricResult[] result = new ComplexityMetricResult[evaluators.length];
-        for (int i = 0; i < evaluators.length; i++) {
-            result[i] = evaluators[i].calculate(classMap.values(), classMap.get(fullClassName));
+        ComplexityMetricResult[] result = new ComplexityMetricResult[classEvaluators.length];
+        Node classNode = classMap.get(fullClassName);
+        for (int i = 0; i < classEvaluators.length; i++) {
+            result[i] = classEvaluators[i].calculate(classMap.values(), classNode);
+        }
+
+        return result;
+    }
+
+    public ComplexityMetricResult[] evaluateMethod(String fullClassName, String method) {
+        ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
+        Node classNode = classMap.get(fullClassName);
+        MethodDeclaration methodDeclaration = methodMap.get(fullClassName).get(method);
+        for (int i = 0; i < methodEvaluators.length; i++) {
+            result[i] = methodEvaluators[i].calculate(classNode, methodDeclaration);
         }
 
         return result;
