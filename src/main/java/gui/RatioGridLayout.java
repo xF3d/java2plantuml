@@ -13,12 +13,18 @@ public class RatioGridLayout implements LayoutManager2 {
     public static class Ratio {
         private int col, row;
 
-        public long getCols(int size) {
-            return Math.round(((double) col / (double) row) * size);
+        public int getCols(int size) {
+            double aspect = (double) col / (double) row;
+            return Math.toIntExact(estimateDimension(aspect, size));
         }
 
-        public long getRows(int size) {
-            return Math.round(((double) row / (double) col) * size);
+        public int getRows(int size) {
+            double aspect = (double) row / (double) col;
+            return Math.toIntExact(estimateDimension(aspect, size));
+        }
+
+        private long estimateDimension(double aspect, int size) {
+            return Math.max(1, Math.round(Math.ceil(Math.sqrt(size * aspect))));
         }
     }
 
@@ -65,8 +71,8 @@ public class RatioGridLayout implements LayoutManager2 {
             int count = parent.getComponentCount();
             if (count == 0) return new Dimension(0, 0);
 
-            int rows = (int) ratio.getRows(count);
-            int cols = (int) ratio.getCols(count);
+            int rows = ratio.getRows(count);
+            int cols = ratio.getCols(count);
 
             Dimension preferedDimension = preferredDimension(parent);
 
@@ -88,8 +94,8 @@ public class RatioGridLayout implements LayoutManager2 {
             if (count == 0) return;
 
             Insets insets = parent.getInsets(); //note: insets are unusable space regarding borders
-            int rows = (int) ratio.getRows(count);
-            int cols = (int) ratio.getCols(count);
+            int rows = ratio.getRows(count);
+            int cols = ratio.getCols(count);
 
             int totalWidth = parent.getWidth() - insets.left - insets.right;
             int totalHeight = parent.getHeight() - insets.top - insets.bottom;
