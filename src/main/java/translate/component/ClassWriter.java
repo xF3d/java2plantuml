@@ -3,7 +3,9 @@ package translate.component;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
-public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclaration> {
+import java.util.regex.Pattern;
+
+public class    ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclaration> {
     public ClassWriter() {
         super(ClassOrInterfaceDeclaration.class);
     }
@@ -18,10 +20,17 @@ public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclara
     @Override
     public UmlEntry writeComponentUML(ClassOrInterfaceDeclaration element) {
         StringBuilder classDefinitionBuilder = new StringBuilder();
-        if (element.isAbstract()) {
-            classDefinitionBuilder.append("abstract ");
+
+        if (isExceptionClass(element)) {
+            classDefinitionBuilder.append("exception ");
+        } else {
+            if (element.isAbstract()) {
+                classDefinitionBuilder.append("abstract ");
+            }
+
+            classDefinitionBuilder.append("class ");
         }
-        classDefinitionBuilder.append("class ");
+
         classDefinitionBuilder.append(MemberFormatter.fullSimpleName(element));
         classDefinitionBuilder.append("{");
         classDefinitionBuilder.append("\n");
@@ -35,5 +44,21 @@ public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclara
             MemberFormatter.nodeWithExtends(element);
 
         return new UmlEntry(classDefinitionBuilder.toString(), associations);
+    }
+
+
+    private static final Pattern EXCEPTION_PATTERN = Pattern.compile(Pattern.quote("exception"), Pattern.CASE_INSENSITIVE);
+    private static final Pattern THROWABLE_PATTERN = Pattern.compile(Pattern.quote("throwable"), Pattern.CASE_INSENSITIVE);
+
+    private boolean isExceptionClass(ClassOrInterfaceDeclaration element) {
+        if (EXCEPTION_PATTERN.matcher(element.getNameAsString()).find()) return true;
+        if (THROWABLE_PATTERN.matcher(element.getNameAsString()).find()) return true;
+
+        for (var extended : element.getExtendedTypes()) {
+            if (EXCEPTION_PATTERN.matcher(extended.getNameAsString()).find()) return true;
+            if (THROWABLE_PATTERN.matcher(extended.getNameAsString()).find()) return true;
+        }
+
+        return false;
     }
 }
