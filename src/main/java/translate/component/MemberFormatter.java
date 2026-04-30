@@ -89,7 +89,7 @@ public class MemberFormatter {
 
         for (ClassOrInterfaceType e : ctor.getImplementedTypes()) {
             builder.append(MemberFormatter.fullSimpleName(ctor));
-            builder.append(" --|> ");
+            builder.append(" ..|> ");
             builder.append(MemberFormatter.fullSimpleName(e));
             builder.append("\n");
         }
