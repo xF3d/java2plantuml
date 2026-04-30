@@ -10,9 +10,8 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
     @Override
     public UmlEntry writeComponentUML(RecordDeclaration element) {
         StringBuilder builder = new StringBuilder();
-        builder.append("class ");
+        builder.append("record ");
         builder.append(MemberFormatter.fullSimpleName(element));
-        builder.append("<<record>>");
         builder.append("{");
         builder.append("\n");
         for (var parameter : element.getParameters()) {
