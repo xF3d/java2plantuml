@@ -13,6 +13,7 @@ import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -72,10 +73,14 @@ public class UmlTranslator implements Translator {
 
         writeAssociations(sb);
 
+        Set<String> associations = new HashSet<>();
         for (var writer : componentTranslators) {
-            Map<String, List<String>> map = writer.writeUML();
-            sb.append(mapWriter(map));
+            var result = writer.writeUML();
+            sb.append(mapWriter(result.packageMap()));
+            associations.addAll(result.associations());
         }
+
+        associations.forEach(sb::append);
 
         sb.append("@enduml");
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 public abstract class SetTranslatingComponent<T extends Node> {
@@ -43,8 +42,9 @@ public abstract class SetTranslatingComponent<T extends Node> {
         return type;
     }
 
-    public Map<String, List<String>> writeUML() {
-        HashMap<String, List<String>> map = new HashMap<>();
+    public UmlPackageEntry writeUML() {
+        ArrayList<String> associations = new ArrayList<>();
+        HashMap<String, List<String>> packageMap = new HashMap<>();
         for (var element : set) {
             String packageName = element.findCompilationUnit()
                     .flatMap(CompilationUnit::getPackageDeclaration)
@@ -52,16 +52,17 @@ public abstract class SetTranslatingComponent<T extends Node> {
                     .map(Name::asString)
                     .orElse("");
 
-            String clazz = writeComponentUML(element);
-            map.computeIfAbsent(packageName, (key) -> new ArrayList<>());
-            map.computeIfPresent(packageName, (k, v) -> {
-                v.add(clazz);
+            var entry = writeComponentUML(element);
+            packageMap.computeIfAbsent(packageName, (key) -> new ArrayList<>());
+            packageMap.computeIfPresent(packageName, (k, v) -> {
+                v.add(entry.classDefinition());
                 return v;
             });
+            associations.add(entry.associations());
         }
 
-        return map;
+        return new UmlPackageEntry(packageMap, associations);
     }
 
-    public abstract String writeComponentUML(T element);
+    public abstract UmlEntry writeComponentUML(T element);
 }

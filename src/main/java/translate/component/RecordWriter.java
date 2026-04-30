@@ -8,7 +8,7 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
     }
 
     @Override
-    public String writeComponentUML(RecordDeclaration element) {
+    public UmlEntry writeComponentUML(RecordDeclaration element) {
         StringBuilder builder = new StringBuilder();
         builder.append("class ");
         builder.append(MemberFormatter.fullSimpleName(element));
@@ -26,9 +26,6 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
 
         builder.append("}\n");
 
-        //implemented interfaces
-        builder.append(MemberFormatter.nodeWithImplements(element));
-
-        return builder.toString();
+        return new UmlEntry(builder.toString(), MemberFormatter.nodeWithImplements(element));
     }
 }

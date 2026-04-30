@@ -16,7 +16,7 @@ public class InterfaceWriter extends SetTranslatingComponent<ClassOrInterfaceDec
     }
 
     @Override
-    public String writeComponentUML(ClassOrInterfaceDeclaration element) {
+    public UmlEntry writeComponentUML(ClassOrInterfaceDeclaration element) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("interface ");
@@ -29,9 +29,6 @@ public class InterfaceWriter extends SetTranslatingComponent<ClassOrInterfaceDec
 
         builder.append("}\n");
 
-        builder.append(MemberFormatter.nodeWithImplements(element));
-        builder.append(MemberFormatter.nodeWithExtends(element));
-
-        return builder.toString();
+        return new UmlEntry(builder.toString(), MemberFormatter.nodeWithExtends(element));
     }
 }
