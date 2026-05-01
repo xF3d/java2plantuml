@@ -4,12 +4,10 @@ import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Problem;
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
-import translate.ClassDiagramConfig;
-import translate.complexity.ComplexityUtils;
+import translate.ResolverUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -24,7 +22,7 @@ public interface Translator {
     default void translateFile(File f) throws FileNotFoundException {
         ParserConfiguration config = new ParserConfiguration()
                 .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17)
-                .setSymbolResolver(ComplexityUtils.getResolver());
+                .setSymbolResolver(ResolverUtils.getResolver());
 
         JavaParser parser = new JavaParser(config);
 

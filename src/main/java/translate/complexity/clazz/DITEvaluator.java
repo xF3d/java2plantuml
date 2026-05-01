@@ -5,10 +5,11 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedClassDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.complexity.ComplexityUtils;
+import translate.ResolverUtils;
 
 import java.util.Collection;
 
@@ -32,7 +33,7 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
         int depth = 0;
         try {
             ClassOrInterfaceDeclaration decl = (ClassOrInterfaceDeclaration) node;
-            ResolvedClassDeclaration type = (ResolvedClassDeclaration) ComplexityUtils.resolve(decl);
+            ResolvedClassDeclaration type = (ResolvedClassDeclaration) ResolverUtils.resolve(decl, ResolvedReferenceTypeDeclaration.class);
 
             while (type.getSuperClass().isPresent()) {
                 depth++;

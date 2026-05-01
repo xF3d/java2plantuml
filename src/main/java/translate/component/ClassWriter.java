@@ -5,7 +5,7 @@ import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
 import java.util.regex.Pattern;
 
-public class    ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclaration> {
+public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclaration> {
     public ClassWriter() {
         super(ClassOrInterfaceDeclaration.class);
     }

@@ -1,4 +1,4 @@
-package translate.complexity;
+package translate;
 
 
 import com.github.javaparser.ParserConfiguration;
@@ -16,7 +16,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Stack;
 
-public class ComplexityUtils {
+public class ResolverUtils {
     @Getter
     private static SymbolResolver resolver;
 
@@ -36,14 +36,15 @@ public class ComplexityUtils {
     }
 
     private static void addJavaParserTypeSolvers(File projectDirectory, CombinedTypeSolver typeSolver) {
+        System.out.println("Adding source root: " + projectDirectory.getAbsolutePath());
+        typeSolver.add(
+            new JavaParserTypeSolver(
+                sourceOf(projectDirectory)
+            )
+        );
+
         File[] files = projectDirectory.listFiles();
         if (files == null) {
-            System.out.println("Adding source root: " + projectDirectory.getAbsolutePath());
-            typeSolver.add(
-                    new JavaParserTypeSolver(
-                            sourceOf(projectDirectory)
-                    )
-            );
             return;
         }
 
@@ -65,10 +66,6 @@ public class ComplexityUtils {
                 fileList.addAll(List.of(subFiles));
             }
         }
-    }
-
-    public static ResolvedReferenceTypeDeclaration resolve(Node node) {
-        return resolver.resolveDeclaration(node, ResolvedReferenceTypeDeclaration.class);
     }
 
     public static <T> T resolve(Node node, Class<T> clazz) {
