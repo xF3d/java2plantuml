@@ -184,9 +184,10 @@ public class UmlTranslator implements Translator {
         boolean hasGetter = hasGetter(members, fieldTypeString, fieldName);
         boolean hasConstructor = hasConstructor(members, fieldTypeString, fieldName);
 
-        boolean isComposition = isComposition(field, hasGetter, hasSetter);
+        boolean isComposition = isComposition(field, hasGetter, hasSetter, hasConstructor);
         boolean isAggregation = isAggregation(field, hasGetter, hasSetter, hasConstructor);
 
+        // no conflicts yet but better safe than sorry in case I add more heuristics
         if (isAggregation && isComposition) {
             return "--";
         } else if (isAggregation) {
@@ -198,26 +199,19 @@ public class UmlTranslator implements Translator {
         return "--";
     }
 
-    private boolean isComposition(FieldDeclaration field, boolean hasGetter, boolean hasSetter) {
+    private boolean isComposition(FieldDeclaration field, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
         // if public then it can be modified easily
         if (field.isPublic()) return false;
 
-        // there must be no getters
-        if (hasGetter) return false;
-
         // there must be no setters
-        if (hasSetter) return false;
+        if (hasSetter || hasConstructor) return false;
 
-        return true;
+        // there must be no getters
+        return !hasGetter;
     }
 
 
     private boolean isAggregation(FieldDeclaration field, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
-        // if public then it can be modified easily
-        if (field.isPublic()) return false;
-
-
-        // check passed by constructor || setter & getter
         if (!hasConstructor && !hasSetter) return false;
 
         return hasGetter;
