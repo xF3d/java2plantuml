@@ -19,30 +19,72 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.nodeTypes.NodeWithModifiers;
 import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import com.github.javaparser.ast.nodeTypes.NodeWithType;
+import com.github.javaparser.ast.nodeTypes.NodeWithTypeArguments;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.type.Type;
+import com.github.javaparser.resolution.types.ResolvedType;
+import translate.ResolverUtils;
 import translate.translator.Translator;
 import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public class MemberFormatter {
     public static String fullPackageName(Node node) {
-        String packageName = node.findCompilationUnit()
+        var cu = node.findCompilationUnit();
+
+        String fullSimpleName =  MemberFormatter.fullSimpleName(node);
+        if (node instanceof TypeDeclaration) {
+            String packageName = cu
                 .flatMap(CompilationUnit::getPackageDeclaration)
                 .map(PackageDeclaration::getName)
                 .map(Name::asString)
                 .orElse("");
 
-        if (node instanceof Type)
-            throw new RuntimeException("Doesn't work for TYPE nodes");
+            if (packageName.isEmpty()) return fullSimpleName;
 
-        return packageName + "." + MemberFormatter.fullSimpleName(node);
+            return packageName + "." + fullSimpleName;
+        }
+
+        // no way to check if the import is external... manual package framework or remove this partial fix
+        var fullImportString = cu
+            .map(CompilationUnit::getImports)
+            .stream()
+            .flatMap(Collection::stream)
+            .filter(it -> !it.isAsterisk() && !it.isStatic())
+            .map(it -> it.getName().asString())
+            .filter(fqn -> fqn.endsWith("." + fullSimpleName.replace('$', '.')))
+            .findFirst()
+            .orElse(null);
+
+        if (fullImportString != null) {
+            return fullImportString.replace(fullSimpleName.replace('$', '.'), fullSimpleName);
+        }
+
+        /*
+         * can't fix: symbol resolver dies for classes whose generics are external, so can't use
+         * extern stereotype reliably, maybe I need to implement a manual package resolution framework
+         * to have it be more precise
+         */
+        String simpleName = MemberFormatter.fullSimpleName(node);
+        if (node instanceof Type type) {
+            if (type.isPrimitiveType())
+
+            try {
+                String resolved = ResolverUtils.getResolver().toResolvedType(type, ResolvedType.class).describe();
+                String resolvedFormat = simpleName.replace('$', '.');
+                return resolved.replace(resolvedFormat, simpleName);
+            } catch (Exception e) {
+            }
+        }
+
+        return simpleName;
     }
 
     public static String nodeClassType(Node node) {
@@ -64,20 +106,20 @@ public class MemberFormatter {
     }
 
     // processes potential nested classes names
-    public static String fullSimpleName(Node type) {
-        if (type instanceof ClassOrInterfaceType cit) {
+    public static String fullSimpleName(Node node) {
+        if (node instanceof ClassOrInterfaceType cit) {
             return cit.getNameWithScope().replace('.', '$');
         }
 
         List<String> names = new ArrayList<>();
-        Optional<Node> current = Optional.of(type);
+        Optional<Node> current = Optional.of(node);
 
         while (current.isPresent()) {
-            Node node = current.get();
-            if (node instanceof TypeDeclaration<?> typeDecl) {
+            Node nodeTmp = current.get();
+            if (nodeTmp instanceof TypeDeclaration<?> typeDecl) {
                 names.add(typeDecl.getNameAsString());
             }
-            current = node.getParentNode();
+            current = nodeTmp.getParentNode();
         }
 
         Collections.reverse(names);
@@ -88,9 +130,9 @@ public class MemberFormatter {
         StringBuilder builder = new StringBuilder();
 
         for (ClassOrInterfaceType e : ctor.getImplementedTypes()) {
-            builder.append(MemberFormatter.fullSimpleName(ctor));
+            builder.append(MemberFormatter.fullPackageName(ctor));
             builder.append(" ..|> ");
-            builder.append(MemberFormatter.fullSimpleName(e));
+            builder.append(MemberFormatter.fullPackageName(e));
             builder.append("\n");
         }
 
@@ -101,9 +143,9 @@ public class MemberFormatter {
         StringBuilder builder = new StringBuilder();
 
         for (ClassOrInterfaceType e : ctor.getExtendedTypes()) {
-            builder.append(MemberFormatter.fullSimpleName(ctor));
+            builder.append(MemberFormatter.fullPackageName(ctor));
             builder.append(" --|> ");
-            builder.append(MemberFormatter.fullSimpleName(e));
+            builder.append(MemberFormatter.fullPackageName(e));
             builder.append("\n");
         }
 

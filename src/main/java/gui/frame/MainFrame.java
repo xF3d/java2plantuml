@@ -1,10 +1,9 @@
 package gui.frame;
 
-import net.sourceforge.plantuml.SourceStringReader;
 import source.DirectoryExplorer;
 import source.FileHandler;
 import translate.ClassDiagramConfig;
-import translate.complexity.ComplexityUtils;
+import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
@@ -20,7 +19,6 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.concurrent.ExecutorService;
@@ -196,7 +194,7 @@ public class MainFrame extends JFrame {
     }
 
     private void processInit() {
-        ComplexityUtils.initialize(selectedDirectory);
+        ResolverUtils.initialize(selectedDirectory);
         if (toRemove != null) {
             bottomPanel.remove(toRemove);
         }
