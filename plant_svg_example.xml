@@ -1,0 +1,1631 @@
+<?plantuml 1.2026.1?>
+<svg xmlns="http://www.w3.org/2000/svg" contentStyleType="text/css"
+     data-diagram-type="CLASS" height="1188px" preserveAspectRatio="none"
+     style="width:15401px;height:1188px;background:#FFFFFF;" version="1.1" viewBox="0 0 15401 1188" width="15401px"
+     zoomAndPan="magnify">
+    <defs/>
+    <g><!--cluster translate-->
+        <g class="cluster" data-qualified-name="translate" data-source-line="6" id="ent0005">
+            <path d="M3200.9847,6 L3260.3431,6 A3.75,3.75 0 0 1 3262.8431,8.5 L3269.8431,29.6094 L13130.9847,29.6094 A2.5,2.5 0 0 1 13133.4847,32.1094 L13133.4847,870 A2.5,2.5 0 0 1 13130.9847,872.5 L3200.9847,872.5 A2.5,2.5 0 0 1 3198.4847,870 L3198.4847,8.5 A2.5,2.5 0 0 1 3200.9847,6"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="3198.4847" x2="3269.8431" y1="29.6094" y2="29.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="58.3584" x="3202.4847" y="22.5332">translate
+            </text>
+        </g><!--cluster complexity-->
+        <g class="cluster" data-qualified-name="translate.complexity" data-source-line="6" id="ent0006">
+            <path d="M6891.9847,138 L6966.1224,138 A3.75,3.75 0 0 1 6968.6224,140.5 L6975.6224,161.6094 L11466.9847,161.6094 A2.5,2.5 0 0 1 11469.4847,164.1094 L11469.4847,793.5 A2.5,2.5 0 0 1 11466.9847,796 L6891.9847,796 A2.5,2.5 0 0 1 6889.4847,793.5 L6889.4847,140.5 A2.5,2.5 0 0 1 6891.9847,138"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="6889.4847" x2="6975.6224" y1="161.6094" y2="161.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="73.1377" x="6893.4847" y="154.5332">complexity
+            </text>
+        </g><!--cluster method-->
+        <g class="cluster" data-qualified-name="translate.complexity.method" data-source-line="5" id="ent0003">
+            <path d="M10911.9847,191 L10963.5365,191 A3.75,3.75 0 0 1 10966.0365,193.5 L10973.0365,214.6094 L11442.9847,214.6094 A2.5,2.5 0 0 1 11445.4847,217.1094 L11445.4847,358.5 A2.5,2.5 0 0 1 11442.9847,361 L10911.9847,361 A2.5,2.5 0 0 1 10909.4847,358.5 L10909.4847,193.5 A2.5,2.5 0 0 1 10911.9847,191"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="10909.4847" x2="10973.0365" y1="214.6094" y2="214.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="50.5518" x="10913.4847" y="207.5332">method
+            </text>
+        </g><!--cluster clazz-->
+        <g class="cluster" data-qualified-name="translate.complexity.clazz" data-source-line="35" id="ent0012">
+            <path d="M7300.9847,182 L7335.4467,182 A3.75,3.75 0 0 1 7337.9467,184.5 L7344.9467,205.6094 L10882.9847,205.6094 A2.5,2.5 0 0 1 10885.4847,208.1094 L10885.4847,367.5 A2.5,2.5 0 0 1 10882.9847,370 L7300.9847,370 A2.5,2.5 0 0 1 7298.4847,367.5 L7298.4847,184.5 A2.5,2.5 0 0 1 7300.9847,182"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="7298.4847" x2="7344.9467" y1="205.6094" y2="205.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="33.4619" x="7302.4847" y="198.5332">clazz
+            </text>
+        </g><!--cluster component-->
+        <g class="cluster" data-qualified-name="translate.component" data-source-line="116" id="ent0027">
+            <path d="M4431.9847,111.5 L4508.4262,111.5 A3.75,3.75 0 0 1 4510.9262,114 L4517.9262,135.1094 L6862.9847,135.1094 A2.5,2.5 0 0 1 6865.4847,137.6094 L6865.4847,846 A2.5,2.5 0 0 1 6862.9847,848.5 L4431.9847,848.5 A2.5,2.5 0 0 1 4429.4847,846 L4429.4847,114 A2.5,2.5 0 0 1 4431.9847,111.5"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="4429.4847" x2="4517.9262" y1="135.1094" y2="135.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="75.4414" x="4433.4847" y="128.0332">component
+            </text>
+        </g><!--cluster translator-->
+        <g class="cluster" data-qualified-name="translate.translator" data-source-line="237" id="ent0044">
+            <path d="M11495.9847,50 L11561.557,50 A3.75,3.75 0 0 1 11564.057,52.5 L11571.057,73.6094 L13106.9847,73.6094 A2.5,2.5 0 0 1 13109.4847,76.1094 L13109.4847,811 A2.5,2.5 0 0 1 13106.9847,813.5 L11495.9847,813.5 A2.5,2.5 0 0 1 11493.4847,811 L11493.4847,52.5 A2.5,2.5 0 0 1 11495.9847,50"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="11493.4847" x2="11571.057" y1="73.6094" y2="73.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="64.5723" x="11497.4847" y="66.5332">translator
+            </text>
+        </g><!--cluster visitors-->
+        <g class="cluster" data-qualified-name="visitors" data-source-line="13" id="ent0007">
+            <path d="M13772.9847,199.5 L13823.7846,199.5 A3.75,3.75 0 0 1 13826.2846,202 L13833.2846,223.1094 L15192.9847,223.1094 A2.5,2.5 0 0 1 15195.4847,225.6094 L15195.4847,350 A2.5,2.5 0 0 1 15192.9847,352.5 L13772.9847,352.5 A2.5,2.5 0 0 1 13770.4847,350 L13770.4847,202 A2.5,2.5 0 0 1 13772.9847,199.5"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="13770.4847" x2="13833.2846" y1="223.1094" y2="223.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="49.7998" x="13774.4847" y="216.0332">visitors
+            </text>
+        </g><!--cluster gui-->
+        <g class="cluster" data-qualified-name="gui" data-source-line="76" id="ent0022">
+            <path d="M50.9847,502 L72.9779,502 A3.75,3.75 0 0 1 75.4779,504.5 L82.4779,525.6094 L3171.9847,525.6094 A2.5,2.5 0 0 1 3174.4847,528.1094 L3174.4847,1086.5 A2.5,2.5 0 0 1 3171.9847,1089 L50.9847,1089 A2.5,2.5 0 0 1 48.4847,1086.5 L48.4847,504.5 A2.5,2.5 0 0 1 50.9847,502"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="48.4847" x2="82.4779" y1="525.6094" y2="525.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="20.9932" x="52.4847" y="518.5332">gui
+            </text>
+        </g><!--cluster frame-->
+        <g class="cluster" data-qualified-name="gui.frame" data-source-line="75" id="ent0020">
+            <path d="M1054.9847,546 L1094.1156,546 A3.75,3.75 0 0 1 1096.6156,548.5 L1103.6156,569.6094 L3147.9847,569.6094 A2.5,2.5 0 0 1 3150.4847,572.1094 L3150.4847,925.5 A2.5,2.5 0 0 1 3147.9847,928 L1054.9847,928 A2.5,2.5 0 0 1 1052.4847,925.5 L1052.4847,548.5 A2.5,2.5 0 0 1 1054.9847,546"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="1052.4847" x2="1103.6156" y1="569.6094" y2="569.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="38.1309" x="1056.4847" y="562.5332">frame
+            </text>
+        </g><!--cluster source-->
+        <g class="cluster" data-qualified-name="source" data-source-line="194" id="ent0037">
+            <path d="M13159.9847,191 L13206.8949,191 A3.75,3.75 0 0 1 13209.3949,193.5 L13216.3949,214.6094 L13743.9847,214.6094 A2.5,2.5 0 0 1 13746.4847,217.1094 L13746.4847,358.5 A2.5,2.5 0 0 1 13743.9847,361 L13159.9847,361 A2.5,2.5 0 0 1 13157.4847,358.5 L13157.4847,193.5 A2.5,2.5 0 0 1 13159.9847,191"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="13157.4847" x2="13216.3949" y1="214.6094" y2="214.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="45.9102" x="13161.4847" y="207.5332">source
+            </text>
+        </g><!--cluster com-->
+        <g class="cluster" data-qualified-name="com" data-source-line="314" id="ent0057">
+            <path d="M14302.9847,511 L14332.7709,511 A3.75,3.75 0 0 1 14335.2709,513.5 L14342.2709,534.6094 L14669.9847,534.6094 A2.5,2.5 0 0 1 14672.4847,537.1094 L14672.4847,880.5 A2.5,2.5 0 0 1 14669.9847,883 L14302.9847,883 A2.5,2.5 0 0 1 14300.4847,880.5 L14300.4847,513.5 A2.5,2.5 0 0 1 14302.9847,511"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="14300.4847" x2="14342.2709" y1="534.6094" y2="534.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="28.7861" x="14304.4847" y="527.5332">com
+            </text>
+        </g><!--cluster github-->
+        <g class="cluster" data-qualified-name="com.github" data-source-line="314" id="ent0058">
+            <path d="M14326.9847,555 L14370.7435,555 A3.75,3.75 0 0 1 14373.2435,557.5 L14380.2435,578.6094 L14645.9847,578.6094 A2.5,2.5 0 0 1 14648.4847,581.1094 L14648.4847,856.5 A2.5,2.5 0 0 1 14645.9847,859 L14326.9847,859 A2.5,2.5 0 0 1 14324.4847,856.5 L14324.4847,557.5 A2.5,2.5 0 0 1 14326.9847,555"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="14324.4847" x2="14380.2435" y1="578.6094" y2="578.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="42.7588" x="14328.4847" y="571.5332">github
+            </text>
+        </g><!--cluster javaparser-->
+        <g class="cluster" data-qualified-name="com.github.javaparser" data-source-line="314" id="ent0059">
+            <path d="M14350.9847,599 L14422.0394,599 A3.75,3.75 0 0 1 14424.5394,601.5 L14431.5394,622.6094 L14621.9847,622.6094 A2.5,2.5 0 0 1 14624.4847,625.1094 L14624.4847,832.5 A2.5,2.5 0 0 1 14621.9847,835 L14350.9847,835 A2.5,2.5 0 0 1 14348.4847,832.5 L14348.4847,601.5 A2.5,2.5 0 0 1 14350.9847,599"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="14348.4847" x2="14431.5394" y1="622.6094" y2="622.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="70.0547" x="14352.4847" y="615.5332">javaparser
+            </text>
+        </g><!--cluster ast-->
+        <g class="cluster" data-qualified-name="com.github.javaparser.ast" data-source-line="314" id="ent0060">
+            <path d="M14374.9847,643 L14396.2191,643 A3.75,3.75 0 0 1 14398.7191,645.5 L14405.7191,666.6094 L14597.9847,666.6094 A2.5,2.5 0 0 1 14600.4847,669.1094 L14600.4847,808.5 A2.5,2.5 0 0 1 14597.9847,811 L14374.9847,811 A2.5,2.5 0 0 1 14372.4847,808.5 L14372.4847,645.5 A2.5,2.5 0 0 1 14374.9847,643"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="14372.4847" x2="14405.7191" y1="666.6094" y2="666.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="20.2344" x="14376.4847" y="659.5332">ast
+            </text>
+        </g><!--cluster visitor-->
+        <g class="cluster" data-qualified-name="com.github.javaparser.ast.visitor" data-source-line="314" id="ent0061">
+            <path d="M14398.9847,687 L14441.9984,687 A3.75,3.75 0 0 1 14444.4984,689.5 L14451.4984,710.6094 L14573.9847,710.6094 A2.5,2.5 0 0 1 14576.4847,713.1094 L14576.4847,784.5 A2.5,2.5 0 0 1 14573.9847,787 L14398.9847,787 A2.5,2.5 0 0 1 14396.4847,784.5 L14396.4847,689.5 A2.5,2.5 0 0 1 14398.9847,687"
+                  fill="none" style="stroke:#000000;stroke-width:1.5;"/>
+            <line style="stroke:#000000;stroke-width:1.5;" x1="14396.4847" x2="14451.4984" y1="710.6094" y2="710.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+                  textLength="42.0137" x="14400.4847" y="703.5332">visitor
+            </text>
+        </g><!--class ClassDiagramConfig$DefaultDirector-->
+        <g class="entity" data-qualified-name="translate.ClassDiagramConfig.DefaultDirector" data-source-line="208"
+           id="ent0040">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="261.5303" x="3793.4847" y="253"/>
+            <ellipse cx="3808.4847" cy="269" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M3811.2504,264.875 Q3811.4066,264.6563 3811.5941,264.5469 Q3811.7816,264.4375 3812.0004,264.4375 Q3812.3754,264.4375 3812.6097,264.7031 Q3812.8441,264.9531 3812.8441,265.5625 L3812.8441,267.0156 Q3812.8441,267.625 3812.6097,267.8906 Q3812.3754,268.1563 3812.0004,268.1563 Q3811.6566,268.1563 3811.4535,267.9531 Q3811.2504,267.7656 3811.141,267.25 Q3811.0941,266.8906 3810.9066,266.7031 Q3810.5785,266.3281 3809.9691,266.1094 Q3809.3597,265.8906 3808.7347,265.8906 Q3807.9691,265.8906 3807.3285,266.2188 Q3806.7035,266.5469 3806.2035,267.2969 Q3805.7191,268.0469 3805.7191,269.0781 L3805.7191,270.1719 Q3805.7191,271.4063 3806.6097,272.2344 Q3807.5004,273.0469 3809.0941,273.0469 Q3810.0316,273.0469 3810.6879,272.7969 Q3811.0785,272.6406 3811.5004,272.2031 Q3811.766,271.9375 3811.9066,271.8594 Q3812.0629,271.7813 3812.266,271.7813 Q3812.5941,271.7813 3812.8441,272.0469 Q3813.1097,272.2969 3813.1097,272.6406 Q3813.1097,272.9844 3812.766,273.3906 Q3812.266,273.9688 3811.4691,274.2969 Q3810.391,274.75 3809.0941,274.75 Q3807.5785,274.75 3806.3754,274.125 Q3805.391,273.625 3804.7035,272.5625 Q3804.016,271.4844 3804.016,270.2031 L3804.016,269.0469 Q3804.016,267.7188 3804.6254,266.5781 Q3805.2504,265.4219 3806.3441,264.8125 Q3807.4379,264.1875 3808.6722,264.1875 Q3809.4066,264.1875 3810.0472,264.3594 Q3810.7035,264.5156 3811.2504,264.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="229.5303"
+                  x="3822.4847" y="274.7285">ClassDiagramConfig$DefaultDirector
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3794.4847" x2="4054.015" y1="285" y2="285"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3794.4847" x2="4054.015" y1="293" y2="293"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="214.3477"
+                  x="3799.4847" y="311.5332">+construct() : ClassDiagramConfig
+            </text>
+        </g><!--class ClassDiagramConfig$Builder-->
+        <g class="entity" data-qualified-name="translate.ClassDiagramConfig.Builder" data-source-line="211"
+           id="ent0041">
+            <rect fill="#F1F1F1" height="206.4844" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="543.8633" x="3214.4847" y="183"/>
+            <ellipse cx="3392.2943" cy="199" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M3395.0599,194.875 Q3395.2162,194.6563 3395.4037,194.5469 Q3395.5912,194.4375 3395.8099,194.4375 Q3396.1849,194.4375 3396.4193,194.7031 Q3396.6537,194.9531 3396.6537,195.5625 L3396.6537,197.0156 Q3396.6537,197.625 3396.4193,197.8906 Q3396.1849,198.1563 3395.8099,198.1563 Q3395.4662,198.1563 3395.2631,197.9531 Q3395.0599,197.7656 3394.9506,197.25 Q3394.9037,196.8906 3394.7162,196.7031 Q3394.3881,196.3281 3393.7787,196.1094 Q3393.1693,195.8906 3392.5443,195.8906 Q3391.7787,195.8906 3391.1381,196.2188 Q3390.5131,196.5469 3390.0131,197.2969 Q3389.5287,198.0469 3389.5287,199.0781 L3389.5287,200.1719 Q3389.5287,201.4063 3390.4193,202.2344 Q3391.3099,203.0469 3392.9037,203.0469 Q3393.8412,203.0469 3394.4974,202.7969 Q3394.8881,202.6406 3395.3099,202.2031 Q3395.5756,201.9375 3395.7162,201.8594 Q3395.8724,201.7813 3396.0756,201.7813 Q3396.4037,201.7813 3396.6537,202.0469 Q3396.9193,202.2969 3396.9193,202.6406 Q3396.9193,202.9844 3396.5756,203.3906 Q3396.0756,203.9688 3395.2787,204.2969 Q3394.2006,204.75 3392.9037,204.75 Q3391.3881,204.75 3390.1849,204.125 Q3389.2006,203.625 3388.5131,202.5625 Q3387.8256,201.4844 3387.8256,200.2031 L3387.8256,199.0469 Q3387.8256,197.7188 3388.4349,196.5781 Q3389.0599,195.4219 3390.1537,194.8125 Q3391.2474,194.1875 3392.4818,194.1875 Q3393.2162,194.1875 3393.8568,194.3594 Q3394.5131,194.5156 3395.0599,194.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="179.7441"
+                  x="3412.7943" y="204.7285">ClassDiagramConfig$Builder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3215.4847" x2="3757.348" y1="215" y2="215"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="307.3848"
+                  x="3220.4847" y="233.5332">-visitorAdapters : List&lt;VoidVisitorAdapter&lt;Void&gt;&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152.5371"
+                  x="3220.4847" y="251.1426">-showMethods : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="157.9785"
+                  x="3220.4847" y="268.752">-showAttributes : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="254.4609"
+                  x="3220.4847" y="286.3613">-showColoredAccessSpecifiers : boolean
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3215.4847" x2="3757.348" y1="293.4375" y2="293.4375"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="345.0918"
+                  x="3220.4847" y="311.9707">+withVisitor(visitor : VoidVisitorAdapter&lt;Void&gt;) : Builder
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="328.0156"
+                  x="3220.4847" y="329.5801">+setShowMethods(showMethods : boolean) : Builder
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="338.8984"
+                  x="3220.4847" y="347.1895">+setShowAttributes(showAttributes : boolean) : Builder
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="531.8633"
+                  x="3220.4847" y="364.7988">+setShowColoredAccessSpecifiers(showColoredAccessSpecifiers : boolean) :
+                Builder
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187.127"
+                  x="3220.4847" y="382.4082">+build() : ClassDiagramConfig
+            </text>
+        </g><!--class ClassDiagramConfig-->
+        <g class="entity" data-qualified-name="translate.ClassDiagramConfig" data-source-line="222" id="ent0042">
+            <rect fill="#F1F1F1" height="136.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="319.3848" x="4090.9847" y="218"/>
+            <ellipse cx="4182.2377" cy="234" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M4185.0033,229.875 Q4185.1596,229.6563 4185.3471,229.5469 Q4185.5346,229.4375 4185.7533,229.4375 Q4186.1283,229.4375 4186.3627,229.7031 Q4186.5971,229.9531 4186.5971,230.5625 L4186.5971,232.0156 Q4186.5971,232.625 4186.3627,232.8906 Q4186.1283,233.1563 4185.7533,233.1563 Q4185.4096,233.1563 4185.2064,232.9531 Q4185.0033,232.7656 4184.8939,232.25 Q4184.8471,231.8906 4184.6596,231.7031 Q4184.3314,231.3281 4183.7221,231.1094 Q4183.1127,230.8906 4182.4877,230.8906 Q4181.7221,230.8906 4181.0814,231.2188 Q4180.4564,231.5469 4179.9564,232.2969 Q4179.4721,233.0469 4179.4721,234.0781 L4179.4721,235.1719 Q4179.4721,236.4063 4180.3627,237.2344 Q4181.2533,238.0469 4182.8471,238.0469 Q4183.7846,238.0469 4184.4408,237.7969 Q4184.8314,237.6406 4185.2533,237.2031 Q4185.5189,236.9375 4185.6596,236.8594 Q4185.8158,236.7813 4186.0189,236.7813 Q4186.3471,236.7813 4186.5971,237.0469 Q4186.8627,237.2969 4186.8627,237.6406 Q4186.8627,237.9844 4186.5189,238.3906 Q4186.0189,238.9688 4185.2221,239.2969 Q4184.1439,239.75 4182.8471,239.75 Q4181.3314,239.75 4180.1283,239.125 Q4179.1439,238.625 4178.4564,237.5625 Q4177.7689,236.4844 4177.7689,235.2031 L4177.7689,234.0469 Q4177.7689,232.7188 4178.3783,231.5781 Q4179.0033,230.4219 4180.0971,229.8125 Q4181.1908,229.1875 4182.4252,229.1875 Q4183.1596,229.1875 4183.8002,229.3594 Q4184.4564,229.5156 4185.0033,229.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="128.3789"
+                  x="4202.7377" y="239.7285">ClassDiagramConfig
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="4091.9847" x2="4409.3695" y1="250" y2="250"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="307.3848"
+                  x="4096.9847" y="268.5332">-visitorAdapters : List&lt;VoidVisitorAdapter&lt;Void&gt;&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152.5371"
+                  x="4096.9847" y="286.1426">-showMethods : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="157.9785"
+                  x="4096.9847" y="303.752">-showAttributes : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="254.4609"
+                  x="4096.9847" y="321.3613">-showColoredAccessSpecifiers : boolean
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="4091.9847" x2="4409.3695" y1="328.4375" y2="328.4375"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142.3652"
+                  x="4096.9847" y="346.9707">-ClassDiagramConfig()
+            </text>
+        </g><!--class ResolverUtils-->
+        <g class="entity" data-qualified-name="translate.ResolverUtils" data-source-line="229" id="ent0043">
+            <rect fill="#F1F1F1" height="136.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="587.7773" x="3630.4847" y="679"/>
+            <ellipse cx="3878.8925" cy="695" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M3881.6581,690.875 Q3881.8143,690.6563 3882.0018,690.5469 Q3882.1893,690.4375 3882.4081,690.4375 Q3882.7831,690.4375 3883.0175,690.7031 Q3883.2518,690.9531 3883.2518,691.5625 L3883.2518,693.0156 Q3883.2518,693.625 3883.0175,693.8906 Q3882.7831,694.1563 3882.4081,694.1563 Q3882.0643,694.1563 3881.8612,693.9531 Q3881.6581,693.7656 3881.5487,693.25 Q3881.5018,692.8906 3881.3143,692.7031 Q3880.9862,692.3281 3880.3768,692.1094 Q3879.7675,691.8906 3879.1425,691.8906 Q3878.3768,691.8906 3877.7362,692.2188 Q3877.1112,692.5469 3876.6112,693.2969 Q3876.1268,694.0469 3876.1268,695.0781 L3876.1268,696.1719 Q3876.1268,697.4063 3877.0175,698.2344 Q3877.9081,699.0469 3879.5018,699.0469 Q3880.4393,699.0469 3881.0956,698.7969 Q3881.4862,698.6406 3881.9081,698.2031 Q3882.1737,697.9375 3882.3143,697.8594 Q3882.4706,697.7813 3882.6737,697.7813 Q3883.0018,697.7813 3883.2518,698.0469 Q3883.5175,698.2969 3883.5175,698.6406 Q3883.5175,698.9844 3883.1737,699.3906 Q3882.6737,699.9688 3881.8768,700.2969 Q3880.7987,700.75 3879.5018,700.75 Q3877.9862,700.75 3876.7831,700.125 Q3875.7987,699.625 3875.1112,698.5625 Q3874.4237,697.4844 3874.4237,696.2031 L3874.4237,695.0469 Q3874.4237,693.7188 3875.0331,692.5781 Q3875.6581,691.4219 3876.7518,690.8125 Q3877.8456,690.1875 3879.08,690.1875 Q3879.8143,690.1875 3880.455,690.3594 Q3881.1112,690.5156 3881.6581,690.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.4619"
+                  x="3899.3925" y="700.7285">ResolverUtils
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3631.4847" x2="4217.2621" y1="711" y2="711"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="168.0479" x="3636.4847" y="729.5332">-resolver :
+                SymbolResolver
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3631.4847" x2="4217.2621" y1="736.6094" y2="736.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="236.9063" x="3636.4847" y="755.1426">
+                +initialize(projectDirectory : File) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="575.7773" x="3636.4847" y="772.752">
+                -addJavaParserTypeSolvers(projectDirectory : File, typeSolver : CombinedTypeSolver) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="270.3887" x="3636.4847" y="790.3613">+resolve(node : Node,
+                clazz : Class&lt;T&gt;) : T
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="160.6514" x="3636.4847" y="807.9707">+sourceOf(file : File) :
+                File
+            </text>
+        </g><!--class UmlConfigBuilder-->
+        <g class="entity" data-qualified-name="translate.UmlConfigBuilder" data-source-line="293" id="ent0052">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="199.127" x="3386.9847" y="714"/>
+            <ellipse cx="3428.1731" cy="730" fill="#B4A7E5" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M3429.1262,726.6406 L3429.1262,733.2969 L3430.845,733.2969 Q3431.4543,733.2969 3431.72,733.5313 Q3431.9856,733.7656 3431.9856,734.1563 Q3431.9856,734.5313 3431.72,734.7656 Q3431.4543,735 3430.845,735 L3425.7043,735 Q3425.095,735 3424.8293,734.7656 Q3424.5637,734.5313 3424.5637,734.1406 Q3424.5637,733.7656 3424.8293,733.5313 Q3425.095,733.2969 3425.7043,733.2969 L3427.4231,733.2969 L3427.4231,726.6406 L3425.7043,726.6406 Q3425.095,726.6406 3424.8293,726.4063 Q3424.5637,726.1719 3424.5637,725.7813 Q3424.5637,725.4063 3424.8293,725.1719 Q3425.095,724.9375 3425.7043,724.9375 L3430.845,724.9375 Q3431.4543,724.9375 3431.72,725.1719 Q3431.9856,725.4063 3431.9856,725.7813 Q3431.9856,726.1719 3431.72,726.4063 Q3431.4543,726.6406 3430.845,726.6406 L3429.1262,726.6406 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="108.9307" x="3447.9927" y="735.7285">UmlConfigBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3387.9847" x2="3585.1117" y1="746" y2="746"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3387.9847" x2="3585.1117" y1="754" y2="754"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187.127"
+                  x="3392.9847" y="772.5332">+build() : ClassDiagramConfig
+            </text>
+        </g><!--class ComplexityMetricResult-->
+        <g class="entity" data-qualified-name="translate.complexity.ComplexityMetricResult" data-source-line="68"
+           id="ent0019">
+            <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="179.0342" x="7100.9847" y="227"/>
+            <ellipse cx="7115.9847" cy="243" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M7118.7504,238.875 Q7118.9066,238.6563 7119.0941,238.5469 Q7119.2816,238.4375 7119.5004,238.4375 Q7119.8754,238.4375 7120.1097,238.7031 Q7120.3441,238.9531 7120.3441,239.5625 L7120.3441,241.0156 Q7120.3441,241.625 7120.1097,241.8906 Q7119.8754,242.1563 7119.5004,242.1563 Q7119.1566,242.1563 7118.9535,241.9531 Q7118.7504,241.7656 7118.641,241.25 Q7118.5941,240.8906 7118.4066,240.7031 Q7118.0785,240.3281 7117.4691,240.1094 Q7116.8597,239.8906 7116.2347,239.8906 Q7115.4691,239.8906 7114.8285,240.2188 Q7114.2035,240.5469 7113.7035,241.2969 Q7113.2191,242.0469 7113.2191,243.0781 L7113.2191,244.1719 Q7113.2191,245.4063 7114.1097,246.2344 Q7115.0004,247.0469 7116.5941,247.0469 Q7117.5316,247.0469 7118.1879,246.7969 Q7118.5785,246.6406 7119.0004,246.2031 Q7119.266,245.9375 7119.4066,245.8594 Q7119.5629,245.7813 7119.766,245.7813 Q7120.0941,245.7813 7120.3441,246.0469 Q7120.6097,246.2969 7120.6097,246.6406 Q7120.6097,246.9844 7120.266,247.3906 Q7119.766,247.9688 7118.9691,248.2969 Q7117.891,248.75 7116.5941,248.75 Q7115.0785,248.75 7113.8754,248.125 Q7112.891,247.625 7112.2035,246.5625 Q7111.516,245.4844 7111.516,244.2031 L7111.516,243.0469 Q7111.516,241.7188 7112.1254,240.5781 Q7112.7504,239.4219 7113.8441,238.8125 Q7114.9379,238.1875 7116.1722,238.1875 Q7116.9066,238.1875 7117.5472,238.3594 Q7118.2035,238.5156 7118.7504,238.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="147.0342"
+                  x="7129.9847" y="248.7285">ComplexityMetricResult
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="7101.9847" x2="7279.0189" y1="259" y2="259"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87.9238"
+                  x="7106.9847" y="277.5332">-name : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.8203"
+                  x="7106.9847" y="295.1426">-max : double
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80.9307"
+                  x="7106.9847" y="312.752">-min : double
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91.8408"
+                  x="7106.9847" y="330.3613">-value : double
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="7101.9847" x2="7279.0189" y1="337.4375" y2="337.4375"/>
+        </g><!--class ComplexityEvaluator$Clazz-->
+        <g class="entity" data-qualified-name="translate.complexity.ComplexityEvaluator.Clazz" data-source-line="278"
+           id="ent0048">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="500.25" x="8835.4847" y="714"/>
+            <ellipse cx="8995.7704" cy="730" fill="#B4A7E5" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M8996.7235,726.6406 L8996.7235,733.2969 L8998.4423,733.2969 Q8999.0516,733.2969 8999.3173,733.5313 Q8999.5829,733.7656 8999.5829,734.1563 Q8999.5829,734.5313 8999.3173,734.7656 Q8999.0516,735 8998.4423,735 L8993.3016,735 Q8992.6923,735 8992.4266,734.7656 Q8992.161,734.5313 8992.161,734.1406 Q8992.161,733.7656 8992.4266,733.5313 Q8992.6923,733.2969 8993.3016,733.2969 L8995.0204,733.2969 L8995.0204,726.6406 L8993.3016,726.6406 Q8992.6923,726.6406 8992.4266,726.4063 Q8992.161,726.1719 8992.161,725.7813 Q8992.161,725.4063 8992.4266,725.1719 Q8992.6923,724.9375 8993.3016,724.9375 L8998.4423,724.9375 Q8999.0516,724.9375 8999.3173,725.1719 Q8999.5829,725.4063 8999.5829,725.7813 Q8999.5829,726.1719 8999.3173,726.4063 Q8999.0516,726.6406 8998.4423,726.6406 L8996.7235,726.6406 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="171.1787" x="9016.2704" y="735.7285">ComplexityEvaluator$Clazz
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="8836.4847" x2="9334.7347" y1="746" y2="746"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="8836.4847" x2="9334.7347" y1="754" y2="754"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="488.25"
+                  x="8841.4847" y="772.5332">~calculate(allClazz : Collection&lt;Node&gt;, clazz : Node) :
+                ComplexityMetricResult
+            </text>
+        </g><!--class ComplexityEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.ComplexityEvaluator" data-source-line="281"
+           id="ent0049">
+            <rect fill="#F1F1F1" height="48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="160.3857"
+                  x="6905.4847" y="262"/>
+            <ellipse cx="6920.4847" cy="278" fill="#B4A7E5" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M6921.4379,274.6406 L6921.4379,281.2969 L6923.1566,281.2969 Q6923.766,281.2969 6924.0316,281.5313 Q6924.2972,281.7656 6924.2972,282.1563 Q6924.2972,282.5313 6924.0316,282.7656 Q6923.766,283 6923.1566,283 L6918.016,283 Q6917.4066,283 6917.141,282.7656 Q6916.8754,282.5313 6916.8754,282.1406 Q6916.8754,281.7656 6917.141,281.5313 Q6917.4066,281.2969 6918.016,281.2969 L6919.7347,281.2969 L6919.7347,274.6406 L6918.016,274.6406 Q6917.4066,274.6406 6917.141,274.4063 Q6916.8754,274.1719 6916.8754,273.7813 Q6916.8754,273.4063 6917.141,273.1719 Q6917.4066,272.9375 6918.016,272.9375 L6923.1566,272.9375 Q6923.766,272.9375 6924.0316,273.1719 Q6924.2972,273.4063 6924.2972,273.7813 Q6924.2972,274.1719 6924.0316,274.4063 Q6923.766,274.6406 6923.1566,274.6406 L6921.4379,274.6406 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="128.3857" x="6934.4847" y="283.7285">ComplexityEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6906.4847" x2="7064.8705" y1="294" y2="294"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6906.4847" x2="7064.8705" y1="302" y2="302"/>
+        </g><!--class ComplexityEvaluator$Method-->
+        <g class="entity" data-qualified-name="translate.complexity.ComplexityEvaluator.Method" data-source-line="283"
+           id="ent0050">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="504.1465" x="10925.4847" y="714"/>
+            <ellipse cx="11081.8739" cy="730" fill="#B4A7E5" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M11082.827,726.6406 L11082.827,733.2969 L11084.5458,733.2969 Q11085.1552,733.2969 11085.4208,733.5313 Q11085.6864,733.7656 11085.6864,734.1563 Q11085.6864,734.5313 11085.4208,734.7656 Q11085.1552,735 11084.5458,735 L11079.4052,735 Q11078.7958,735 11078.5302,734.7656 Q11078.2645,734.5313 11078.2645,734.1406 Q11078.2645,733.7656 11078.5302,733.5313 Q11078.7958,733.2969 11079.4052,733.2969 L11081.1239,733.2969 L11081.1239,726.6406 L11079.4052,726.6406 Q11078.7958,726.6406 11078.5302,726.4063 Q11078.2645,726.1719 11078.2645,725.7813 Q11078.2645,725.4063 11078.5302,725.1719 Q11078.7958,724.9375 11079.4052,724.9375 L11084.5458,724.9375 Q11085.1552,724.9375 11085.4208,725.1719 Q11085.6864,725.4063 11085.6864,725.7813 Q11085.6864,726.1719 11085.4208,726.4063 Q11085.1552,726.6406 11084.5458,726.6406 L11082.827,726.6406 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="182.8682" x="11102.3739" y="735.7285">ComplexityEvaluator$Method
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="10926.4847" x2="11428.6312" y1="746" y2="746"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="10926.4847" x2="11428.6312" y1="754" y2="754"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="492.1465"
+                  x="10931.4847" y="772.5332">~calculate(clazz : Node, method : MethodDeclaration) :
+                ComplexityMetricResult
+            </text>
+        </g><!--class CyclomaticEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.method.CyclomaticEvaluator" data-source-line="6"
+           id="ent0004">
+            <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="504.1465" x="10925.4847" y="227"/>
+            <ellipse cx="11109.5082" cy="243" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M11112.2738,238.875 Q11112.4301,238.6563 11112.6176,238.5469 Q11112.8051,238.4375 11113.0238,238.4375 Q11113.3988,238.4375 11113.6332,238.7031 Q11113.8676,238.9531 11113.8676,239.5625 L11113.8676,241.0156 Q11113.8676,241.625 11113.6332,241.8906 Q11113.3988,242.1563 11113.0238,242.1563 Q11112.6801,242.1563 11112.4769,241.9531 Q11112.2738,241.7656 11112.1644,241.25 Q11112.1176,240.8906 11111.9301,240.7031 Q11111.6019,240.3281 11110.9926,240.1094 Q11110.3832,239.8906 11109.7582,239.8906 Q11108.9926,239.8906 11108.3519,240.2188 Q11107.7269,240.5469 11107.2269,241.2969 Q11106.7426,242.0469 11106.7426,243.0781 L11106.7426,244.1719 Q11106.7426,245.4063 11107.6332,246.2344 Q11108.5238,247.0469 11110.1176,247.0469 Q11111.0551,247.0469 11111.7113,246.7969 Q11112.1019,246.6406 11112.5238,246.2031 Q11112.7894,245.9375 11112.9301,245.8594 Q11113.0863,245.7813 11113.2894,245.7813 Q11113.6176,245.7813 11113.8676,246.0469 Q11114.1332,246.2969 11114.1332,246.6406 Q11114.1332,246.9844 11113.7894,247.3906 Q11113.2894,247.9688 11112.4926,248.2969 Q11111.4144,248.75 11110.1176,248.75 Q11108.6019,248.75 11107.3988,248.125 Q11106.4144,247.625 11105.7269,246.5625 Q11105.0394,245.4844 11105.0394,244.2031 L11105.0394,243.0469 Q11105.0394,241.7188 11105.6488,240.5781 Q11106.2738,239.4219 11107.3676,238.8125 Q11108.4613,238.1875 11109.6957,238.1875 Q11110.4301,238.1875 11111.0707,238.3594 Q11111.7269,238.5156 11112.2738,238.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="127.5996"
+                  x="11130.0082" y="248.7285">CyclomaticEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="10926.4847" x2="11428.6312" y1="259" y2="259"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="438.8193" x="10931.4847" y="277.5332">-{final} builder :
+                ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="10926.4847" x2="11428.6312" y1="284.6094" y2="284.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="492.1465"
+                  x="10931.4847" y="303.1426">+calculate(clazz : Node, method : MethodDeclaration) :
+                ComplexityMetricResult
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="258.7129"
+                  x="10931.4847" y="320.752">+processStatement(stmt : Statement) : int
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="270.3887"
+                  x="10931.4847" y="338.3613">~processExpression(expr : Expression) : int
+            </text>
+        </g><!--class NOCEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.clazz.NOCEvaluator" data-source-line="36"
+           id="ent0013">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="500.25" x="9103.4847" y="244.5"/>
+            <ellipse cx="9304.2323" cy="260.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M9306.9979,256.375 Q9307.1542,256.1563 9307.3417,256.0469 Q9307.5292,255.9375 9307.7479,255.9375 Q9308.1229,255.9375 9308.3573,256.2031 Q9308.5917,256.4531 9308.5917,257.0625 L9308.5917,258.5156 Q9308.5917,259.125 9308.3573,259.3906 Q9308.1229,259.6563 9307.7479,259.6563 Q9307.4042,259.6563 9307.2011,259.4531 Q9306.9979,259.2656 9306.8886,258.75 Q9306.8417,258.3906 9306.6542,258.2031 Q9306.3261,257.8281 9305.7167,257.6094 Q9305.1073,257.3906 9304.4823,257.3906 Q9303.7167,257.3906 9303.0761,257.7188 Q9302.4511,258.0469 9301.9511,258.7969 Q9301.4667,259.5469 9301.4667,260.5781 L9301.4667,261.6719 Q9301.4667,262.9063 9302.3573,263.7344 Q9303.2479,264.5469 9304.8417,264.5469 Q9305.7792,264.5469 9306.4354,264.2969 Q9306.8261,264.1406 9307.2479,263.7031 Q9307.5136,263.4375 9307.6542,263.3594 Q9307.8104,263.2813 9308.0136,263.2813 Q9308.3417,263.2813 9308.5917,263.5469 Q9308.8573,263.7969 9308.8573,264.1406 Q9308.8573,264.4844 9308.5136,264.8906 Q9308.0136,265.4688 9307.2167,265.7969 Q9306.1386,266.25 9304.8417,266.25 Q9303.3261,266.25 9302.1229,265.625 Q9301.1386,265.125 9300.4511,264.0625 Q9299.7636,262.9844 9299.7636,261.7031 L9299.7636,260.5469 Q9299.7636,259.2188 9300.3729,258.0781 Q9300.9979,256.9219 9302.0917,256.3125 Q9303.1854,255.6875 9304.4198,255.6875 Q9305.1542,255.6875 9305.7948,255.8594 Q9306.4511,256.0156 9306.9979,256.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="90.2549"
+                  x="9324.7323" y="266.2285">NOCEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="9104.4847" x2="9602.7347" y1="276.5" y2="276.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="438.8193" x="9109.4847" y="295.0332">-{final} builder :
+                ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="9104.4847" x2="9602.7347" y1="302.1094" y2="302.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="488.25"
+                  x="9109.4847" y="320.6426">+calculate(allClazz : Collection&lt;Node&gt;, clazz : Node) :
+                ComplexityMetricResult
+            </text>
+        </g><!--class CBOEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.clazz.CBOEvaluator" data-source-line="40"
+           id="ent0014">
+            <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="500.25" x="8568.4847" y="227"/>
+            <ellipse cx="8769.6185" cy="243" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M8772.3842,238.875 Q8772.5404,238.6563 8772.7279,238.5469 Q8772.9154,238.4375 8773.1342,238.4375 Q8773.5092,238.4375 8773.7435,238.7031 Q8773.9779,238.9531 8773.9779,239.5625 L8773.9779,241.0156 Q8773.9779,241.625 8773.7435,241.8906 Q8773.5092,242.1563 8773.1342,242.1563 Q8772.7904,242.1563 8772.5873,241.9531 Q8772.3842,241.7656 8772.2748,241.25 Q8772.2279,240.8906 8772.0404,240.7031 Q8771.7123,240.3281 8771.1029,240.1094 Q8770.4935,239.8906 8769.8685,239.8906 Q8769.1029,239.8906 8768.4623,240.2188 Q8767.8373,240.5469 8767.3373,241.2969 Q8766.8529,242.0469 8766.8529,243.0781 L8766.8529,244.1719 Q8766.8529,245.4063 8767.7435,246.2344 Q8768.6342,247.0469 8770.2279,247.0469 Q8771.1654,247.0469 8771.8217,246.7969 Q8772.2123,246.6406 8772.6342,246.2031 Q8772.8998,245.9375 8773.0404,245.8594 Q8773.1967,245.7813 8773.3998,245.7813 Q8773.7279,245.7813 8773.9779,246.0469 Q8774.2435,246.2969 8774.2435,246.6406 Q8774.2435,246.9844 8773.8998,247.3906 Q8773.3998,247.9688 8772.6029,248.2969 Q8771.5248,248.75 8770.2279,248.75 Q8768.7123,248.75 8767.5092,248.125 Q8766.5248,247.625 8765.8373,246.5625 Q8765.1498,245.4844 8765.1498,244.2031 L8765.1498,243.0469 Q8765.1498,241.7188 8765.7592,240.5781 Q8766.3842,239.4219 8767.4779,238.8125 Q8768.5717,238.1875 8769.806,238.1875 Q8770.5404,238.1875 8771.181,238.3594 Q8771.8373,238.5156 8772.3842,238.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="89.4824"
+                  x="8790.1185" y="248.7285">CBOEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="8569.4847" x2="9067.7347" y1="259" y2="259"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="438.8193" x="8574.4847" y="277.5332">-{final} builder :
+                ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="8569.4847" x2="9067.7347" y1="284.6094" y2="284.6094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="488.25"
+                  x="8574.4847" y="303.1426">+calculate(allClazz : Collection&lt;Node&gt;, clazz : Node) :
+                ComplexityMetricResult
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="275.8506" x="8574.4847" y="320.752">+getFQNusedBy(clazz :
+                Node) : Set&lt;String&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="466.874" x="8574.4847" y="338.3613">
+                -collectReferenceTypes(type : ResolvedType, collector : Set&lt;String&gt;) : void
+            </text>
+        </g><!--class DITEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.clazz.DITEvaluator" data-source-line="46"
+           id="ent0015">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="467.5947" x="8065.4847" y="244.5"/>
+            <ellipse cx="8254.184" cy="260.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M8256.9496,256.375 Q8257.1058,256.1563 8257.2933,256.0469 Q8257.4808,255.9375 8257.6996,255.9375 Q8258.0746,255.9375 8258.309,256.2031 Q8258.5433,256.4531 8258.5433,257.0625 L8258.5433,258.5156 Q8258.5433,259.125 8258.309,259.3906 Q8258.0746,259.6563 8257.6996,259.6563 Q8257.3558,259.6563 8257.1527,259.4531 Q8256.9496,259.2656 8256.8402,258.75 Q8256.7933,258.3906 8256.6058,258.2031 Q8256.2777,257.8281 8255.6683,257.6094 Q8255.059,257.3906 8254.434,257.3906 Q8253.6683,257.3906 8253.0277,257.7188 Q8252.4027,258.0469 8251.9027,258.7969 Q8251.4183,259.5469 8251.4183,260.5781 L8251.4183,261.6719 Q8251.4183,262.9063 8252.309,263.7344 Q8253.1996,264.5469 8254.7933,264.5469 Q8255.7308,264.5469 8256.3871,264.2969 Q8256.7777,264.1406 8257.1996,263.7031 Q8257.4652,263.4375 8257.6058,263.3594 Q8257.7621,263.2813 8257.9652,263.2813 Q8258.2933,263.2813 8258.5433,263.5469 Q8258.809,263.7969 8258.809,264.1406 Q8258.809,264.4844 8258.4652,264.8906 Q8257.9652,265.4688 8257.1683,265.7969 Q8256.0902,266.25 8254.7933,266.25 Q8253.2777,266.25 8252.0746,265.625 Q8251.0902,265.125 8250.4027,264.0625 Q8249.7152,262.9844 8249.7152,261.7031 L8249.7152,260.5469 Q8249.7152,259.2188 8250.3246,258.0781 Q8250.9496,256.9219 8252.0433,256.3125 Q8253.1371,255.6875 8254.3715,255.6875 Q8255.1058,255.6875 8255.7465,255.8594 Q8256.4027,256.0156 8256.9496,256.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81.6963"
+                  x="8274.684" y="266.2285">DITEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="8066.4847" x2="8532.0795" y1="276.5" y2="276.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="438.8193" x="8071.4847" y="295.0332">-{final} builder :
+                ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="8066.4847" x2="8532.0795" y1="302.1094" y2="302.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="455.5947"
+                  x="8071.4847" y="320.6426">+calculate(list : Collection&lt;Node&gt;, node : Node) :
+                ComplexityMetricResult
+            </text>
+        </g><!--class WMCBaseEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.clazz.WMCBaseEvaluator" data-source-line="50"
+           id="ent0016">
+            <rect fill="#F1F1F1" height="136.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="715.0488" x="7314.9847" y="218"/>
+            <ellipse cx="7605.2387" cy="234" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M7608.0043,229.875 Q7608.1605,229.6563 7608.348,229.5469 Q7608.5355,229.4375 7608.7543,229.4375 Q7609.1293,229.4375 7609.3637,229.7031 Q7609.598,229.9531 7609.598,230.5625 L7609.598,232.0156 Q7609.598,232.625 7609.3637,232.8906 Q7609.1293,233.1563 7608.7543,233.1563 Q7608.4105,233.1563 7608.2074,232.9531 Q7608.0043,232.7656 7607.8949,232.25 Q7607.848,231.8906 7607.6605,231.7031 Q7607.3324,231.3281 7606.723,231.1094 Q7606.1137,230.8906 7605.4887,230.8906 Q7604.723,230.8906 7604.0824,231.2188 Q7603.4574,231.5469 7602.9574,232.2969 Q7602.473,233.0469 7602.473,234.0781 L7602.473,235.1719 Q7602.473,236.4063 7603.3637,237.2344 Q7604.2543,238.0469 7605.848,238.0469 Q7606.7855,238.0469 7607.4418,237.7969 Q7607.8324,237.6406 7608.2543,237.2031 Q7608.5199,236.9375 7608.6605,236.8594 Q7608.8168,236.7813 7609.0199,236.7813 Q7609.348,236.7813 7609.598,237.0469 Q7609.8637,237.2969 7609.8637,237.6406 Q7609.8637,237.9844 7609.5199,238.3906 Q7609.0199,238.9688 7608.223,239.2969 Q7607.1449,239.75 7605.848,239.75 Q7604.3324,239.75 7603.1293,239.125 Q7602.1449,238.625 7601.4574,237.5625 Q7600.7699,236.4844 7600.7699,235.2031 L7600.7699,234.0469 Q7600.7699,232.7188 7601.3793,231.5781 Q7602.0043,230.4219 7603.098,229.8125 Q7604.1918,229.1875 7605.4262,229.1875 Q7606.1605,229.1875 7606.8012,229.3594 Q7607.4574,229.5156 7608.0043,229.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="126.041"
+                  x="7625.7387" y="239.7285">WMCBaseEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="7315.9847" x2="8029.0336" y1="250" y2="250"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="438.8193"
+                  x="7320.9847" y="268.5332">-{final} builder : ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="340.0674"
+                  x="7320.9847" y="286.1426">-{final} methodEvaluator : ComplexityEvaluator.Method
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="7315.9847" x2="8029.0336" y1="293.2188" y2="293.2188"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="703.0488"
+                  x="7320.9847" y="311.752">+WMCBaseEvaluator(name : String, max : double, min : double, methodEvaluator
+                : ComplexityEvaluator.Method)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="531.0635"
+                  x="7320.9847" y="329.3613">+WMCBaseEvaluator(name : String, methodEvaluator :
+                ComplexityEvaluator.Method)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="488.25"
+                  x="7320.9847" y="346.9707">+calculate(allClazz : Collection&lt;Node&gt;, clazz : Node) :
+                ComplexityMetricResult
+            </text>
+        </g><!--class RFCEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.clazz.RFCEvaluator" data-source-line="57"
+           id="ent0017">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="500.25" x="10369.4847" y="244.5"/>
+            <ellipse cx="10571.4013" cy="260.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M10574.1669,256.375 Q10574.3231,256.1563 10574.5106,256.0469 Q10574.6981,255.9375 10574.9169,255.9375 Q10575.2919,255.9375 10575.5263,256.2031 Q10575.7606,256.4531 10575.7606,257.0625 L10575.7606,258.5156 Q10575.7606,259.125 10575.5263,259.3906 Q10575.2919,259.6563 10574.9169,259.6563 Q10574.5731,259.6563 10574.37,259.4531 Q10574.1669,259.2656 10574.0575,258.75 Q10574.0106,258.3906 10573.8231,258.2031 Q10573.495,257.8281 10572.8856,257.6094 Q10572.2763,257.3906 10571.6513,257.3906 Q10570.8856,257.3906 10570.245,257.7188 Q10569.62,258.0469 10569.12,258.7969 Q10568.6356,259.5469 10568.6356,260.5781 L10568.6356,261.6719 Q10568.6356,262.9063 10569.5263,263.7344 Q10570.4169,264.5469 10572.0106,264.5469 Q10572.9481,264.5469 10573.6044,264.2969 Q10573.995,264.1406 10574.4169,263.7031 Q10574.6825,263.4375 10574.8231,263.3594 Q10574.9794,263.2813 10575.1825,263.2813 Q10575.5106,263.2813 10575.7606,263.5469 Q10576.0263,263.7969 10576.0263,264.1406 Q10576.0263,264.4844 10575.6825,264.8906 Q10575.1825,265.4688 10574.3856,265.7969 Q10573.3075,266.25 10572.0106,266.25 Q10570.495,266.25 10569.2919,265.625 Q10568.3075,265.125 10567.62,264.0625 Q10566.9325,262.9844 10566.9325,261.7031 L10566.9325,260.5469 Q10566.9325,259.2188 10567.5419,258.0781 Q10568.1669,256.9219 10569.2606,256.3125 Q10570.3544,255.6875 10571.5888,255.6875 Q10572.3231,255.6875 10572.9638,255.8594 Q10573.62,256.0156 10574.1669,256.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87.917"
+                  x="10591.9013" y="266.2285">RFCEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="10370.4847" x2="10868.7347" y1="276.5" y2="276.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="438.8193" x="10375.4847" y="295.0332">-{final} builder :
+                ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="10370.4847" x2="10868.7347" y1="302.1094" y2="302.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="488.25"
+                  x="10375.4847" y="320.6426">+calculate(allClazz : Collection&lt;Node&gt;, clazz : Node) :
+                ComplexityMetricResult
+            </text>
+        </g><!--class LCOMNEvaluator-->
+        <g class="entity" data-qualified-name="translate.complexity.clazz.LCOMNEvaluator" data-source-line="61"
+           id="ent0018">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="696.373" x="9638.4847" y="235.5"/>
+            <ellipse cx="9927.5697" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M9930.3353,247.375 Q9930.4916,247.1563 9930.6791,247.0469 Q9930.8666,246.9375 9931.0853,246.9375 Q9931.4603,246.9375 9931.6947,247.2031 Q9931.9291,247.4531 9931.9291,248.0625 L9931.9291,249.5156 Q9931.9291,250.125 9931.6947,250.3906 Q9931.4603,250.6563 9931.0853,250.6563 Q9930.7416,250.6563 9930.5385,250.4531 Q9930.3353,250.2656 9930.226,249.75 Q9930.1791,249.3906 9929.9916,249.2031 Q9929.6635,248.8281 9929.0541,248.6094 Q9928.4447,248.3906 9927.8197,248.3906 Q9927.0541,248.3906 9926.4135,248.7188 Q9925.7885,249.0469 9925.2885,249.7969 Q9924.8041,250.5469 9924.8041,251.5781 L9924.8041,252.6719 Q9924.8041,253.9063 9925.6947,254.7344 Q9926.5853,255.5469 9928.1791,255.5469 Q9929.1166,255.5469 9929.7728,255.2969 Q9930.1635,255.1406 9930.5853,254.7031 Q9930.851,254.4375 9930.9916,254.3594 Q9931.1478,254.2813 9931.351,254.2813 Q9931.6791,254.2813 9931.9291,254.5469 Q9932.1947,254.7969 9932.1947,255.1406 Q9932.1947,255.4844 9931.851,255.8906 Q9931.351,256.4688 9930.5541,256.7969 Q9929.476,257.25 9928.1791,257.25 Q9926.6635,257.25 9925.4603,256.625 Q9924.476,256.125 9923.7885,255.0625 Q9923.101,253.9844 9923.101,252.7031 L9923.101,251.5469 Q9923.101,250.2188 9923.7103,249.0781 Q9924.3353,247.9219 9925.4291,247.3125 Q9926.5228,246.6875 9927.7572,246.6875 Q9928.4916,246.6875 9929.1322,246.8594 Q9929.7885,247.0156 9930.3353,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.7031"
+                  x="9948.0697" y="257.2285">LCOMNEvaluator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="9639.4847" x2="10333.8578" y1="267.5" y2="267.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="399.8955" x="9644.4847" y="286.0332">-builder :
+                ComplexityMetricResult.ComplexityMetricResultBuilder
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="9639.4847" x2="10333.8578" y1="293.1094" y2="293.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="488.25"
+                  x="9644.4847" y="311.6426">+calculate(allClazz : Collection&lt;Node&gt;, clazz : Node) :
+                ComplexityMetricResult
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="684.373"
+                  x="9644.4847" y="329.252">+collectInstanceVariableAccesses(blockStmt : BlockStmt,
+                instanceVariableNames : Set&lt;String&gt;) : Set&lt;String&gt;
+            </text>
+        </g><!--class SetTranslatingComponent-->
+        <g class="entity" data-qualified-name="translate.component.SetTranslatingComponent" data-source-line="117"
+           id="ent0028">
+            <rect fill="#F1F1F1" height="171.2656" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="300.251" x="5206.4847" y="661.5"/>
+            <ellipse cx="5271.0365" cy="677.5" fill="#A9DCDF" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M5273.224,679.2656 L5269.0834,679.2656 L5268.6615,680.2969 L5269.0834,680.2969 Q5269.6928,680.2969 5269.9584,680.5313 Q5270.224,680.7656 5270.224,681.1563 Q5270.224,681.5313 5269.9584,681.7656 Q5269.6928,682 5269.0834,682 L5266.7865,682 Q5266.1771,682 5265.9271,681.7656 Q5265.6615,681.5313 5265.6615,681.1406 Q5265.6615,680.7656 5265.9428,680.5313 Q5266.2084,680.2813 5266.8334,680.2969 L5269.5053,673.6406 L5268.3959,673.6406 Q5267.7865,673.6406 5267.5209,673.4063 Q5267.2553,673.1719 5267.2553,672.7813 Q5267.2553,672.4063 5267.5209,672.1719 Q5267.7865,671.9375 5268.3959,671.9375 L5272.0678,671.9375 L5275.4584,680.2969 Q5276.0521,680.2969 5276.2396,680.4375 Q5276.6303,680.7031 5276.6303,681.1563 Q5276.6303,681.5313 5276.3646,681.7656 Q5276.1146,682 5275.5053,682 L5273.2084,682 Q5272.599,682 5272.3334,681.7656 Q5272.0678,681.5313 5272.0678,681.1406 Q5272.0678,680.7656 5272.3334,680.5313 Q5272.599,680.2969 5273.2084,680.2969 L5273.6303,680.2969 L5273.224,679.2656 Z M5272.5053,677.5625 L5271.1459,674.1875 L5269.7709,677.5625 L5272.5053,677.5625 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="162.6475" x="5291.5365" y="683.2285">SetTranslatingComponent
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="5207.4847" x2="5505.7357" y1="693.5" y2="693.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="122.9717"
+                  x="5212.4847" y="712.0332">#{final} set : Set&lt;T&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144.751"
+                  x="5212.4847" y="729.6426">#{final} type : Class&lt;T&gt;
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="5207.4847" x2="5505.7357" y1="736.7188" y2="736.7188"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="277.7988"
+                  x="5212.4847" y="755.252">#SetTranslatingComponent(type : Class&lt;T&gt;)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188.7197"
+                  x="5212.4847" y="772.8613">+safeAdd(object : Node) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115.541"
+                  x="5212.4847" y="790.4707">+type() : Class&lt;T&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="200.3271"
+                  x="5212.4847" y="808.0801">+writeUML() : UmlPackageEntry
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="288.251" x="5212.4847" y="825.6895">+writeComponentUML(element : T) : UmlEntry
+            </text>
+        </g><!--class InterfaceWriter-->
+        <g class="entity" data-qualified-name="translate.component.InterfaceWriter" data-source-line="126" id="ent0029">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="467.5469" x="5826.4847" y="235.5"/>
+            <ellipse cx="6010.1083" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M6012.8739,247.375 Q6013.0302,247.1563 6013.2177,247.0469 Q6013.4052,246.9375 6013.6239,246.9375 Q6013.9989,246.9375 6014.2333,247.2031 Q6014.4677,247.4531 6014.4677,248.0625 L6014.4677,249.5156 Q6014.4677,250.125 6014.2333,250.3906 Q6013.9989,250.6563 6013.6239,250.6563 Q6013.2802,250.6563 6013.077,250.4531 Q6012.8739,250.2656 6012.7645,249.75 Q6012.7177,249.3906 6012.5302,249.2031 Q6012.202,248.8281 6011.5927,248.6094 Q6010.9833,248.3906 6010.3583,248.3906 Q6009.5927,248.3906 6008.952,248.7188 Q6008.327,249.0469 6007.827,249.7969 Q6007.3427,250.5469 6007.3427,251.5781 L6007.3427,252.6719 Q6007.3427,253.9063 6008.2333,254.7344 Q6009.1239,255.5469 6010.7177,255.5469 Q6011.6552,255.5469 6012.3114,255.2969 Q6012.702,255.1406 6013.1239,254.7031 Q6013.3895,254.4375 6013.5302,254.3594 Q6013.6864,254.2813 6013.8895,254.2813 Q6014.2177,254.2813 6014.4677,254.5469 Q6014.7333,254.7969 6014.7333,255.1406 Q6014.7333,255.4844 6014.3895,255.8906 Q6013.8895,256.4688 6013.0927,256.7969 Q6012.0145,257.25 6010.7177,257.25 Q6009.202,257.25 6007.9989,256.625 Q6007.0145,256.125 6006.327,255.0625 Q6005.6395,253.9844 6005.6395,252.7031 L6005.6395,251.5469 Q6005.6395,250.2188 6006.2489,249.0781 Q6006.8739,247.9219 6007.9677,247.3125 Q6009.0614,246.6875 6010.2958,246.6875 Q6011.0302,246.6875 6011.6708,246.8594 Q6012.327,247.0156 6012.8739,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91.7998"
+                  x="6030.6083" y="257.2285">InterfaceWriter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="5827.4847" x2="6293.0316" y1="267.5" y2="267.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="5827.4847" x2="6293.0316" y1="275.5" y2="275.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="109.2998"
+                  x="5832.4847" y="294.0332">+InterfaceWriter()
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188.7197"
+                  x="5832.4847" y="311.6426">+safeAdd(object : Node) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="455.5469"
+                  x="5832.4847" y="329.252">+writeComponentUML(element : ClassOrInterfaceDeclaration) : UmlEntry
+            </text>
+        </g><!--class EnumWriter-->
+        <g class="entity" data-qualified-name="translate.component.EnumWriter" data-source-line="131" id="ent0030">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="399.085" x="5391.9847" y="244.5"/>
+            <ellipse cx="5550.329" cy="260.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M5553.0946,256.375 Q5553.2509,256.1563 5553.4384,256.0469 Q5553.6259,255.9375 5553.8446,255.9375 Q5554.2196,255.9375 5554.454,256.2031 Q5554.6884,256.4531 5554.6884,257.0625 L5554.6884,258.5156 Q5554.6884,259.125 5554.454,259.3906 Q5554.2196,259.6563 5553.8446,259.6563 Q5553.5009,259.6563 5553.2977,259.4531 Q5553.0946,259.2656 5552.9852,258.75 Q5552.9384,258.3906 5552.7509,258.2031 Q5552.4227,257.8281 5551.8134,257.6094 Q5551.204,257.3906 5550.579,257.3906 Q5549.8134,257.3906 5549.1727,257.7188 Q5548.5477,258.0469 5548.0477,258.7969 Q5547.5634,259.5469 5547.5634,260.5781 L5547.5634,261.6719 Q5547.5634,262.9063 5548.454,263.7344 Q5549.3446,264.5469 5550.9384,264.5469 Q5551.8759,264.5469 5552.5321,264.2969 Q5552.9227,264.1406 5553.3446,263.7031 Q5553.6102,263.4375 5553.7509,263.3594 Q5553.9071,263.2813 5554.1102,263.2813 Q5554.4384,263.2813 5554.6884,263.5469 Q5554.954,263.7969 5554.954,264.1406 Q5554.954,264.4844 5554.6102,264.8906 Q5554.1102,265.4688 5553.3134,265.7969 Q5552.2352,266.25 5550.9384,266.25 Q5549.4227,266.25 5548.2196,265.625 Q5547.2352,265.125 5546.5477,264.0625 Q5545.8602,262.9844 5545.8602,261.7031 L5545.8602,260.5469 Q5545.8602,259.2188 5546.4696,258.0781 Q5547.0946,256.9219 5548.1884,256.3125 Q5549.2821,255.6875 5550.5165,255.6875 Q5551.2509,255.6875 5551.8915,255.8594 Q5552.5477,256.0156 5553.0946,256.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73.8965"
+                  x="5570.829" y="266.2285">EnumWriter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="5392.9847" x2="5790.0697" y1="276.5" y2="276.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="5392.9847" x2="5790.0697" y1="284.5" y2="284.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="91.3965"
+                  x="5397.9847" y="303.0332">+EnumWriter()
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="387.085"
+                  x="5397.9847" y="320.6426">+writeComponentUML(element : EnumDeclaration) : UmlEntry
+            </text>
+        </g><!--class ClassWriter-->
+        <g class="entity" data-qualified-name="translate.component.ClassWriter" data-source-line="135" id="ent0031">
+            <rect fill="#F1F1F1" height="153.6563" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="467.5469" x="4888.4847" y="209"/>
+            <ellipse cx="5081.8427" cy="225" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M5084.6083,220.875 Q5084.7645,220.6563 5084.952,220.5469 Q5085.1395,220.4375 5085.3583,220.4375 Q5085.7333,220.4375 5085.9677,220.7031 Q5086.202,220.9531 5086.202,221.5625 L5086.202,223.0156 Q5086.202,223.625 5085.9677,223.8906 Q5085.7333,224.1563 5085.3583,224.1563 Q5085.0145,224.1563 5084.8114,223.9531 Q5084.6083,223.7656 5084.4989,223.25 Q5084.452,222.8906 5084.2645,222.7031 Q5083.9364,222.3281 5083.327,222.1094 Q5082.7177,221.8906 5082.0927,221.8906 Q5081.327,221.8906 5080.6864,222.2188 Q5080.0614,222.5469 5079.5614,223.2969 Q5079.077,224.0469 5079.077,225.0781 L5079.077,226.1719 Q5079.077,227.4063 5079.9677,228.2344 Q5080.8583,229.0469 5082.452,229.0469 Q5083.3895,229.0469 5084.0458,228.7969 Q5084.4364,228.6406 5084.8583,228.2031 Q5085.1239,227.9375 5085.2645,227.8594 Q5085.4208,227.7813 5085.6239,227.7813 Q5085.952,227.7813 5086.202,228.0469 Q5086.4677,228.2969 5086.4677,228.6406 Q5086.4677,228.9844 5086.1239,229.3906 Q5085.6239,229.9688 5084.827,230.2969 Q5083.7489,230.75 5082.452,230.75 Q5080.9364,230.75 5079.7333,230.125 Q5078.7489,229.625 5078.0614,228.5625 Q5077.3739,227.4844 5077.3739,226.2031 L5077.3739,225.0469 Q5077.3739,223.7188 5077.9833,222.5781 Q5078.6083,221.4219 5079.702,220.8125 Q5080.7958,220.1875 5082.0302,220.1875 Q5082.7645,220.1875 5083.4052,220.3594 Q5084.0614,220.5156 5084.6083,220.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="72.3311"
+                  x="5102.3427" y="230.7285">ClassWriter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="4889.4847" x2="5355.0316" y1="241" y2="241"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="254.4199" x="4894.4847" y="259.5332">-{final}
+                EXCEPTION_PATTERN : Pattern
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="262.1924" x="4894.4847" y="277.1426">-{final}
+                THROWABLE_PATTERN : Pattern
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="4889.4847" x2="5355.0316" y1="284.2188" y2="284.2188"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="89.8311"
+                  x="4894.4847" y="302.752">+ClassWriter()
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="188.7197"
+                  x="4894.4847" y="320.3613">+safeAdd(object : Node) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="455.5469"
+                  x="4894.4847" y="337.9707">+writeComponentUML(element : ClassOrInterfaceDeclaration) : UmlEntry
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="419.4053"
+                  x="4894.4847" y="355.5801">-isExceptionClass(element : ClassOrInterfaceDeclaration) : boolean
+            </text>
+        </g><!--class MemberFormatter-->
+        <g class="entity" data-qualified-name="translate.component.MemberFormatter" data-source-line="143" id="ent0032">
+            <rect fill="#F1F1F1" height="276.9219" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="325.168" x="6329.9847" y="147.5"/>
+            <ellipse cx="6432.3085" cy="163.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M6435.0741,159.375 Q6435.2304,159.1563 6435.4179,159.0469 Q6435.6054,158.9375 6435.8241,158.9375 Q6436.1991,158.9375 6436.4335,159.2031 Q6436.6679,159.4531 6436.6679,160.0625 L6436.6679,161.5156 Q6436.6679,162.125 6436.4335,162.3906 Q6436.1991,162.6563 6435.8241,162.6563 Q6435.4804,162.6563 6435.2772,162.4531 Q6435.0741,162.2656 6434.9647,161.75 Q6434.9179,161.3906 6434.7304,161.2031 Q6434.4022,160.8281 6433.7929,160.6094 Q6433.1835,160.3906 6432.5585,160.3906 Q6431.7929,160.3906 6431.1522,160.7188 Q6430.5272,161.0469 6430.0272,161.7969 Q6429.5429,162.5469 6429.5429,163.5781 L6429.5429,164.6719 Q6429.5429,165.9063 6430.4335,166.7344 Q6431.3241,167.5469 6432.9179,167.5469 Q6433.8554,167.5469 6434.5116,167.2969 Q6434.9022,167.1406 6435.3241,166.7031 Q6435.5897,166.4375 6435.7304,166.3594 Q6435.8866,166.2813 6436.0897,166.2813 Q6436.4179,166.2813 6436.6679,166.5469 Q6436.9335,166.7969 6436.9335,167.1406 Q6436.9335,167.4844 6436.5897,167.8906 Q6436.0897,168.4688 6435.2929,168.7969 Q6434.2147,169.25 6432.9179,169.25 Q6431.4022,169.25 6430.1991,168.625 Q6429.2147,168.125 6428.5272,167.0625 Q6427.8397,165.9844 6427.8397,164.7031 L6427.8397,163.5469 Q6427.8397,162.2188 6428.4491,161.0781 Q6429.0741,159.9219 6430.1679,159.3125 Q6431.2616,158.6875 6432.496,158.6875 Q6433.2304,158.6875 6433.871,158.8594 Q6434.5272,159.0156 6435.0741,159.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="112.0205"
+                  x="6452.8085" y="169.2285">MemberFormatter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6330.9847" x2="6654.1527" y1="179.5" y2="179.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6330.9847" x2="6654.1527" y1="187.5" y2="187.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="251.7471" x="6335.9847" y="206.0332">+fullPackageName(node :
+                Node) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="239.2988" x="6335.9847" y="223.6426">+nodeClassType(node :
+                Node) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="240.0576" x="6335.9847" y="241.252">+fullSimpleName(node :
+                Node) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="240.8027" x="6335.9847" y="258.8613">+nodeWithImplements(ctor
+                : T) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="219.0303" x="6335.9847" y="276.4707">+nodeWithExtends(ctor :
+                T) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="275.8438" x="6335.9847" y="294.0801">+node(ctor :
+                NodeWithMembers&lt;?&gt;) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="302.2852" x="6335.9847" y="311.6895">+attributes(ctor :
+                NodeWithMembers&lt;?&gt;) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="298.3955" x="6335.9847" y="329.2988">+methods(ctor :
+                NodeWithMembers&lt;?&gt;) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="312.3955" x="6335.9847" y="346.9082">+modifiers(modifiers :
+                NodeList&lt;Modifier&gt;) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="137.3271" x="6335.9847" y="364.5176">+field(field : T) :
+                String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="197.2441" x="6335.9847" y="382.127">+variable(declarator : T)
+                : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="288.3125" x="6335.9847" y="399.7363">+method(method :
+                MethodDeclaration) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="313.168" x="6335.9847" y="417.3457">+constructor(ctor :
+                ConstructorDeclaration) : String
+            </text>
+        </g><!--class RecordWriter-->
+        <g class="entity" data-qualified-name="translate.component.RecordWriter" data-source-line="158" id="ent0033">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="407.6436" x="4445.4847" y="244.5"/>
+            <ellipse cx="4603.829" cy="260.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M4606.5946,256.375 Q4606.7509,256.1563 4606.9384,256.0469 Q4607.1259,255.9375 4607.3446,255.9375 Q4607.7196,255.9375 4607.954,256.2031 Q4608.1884,256.4531 4608.1884,257.0625 L4608.1884,258.5156 Q4608.1884,259.125 4607.954,259.3906 Q4607.7196,259.6563 4607.3446,259.6563 Q4607.0009,259.6563 4606.7977,259.4531 Q4606.5946,259.2656 4606.4852,258.75 Q4606.4384,258.3906 4606.2509,258.2031 Q4605.9227,257.8281 4605.3134,257.6094 Q4604.704,257.3906 4604.079,257.3906 Q4603.3134,257.3906 4602.6727,257.7188 Q4602.0477,258.0469 4601.5477,258.7969 Q4601.0634,259.5469 4601.0634,260.5781 L4601.0634,261.6719 Q4601.0634,262.9063 4601.954,263.7344 Q4602.8446,264.5469 4604.4384,264.5469 Q4605.3759,264.5469 4606.0321,264.2969 Q4606.4227,264.1406 4606.8446,263.7031 Q4607.1102,263.4375 4607.2509,263.3594 Q4607.4071,263.2813 4607.6102,263.2813 Q4607.9384,263.2813 4608.1884,263.5469 Q4608.454,263.7969 4608.454,264.1406 Q4608.454,264.4844 4608.1102,264.8906 Q4607.6102,265.4688 4606.8134,265.7969 Q4605.7352,266.25 4604.4384,266.25 Q4602.9227,266.25 4601.7196,265.625 Q4600.7352,265.125 4600.0477,264.0625 Q4599.3602,262.9844 4599.3602,261.7031 L4599.3602,260.5469 Q4599.3602,259.2188 4599.9696,258.0781 Q4600.5946,256.9219 4601.6884,256.3125 Q4602.7821,255.6875 4604.0165,255.6875 Q4604.7509,255.6875 4605.3915,255.8594 Q4606.0477,256.0156 4606.5946,256.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="82.4551"
+                  x="4624.329" y="266.2285">RecordWriter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="4446.4847" x2="4852.1283" y1="276.5" y2="276.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="4446.4847" x2="4852.1283" y1="284.5" y2="284.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="99.9551"
+                  x="4451.4847" y="303.0332">+RecordWriter()
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="395.6436"
+                  x="4451.4847" y="320.6426">+writeComponentUML(element : RecordDeclaration) : UmlEntry
+            </text>
+        </g><!--class UmlEntry-->
+        <g class="entity" data-qualified-name="translate.component.UmlEntry" data-source-line="305" id="ent0054">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="158.6787" x="6689.9847" y="244.5"/>
+            <ellipse cx="6736.2948" cy="260.5" fill="#FF8F00" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M6735.1386,261.6563 L6735.1386,263.7969 L6735.7479,263.7969 Q6736.3729,263.7969 6736.6229,264.0313 Q6736.8886,264.2656 6736.8886,264.6563 Q6736.8886,265.0313 6736.6229,265.2656 Q6736.3729,265.5 6735.7479,265.5 L6733.1698,265.5 Q6732.5604,265.5 6732.2948,265.2656 Q6732.0292,265.0313 6732.0292,264.6406 Q6732.0292,264.2656 6732.2948,264.0313 Q6732.5604,263.7969 6733.1698,263.7969 L6733.4354,263.7969 L6733.4354,257.1406 L6733.1698,257.1406 Q6732.5604,257.1406 6732.2948,256.9063 Q6732.0292,256.6719 6732.0292,256.2813 Q6732.0292,255.9063 6732.2948,255.6719 Q6732.5604,255.4375 6733.1698,255.4375 L6737.0292,255.4375 Q6738.8261,255.4375 6739.8104,256.3281 Q6740.8104,257.2188 6740.8104,258.5 Q6740.8104,259.2969 6740.3417,259.9531 Q6739.8729,260.6094 6738.9354,261.1094 Q6739.4823,261.5781 6740.0917,262.3281 Q6740.4823,262.7969 6741.1229,263.7969 Q6741.7792,263.7969 6741.9823,263.9375 Q6742.3573,264.1875 6742.3573,264.6563 Q6742.3573,265.0313 6742.0917,265.2656 Q6741.8417,265.5 6741.2323,265.5 L6740.2479,265.5 Q6738.1854,262.2969 6736.8261,261.6563 L6735.1386,261.6563 Z M6735.1386,259.9531 L6736.4667,259.9531 Q6737.2011,259.9531 6737.7948,259.7344 Q6738.5761,259.4375 6738.8417,259.1094 Q6739.1073,258.7656 6739.1073,258.4375 Q6739.1073,257.9688 6738.5917,257.5625 Q6738.0761,257.1406 6737.0917,257.1406 L6735.1386,257.1406 L6735.1386,259.9531 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57.5586"
+                  x="6756.7948" y="266.2285">UmlEntry
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6690.9847" x2="6847.6635" y1="276.5" y2="276.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="146.6787"
+                  x="6695.9847" y="295.0332">~classDefinition : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="133.458"
+                  x="6695.9847" y="312.6426">~associations : String
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6690.9847" x2="6847.6635" y1="319.7188" y2="319.7188"/>
+        </g><!--class UmlPackageEntry-->
+        <g class="entity" data-qualified-name="translate.component.UmlPackageEntry" data-source-line="309" id="ent0055">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="270.7676" x="6356.9847" y="705.5"/>
+            <ellipse cx="6432.098" cy="721.5" fill="#FF8F00" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M6430.9418,722.6563 L6430.9418,724.7969 L6431.5512,724.7969 Q6432.1762,724.7969 6432.4262,725.0313 Q6432.6918,725.2656 6432.6918,725.6563 Q6432.6918,726.0313 6432.4262,726.2656 Q6432.1762,726.5 6431.5512,726.5 L6428.973,726.5 Q6428.3637,726.5 6428.098,726.2656 Q6427.8324,726.0313 6427.8324,725.6406 Q6427.8324,725.2656 6428.098,725.0313 Q6428.3637,724.7969 6428.973,724.7969 L6429.2387,724.7969 L6429.2387,718.1406 L6428.973,718.1406 Q6428.3637,718.1406 6428.098,717.9063 Q6427.8324,717.6719 6427.8324,717.2813 Q6427.8324,716.9063 6428.098,716.6719 Q6428.3637,716.4375 6428.973,716.4375 L6432.8324,716.4375 Q6434.6293,716.4375 6435.6137,717.3281 Q6436.6137,718.2188 6436.6137,719.5 Q6436.6137,720.2969 6436.1449,720.9531 Q6435.6762,721.6094 6434.7387,722.1094 Q6435.2855,722.5781 6435.8949,723.3281 Q6436.2855,723.7969 6436.9262,724.7969 Q6437.5824,724.7969 6437.7855,724.9375 Q6438.1605,725.1875 6438.1605,725.6563 Q6438.1605,726.0313 6437.8949,726.2656 Q6437.6449,726.5 6437.0355,726.5 L6436.0512,726.5 Q6433.9887,723.2969 6432.6293,722.6563 L6430.9418,722.6563 Z M6430.9418,720.9531 L6432.2699,720.9531 Q6433.0043,720.9531 6433.598,720.7344 Q6434.3793,720.4375 6434.6449,720.1094 Q6434.9105,719.7656 6434.9105,719.4375 Q6434.9105,718.9688 6434.3949,718.5625 Q6433.8793,718.1406 6432.8949,718.1406 L6430.9418,718.1406 L6430.9418,720.9531 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="112.041"
+                  x="6452.598" y="727.2285">UmlPackageEntry
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6357.9847" x2="6626.7523" y1="737.5" y2="737.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="258.7676"
+                  x="6362.9847" y="756.0332">~packageMap : Map&lt;String,List&lt;String&gt;&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="171.5957"
+                  x="6362.9847" y="773.6426">~associations : List&lt;String&gt;
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="6357.9847" x2="6626.7523" y1="780.7188" y2="780.7188"/>
+        </g><!--class ComplexityTranslator-->
+        <g class="entity" data-qualified-name="translate.translator.ComplexityTranslator" data-source-line="238"
+           id="ent0045">
+            <rect fill="#F1F1F1" height="241.7031" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="536.8154" x="12555.9847" y="165"/>
+            <ellipse cx="12754.0116" cy="181" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M12756.7772,176.875 Q12756.9335,176.6563 12757.121,176.5469 Q12757.3085,176.4375 12757.5272,176.4375 Q12757.9022,176.4375 12758.1366,176.7031 Q12758.371,176.9531 12758.371,177.5625 L12758.371,179.0156 Q12758.371,179.625 12758.1366,179.8906 Q12757.9022,180.1563 12757.5272,180.1563 Q12757.1835,180.1563 12756.9804,179.9531 Q12756.7772,179.7656 12756.6679,179.25 Q12756.621,178.8906 12756.4335,178.7031 Q12756.1054,178.3281 12755.496,178.1094 Q12754.8866,177.8906 12754.2616,177.8906 Q12753.496,177.8906 12752.8554,178.2188 Q12752.2304,178.5469 12751.7304,179.2969 Q12751.246,180.0469 12751.246,181.0781 L12751.246,182.1719 Q12751.246,183.4063 12752.1366,184.2344 Q12753.0272,185.0469 12754.621,185.0469 Q12755.5585,185.0469 12756.2147,184.7969 Q12756.6054,184.6406 12757.0272,184.2031 Q12757.2929,183.9375 12757.4335,183.8594 Q12757.5897,183.7813 12757.7929,183.7813 Q12758.121,183.7813 12758.371,184.0469 Q12758.6366,184.2969 12758.6366,184.6406 Q12758.6366,184.9844 12758.2929,185.3906 Q12757.7929,185.9688 12756.996,186.2969 Q12755.9179,186.75 12754.621,186.75 Q12753.1054,186.75 12751.9022,186.125 Q12750.9179,185.625 12750.2304,184.5625 Q12749.5429,183.4844 12749.5429,182.2031 L12749.5429,181.0469 Q12749.5429,179.7188 12750.1522,178.5781 Q12750.7772,177.4219 12751.871,176.8125 Q12752.9647,176.1875 12754.1991,176.1875 Q12754.9335,176.1875 12755.5741,176.3594 Q12756.2304,176.5156 12756.7772,176.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="132.2617"
+                  x="12774.5116" y="186.7285">ComplexityTranslator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="12556.9847" x2="13091.8002" y1="197" y2="197"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97.2686"
+                  x="12561.9847" y="215.5332">-error : Boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="231.9023"
+                  x="12561.9847" y="233.1426">-{final} classMap : Map&lt;String,Node&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="414.791"
+                  x="12561.9847" y="250.752">-{final} methodMap : Map&lt;String,Map&lt;String,MethodDeclaration&gt;&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="328.3574" x="12561.9847" y="268.3613">-{final} classEvaluators
+                : ComplexityEvaluator.Clazz[]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="354.8467" x="12561.9847" y="285.9707">-{final}
+                methodEvaluators : ComplexityEvaluator.Method[]
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="12556.9847" x2="13091.8002" y1="293.0469" y2="293.0469"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187.9609"
+                  x="12561.9847" y="311.5801">+addNode(node : Node) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175.4717"
+                  x="12561.9847" y="329.1895">+setError(b : Boolean) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="410.4092"
+                  x="12561.9847" y="346.7988">+evaluateClass(fullClassName : String) : ComplexityMetricResult[]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="524.8154"
+                  x="12561.9847" y="364.4082">+evaluateMethod(fullClassName : String, method : String) :
+                ComplexityMetricResult[]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="194.1338"
+                  x="12561.9847" y="382.0176">+getClassJList() : JList&lt;String&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="330.3057"
+                  x="12561.9847" y="399.627">+getMethodsJList(className : String) : JList&lt;String&gt;
+            </text>
+        </g><!--class UmlTranslator-->
+        <g class="entity" data-qualified-name="translate.translator.UmlTranslator" data-source-line="251" id="ent0046">
+            <rect fill="#F1F1F1" height="400.1875" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="777.6934" x="11742.4847" y="86"/>
+            <ellipse cx="12083.1298" cy="102" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M12085.8954,97.875 Q12086.0516,97.6563 12086.2391,97.5469 Q12086.4266,97.4375 12086.6454,97.4375 Q12087.0204,97.4375 12087.2548,97.7031 Q12087.4891,97.9531 12087.4891,98.5625 L12087.4891,100.0156 Q12087.4891,100.625 12087.2548,100.8906 Q12087.0204,101.1563 12086.6454,101.1563 Q12086.3016,101.1563 12086.0985,100.9531 Q12085.8954,100.7656 12085.786,100.25 Q12085.7391,99.8906 12085.5516,99.7031 Q12085.2235,99.3281 12084.6141,99.1094 Q12084.0048,98.8906 12083.3798,98.8906 Q12082.6141,98.8906 12081.9735,99.2188 Q12081.3485,99.5469 12080.8485,100.2969 Q12080.3641,101.0469 12080.3641,102.0781 L12080.3641,103.1719 Q12080.3641,104.4063 12081.2548,105.2344 Q12082.1454,106.0469 12083.7391,106.0469 Q12084.6766,106.0469 12085.3329,105.7969 Q12085.7235,105.6406 12086.1454,105.2031 Q12086.411,104.9375 12086.5516,104.8594 Q12086.7079,104.7813 12086.911,104.7813 Q12087.2391,104.7813 12087.4891,105.0469 Q12087.7548,105.2969 12087.7548,105.6406 Q12087.7548,105.9844 12087.411,106.3906 Q12086.911,106.9688 12086.1141,107.2969 Q12085.036,107.75 12083.7391,107.75 Q12082.2235,107.75 12081.0204,107.125 Q12080.036,106.625 12079.3485,105.5625 Q12078.661,104.4844 12078.661,103.2031 L12078.661,102.0469 Q12078.661,100.7188 12079.2704,99.5781 Q12079.8954,98.4219 12080.9891,97.8125 Q12082.0829,97.1875 12083.3173,97.1875 Q12084.0516,97.1875 12084.6923,97.3594 Q12085.3485,97.5156 12085.8954,97.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87.9033"
+                  x="12103.6298" y="107.7285">UmlTranslator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="11743.4847" x2="12519.1781" y1="118" y2="118"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="418.6943"
+                  x="11748.4847" y="136.5332">-{final} componentTranslators : Set&lt;SetTranslatingComponent&lt;?&gt;&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148.6543"
+                  x="11748.4847" y="154.1426">-{final} fqn : Set&lt;String&gt;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97.2686"
+                  x="11748.4847" y="171.752">-error : Boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="157.9785"
+                  x="11748.4847" y="189.3613">-{final} output : JTextArea
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="180.585"
+                  x="11748.4847" y="206.9707">-{final} updatable : Updatable
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="171.999"
+                  x="11748.4847" y="224.5801">-{final} printed : Set&lt;String&gt;
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="11743.4847" x2="12519.1781" y1="231.6563" y2="231.6563"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="394.1465"
+                  x="11748.4847" y="250.1895">+UmlTranslator(outputArea : JTextArea, updatable : Updatable)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175.4717"
+                  x="11748.4847" y="267.7988">+setError(b : Boolean) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187.9609"
+                  x="11748.4847" y="285.4082">+addNode(node : Node) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="134.21"
+                  x="11748.4847" y="303.0176">+toPlantUml() : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93.3584"
+                  x="11748.4847" y="320.627">-initFqn() : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="324.4473"
+                  x="11748.4847" y="338.2363">-mapWriter(map : Map&lt;String,List&lt;String&gt;&gt;) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="266.0957"
+                  x="11748.4847" y="355.8457">-writeAssociations(sb : StringBuilder) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="655.1631"
+                  x="11748.4847" y="373.4551">-associationType(clazz : Node, field : FieldDeclaration, fieldName :
+                String, fieldTypeString : String) : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="726.0723"
+                  x="11748.4847" y="391.0645">-isComposition(field : FieldDeclaration, hasGetter : boolean, hasSetter :
+                boolean, hasConstructor : boolean) : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="723.7617"
+                  x="11748.4847" y="408.6738">-isAggregation(field : FieldDeclaration, hasGetter : boolean, hasSetter :
+                boolean, hasConstructor : boolean) : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="652.8252"
+                  x="11748.4847" y="426.2832">-hasConstructor(members : NodeWithMembers&lt;?&gt;, fieldTypeString :
+                String, fieldName : String) : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="648.9629"
+                  x="11748.4847" y="443.8926">-hasGetter(methodHolder : NodeWithMembers&lt;?&gt;, fieldTypeString :
+                String, fieldName : String) : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="765.6934"
+                  x="11748.4847" y="461.502">-hasSetter(field : FieldDeclaration, methodHolder : NodeWithMembers&lt;?&gt;,
+                fieldTypeString : String, name : String) : boolean
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="529.1221" x="11748.4847" y="479.1113">-hasAssignment(name :
+                String, methodOrCtor : Node, paramName : String) : boolean
+            </text>
+        </g><!--class TranslatorConfig-->
+        <g class="entity" data-qualified-name="translate.translator.TranslatorConfig" data-source-line="273"
+           id="ent0047">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="197.582" x="11509.4847" y="253"/>
+            <ellipse cx="11552.4265" cy="269" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M11555.1921,264.875 Q11555.3484,264.6563 11555.5359,264.5469 Q11555.7234,264.4375 11555.9421,264.4375 Q11556.3171,264.4375 11556.5515,264.7031 Q11556.7859,264.9531 11556.7859,265.5625 L11556.7859,267.0156 Q11556.7859,267.625 11556.5515,267.8906 Q11556.3171,268.1563 11555.9421,268.1563 Q11555.5984,268.1563 11555.3952,267.9531 Q11555.1921,267.7656 11555.0827,267.25 Q11555.0359,266.8906 11554.8484,266.7031 Q11554.5202,266.3281 11553.9109,266.1094 Q11553.3015,265.8906 11552.6765,265.8906 Q11551.9109,265.8906 11551.2702,266.2188 Q11550.6452,266.5469 11550.1452,267.2969 Q11549.6609,268.0469 11549.6609,269.0781 L11549.6609,270.1719 Q11549.6609,271.4063 11550.5515,272.2344 Q11551.4421,273.0469 11553.0359,273.0469 Q11553.9734,273.0469 11554.6296,272.7969 Q11555.0202,272.6406 11555.4421,272.2031 Q11555.7077,271.9375 11555.8484,271.8594 Q11556.0046,271.7813 11556.2077,271.7813 Q11556.5359,271.7813 11556.7859,272.0469 Q11557.0515,272.2969 11557.0515,272.6406 Q11557.0515,272.9844 11556.7077,273.3906 Q11556.2077,273.9688 11555.4109,274.2969 Q11554.3327,274.75 11553.0359,274.75 Q11551.5202,274.75 11550.3171,274.125 Q11549.3327,273.625 11548.6452,272.5625 Q11547.9577,271.4844 11547.9577,270.2031 L11547.9577,269.0469 Q11547.9577,267.7188 11548.5671,266.5781 Q11549.1921,265.4219 11550.2859,264.8125 Q11551.3796,264.1875 11552.614,264.1875 Q11553.3484,264.1875 11553.989,264.3594 Q11554.6452,264.5156 11555.1921,264.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="103.4893"
+                  x="11572.6358" y="274.7285">TranslatorConfig
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="11510.4847" x2="11706.0668" y1="285" y2="285"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="185.582" x="11515.4847" y="303.5332">+config :
+                ClassDiagramConfig
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="11510.4847" x2="11706.0668" y1="310.6094" y2="310.6094"/>
+        </g><!--class Translator-->
+        <g class="entity" data-qualified-name="translate.translator.Translator" data-source-line="298" id="ent0053">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="236.499" x="12857.4847" y="696.5"/>
+            <ellipse cx="12939.974" cy="712.5" fill="#B4A7E5" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M12940.9271,709.1406 L12940.9271,715.7969 L12942.6459,715.7969 Q12943.2553,715.7969 12943.5209,716.0313 Q12943.7865,716.2656 12943.7865,716.6563 Q12943.7865,717.0313 12943.5209,717.2656 Q12943.2553,717.5 12942.6459,717.5 L12937.5053,717.5 Q12936.8959,717.5 12936.6303,717.2656 Q12936.3646,717.0313 12936.3646,716.6406 Q12936.3646,716.2656 12936.6303,716.0313 Q12936.8959,715.7969 12937.5053,715.7969 L12939.224,715.7969 L12939.224,709.1406 L12937.5053,709.1406 Q12936.8959,709.1406 12936.6303,708.9063 Q12936.3646,708.6719 12936.3646,708.2813 Q12936.3646,707.9063 12936.6303,707.6719 Q12936.8959,707.4375 12937.5053,707.4375 L12942.6459,707.4375 Q12943.2553,707.4375 12943.5209,707.6719 Q12943.7865,707.9063 12943.7865,708.2813 Q12943.7865,708.6719 12943.5209,708.9063 Q12943.2553,709.1406 12942.6459,709.1406 L12940.9271,709.1406 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="63.0205" x="12960.474" y="718.2285">Translator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="12858.4847" x2="13092.9838" y1="728.5" y2="728.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="12858.4847" x2="13092.9838" y1="736.5" y2="736.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="187.9609"
+                  x="12863.4847" y="755.0332">~addNode(node : Node) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="175.4717"
+                  x="12863.4847" y="772.6426">~setError(b : Boolean) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="224.499"
+                  x="12863.4847" y="790.252">~{default} translateFile(f : File) : void
+            </text>
+        </g><!--class EnumVisitor-->
+        <g class="entity" data-qualified-name="visitors.EnumVisitor" data-source-line="14" id="ent0008">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="285.5059" x="14893.4847" y="235.5"/>
+            <ellipse cx="14994.2533" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M14997.0189,247.375 Q14997.1752,247.1563 14997.3627,247.0469 Q14997.5502,246.9375 14997.7689,246.9375 Q14998.1439,246.9375 14998.3783,247.2031 Q14998.6127,247.4531 14998.6127,248.0625 L14998.6127,249.5156 Q14998.6127,250.125 14998.3783,250.3906 Q14998.1439,250.6563 14997.7689,250.6563 Q14997.4252,250.6563 14997.2221,250.4531 Q14997.0189,250.2656 14996.9096,249.75 Q14996.8627,249.3906 14996.6752,249.2031 Q14996.3471,248.8281 14995.7377,248.6094 Q14995.1283,248.3906 14994.5033,248.3906 Q14993.7377,248.3906 14993.0971,248.7188 Q14992.4721,249.0469 14991.9721,249.7969 Q14991.4877,250.5469 14991.4877,251.5781 L14991.4877,252.6719 Q14991.4877,253.9063 14992.3783,254.7344 Q14993.2689,255.5469 14994.8627,255.5469 Q14995.8002,255.5469 14996.4564,255.2969 Q14996.8471,255.1406 14997.2689,254.7031 Q14997.5346,254.4375 14997.6752,254.3594 Q14997.8314,254.2813 14998.0346,254.2813 Q14998.3627,254.2813 14998.6127,254.5469 Q14998.8783,254.7969 14998.8783,255.1406 Q14998.8783,255.4844 14998.5346,255.8906 Q14998.0346,256.4688 14997.2377,256.7969 Q14996.1596,257.25 14994.8627,257.25 Q14993.3471,257.25 14992.1439,256.625 Q14991.1596,256.125 14990.4721,255.0625 Q14989.7846,253.9844 14989.7846,252.7031 L14989.7846,251.5469 Q14989.7846,250.2188 14990.3939,249.0781 Q14991.0189,247.9219 14992.1127,247.3125 Q14993.2064,246.6875 14994.4408,246.6875 Q14995.1752,246.6875 14995.8158,246.8594 Q14996.4721,247.0156 14997.0189,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.4688"
+                  x="15014.7533" y="257.2285">EnumVisitor
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14894.4847" x2="15177.9906" y1="267.5" y2="267.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176.6338"
+                  x="14899.4847" y="286.0332">-{final} translator : Translator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14894.4847" x2="15177.9906" y1="293.1094" y2="293.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="226.0166"
+                  x="14899.4847" y="311.6426">+EnumVisitor(translator : Translator)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="273.5059"
+                  x="14899.4847" y="329.252">+visit(n : EnumDeclaration, arg : Void) : void
+            </text>
+        </g><!--class InterfaceVisitor-->
+        <g class="entity" data-qualified-name="visitors.InterfaceVisitor" data-source-line="19" id="ent0009">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="353.9678" x="14504.4847" y="235.5"/>
+            <ellipse cx="14630.5326" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M14633.2982,247.375 Q14633.4545,247.1563 14633.642,247.0469 Q14633.8295,246.9375 14634.0482,246.9375 Q14634.4232,246.9375 14634.6576,247.2031 Q14634.892,247.4531 14634.892,248.0625 L14634.892,249.5156 Q14634.892,250.125 14634.6576,250.3906 Q14634.4232,250.6563 14634.0482,250.6563 Q14633.7045,250.6563 14633.5013,250.4531 Q14633.2982,250.2656 14633.1888,249.75 Q14633.142,249.3906 14632.9545,249.2031 Q14632.6263,248.8281 14632.017,248.6094 Q14631.4076,248.3906 14630.7826,248.3906 Q14630.017,248.3906 14629.3763,248.7188 Q14628.7513,249.0469 14628.2513,249.7969 Q14627.767,250.5469 14627.767,251.5781 L14627.767,252.6719 Q14627.767,253.9063 14628.6576,254.7344 Q14629.5482,255.5469 14631.142,255.5469 Q14632.0795,255.5469 14632.7357,255.2969 Q14633.1263,255.1406 14633.5482,254.7031 Q14633.8138,254.4375 14633.9545,254.3594 Q14634.1107,254.2813 14634.3138,254.2813 Q14634.642,254.2813 14634.892,254.5469 Q14635.1576,254.7969 14635.1576,255.1406 Q14635.1576,255.4844 14634.8138,255.8906 Q14634.3138,256.4688 14633.517,256.7969 Q14632.4388,257.25 14631.142,257.25 Q14629.6263,257.25 14628.4232,256.625 Q14627.4388,256.125 14626.7513,255.0625 Q14626.0638,253.9844 14626.0638,252.7031 L14626.0638,251.5469 Q14626.0638,250.2188 14626.6732,249.0781 Q14627.2982,247.9219 14628.392,247.3125 Q14629.4857,246.6875 14630.7201,246.6875 Q14631.4545,246.6875 14632.0951,246.8594 Q14632.7513,247.0156 14633.2982,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93.3721"
+                  x="14651.0326" y="257.2285">InterfaceVisitor
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14505.4847" x2="14857.4525" y1="267.5" y2="267.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176.6338"
+                  x="14510.4847" y="286.0332">-{final} translator : Translator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14505.4847" x2="14857.4525" y1="293.1094" y2="293.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="243.9199"
+                  x="14510.4847" y="311.6426">+InterfaceVisitor(translator : Translator)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="341.9678"
+                  x="14510.4847" y="329.252">+visit(n : ClassOrInterfaceDeclaration, arg : Void) : void
+            </text>
+        </g><!--class ClassVisitor-->
+        <g class="entity" data-qualified-name="visitors.ClassVisitor" data-source-line="24" id="ent0010">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="353.9678" x="14115.4847" y="235.5"/>
+            <ellipse cx="14251.267" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M14254.0326,247.375 Q14254.1888,247.1563 14254.3763,247.0469 Q14254.5638,246.9375 14254.7826,246.9375 Q14255.1576,246.9375 14255.392,247.2031 Q14255.6263,247.4531 14255.6263,248.0625 L14255.6263,249.5156 Q14255.6263,250.125 14255.392,250.3906 Q14255.1576,250.6563 14254.7826,250.6563 Q14254.4388,250.6563 14254.2357,250.4531 Q14254.0326,250.2656 14253.9232,249.75 Q14253.8763,249.3906 14253.6888,249.2031 Q14253.3607,248.8281 14252.7513,248.6094 Q14252.142,248.3906 14251.517,248.3906 Q14250.7513,248.3906 14250.1107,248.7188 Q14249.4857,249.0469 14248.9857,249.7969 Q14248.5013,250.5469 14248.5013,251.5781 L14248.5013,252.6719 Q14248.5013,253.9063 14249.392,254.7344 Q14250.2826,255.5469 14251.8763,255.5469 Q14252.8138,255.5469 14253.4701,255.2969 Q14253.8607,255.1406 14254.2826,254.7031 Q14254.5482,254.4375 14254.6888,254.3594 Q14254.8451,254.2813 14255.0482,254.2813 Q14255.3763,254.2813 14255.6263,254.5469 Q14255.892,254.7969 14255.892,255.1406 Q14255.892,255.4844 14255.5482,255.8906 Q14255.0482,256.4688 14254.2513,256.7969 Q14253.1732,257.25 14251.8763,257.25 Q14250.3607,257.25 14249.1576,256.625 Q14248.1732,256.125 14247.4857,255.0625 Q14246.7982,253.9844 14246.7982,252.7031 L14246.7982,251.5469 Q14246.7982,250.2188 14247.4076,249.0781 Q14248.0326,247.9219 14249.1263,247.3125 Q14250.2201,246.6875 14251.4545,246.6875 Q14252.1888,246.6875 14252.8295,246.8594 Q14253.4857,247.0156 14254.0326,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="73.9033"
+                  x="14271.767" y="257.2285">ClassVisitor
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14116.4847" x2="14468.4525" y1="267.5" y2="267.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176.6338"
+                  x="14121.4847" y="286.0332">-{final} translator : Translator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14116.4847" x2="14468.4525" y1="293.1094" y2="293.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="224.4512"
+                  x="14121.4847" y="311.6426">+ClassVisitor(translator : Translator)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="341.9678"
+                  x="14121.4847" y="329.252">+visit(n : ClassOrInterfaceDeclaration, arg : Void) : void
+            </text>
+        </g><!--class RecordVisitor-->
+        <g class="entity" data-qualified-name="visitors.RecordVisitor" data-source-line="29" id="ent0011">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="294.0645" x="13786.4847" y="235.5"/>
+            <ellipse cx="13887.2533" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M13890.0189,247.375 Q13890.1752,247.1563 13890.3627,247.0469 Q13890.5502,246.9375 13890.7689,246.9375 Q13891.1439,246.9375 13891.3783,247.2031 Q13891.6127,247.4531 13891.6127,248.0625 L13891.6127,249.5156 Q13891.6127,250.125 13891.3783,250.3906 Q13891.1439,250.6563 13890.7689,250.6563 Q13890.4252,250.6563 13890.2221,250.4531 Q13890.0189,250.2656 13889.9096,249.75 Q13889.8627,249.3906 13889.6752,249.2031 Q13889.3471,248.8281 13888.7377,248.6094 Q13888.1283,248.3906 13887.5033,248.3906 Q13886.7377,248.3906 13886.0971,248.7188 Q13885.4721,249.0469 13884.9721,249.7969 Q13884.4877,250.5469 13884.4877,251.5781 L13884.4877,252.6719 Q13884.4877,253.9063 13885.3783,254.7344 Q13886.2689,255.5469 13887.8627,255.5469 Q13888.8002,255.5469 13889.4564,255.2969 Q13889.8471,255.1406 13890.2689,254.7031 Q13890.5346,254.4375 13890.6752,254.3594 Q13890.8314,254.2813 13891.0346,254.2813 Q13891.3627,254.2813 13891.6127,254.5469 Q13891.8783,254.7969 13891.8783,255.1406 Q13891.8783,255.4844 13891.5346,255.8906 Q13891.0346,256.4688 13890.2377,256.7969 Q13889.1596,257.25 13887.8627,257.25 Q13886.3471,257.25 13885.1439,256.625 Q13884.1596,256.125 13883.4721,255.0625 Q13882.7846,253.9844 13882.7846,252.7031 L13882.7846,251.5469 Q13882.7846,250.2188 13883.3939,249.0781 Q13884.0189,247.9219 13885.1127,247.3125 Q13886.2064,246.6875 13887.4408,246.6875 Q13888.1752,246.6875 13888.8158,246.8594 Q13889.4721,247.0156 13890.0189,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="84.0273"
+                  x="13907.7533" y="257.2285">RecordVisitor
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="13787.4847" x2="14079.5492" y1="267.5" y2="267.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176.6338"
+                  x="13792.4847" y="286.0332">-{final} translator : Translator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="13787.4847" x2="14079.5492" y1="293.1094" y2="293.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="234.5752"
+                  x="13792.4847" y="311.6426">+RecordVisitor(translator : Translator)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="282.0645"
+                  x="13792.4847" y="329.252">+visit(n : RecordDeclaration, arg : Void) : void
+            </text>
+        </g><!--class RatioGridLayout-->
+        <g class="entity" data-qualified-name="gui.RatioGridLayout" data-source-line="164" id="ent0034">
+            <rect fill="#F1F1F1" height="312.1406" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="450.5117" x="581.9847" y="591"/>
+            <ellipse cx="752.4081" cy="607" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M755.1737,602.875 Q755.33,602.6563 755.5175,602.5469 Q755.705,602.4375 755.9237,602.4375 Q756.2987,602.4375 756.5331,602.7031 Q756.7675,602.9531 756.7675,603.5625 L756.7675,605.0156 Q756.7675,605.625 756.5331,605.8906 Q756.2987,606.1563 755.9237,606.1563 Q755.58,606.1563 755.3768,605.9531 Q755.1737,605.7656 755.0643,605.25 Q755.0175,604.8906 754.83,604.7031 Q754.5018,604.3281 753.8925,604.1094 Q753.2831,603.8906 752.6581,603.8906 Q751.8925,603.8906 751.2518,604.2188 Q750.6268,604.5469 750.1268,605.2969 Q749.6425,606.0469 749.6425,607.0781 L749.6425,608.1719 Q749.6425,609.4063 750.5331,610.2344 Q751.4237,611.0469 753.0175,611.0469 Q753.955,611.0469 754.6112,610.7969 Q755.0018,610.6406 755.4237,610.2031 Q755.6893,609.9375 755.83,609.8594 Q755.9862,609.7813 756.1893,609.7813 Q756.5175,609.7813 756.7675,610.0469 Q757.0331,610.2969 757.0331,610.6406 Q757.0331,610.9844 756.6893,611.3906 Q756.1893,611.9688 755.3925,612.2969 Q754.3143,612.75 753.0175,612.75 Q751.5018,612.75 750.2987,612.125 Q749.3143,611.625 748.6268,610.5625 Q747.9393,609.4844 747.9393,608.2031 L747.9393,607.0469 Q747.9393,605.7188 748.5487,604.5781 Q749.1737,603.4219 750.2675,602.8125 Q751.3612,602.1875 752.5956,602.1875 Q753.33,602.1875 753.9706,602.3594 Q754.6268,602.5156 755.1737,602.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.165"
+                  x="772.9081" y="612.7285">RatioGridLayout
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="582.9847" x2="1031.4965" y1="623" y2="623"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.1855"
+                  x="587.9847" y="641.5332">-{final} hgap : int
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="100.3994"
+                  x="587.9847" y="659.1426">-{final} vgap : int
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115.1719"
+                  x="587.9847" y="676.752">-{final} ratio : Ratio
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="582.9847" x2="1031.4965" y1="683.8281" y2="683.8281"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="320.2227"
+                  x="587.9847" y="702.3613">+RatioGridLayout(hgap : int, vgap : int, ratio : Ratio)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="401.9463"
+                  x="587.9847" y="719.9707">+addLayoutComponent(name : String, comp : Component) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="438.5117"
+                  x="587.9847" y="737.5801">+addLayoutComponent(comp : Component, constraints : Object) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="296.8916"
+                  x="587.9847" y="755.1895">+getLayoutAlignmentX(target : Container) : float
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="296.8916"
+                  x="587.9847" y="772.7988">+getLayoutAlignmentY(target : Container) : float
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="264.209"
+                  x="587.9847" y="790.4082">+invalidateLayout(target : Container) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="334.2295"
+                  x="587.9847" y="808.0176">+removeLayoutComponent(comp : Component) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="333.4229"
+                  x="587.9847" y="825.627">+minimumLayoutSize(parent : Container) : Dimension
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="333.416"
+                  x="587.9847" y="843.2363">+maximumLayoutSize(target : Container) : Dimension
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="333.4502"
+                  x="587.9847" y="860.8457">+preferredLayoutSize(parent : Container) : Dimension
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="264.9814"
+                  x="587.9847" y="878.4551">+layoutContainer(parent : Container) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="317.0713" x="587.9847" y="896.0645">+preferredDimension(cmp :
+                Container) : Dimension
+            </text>
+        </g><!--class ComplexityGridPanel-->
+        <g class="entity" data-qualified-name="gui.ComplexityGridPanel" data-source-line="181" id="ent0035">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="374.9404" x="1444.9847" y="972"/>
+            <ellipse cx="1562.4569" cy="988" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M1565.2225,983.875 Q1565.3788,983.6563 1565.5663,983.5469 Q1565.7538,983.4375 1565.9725,983.4375 Q1566.3475,983.4375 1566.5819,983.7031 Q1566.8163,983.9531 1566.8163,984.5625 L1566.8163,986.0156 Q1566.8163,986.625 1566.5819,986.8906 Q1566.3475,987.1563 1565.9725,987.1563 Q1565.6288,987.1563 1565.4257,986.9531 Q1565.2225,986.7656 1565.1132,986.25 Q1565.0663,985.8906 1564.8788,985.7031 Q1564.5507,985.3281 1563.9413,985.1094 Q1563.3319,984.8906 1562.7069,984.8906 Q1561.9413,984.8906 1561.3007,985.2188 Q1560.6757,985.5469 1560.1757,986.2969 Q1559.6913,987.0469 1559.6913,988.0781 L1559.6913,989.1719 Q1559.6913,990.4063 1560.5819,991.2344 Q1561.4725,992.0469 1563.0663,992.0469 Q1564.0038,992.0469 1564.66,991.7969 Q1565.0507,991.6406 1565.4725,991.2031 Q1565.7382,990.9375 1565.8788,990.8594 Q1566.035,990.7813 1566.2382,990.7813 Q1566.5663,990.7813 1566.8163,991.0469 Q1567.0819,991.2969 1567.0819,991.6406 Q1567.0819,991.9844 1566.7382,992.3906 Q1566.2382,992.9688 1565.4413,993.2969 Q1564.3632,993.75 1563.0663,993.75 Q1561.5507,993.75 1560.3475,993.125 Q1559.3632,992.625 1558.6757,991.5625 Q1557.9882,990.4844 1557.9882,989.2031 L1557.9882,988.0469 Q1557.9882,986.7188 1558.5975,985.5781 Q1559.2225,984.4219 1560.3163,983.8125 Q1561.41,983.1875 1562.6444,983.1875 Q1563.3788,983.1875 1564.0194,983.3594 Q1564.6757,983.5156 1565.2225,983.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131.4961"
+                  x="1582.9569" y="993.7285">ComplexityGridPanel
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1445.9847" x2="1818.9252" y1="1004" y2="1004"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1445.9847" x2="1818.9252" y1="1012" y2="1012"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="148.9961"
+                  x="1450.9847" y="1030.5332">+ComplexityGridPanel()
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="362.9404"
+                  x="1450.9847" y="1048.1426">+addMetrics(manyResults : ComplexityMetricResult) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="309.2578"
+                  x="1450.9847" y="1065.752">+addMetric(result : ComplexityMetricResult) : void
+            </text>
+        </g><!--class RatioGridLayout$Ratio-->
+        <g class="entity" data-qualified-name="gui.RatioGridLayout.Ratio" data-source-line="186" id="ent0036">
+            <rect fill="#F1F1F1" height="136.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="337.2607" x="209.9847" y="679"/>
+            <ellipse cx="303.5482" cy="695" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M306.3138,690.875 Q306.4701,690.6563 306.6576,690.5469 Q306.8451,690.4375 307.0638,690.4375 Q307.4388,690.4375 307.6732,690.7031 Q307.9076,690.9531 307.9076,691.5625 L307.9076,693.0156 Q307.9076,693.625 307.6732,693.8906 Q307.4388,694.1563 307.0638,694.1563 Q306.7201,694.1563 306.517,693.9531 Q306.3138,693.7656 306.2045,693.25 Q306.1576,692.8906 305.9701,692.7031 Q305.642,692.3281 305.0326,692.1094 Q304.4232,691.8906 303.7982,691.8906 Q303.0326,691.8906 302.392,692.2188 Q301.767,692.5469 301.267,693.2969 Q300.7826,694.0469 300.7826,695.0781 L300.7826,696.1719 Q300.7826,697.4063 301.6732,698.2344 Q302.5638,699.0469 304.1576,699.0469 Q305.0951,699.0469 305.7513,698.7969 Q306.142,698.6406 306.5638,698.2031 Q306.8295,697.9375 306.9701,697.8594 Q307.1263,697.7813 307.3295,697.7813 Q307.6576,697.7813 307.9076,698.0469 Q308.1732,698.2969 308.1732,698.6406 Q308.1732,698.9844 307.8295,699.3906 Q307.3295,699.9688 306.5326,700.2969 Q305.4545,700.75 304.1576,700.75 Q302.642,700.75 301.4388,700.125 Q300.4545,699.625 299.767,698.5625 Q299.0795,697.4844 299.0795,696.2031 L299.0795,695.0469 Q299.0795,693.7188 299.6888,692.5781 Q300.3138,691.4219 301.4076,690.8125 Q302.5013,690.1875 303.7357,690.1875 Q304.4701,690.1875 305.1107,690.3594 Q305.767,690.5156 306.3138,690.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="141.6338"
+                  x="324.0482" y="700.7285">RatioGridLayout$Ratio
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="210.9847" x2="546.2455" y1="711" y2="711"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49.0137"
+                  x="215.9847" y="729.5332">-col : int
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="53.6758"
+                  x="215.9847" y="747.1426">-row : int
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="210.9847" x2="546.2455" y1="754.2188" y2="754.2188"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="142.7754"
+                  x="215.9847" y="772.752">+getCols(size : int) : int
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="149.7754"
+                  x="215.9847" y="790.3613">+getRows(size : int) : int
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="325.2607"
+                  x="215.9847" y="807.9707">-estimateDimension(aspect : double, size : int) : long
+            </text>
+        </g><!--class Updatable-->
+        <g class="entity" data-qualified-name="gui.Updatable" data-source-line="288" id="ent0051">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="109.6719" x="64.4847" y="714"/>
+            <ellipse cx="85.7149" cy="730" fill="#B4A7E5" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M86.668,726.6406 L86.668,733.2969 L88.3867,733.2969 Q88.9961,733.2969 89.2617,733.5313 Q89.5274,733.7656 89.5274,734.1563 Q89.5274,734.5313 89.2617,734.7656 Q88.9961,735 88.3867,735 L83.2461,735 Q82.6367,735 82.3711,734.7656 Q82.1055,734.5313 82.1055,734.1406 Q82.1055,733.7656 82.3711,733.5313 Q82.6367,733.2969 83.2461,733.2969 L84.9649,733.2969 L84.9649,726.6406 L83.2461,726.6406 Q82.6367,726.6406 82.3711,726.4063 Q82.1055,726.1719 82.1055,725.7813 Q82.1055,725.4063 82.3711,725.1719 Q82.6367,724.9375 83.2461,724.9375 L88.3867,724.9375 Q88.9961,724.9375 89.2617,725.1719 Q89.5274,725.4063 89.5274,725.7813 Q89.5274,726.1719 89.2617,726.4063 Q88.9961,726.6406 88.3867,726.6406 L86.668,726.6406 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" font-style="italic" lengthAdjust="spacing"
+                  textLength="63.8271" x="101.0993" y="735.7285">Updatable
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="65.4847" x2="173.1566" y1="746" y2="746"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="65.4847" x2="173.1566" y1="754" y2="754"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="97.6719"
+                  x="70.4847" y="772.5332">~update() : void
+            </text>
+        </g><!--class PlantUMLFrame-->
+        <g class="entity" data-qualified-name="gui.frame.PlantUMLFrame" data-source-line="76" id="ent0021">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="244.2441" x="2419.4847" y="696.5"/>
+            <ellipse cx="2486.3983" cy="712.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M2489.1639,708.375 Q2489.3202,708.1563 2489.5077,708.0469 Q2489.6952,707.9375 2489.9139,707.9375 Q2490.2889,707.9375 2490.5233,708.2031 Q2490.7577,708.4531 2490.7577,709.0625 L2490.7577,710.5156 Q2490.7577,711.125 2490.5233,711.3906 Q2490.2889,711.6563 2489.9139,711.6563 Q2489.5702,711.6563 2489.3671,711.4531 Q2489.1639,711.2656 2489.0546,710.75 Q2489.0077,710.3906 2488.8202,710.2031 Q2488.4921,709.8281 2487.8827,709.6094 Q2487.2733,709.3906 2486.6483,709.3906 Q2485.8827,709.3906 2485.2421,709.7188 Q2484.6171,710.0469 2484.1171,710.7969 Q2483.6327,711.5469 2483.6327,712.5781 L2483.6327,713.6719 Q2483.6327,714.9063 2484.5233,715.7344 Q2485.4139,716.5469 2487.0077,716.5469 Q2487.9452,716.5469 2488.6014,716.2969 Q2488.9921,716.1406 2489.4139,715.7031 Q2489.6796,715.4375 2489.8202,715.3594 Q2489.9764,715.2813 2490.1796,715.2813 Q2490.5077,715.2813 2490.7577,715.5469 Q2491.0233,715.7969 2491.0233,716.1406 Q2491.0233,716.4844 2490.6796,716.8906 Q2490.1796,717.4688 2489.3827,717.7969 Q2488.3046,718.25 2487.0077,718.25 Q2485.4921,718.25 2484.2889,717.625 Q2483.3046,717.125 2482.6171,716.0625 Q2481.9296,714.9844 2481.9296,713.7031 L2481.9296,712.5469 Q2481.9296,711.2188 2482.5389,710.0781 Q2483.1639,708.9219 2484.2577,708.3125 Q2485.3514,707.6875 2486.5858,707.6875 Q2487.3202,707.6875 2487.9608,707.8594 Q2488.6171,708.0156 2489.1639,708.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="101.917"
+                  x="2506.8983" y="718.2285">PlantUMLFrame
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="2420.4847" x2="2662.7289" y1="728.5" y2="728.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="177.4199"
+                  x="2425.4847" y="747.0332">-{final} image : JSVGCanvas
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="2420.4847" x2="2662.7289" y1="754.1094" y2="754.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="232.2441"
+                  x="2425.4847" y="772.6426">+PlantUMLFrame(umlOutput : String)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="140.0547"
+                  x="2425.4847" y="790.252">-setupZooming() : void
+            </text>
+        </g><!--class ClassFrame-->
+        <g class="entity" data-qualified-name="gui.frame.ClassFrame" data-source-line="81" id="ent0023">
+            <rect fill="#F1F1F1" height="136.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="436.0332" x="1687.4847" y="679"/>
+            <ellipse cx="1863.5238" cy="695" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M1866.2894,690.875 Q1866.4457,690.6563 1866.6332,690.5469 Q1866.8207,690.4375 1867.0394,690.4375 Q1867.4144,690.4375 1867.6488,690.7031 Q1867.8832,690.9531 1867.8832,691.5625 L1867.8832,693.0156 Q1867.8832,693.625 1867.6488,693.8906 Q1867.4144,694.1563 1867.0394,694.1563 Q1866.6957,694.1563 1866.4926,693.9531 Q1866.2894,693.7656 1866.1801,693.25 Q1866.1332,692.8906 1865.9457,692.7031 Q1865.6176,692.3281 1865.0082,692.1094 Q1864.3988,691.8906 1863.7738,691.8906 Q1863.0082,691.8906 1862.3676,692.2188 Q1861.7426,692.5469 1861.2426,693.2969 Q1860.7582,694.0469 1860.7582,695.0781 L1860.7582,696.1719 Q1860.7582,697.4063 1861.6488,698.2344 Q1862.5394,699.0469 1864.1332,699.0469 Q1865.0707,699.0469 1865.7269,698.7969 Q1866.1176,698.6406 1866.5394,698.2031 Q1866.8051,697.9375 1866.9457,697.8594 Q1867.1019,697.7813 1867.3051,697.7813 Q1867.6332,697.7813 1867.8832,698.0469 Q1868.1488,698.2969 1868.1488,698.6406 Q1868.1488,698.9844 1867.8051,699.3906 Q1867.3051,699.9688 1866.5082,700.2969 Q1865.4301,700.75 1864.1332,700.75 Q1862.6176,700.75 1861.4144,700.125 Q1860.4301,699.625 1859.7426,698.5625 Q1859.0551,697.4844 1859.0551,696.2031 L1859.0551,695.0469 Q1859.0551,693.7188 1859.6644,692.5781 Q1860.2894,691.4219 1861.3832,690.8125 Q1862.4769,690.1875 1863.7113,690.1875 Q1864.4457,690.1875 1865.0863,690.3594 Q1865.7426,690.5156 1866.2894,690.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="75.4551"
+                  x="1884.0238" y="700.7285">ClassFrame
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1688.4847" x2="2122.5179" y1="711" y2="711"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="161.0684"
+                  x="1693.4847" y="729.5332">-{final} className : String
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="233.4473"
+                  x="1693.4847" y="747.1426">-{final} gridInfo : ComplexityGridPanel
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="211.6611"
+                  x="1693.4847" y="764.752">-{final} methodScroll : JScrollPane
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1688.4847" x2="2122.5179" y1="771.8281" y2="771.8281"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="420.5059"
+                  x="1693.4847" y="790.3613">+ClassFrame(className : String, translator : ComplexityTranslator)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="424.0332"
+                  x="1693.4847" y="807.9707">-getJScrollPane(umlTranslator : ComplexityTranslator) : JScrollPane
+            </text>
+        </g><!--class FrameManager-->
+        <g class="entity" data-qualified-name="gui.frame.FrameManager" data-source-line="88" id="ent0024">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="225.5615" x="2158.4847" y="696.5"/>
+            <ellipse cx="2219.1639" cy="712.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M2221.9296,708.375 Q2222.0858,708.1563 2222.2733,708.0469 Q2222.4608,707.9375 2222.6796,707.9375 Q2223.0546,707.9375 2223.2889,708.2031 Q2223.5233,708.4531 2223.5233,709.0625 L2223.5233,710.5156 Q2223.5233,711.125 2223.2889,711.3906 Q2223.0546,711.6563 2222.6796,711.6563 Q2222.3358,711.6563 2222.1327,711.4531 Q2221.9296,711.2656 2221.8202,710.75 Q2221.7733,710.3906 2221.5858,710.2031 Q2221.2577,709.8281 2220.6483,709.6094 Q2220.0389,709.3906 2219.4139,709.3906 Q2218.6483,709.3906 2218.0077,709.7188 Q2217.3827,710.0469 2216.8827,710.7969 Q2216.3983,711.5469 2216.3983,712.5781 L2216.3983,713.6719 Q2216.3983,714.9063 2217.2889,715.7344 Q2218.1796,716.5469 2219.7733,716.5469 Q2220.7108,716.5469 2221.3671,716.2969 Q2221.7577,716.1406 2222.1796,715.7031 Q2222.4452,715.4375 2222.5858,715.3594 Q2222.7421,715.2813 2222.9452,715.2813 Q2223.2733,715.2813 2223.5233,715.5469 Q2223.7889,715.7969 2223.7889,716.1406 Q2223.7889,716.4844 2223.4452,716.8906 Q2222.9452,717.4688 2222.1483,717.7969 Q2221.0702,718.25 2219.7733,718.25 Q2218.2577,718.25 2217.0546,717.625 Q2216.0702,717.125 2215.3827,716.0625 Q2214.6952,714.9844 2214.6952,713.7031 L2214.6952,712.5469 Q2214.6952,711.2188 2215.3046,710.0781 Q2215.9296,708.9219 2217.0233,708.3125 Q2218.1171,707.6875 2219.3514,707.6875 Q2220.0858,707.6875 2220.7264,707.8594 Q2221.3827,708.0156 2221.9296,708.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="95.7031"
+                  x="2239.6639" y="718.2285">FrameManager
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="2159.4847" x2="2383.0463" y1="728.5" y2="728.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="183.627" x="2164.4847" y="747.0332">-{final} frames : List&lt;JFrame&gt;
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="2159.4847" x2="2383.0463" y1="754.1094" y2="754.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="213.5615" x="2164.4847" y="772.6426">+addFrame(frame : JFrame)
+                : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="103.0928" x="2164.4847" y="790.252">+closeAll() : void
+            </text>
+        </g><!--class MethodFrame-->
+        <g class="entity" data-qualified-name="gui.frame.MethodFrame" data-source-line="93" id="ent0025">
+            <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="584.2568" x="1068.4847" y="705.5"/>
+            <ellipse cx="1312.7909" cy="721.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M1315.5565,717.375 Q1315.7128,717.1563 1315.9003,717.0469 Q1316.0878,716.9375 1316.3065,716.9375 Q1316.6815,716.9375 1316.9159,717.2031 Q1317.1503,717.4531 1317.1503,718.0625 L1317.1503,719.5156 Q1317.1503,720.125 1316.9159,720.3906 Q1316.6815,720.6563 1316.3065,720.6563 Q1315.9628,720.6563 1315.7596,720.4531 Q1315.5565,720.2656 1315.4471,719.75 Q1315.4003,719.3906 1315.2128,719.2031 Q1314.8846,718.8281 1314.2753,718.6094 Q1313.6659,718.3906 1313.0409,718.3906 Q1312.2753,718.3906 1311.6346,718.7188 Q1311.0096,719.0469 1310.5096,719.7969 Q1310.0253,720.5469 1310.0253,721.5781 L1310.0253,722.6719 Q1310.0253,723.9063 1310.9159,724.7344 Q1311.8065,725.5469 1313.4003,725.5469 Q1314.3378,725.5469 1314.994,725.2969 Q1315.3846,725.1406 1315.8065,724.7031 Q1316.0721,724.4375 1316.2128,724.3594 Q1316.369,724.2813 1316.5721,724.2813 Q1316.9003,724.2813 1317.1503,724.5469 Q1317.4159,724.7969 1317.4159,725.1406 Q1317.4159,725.4844 1317.0721,725.8906 Q1316.5721,726.4688 1315.7753,726.7969 Q1314.6971,727.25 1313.4003,727.25 Q1311.8846,727.25 1310.6815,726.625 Q1309.6971,726.125 1309.0096,725.0625 Q1308.3221,723.9844 1308.3221,722.7031 L1308.3221,721.5469 Q1308.3221,720.2188 1308.9315,719.0781 Q1309.5565,717.9219 1310.6503,717.3125 Q1311.744,716.6875 1312.9784,716.6875 Q1313.7128,716.6875 1314.3534,716.8594 Q1315.0096,717.0156 1315.5565,717.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="87.1445"
+                  x="1333.2909" y="727.2285">MethodFrame
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1069.4847" x2="1651.7416" y1="737.5" y2="737.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="233.4473"
+                  x="1074.4847" y="756.0332">-{final} gridInfo : ComplexityGridPanel
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1069.4847" x2="1651.7416" y1="763.1094" y2="763.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="572.2568"
+                  x="1074.4847" y="781.6426">+MethodFrame(className : String, methodName : String, translator :
+                ComplexityTranslator)
+            </text>
+        </g><!--class MainFrame-->
+        <g class="entity" data-qualified-name="gui.frame.MainFrame" data-source-line="97" id="ent0026">
+            <rect fill="#F1F1F1" height="329.75" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="436.0332" x="2698.4847" y="582"/>
+            <ellipse cx="2876.8549" cy="598" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M2879.6205,593.875 Q2879.7767,593.6563 2879.9642,593.5469 Q2880.1517,593.4375 2880.3705,593.4375 Q2880.7455,593.4375 2880.9799,593.7031 Q2881.2142,593.9531 2881.2142,594.5625 L2881.2142,596.0156 Q2881.2142,596.625 2880.9799,596.8906 Q2880.7455,597.1563 2880.3705,597.1563 Q2880.0267,597.1563 2879.8236,596.9531 Q2879.6205,596.7656 2879.5111,596.25 Q2879.4642,595.8906 2879.2767,595.7031 Q2878.9486,595.3281 2878.3392,595.1094 Q2877.7299,594.8906 2877.1049,594.8906 Q2876.3392,594.8906 2875.6986,595.2188 Q2875.0736,595.5469 2874.5736,596.2969 Q2874.0892,597.0469 2874.0892,598.0781 L2874.0892,599.1719 Q2874.0892,600.4063 2874.9799,601.2344 Q2875.8705,602.0469 2877.4642,602.0469 Q2878.4017,602.0469 2879.058,601.7969 Q2879.4486,601.6406 2879.8705,601.2031 Q2880.1361,600.9375 2880.2767,600.8594 Q2880.433,600.7813 2880.6361,600.7813 Q2880.9642,600.7813 2881.2142,601.0469 Q2881.4799,601.2969 2881.4799,601.6406 Q2881.4799,601.9844 2881.1361,602.3906 Q2880.6361,602.9688 2879.8392,603.2969 Q2878.7611,603.75 2877.4642,603.75 Q2875.9486,603.75 2874.7455,603.125 Q2873.7611,602.625 2873.0736,601.5625 Q2872.3861,600.4844 2872.3861,599.2031 L2872.3861,598.0469 Q2872.3861,596.7188 2872.9955,595.5781 Q2873.6205,594.4219 2874.7142,593.8125 Q2875.808,593.1875 2877.0424,593.1875 Q2877.7767,593.1875 2878.4174,593.3594 Q2879.0736,593.5156 2879.6205,593.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70.793"
+                  x="2897.3549" y="603.7285">MainFrame
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="2699.4847" x2="3133.5179" y1="614" y2="614"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="285.5986"
+                  x="2704.4847" y="632.5332">-{final} backgroundExecutor : ExecutorService
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="179.792"
+                  x="2704.4847" y="650.1426">-{final} contentPanel : JPanel
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="153.3301"
+                  x="2704.4847" y="667.752">-{final} topPanel : JPanel
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="165.7646"
+                  x="2704.4847" y="685.3613">-{final} umlButton : JButton
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="209.3369"
+                  x="2704.4847" y="702.9707">-{final} complexityButton : JButton
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="212.4678"
+                  x="2704.4847" y="720.5801">-{final} sourceFolderLabel : JLabel
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176.668"
+                  x="2704.4847" y="738.1895">-{final} bottomPanel : JPanel
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="147.041"
+                  x="2704.4847" y="755.7988">-selectedDirectory : File
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152.5166"
+                  x="2704.4847" y="773.4082">-toRemove : Component
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="2699.4847" x2="3133.5179" y1="780.4844" y2="780.4844"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="88.293"
+                  x="2704.4847" y="799.0176">+MainFrame()
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="284.8193"
+                  x="2704.4847" y="816.627">-handleFolderSelection(e : ActionEvent) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="225.6543"
+                  x="2704.4847" y="834.2363">-generateUml(e : ActionEvent) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="270.0127"
+                  x="2704.4847" y="851.8457">-generateComplexity(e : ActionEvent) : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="119.0342"
+                  x="2704.4847" y="869.4551">-processInit() : void
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="424.0332" x="2704.4847" y="887.0645">
+                -getJScrollPane(umlTranslator : ComplexityTranslator) : JScrollPane
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="270.4297"
+                  x="2704.4847" y="904.6738">+componentResized() : ComponentAdapter
+            </text>
+        </g><!--class FileHandler-->
+        <g class="entity" data-qualified-name="source.FileHandler" data-source-line="195" id="ent0038">
+            <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="234.1338" x="13496.4847" y="235.5"/>
+            <ellipse cx="13573.5087" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M13576.2743,247.375 Q13576.4305,247.1563 13576.618,247.0469 Q13576.8055,246.9375 13577.0243,246.9375 Q13577.3993,246.9375 13577.6337,247.2031 Q13577.868,247.4531 13577.868,248.0625 L13577.868,249.5156 Q13577.868,250.125 13577.6337,250.3906 Q13577.3993,250.6563 13577.0243,250.6563 Q13576.6805,250.6563 13576.4774,250.4531 Q13576.2743,250.2656 13576.1649,249.75 Q13576.118,249.3906 13575.9305,249.2031 Q13575.6024,248.8281 13574.993,248.6094 Q13574.3837,248.3906 13573.7587,248.3906 Q13572.993,248.3906 13572.3524,248.7188 Q13571.7274,249.0469 13571.2274,249.7969 Q13570.743,250.5469 13570.743,251.5781 L13570.743,252.6719 Q13570.743,253.9063 13571.6337,254.7344 Q13572.5243,255.5469 13574.118,255.5469 Q13575.0555,255.5469 13575.7118,255.2969 Q13576.1024,255.1406 13576.5243,254.7031 Q13576.7899,254.4375 13576.9305,254.3594 Q13577.0868,254.2813 13577.2899,254.2813 Q13577.618,254.2813 13577.868,254.5469 Q13578.1337,254.7969 13578.1337,255.1406 Q13578.1337,255.4844 13577.7899,255.8906 Q13577.2899,256.4688 13576.493,256.7969 Q13575.4149,257.25 13574.118,257.25 Q13572.6024,257.25 13571.3993,256.625 Q13570.4149,256.125 13569.7274,255.0625 Q13569.0399,253.9844 13569.0399,252.7031 L13569.0399,251.5469 Q13569.0399,250.2188 13569.6493,249.0781 Q13570.2743,247.9219 13571.368,247.3125 Q13572.4618,246.6875 13573.6962,246.6875 Q13574.4305,246.6875 13575.0712,246.8594 Q13575.7274,247.0156 13576.2743,247.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="71.5859"
+                  x="13594.0087" y="257.2285">FileHandler
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="13497.4847" x2="13729.6185" y1="267.5" y2="267.5"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="176.6338"
+                  x="13502.4847" y="286.0332">-{final} translator : Translator
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="13497.4847" x2="13729.6185" y1="293.1094" y2="293.1094"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="222.1338"
+                  x="13502.4847" y="311.6426">+FileHandler(translator : Translator)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="135.0098"
+                  x="13502.4847" y="329.252">~handle(f : File) : void
+            </text>
+        </g><!--class DirectoryExplorer-->
+        <g class="entity" data-qualified-name="source.DirectoryExplorer" data-source-line="200" id="ent0039">
+            <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="287.8164" x="13173.4847" y="227"/>
+            <ellipse cx="13259.0741" cy="243" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M13261.8397,238.875 Q13261.996,238.6563 13262.1835,238.5469 Q13262.371,238.4375 13262.5897,238.4375 Q13262.9647,238.4375 13263.1991,238.7031 Q13263.4335,238.9531 13263.4335,239.5625 L13263.4335,241.0156 Q13263.4335,241.625 13263.1991,241.8906 Q13262.9647,242.1563 13262.5897,242.1563 Q13262.246,242.1563 13262.0429,241.9531 Q13261.8397,241.7656 13261.7304,241.25 Q13261.6835,240.8906 13261.496,240.7031 Q13261.1679,240.3281 13260.5585,240.1094 Q13259.9491,239.8906 13259.3241,239.8906 Q13258.5585,239.8906 13257.9179,240.2188 Q13257.2929,240.5469 13256.7929,241.2969 Q13256.3085,242.0469 13256.3085,243.0781 L13256.3085,244.1719 Q13256.3085,245.4063 13257.1991,246.2344 Q13258.0897,247.0469 13259.6835,247.0469 Q13260.621,247.0469 13261.2772,246.7969 Q13261.6679,246.6406 13262.0897,246.2031 Q13262.3554,245.9375 13262.496,245.8594 Q13262.6522,245.7813 13262.8554,245.7813 Q13263.1835,245.7813 13263.4335,246.0469 Q13263.6991,246.2969 13263.6991,246.6406 Q13263.6991,246.9844 13263.3554,247.3906 Q13262.8554,247.9688 13262.0585,248.2969 Q13260.9804,248.75 13259.6835,248.75 Q13258.1679,248.75 13256.9647,248.125 Q13255.9804,247.625 13255.2929,246.5625 Q13254.6054,245.4844 13254.6054,244.2031 L13254.6054,243.0469 Q13254.6054,241.7188 13255.2147,240.5781 Q13255.8397,239.4219 13256.9335,238.8125 Q13258.0272,238.1875 13259.2616,238.1875 Q13259.996,238.1875 13260.6366,238.3594 Q13261.2929,238.5156 13261.8397,238.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108.1377"
+                  x="13279.5741" y="248.7285">DirectoryExplorer
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="13174.4847" x2="13460.3012" y1="259" y2="259"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="193.7646"
+                  x="13179.4847" y="277.5332">-{final} fileHandler : FileHandler
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="157.9307" x="13179.4847" y="295.1426">-{final} fileFilter :
+                FileFilter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="13174.4847" x2="13460.3012" y1="302.2188" y2="302.2188"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="275.8164"
+                  x="13179.4847" y="320.752">+DirectoryExplorer(fileHandler : FileHandler)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="152.8926"
+                  x="13179.4847" y="338.3613">+explore(file : File) : void
+            </text>
+        </g><!--class VoidVisitorAdapter-->
+        <g class="entity" data-qualified-name="com.github.javaparser.ast.visitor.VoidVisitorAdapter"
+           data-source-line="314" id="ent0056">
+            <rect fill="#F1F1F1" height="48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="147.9512"
+                  x="14412.4847" y="723"/>
+            <ellipse cx="14427.4847" cy="739" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M14430.2504,734.875 Q14430.4066,734.6563 14430.5941,734.5469 Q14430.7816,734.4375 14431.0004,734.4375 Q14431.3754,734.4375 14431.6097,734.7031 Q14431.8441,734.9531 14431.8441,735.5625 L14431.8441,737.0156 Q14431.8441,737.625 14431.6097,737.8906 Q14431.3754,738.1563 14431.0004,738.1563 Q14430.6566,738.1563 14430.4535,737.9531 Q14430.2504,737.7656 14430.141,737.25 Q14430.0941,736.8906 14429.9066,736.7031 Q14429.5785,736.3281 14428.9691,736.1094 Q14428.3597,735.8906 14427.7347,735.8906 Q14426.9691,735.8906 14426.3285,736.2188 Q14425.7035,736.5469 14425.2035,737.2969 Q14424.7191,738.0469 14424.7191,739.0781 L14424.7191,740.1719 Q14424.7191,741.4063 14425.6097,742.2344 Q14426.5004,743.0469 14428.0941,743.0469 Q14429.0316,743.0469 14429.6879,742.7969 Q14430.0785,742.6406 14430.5004,742.2031 Q14430.766,741.9375 14430.9066,741.8594 Q14431.0629,741.7813 14431.266,741.7813 Q14431.5941,741.7813 14431.8441,742.0469 Q14432.1097,742.2969 14432.1097,742.6406 Q14432.1097,742.9844 14431.766,743.3906 Q14431.266,743.9688 14430.4691,744.2969 Q14429.391,744.75 14428.0941,744.75 Q14426.5785,744.75 14425.3754,744.125 Q14424.391,743.625 14423.7035,742.5625 Q14423.016,741.4844 14423.016,740.2031 L14423.016,739.0469 Q14423.016,737.7188 14423.6254,736.5781 Q14424.2504,735.4219 14425.3441,734.8125 Q14426.4379,734.1875 14427.6722,734.1875 Q14428.4066,734.1875 14429.0472,734.3594 Q14429.7035,734.5156 14430.2504,734.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="115.9512"
+                  x="14441.4847" y="744.7285">VoidVisitorAdapter
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14413.4847" x2="14559.4359" y1="755" y2="755"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="14413.4847" x2="14559.4359" y1="763" y2="763"/>
+        </g><!--class MainDriver-->
+        <g class="entity" data-qualified-name="MainDriver" data-source-line="2" id="ent0002">
+            <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
+                  width="180.4512" x="15214.4847" y="253"/>
+            <ellipse cx="15266.6224" cy="269" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M15269.3881,264.875 Q15269.5443,264.6563 15269.7318,264.5469 Q15269.9193,264.4375 15270.1381,264.4375 Q15270.5131,264.4375 15270.7474,264.7031 Q15270.9818,264.9531 15270.9818,265.5625 L15270.9818,267.0156 Q15270.9818,267.625 15270.7474,267.8906 Q15270.5131,268.1563 15270.1381,268.1563 Q15269.7943,268.1563 15269.5912,267.9531 Q15269.3881,267.7656 15269.2787,267.25 Q15269.2318,266.8906 15269.0443,266.7031 Q15268.7162,266.3281 15268.1068,266.1094 Q15267.4974,265.8906 15266.8724,265.8906 Q15266.1068,265.8906 15265.4662,266.2188 Q15264.8412,266.5469 15264.3412,267.2969 Q15263.8568,268.0469 15263.8568,269.0781 L15263.8568,270.1719 Q15263.8568,271.4063 15264.7474,272.2344 Q15265.6381,273.0469 15267.2318,273.0469 Q15268.1693,273.0469 15268.8256,272.7969 Q15269.2162,272.6406 15269.6381,272.2031 Q15269.9037,271.9375 15270.0443,271.8594 Q15270.2006,271.7813 15270.4037,271.7813 Q15270.7318,271.7813 15270.9818,272.0469 Q15271.2474,272.2969 15271.2474,272.6406 Q15271.2474,272.9844 15270.9037,273.3906 Q15270.4037,273.9688 15269.6068,274.2969 Q15268.5287,274.75 15267.2318,274.75 Q15265.7162,274.75 15264.5131,274.125 Q15263.5287,273.625 15262.8412,272.5625 Q15262.1537,271.4844 15262.1537,270.2031 L15262.1537,269.0469 Q15262.1537,267.7188 15262.7631,266.5781 Q15263.3881,265.4219 15264.4818,264.8125 Q15265.5756,264.1875 15266.8099,264.1875 Q15267.5443,264.1875 15268.1849,264.3594 Q15268.8412,264.5156 15269.3881,264.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="67.6758"
+                  x="15287.1224" y="274.7285">MainDriver
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="15215.4847" x2="15393.9359" y1="285" y2="285"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="15215.4847" x2="15393.9359" y1="293" y2="293"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing"
+                  text-decoration="underline" textLength="168.4512" x="15220.4847" y="311.5332">+main(args : String[]) :
+                void
+            </text>
+        </g><!--class JFrame-->
+        <g class="entity" data-qualified-name="JFrame" data-source-line="323" id="ent0071">
+            <rect fill="#F1F1F1" height="48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="79.4482"
+                  x="3362.9847" y="998.5"/>
+            <ellipse cx="3377.9847" cy="1014.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M3380.7504,1010.375 Q3380.9066,1010.1563 3381.0941,1010.0469 Q3381.2816,1009.9375 3381.5004,1009.9375 Q3381.8754,1009.9375 3382.1097,1010.2031 Q3382.3441,1010.4531 3382.3441,1011.0625 L3382.3441,1012.5156 Q3382.3441,1013.125 3382.1097,1013.3906 Q3381.8754,1013.6563 3381.5004,1013.6563 Q3381.1566,1013.6563 3380.9535,1013.4531 Q3380.7504,1013.2656 3380.641,1012.75 Q3380.5941,1012.3906 3380.4066,1012.2031 Q3380.0785,1011.8281 3379.4691,1011.6094 Q3378.8597,1011.3906 3378.2347,1011.3906 Q3377.4691,1011.3906 3376.8285,1011.7188 Q3376.2035,1012.0469 3375.7035,1012.7969 Q3375.2191,1013.5469 3375.2191,1014.5781 L3375.2191,1015.6719 Q3375.2191,1016.9063 3376.1097,1017.7344 Q3377.0004,1018.5469 3378.5941,1018.5469 Q3379.5316,1018.5469 3380.1879,1018.2969 Q3380.5785,1018.1406 3381.0004,1017.7031 Q3381.266,1017.4375 3381.4066,1017.3594 Q3381.5629,1017.2813 3381.766,1017.2813 Q3382.0941,1017.2813 3382.3441,1017.5469 Q3382.6097,1017.7969 3382.6097,1018.1406 Q3382.6097,1018.4844 3382.266,1018.8906 Q3381.766,1019.4688 3380.9691,1019.7969 Q3379.891,1020.25 3378.5941,1020.25 Q3377.0785,1020.25 3375.8754,1019.625 Q3374.891,1019.125 3374.2035,1018.0625 Q3373.516,1016.9844 3373.516,1015.7031 L3373.516,1014.5469 Q3373.516,1013.2188 3374.1254,1012.0781 Q3374.7504,1010.9219 3375.8441,1010.3125 Q3376.9379,1009.6875 3378.1722,1009.6875 Q3378.9066,1009.6875 3379.5472,1009.8594 Q3380.2035,1010.0156 3380.7504,1010.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47.4482"
+                  x="3391.9847" y="1020.2285">JFrame
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3363.9847" x2="3441.433" y1="1030.5" y2="1030.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3363.9847" x2="3441.433" y1="1038.5" y2="1038.5"/>
+        </g><!--class JPanel-->
+        <g class="entity" data-qualified-name="JPanel" data-source-line="328" id="ent0077">
+            <rect fill="#F1F1F1" height="48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="74.8066"
+                  x="1594.9847" y="1133"/>
+            <ellipse cx="1609.9847" cy="1149" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M1612.7504,1144.875 Q1612.9066,1144.6563 1613.0941,1144.5469 Q1613.2816,1144.4375 1613.5004,1144.4375 Q1613.8754,1144.4375 1614.1097,1144.7031 Q1614.3441,1144.9531 1614.3441,1145.5625 L1614.3441,1147.0156 Q1614.3441,1147.625 1614.1097,1147.8906 Q1613.8754,1148.1563 1613.5004,1148.1563 Q1613.1566,1148.1563 1612.9535,1147.9531 Q1612.7504,1147.7656 1612.641,1147.25 Q1612.5941,1146.8906 1612.4066,1146.7031 Q1612.0785,1146.3281 1611.4691,1146.1094 Q1610.8597,1145.8906 1610.2347,1145.8906 Q1609.4691,1145.8906 1608.8285,1146.2188 Q1608.2035,1146.5469 1607.7035,1147.2969 Q1607.2191,1148.0469 1607.2191,1149.0781 L1607.2191,1150.1719 Q1607.2191,1151.4063 1608.1097,1152.2344 Q1609.0004,1153.0469 1610.5941,1153.0469 Q1611.5316,1153.0469 1612.1879,1152.7969 Q1612.5785,1152.6406 1613.0004,1152.2031 Q1613.266,1151.9375 1613.4066,1151.8594 Q1613.5629,1151.7813 1613.766,1151.7813 Q1614.0941,1151.7813 1614.3441,1152.0469 Q1614.6097,1152.2969 1614.6097,1152.6406 Q1614.6097,1152.9844 1614.266,1153.3906 Q1613.766,1153.9688 1612.9691,1154.2969 Q1611.891,1154.75 1610.5941,1154.75 Q1609.0785,1154.75 1607.8754,1154.125 Q1606.891,1153.625 1606.2035,1152.5625 Q1605.516,1151.4844 1605.516,1150.2031 L1605.516,1149.0469 Q1605.516,1147.7188 1606.1254,1146.5781 Q1606.7504,1145.4219 1607.8441,1144.8125 Q1608.9379,1144.1875 1610.1722,1144.1875 Q1610.9066,1144.1875 1611.5472,1144.3594 Q1612.2035,1144.5156 1612.7504,1144.875 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="42.8066"
+                  x="1623.9847" y="1154.7285">JPanel
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1595.9847" x2="1668.7914" y1="1165" y2="1165"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="1595.9847" x2="1668.7914" y1="1173" y2="1173"/>
+        </g><!--class LayoutManager2-->
+        <g class="entity" data-qualified-name="LayoutManager2" data-source-line="335" id="ent0085">
+            <rect fill="#F1F1F1" height="48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="137.0752"
+                  x="3190.9847" y="998.5"/>
+            <ellipse cx="3205.9847" cy="1014.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
+            <path d="M3208.7504,1010.375 Q3208.9066,1010.1563 3209.0941,1010.0469 Q3209.2816,1009.9375 3209.5004,1009.9375 Q3209.8754,1009.9375 3210.1097,1010.2031 Q3210.3441,1010.4531 3210.3441,1011.0625 L3210.3441,1012.5156 Q3210.3441,1013.125 3210.1097,1013.3906 Q3209.8754,1013.6563 3209.5004,1013.6563 Q3209.1566,1013.6563 3208.9535,1013.4531 Q3208.7504,1013.2656 3208.641,1012.75 Q3208.5941,1012.3906 3208.4066,1012.2031 Q3208.0785,1011.8281 3207.4691,1011.6094 Q3206.8597,1011.3906 3206.2347,1011.3906 Q3205.4691,1011.3906 3204.8285,1011.7188 Q3204.2035,1012.0469 3203.7035,1012.7969 Q3203.2191,1013.5469 3203.2191,1014.5781 L3203.2191,1015.6719 Q3203.2191,1016.9063 3204.1097,1017.7344 Q3205.0004,1018.5469 3206.5941,1018.5469 Q3207.5316,1018.5469 3208.1879,1018.2969 Q3208.5785,1018.1406 3209.0004,1017.7031 Q3209.266,1017.4375 3209.4066,1017.3594 Q3209.5629,1017.2813 3209.766,1017.2813 Q3210.0941,1017.2813 3210.3441,1017.5469 Q3210.6097,1017.7969 3210.6097,1018.1406 Q3210.6097,1018.4844 3210.266,1018.8906 Q3209.766,1019.4688 3208.9691,1019.7969 Q3207.891,1020.25 3206.5941,1020.25 Q3205.0785,1020.25 3203.8754,1019.625 Q3202.891,1019.125 3202.2035,1018.0625 Q3201.516,1016.9844 3201.516,1015.7031 L3201.516,1014.5469 Q3201.516,1013.2188 3202.1254,1012.0781 Q3202.7504,1010.9219 3203.8441,1010.3125 Q3204.9379,1009.6875 3206.1722,1009.6875 Q3206.9066,1009.6875 3207.5472,1009.8594 Q3208.2035,1010.0156 3208.7504,1010.375 Z "
+                  fill="#000000"/>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="105.0752"
+                  x="3219.9847" y="1020.2285">LayoutManager2
+            </text>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3191.9847" x2="3327.0599" y1="1030.5" y2="1030.5"/>
+            <line style="stroke:#181818;stroke-width:0.5;" x1="3191.9847" x2="3327.0599" y1="1038.5" y2="1038.5"/>
+        </g><!--link InterfaceVisitor to VoidVisitorAdapter-->
+        <g class="link" data-entity-1="ent0009" data-entity-2="ent0056" data-link-type="extension"
+           data-source-line="314" id="lnk62">
+            <path codeLine="314" d="M14660.4247,336.56 C14618.6747,434.85 14533.8249,634.5739 14503.4649,706.0139"
+                  fill="none" id="InterfaceVisitor-to-VoidVisitorAdapter" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="14496.4247,722.58,14508.9869,708.3606,14497.9428,703.6672,14496.4247,722.58"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link EnumVisitor to VoidVisitorAdapter-->
+        <g class="link" data-entity-1="ent0008" data-entity-2="ent0056" data-link-type="extension"
+           data-source-line="315" id="lnk63">
+            <path codeLine="315"
+                  d="M15003.0347,336.75 C14972.9747,379.3 14926.0347,440.67 14876.4847,486 C14763.2847,589.52 14621.1191,672.9081 14545.6991,714.2481"
+                  fill="none" id="EnumVisitor-to-VoidVisitorAdapter" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="14529.9147,722.9,14548.583,719.5096,14542.8151,708.9867,14529.9147,722.9"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link DITEvaluator to ComplexityEvaluator$Clazz-->
+        <g class="link" data-entity-1="ent0015" data-entity-2="ent0048" data-link-type="extension"
+           data-source-line="316" id="lnk64">
+            <path codeLine="316"
+                  d="M8344.6247,327.57 C8393.4047,370.21 8474.5247,437.67 8551.4847,486 C8705.1647,582.52 8883.3356,662.2481 8990.0556,707.0081"
+                  fill="none" id="DITEvaluator-to-ComplexityEvaluator$Clazz"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="9006.6547,713.97,8992.3762,701.475,8987.735,712.5411,9006.6547,713.97"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link ClassVisitor to VoidVisitorAdapter-->
+        <g class="link" data-entity-1="ent0010" data-entity-2="ent0056" data-link-type="extension"
+           data-source-line="317" id="lnk65">
+            <path codeLine="317" d="M14313.4247,336.56 C14354.9647,434.85 14439.3761,634.5605 14469.5761,706.0005"
+                  fill="none" id="ClassVisitor-to-VoidVisitorAdapter" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="14476.5847,722.58,14475.1026,703.6643,14464.0496,708.3368,14476.5847,722.58"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link RecordWriter to SetTranslatingComponent-->
+        <g class="link" data-entity-1="ent0033" data-entity-2="ent0028" data-link-type="extension"
+           data-source-line="318" id="lnk66">
+            <path codeLine="318"
+                  d="M4679.7747,327.88 C4718.2047,376 4789.4447,453.47 4871.4847,486 C4905.6747,499.56 5170.6147,475.62 5202.4847,494 C5265.2147,530.19 5298.8357,586.4813 5322.4357,644.6313"
+                  fill="none" id="RecordWriter-to-SetTranslatingComponent" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="5329.2047,661.31,5327.9953,642.3749,5316.8761,646.8876,5329.2047,661.31"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link LCOMNEvaluator to ComplexityEvaluator$Clazz-->
+        <g class="link" data-entity-1="ent0018" data-entity-2="ent0048" data-link-type="extension"
+           data-source-line="319" id="lnk67">
+            <path codeLine="319"
+                  d="M9898.2247,336.64 C9824.6947,377.64 9716.9347,436.86 9621.4847,486 C9455.2647,571.56 9272.8598,658.2634 9170.3998,706.3434"
+                  fill="none" id="LCOMNEvaluator-to-ComplexityEvaluator$Clazz"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="9154.1047,713.99,9172.9487,711.7751,9167.851,700.9117,9154.1047,713.99"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link CBOEvaluator to ComplexityEvaluator$Clazz-->
+        <g class="link" data-entity-1="ent0014" data-entity-2="ent0048" data-link-type="extension"
+           data-source-line="320" id="lnk68">
+            <path codeLine="320" d="M8852.2947,345.13 C8909.1947,442.95 9013.1846,621.7106 9057.7446,698.3206"
+                  fill="none" id="CBOEvaluator-to-ComplexityEvaluator$Clazz"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="9066.7947,713.88,9062.9311,695.3039,9052.5582,701.3373,9066.7947,713.88"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link RFCEvaluator to ComplexityEvaluator$Clazz-->
+        <g class="link" data-entity-1="ent0017" data-entity-2="ent0048" data-link-type="extension"
+           data-source-line="321" id="lnk69">
+            <path codeLine="321"
+                  d="M10577.4947,327.7 C10527.8747,373.42 10440.8447,446.39 10352.4847,486 C10019.3847,635.33 9616.3292,697.9977 9353.4092,725.1977"
+                  fill="none" id="RFCEvaluator-to-ComplexityEvaluator$Clazz"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="9335.5047,727.05,9354.0266,731.1659,9352.7918,719.2296,9335.5047,727.05"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link EnumWriter to SetTranslatingComponent-->
+        <g class="link" data-entity-1="ent0030" data-entity-2="ent0028" data-link-type="extension"
+           data-source-line="322" id="lnk70">
+            <path codeLine="322" d="M5570.6247,327.73 C5532.4347,402.33 5458.7382,546.278 5408.0182,645.338" fill="none"
+                  id="EnumWriter-to-SetTranslatingComponent" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="5399.8147,661.36,5413.3589,648.0725,5402.6775,642.6036,5399.8147,661.36"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link MethodFrame to JFrame-->
+        <g class="link" data-entity-1="ent0025" data-entity-2="ent0071" data-link-type="extension"
+           data-source-line="323" id="lnk72">
+            <path codeLine="323"
+                  d="M1408.7547,788.69 C1466.4847,834.5 1568.0647,906.39 1669.4847,936 C1848.2847,988.2 3171.7047,904.94 3345.4847,972 C3359.7847,977.52 3360.2474,975.5517 3370.2874,985.6717"
+                  fill="none" id="MethodFrame-to-JFrame" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="3382.9647,998.45,3374.5469,981.4459,3366.028,989.8974,3382.9647,998.45"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link PlantUMLFrame to JFrame-->
+        <g class="link" data-entity-1="ent0021" data-entity-2="ent0071" data-link-type="extension"
+           data-source-line="324" id="lnk73">
+            <path codeLine="324"
+                  d="M2563.0147,797.9 C2585.3147,842.73 2624.7347,905.97 2680.4847,936 C2810.7747,1006.19 3208.2947,916.48 3345.4847,972 C3359.5747,977.7 3359.8478,975.6912 3369.8778,985.6912"
+                  fill="none" id="PlantUMLFrame-to-JFrame" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="3382.6247,998.4,3374.1141,981.4422,3365.6415,989.9401,3382.6247,998.4"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link ClassWriter to SetTranslatingComponent-->
+        <g class="link" data-entity-1="ent0031" data-entity-2="ent0028" data-link-type="extension"
+           data-source-line="325" id="lnk74">
+            <path codeLine="325" d="M5161.2547,363.05 C5203.1347,445.22 5261.5397,559.7735 5305.0797,645.1835"
+                  fill="none" id="ClassWriter-to-SetTranslatingComponent" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="5313.2547,661.22,5310.4252,642.4585,5299.7342,647.9085,5313.2547,661.22"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link UmlTranslator to Translator-->
+        <g class="link" data-entity-1="ent0046" data-entity-2="ent0053" data-link-type="extension"
+           data-source-line="326" id="lnk75">
+            <path codeLine="326" d="M12497.6847,486.15 C12640.0947,563.6 12775.312,637.1402 12868.572,687.8602"
+                  fill="none" id="UmlTranslator-to-Translator"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="12884.3847,696.46,12871.4386,682.5892,12865.7054,693.1311,12884.3847,696.46"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link CyclomaticEvaluator to ComplexityEvaluator$Method-->
+        <g class="link" data-entity-1="ent0004" data-entity-2="ent0050" data-link-type="extension"
+           data-source-line="327" id="lnk76">
+            <path codeLine="327" d="M11177.4847,345.13 C11177.4847,442.95 11177.4847,619.27 11177.4847,695.88"
+                  fill="none" id="CyclomaticEvaluator-to-ComplexityEvaluator$Method"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="11177.4847,713.88,11183.4847,695.88,11171.4847,695.88,11177.4847,713.88"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link ComplexityGridPanel to JPanel-->
+        <g class="link" data-entity-1="ent0035" data-entity-2="ent0077" data-link-type="extension"
+           data-source-line="328" id="lnk78">
+            <path codeLine="328" d="M1632.4847,1073.22 C1632.4847,1093.63 1632.4847,1098.28 1632.4847,1114.72"
+                  fill="none" id="ComplexityGridPanel-to-JPanel" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="1632.4847,1132.72,1638.4847,1114.72,1626.4847,1114.72,1632.4847,1132.72"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link RecordVisitor to VoidVisitorAdapter-->
+        <g class="link" data-entity-1="ent0011" data-entity-2="ent0056" data-link-type="extension"
+           data-source-line="329" id="lnk79">
+            <path codeLine="329"
+                  d="M13968.2847,336.63 C13999.4947,379.1 14048.0147,440.43 14098.4847,486 C14212.0747,588.57 14353.3622,672.4663 14428.0122,714.0763"
+                  fill="none" id="RecordVisitor-to-VoidVisitorAdapter" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="14443.7347,722.84,14430.9335,708.8354,14425.091,719.3171,14443.7347,722.84"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link ClassDiagramConfig$Builder to UmlConfigBuilder-->
+        <g class="link" data-entity-1="ent0041" data-entity-2="ent0052" data-link-type="extension"
+           data-source-line="330" id="lnk80">
+            <path codeLine="330" d="M3486.4847,389.15 C3486.4847,492.97 3486.4847,629.66 3486.4847,695.95" fill="none"
+                  id="ClassDiagramConfig$Builder-to-UmlConfigBuilder"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="3486.4847,713.95,3492.4847,695.95,3480.4847,695.95,3486.4847,713.95"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link WMCBaseEvaluator to ComplexityEvaluator$Clazz-->
+        <g class="link" data-entity-1="ent0016" data-entity-2="ent0048" data-link-type="extension"
+           data-source-line="331" id="lnk81">
+            <path codeLine="331"
+                  d="M7782.2747,354.18 C7855.5447,396.71 7955.2147,450.23 8048.4847,486 C8338.1047,597.08 8673.8509,670.5712 8884.3409,710.5512"
+                  fill="none" id="WMCBaseEvaluator-to-ComplexityEvaluator$Clazz"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="8902.0247,713.91,8885.4605,704.6566,8883.2213,716.4458,8902.0247,713.91"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link NOCEvaluator to ComplexityEvaluator$Clazz-->
+        <g class="link" data-entity-1="ent0013" data-entity-2="ent0048" data-link-type="extension"
+           data-source-line="332" id="lnk82">
+            <path codeLine="332" d="M9329.6947,327.73 C9277.1047,417.8 9160.9419,616.7663 9113.3419,698.2763"
+                  fill="none" id="NOCEvaluator-to-ComplexityEvaluator$Clazz"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="9104.2647,713.82,9118.5231,701.3021,9108.1607,695.2506,9104.2647,713.82"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link InterfaceWriter to SetTranslatingComponent-->
+        <g class="link" data-entity-1="ent0029" data-entity-2="ent0028" data-link-type="extension"
+           data-source-line="333" id="lnk83">
+            <path codeLine="333"
+                  d="M6002.7547,336.57 C5952.8347,378.45 5877.9547,438.96 5808.4847,486 C5711.1247,551.92 5612.0078,609.234 5522.4178,658.224"
+                  fill="none" id="InterfaceWriter-to-SetTranslatingComponent" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="5506.6247,666.86,5525.2964,663.4883,5519.5391,652.9597,5506.6247,666.86"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link MainFrame to JFrame-->
+        <g class="link" data-entity-1="ent0026" data-entity-2="ent0071" data-link-type="extension"
+           data-source-line="334" id="lnk84">
+            <path codeLine="334"
+                  d="M3134.7547,903.89 C3155.7747,915.71 3177.2047,926.65 3198.4847,936 C3260.0547,963.06 3285.7447,941.08 3345.4847,972 C3358.4047,978.69 3357.7565,976.5123 3367.6965,985.9123"
+                  fill="none" id="MainFrame-to-JFrame" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="3380.7747,998.28,3371.8191,981.5529,3363.574,990.2717,3380.7747,998.28"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link RatioGridLayout to LayoutManager2-->
+        <g class="link" data-entity-1="ent0034" data-entity-2="ent0085" data-link-type="extension"
+           data-source-line="335" id="lnk86">
+            <path codeLine="335"
+                  d="M983.8747,903.14 C1005.8747,916.35 1028.9447,927.79 1052.4847,936 C1275.1247,1013.69 2947.3447,908.61 3174.4847,972 C3193.7247,977.37 3198.1055,978.2644 3213.5055,988.4144"
+                  fill="none" id="RatioGridLayout-to-LayoutManager2"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="3228.5347,998.32,3216.8074,983.4046,3210.2036,993.4241,3228.5347,998.32"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link ComplexityTranslator to Translator-->
+        <g class="link" data-entity-1="ent0045" data-entity-2="ent0053" data-link-type="extension"
+           data-source-line="336" id="lnk87">
+            <path codeLine="336" d="M12864.0547,407.3 C12895.0347,501.46 12930.8999,610.5014 12953.4999,679.2014"
+                  fill="none" id="ComplexityTranslator-to-Translator"
+                  style="stroke:#181818;stroke-width:1;stroke-dasharray:7,7;"/>
+            <polygon fill="none" points="12959.1247,696.3,12959.1994,677.3265,12947.8004,681.0764,12959.1247,696.3"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link ClassFrame to JFrame-->
+        <g class="link" data-entity-1="ent0023" data-entity-2="ent0071" data-link-type="extension"
+           data-source-line="337" id="lnk88">
+            <path codeLine="337"
+                  d="M1966.1047,815.15 C2009.8047,858.43 2072.8047,911.12 2140.4847,936 C2391.9247,1028.44 3095.9547,874.51 3345.4847,972 C3359.6447,977.53 3359.9532,975.4857 3369.9632,985.5057"
+                  fill="none" id="ClassFrame-to-JFrame" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="none" points="3382.6847,998.24,3374.2079,981.2652,3365.7184,989.7462,3382.6847,998.24"
+                     style="stroke:#181818;stroke-width:1;"/>
+        </g><!--link EnumVisitor to Translator-->
+        <g class="link" data-entity-1="ent0008" data-entity-2="ent0053" data-link-type="association"
+           data-source-line="338" id="lnk89">
+            <path codeLine="338"
+                  d="M15012.7347,336.81 C14986.7647,384.88 14940.1847,454.82 14876.4847,486 C14852.5247,497.72 14423.0247,491.44 14396.4847,494 C13908.6047,541.03 13336.5747,663.33 13093.9047,718.41"
+                  fill="none" id="EnumVisitor-Translator" style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="98.2744"
+                  x="13102.0087" y="714.1455">- {final} translator
+            </text>
+        </g><!--link ClassFrame to ComplexityGridPanel-->
+        <g class="link" data-entity-1="ent0023" data-entity-2="ent0035" data-link-type="composition"
+           data-source-line="339" id="lnk90">
+            <path codeLine="339" d="M1838.3447,815.26 C1790.0347,863.65 1734.4123,919.377 1690.6523,963.217" fill="none"
+                  id="ClassFrame-to-ComplexityGridPanel" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818"
+                     points="1682.1747,971.71,1689.2445,970.2893,1690.6523,963.217,1683.5825,964.6376,1682.1747,971.71"
+                     style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="87.4453"
+                  x="1596.0807" y="960.9746">- {final} gridInfo
+            </text>
+        </g><!--link MethodFrame to ComplexityGridPanel-->
+        <g class="link" data-entity-1="ent0025" data-entity-2="ent0035" data-link-type="composition"
+           data-source-line="340" id="lnk91">
+            <path codeLine="340" d="M1400.9047,788.65 C1449.4447,837.46 1522.373,910.7813 1574.603,963.3013" fill="none"
+                  id="MethodFrame-to-ComplexityGridPanel" style="stroke:#181818;stroke-width:1;"/>
+            <polygon fill="#181818"
+                     points="1583.0647,971.81,1581.6701,964.735,1574.603,963.3013,1575.9976,970.3762,1583.0647,971.81"
+                     style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="87.4453"
+                  x="1483.0334" y="961.0886">- {final} gridInfo
+            </text>
+        </g><!--link FileHandler to Translator-->
+        <g class="link" data-entity-1="ent0038" data-entity-2="ent0053" data-link-type="association"
+           data-source-line="341" id="lnk92">
+            <path codeLine="341"
+                  d="M13589.2047,336.72 C13565.9047,380.42 13527.2447,443.5 13479.4847,486 C13364.7447,588.11 13202.6847,662.32 13093.5847,704.72"
+                  fill="none" id="FileHandler-Translator" style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="98.2744"
+                  x="13102.195" y="699.636">- {final} translator
+            </text>
+        </g><!--link InterfaceVisitor to Translator-->
+        <g class="link" data-entity-1="ent0009" data-entity-2="ent0053" data-link-type="association"
+           data-source-line="342" id="lnk93">
+            <path codeLine="342"
+                  d="M14648.8847,336.9 C14614.8447,384.32 14556.7947,453.12 14487.4847,486 C14469.1347,494.7 14416.6047,491.34 14396.4847,494 C13910.2647,558.36 13336.7747,671.63 13093.7647,721.39"
+                  fill="none" id="InterfaceVisitor-Translator" style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="98.2744"
+                  x="13101.8619" y="734.0448">- {final} translator
+            </text>
+        </g><!--link ClassVisitor to Translator-->
+        <g class="link" data-entity-1="ent0010" data-entity-2="ent0053" data-link-type="association"
+           data-source-line="343" id="lnk94">
+            <path codeLine="343"
+                  d="M14257.4947,336.59 C14222.4947,382.41 14164.4847,448.83 14098.4847,486 C13766.5047,672.92 13307.2347,725.62 13093.5847,740.35"
+                  fill="none" id="ClassVisitor-Translator" style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="98.2744"
+                  x="13102.195" y="753.9282">- {final} translator
+            </text>
+        </g><!--link UmlTranslator to Updatable-->
+        <g class="link" data-entity-1="ent0046" data-entity-2="ent0051" data-link-type="association"
+           data-source-line="344" id="lnk95">
+            <path codeLine="344"
+                  d="M11742.4247,481.81 C11736.7747,483.29 11731.1147,484.69 11725.4847,486 C11705.9747,490.53 208.4847,481.97 192.4847,494 C123.6747,545.74 116.6747,658.44 117.7247,713.88"
+                  fill="none" id="UmlTranslator-Updatable" style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="101.1943"
+                  x="6" y="702.9707">- {final} updatable
+            </text>
+        </g><!--link RecordVisitor to Translator-->
+        <g class="link" data-entity-1="ent0011" data-entity-2="ent0053" data-link-type="association"
+           data-source-line="345" id="lnk96">
+            <path codeLine="345"
+                  d="M13898.3247,336.51 C13864.1847,381.3 13808.5147,446.16 13746.4847,486 C13537.5847,620.15 13252.1247,692.65 13093.6847,724.92"
+                  fill="none" id="RecordVisitor-Translator" style="stroke:#181818;stroke-width:1;"/>
+            <text fill="#000000" font-family="sans-serif" font-size="13" lengthAdjust="spacing" textLength="98.2744"
+                  x="13101.7781" y="720.9708">- {final} translator
+            </text>
+        </g>
+        <?plantuml-src rHfTRziuyZs_GkZrGRdOnk4UYo87nt7Q176SZTrqxnQB0otHZhQIw1KfDsak-UqtGr8Y9L6otMIBtPT49kUBm-5yaVnBbAv9HX8lY0ddGo6oQ94BUXwmT1Pzezu_3kI4Do5HUff56vez7XnvZrmG4GLFNWB3FibMt7ldpG0tNVtowo5yRrWK7ZmTh4dmXQoe9pAIyfW8EWXOiexfVIGU1WaLTopq7ZM7qKCGimJ9ZZSapebWmAflM3qkevJ4JzuYZ-AGPi1aLDAQKE0Tt52UnsBW7ZvHQ21yGE8WHs5yOFpj6n2wOY7jULgUTzv4VfnIcCw0DqiFMva1kNN60ihv3CIa2Ks5pqKYf3hq0697gJXuBa37z-iC_W5Xdy8dJ9kH0lZ9qjucuX5eWvUg6gTvSgi6fOgqPWejCoGvBt-0Z1Q2tm9r262IaP-YG81WAQ3dmHx3y2rigxMzIfhpLD1iIGAwbqXrhDta6Y77QLOYxogZnDjBFXlZZvNjXWOi2_SIheAoctGAPRjCMmwjEZA58LvDHp_ii98u7kdpEc9nJ0DSn7iykiSzppx97QUrD8UJwLzARilZhgWu--agvpGyUV3hw3CgtYitV6olAb1yR-YIPZGDwFnXJRaluAyq3CxY3Grni5U0IbEog3MCzlHy_iCq64TSEBMNmh_TD_tpP7H2EAsA_JhI6a8gY9GyAWJBqO6ACB38kan-IX9QnbA8IUGUVeKiNyGOeQBK_hK7gyDTUEr9xuyvcZTdVqsNSZcQJgxSal_fd8a-vESfI0Zku9Pa4G6J6WQOdO1dMCGi-39JQSn9yTs3lAGAVmNsmvj-mdP2s-A9oVwSig8QArOAl-qZWJ-jCm4_SGEe6R3vh_9eiCoGMi7qEYQf-3IvFCDHsnr42IAyyovcjnz69DqG3bghGFjv4azpiSv5ATiX4E1KvEl_C0PIhNnt5j9W9kUkQgii9bTP59wdIrRPpWymU4rI6ZSSpop8O6-bvF8BeOfaHidTvDQh9Xg6ZPrAz37mM4Hn_VEjQ3L12Zr8IIOa1IMxpxZS9ZIjIt3zxoya_B4T1KaOgkMe3GKsycUfSGiKgWfEXt7St0xboXhxiKNbHpQUKvrgA_RNyPDLQpMaMe0LhpAMf-7udWQvebDypcYsYG9g6nM3D3GLKcHKJzrS15ktpi7MdkH2C3nO5-ghGhcGlGE8ipmBw1b31tP95egF_B2Nn00hQOZ1AJed6fv6cSn47c3oB9AdMx0Rch0DrIfaAImHDwHGc8-6UaVICDQyPrJxI1znXl9plD55cJG6DEoKGafCFoNn3b1cwpg0TQ5tdaBoRGtRITnBpzAHt0Yf0V2LKAg7_g6jbc58rb28T7XW2GQ-a2muJ0H2EI9qtmLNCDoItkF1typkKg7z_FpO6jO9fNGsQgQ5bb-3n6o2aoKTXg7F5h_1ZbbHJ9zdH54hBCWVUL-p2BPjSYd7OVkkrJh7gSWUq0KKAtjIa2L_H073mE8SAoQDhT0QLUrdH9LTZzgGlulONOmx2aQdI5YK6sdCBob85wDQDUyaBeKfg3jSylZdqVXwVZwz-k_rS3uVtrm1aMiY03nrWSy_tam_3qyknmxm8vlP3zDYtulu-3wWQvoHIBiJMJ0MKv9QaIDPqEoCPObSKgKbjipZmX0n1FYr8aL7U0i10IH_hC2sWoFzMOGEOdVodoDnTuuek5pkw_fkteqmleS84ku2NO1SQKob7lx-NyTk75Aq6Vc-c2gqxe_6mcWP0OHVVcbicM1Cz60BDap5eI__jkjXevDYFzIcqwKqjGo_k-FOH8EW3WujnyKN6XYP8JTwjSjat8VzUwi3QJIFQYwaacINwVKDWcBYT4aUM2xiREPkHTQwqsa6Dwv1oGz5mFyeTvMeRoZrB0AzAXwk3r96XMB2KAq0ng1eXr3B0JcGwz0zlJsGYmYqhgdqPHOD2FgAnZ2ELYbgzcTVa6n5LNCZ5O19PPnVnem89yQ_js14KAl4KGWXNgl73QubocGojMrX5WAKDL6I9me3xmVyDScq1xNfdqOWBBQp4OVSrt3SCjauwmnRLHaDz-8KwuNewHQCUdrGyYf9-O5MW9FFKwDYBMi3F5UEOL-RdwfimGUHz47LjxorIg_QdfhnCpcr7UV9VG3Vojzu30CMbmSjOr_rjpIu4OkvZ_ca6ZoqvsxOLzTStwDSGCaig54XuMiLoOjkLHKjPj8r6R-X2eRITM2-_r7cyJjsn2s4zdxuiwuD_AKkAPfjpQBc6D-lOvPLkIyD3uslVpbBM9W64572gXyWQeE7tqeO3OSgA0dK5DkHt9kU2luzZSWAIYCmvcMqUdjAbmGifH3XKPOHEeAOxBg2KyqGg-HqYmgLf2-fTDbHrkvukt1RcP93nzYVvdVigufytCgnr7Xv4zcS0Wi5VOIgMpK3Coi3UW47mGoIWk9wH4kchpfSmk32JRSDgfkPaSntIkd4C3BxRKjmuhKioDzfiLMAijMu_qR-sJQmxv3HFxHo6NbbaNqIKSmhrKgcPp2gFoGB5XUWjiU782OY29COL3A6KRhUQd3LxE26ByY6N9ECqmnJzPaapDjez6J9EYl40PUzW60I6anNCDBosrczwUkMvJAwDHjBES_fikuZPDV4tG2mV6Ip1Mjy9YeNWgCyFIVbvbGwbnEPSy5VtVJjoMvqepFP0BC_w-dlyR7BfKfsPOkTjrnGoFxuBx-w2DHkE7Zd5GUGaB4NbrElilIsmVaTetByXL6FDKqLHLNS-LYtZHhTmlO-lUHVa50YjT2mdYxiH1IZF1Avm0CkdONyAfls4aAVQmKJEEMkOXM7yvFTp7giDGvbGcccozi3Tvy8wZdRa9Q_fuqxpdRZP4Lt_c9ExyKmeyHkSQuXHyPo3UkOujkQNmDzGSCQkwFgudp50adRR7fkweVR3QRRsWHJDn29QcMNLmNepiv-J-r6OqBMkh9BwiVEthFZ2XrP00uvPq4a3o44e4KvhqECnOCOIDcug3wcAQhbC_nVUNKWPshsAyUaPvG35Iipw-JIC20KOOBPpk2Ey0zKgCHB1nGvE7CDMlLpDQQQK1JnuMgLqHNvmNohK7wYUXpEhaUx1btwRh1HOkjsn4UcBojVdOrIH8S6NoH0siwx30GW11YuhgNTzz_JR6HwIprFFevhNLRXyunFAFAfQjS6XjfIigtter7HatJ5ghSosZr2PVFQjzgTR1-t0RnLuQCgs2iyjskscemOfQT5hj85KtzhfMIX9x7QbBAesPfERqsi37Kx93vtElhdxYZnx3s6geWpvJ3MbiwYTjlLJoRxUcKdJswNN2XToYHPtkvf1_niUtnkDnWD5Vi21ebfxfFE8DIaNCihdWwA5v23-gj1hz__tp5c5eCLE8fyCVWDKlIrJD47X8k1HXmqgnX3qteS-G9oxQ_b1lPRAMym00wj9zb8PRy_V3MnvBuFxDQl8jsIVtKjglhUPTkoEWZPR_5UGCP-DxGV6QKKSvtMhPBo5Sd0UWQWKDGR10kYycAa0kEImBeKstLNZBCPL39JfG2hGTRn07lWU7ZTha3zSWtNwEXqwZMgc_pIb2klLL_5bjjRKKhokY_lCfpwixWNsA3z7FPxRB1smRop8HRF7nfcM6i0AvdKjtv-yq-tDRbw0GsZCXAOzqKL4Lmkjjz_u-hdld66qC4MRlt-tzyq7-wyyLhCqtruzoMYkYq3gqtxtMjgZMilfsZ7Z--cjjtJL4YNTQzIdYcitQxWUyNwFm00?>
+    </g>
+</svg>
