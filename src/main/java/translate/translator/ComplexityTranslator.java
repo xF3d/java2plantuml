@@ -47,7 +47,7 @@ public class ComplexityTranslator implements Translator {
         String fullName = MemberFormatter.fullPackageName(node);
         classMap.put(fullName, node);
 
-        //TODO: this doesn't include inherited methods
+        //TODO: this doesn't include inherited methods, are they really necessary tho?
         if (node instanceof NodeWithMembers<?> nwm) {
             Map<String, MethodDeclaration> methods = methodMap.get(fullName);
             if (methods == null) {

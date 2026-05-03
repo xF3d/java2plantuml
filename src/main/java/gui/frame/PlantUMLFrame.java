@@ -18,6 +18,7 @@ import source.FileHandler;
 import translate.ClassDiagramConfig;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
+import visitors.AnnotationVisitor;
 import visitors.ClassVisitor;
 import visitors.EnumVisitor;
 import visitors.InterfaceVisitor;
@@ -51,6 +52,7 @@ public class PlantUMLFrame extends JFrame {
                 .withVisitor(new InterfaceVisitor(complexityTranslator))
                 .withVisitor(new EnumVisitor(complexityTranslator))
                 .withVisitor(new RecordVisitor(complexityTranslator))
+                .withVisitor(new AnnotationVisitor(complexityTranslator))
                 .setShowMethods(true)
                 .setShowAttributes(true)
                 .setShowColoredAccessSpecifiers(false)

@@ -13,6 +13,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.Type;
 import gui.Updatable;
+import translate.component.AnnotationWriter;
 import translate.component.ClassWriter;
 import translate.component.EnumWriter;
 import translate.component.InterfaceWriter;
@@ -42,6 +43,7 @@ public class UmlTranslator implements Translator {
         componentTranslators.add(new InterfaceWriter());
         componentTranslators.add(new EnumWriter());
         componentTranslators.add(new RecordWriter());
+        componentTranslators.add(new AnnotationWriter());
     }
 
     @Override

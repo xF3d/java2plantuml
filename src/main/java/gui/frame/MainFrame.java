@@ -8,6 +8,7 @@ import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
+import visitors.AnnotationVisitor;
 import visitors.ClassVisitor;
 import visitors.EnumVisitor;
 import visitors.InterfaceVisitor;
@@ -117,6 +118,7 @@ public class MainFrame extends JFrame {
                         .withVisitor(new InterfaceVisitor(umlTranslator))
                         .withVisitor(new EnumVisitor(umlTranslator))
                         .withVisitor(new RecordVisitor(umlTranslator))
+                        .withVisitor(new AnnotationVisitor(umlTranslator))
                         .setShowMethods(true)
                         .setShowAttributes(true)
                         .setShowColoredAccessSpecifiers(false)
@@ -158,6 +160,7 @@ public class MainFrame extends JFrame {
                         .withVisitor(new InterfaceVisitor(complexityTranslator))
                         .withVisitor(new EnumVisitor(complexityTranslator))
                         .withVisitor(new RecordVisitor(complexityTranslator))
+                        .withVisitor(new AnnotationVisitor(complexityTranslator))
                         .setShowMethods(true)
                         .setShowAttributes(true)
                         .setShowColoredAccessSpecifiers(false)
