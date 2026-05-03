@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+// TODO: Parse annotations of classes, methods, and fields and make it configurable
 public class MemberFormatter {
     public static String fullPackageName(Node node) {
         var cu = node.findCompilationUnit();
@@ -52,7 +53,10 @@ public class MemberFormatter {
             return packageName + "." + fullSimpleName;
         }
 
-        // no way to check if the import is external... manual package framework or remove this partial fix
+        /* TODO
+         * no way to check if the import is external...
+         * manual package framework or remove this partial fix
+         */
         var fullImportString = cu
             .map(CompilationUnit::getImports)
             .stream()
@@ -74,7 +78,7 @@ public class MemberFormatter {
          */
         String simpleName = MemberFormatter.fullSimpleName(node);
         if (node instanceof Type type) {
-            if (type.isPrimitiveType())
+            if (type.isPrimitiveType()) return simpleName;
 
             try {
                 String resolved = ResolverUtils.getResolver().toResolvedType(type, ResolvedType.class).describe();
