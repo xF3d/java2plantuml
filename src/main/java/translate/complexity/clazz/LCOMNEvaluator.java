@@ -28,34 +28,42 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
 
         // no point in doing any LOCM evaluation in this case
         if (!(clazz instanceof NodeWithMembers<?> nwm)) {
-            return builder.value(0).build();
+            return builder.value(0).max(1).min(-1).build();
         }
 
 
         Set<String> fields = new HashSet<>();
         for (var field : nwm.getFields()) {
+            if (field.isStatic()) continue;
+
             for (var variable : field.getVariables()) {
                 fields.add(variable.getNameAsString());
             }
         }
 
+        if (fields.isEmpty()) {
+            return builder.value(0).max(1).min(-1).build();
+        }
 
-
-        List<MethodDeclaration> methods = nwm.getMethods();
+        List<MethodDeclaration> definedMethods = nwm.getMethods().stream()
+            .filter(it -> it.getBody().isPresent())
+            .toList();
         // Total method pairs = n * (n-1) / 2 (for n methods)
-        int totalPairs = methods.size() * (methods.size() - 1) / 2;
+        int totalPairs = definedMethods.size() * (definedMethods.size() - 1) / 2;
 
-        for (int i = 0; i < methods.size() - 1; i++) {
-            MethodDeclaration subject = methods.get(i);
+        for (int i = 0; i < definedMethods.size() - 1; i++) {
+            MethodDeclaration subject = definedMethods.get(i);
             Optional<BlockStmt> subjectOptBlock = subject.getBody();
+
+            // should never happen
             if (subjectOptBlock.isEmpty()) {
                 continue;
             }
 
             Set<String> subjectAccesses = collectInstanceVariableAccesses(subjectOptBlock.get(), fields);
 
-            for (int j = i + 1; j < methods.size(); j++) {
-                MethodDeclaration other = methods.get(j);
+            for (int j = i + 1; j < definedMethods.size(); j++) {
+                MethodDeclaration other = definedMethods.get(j);
                 Optional<BlockStmt> otherOptBlock = other.getBody();
                 if (otherOptBlock.isEmpty()) {
                     continue;
@@ -64,7 +72,7 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
                 Set<String> otherAccesses = collectInstanceVariableAccesses(otherOptBlock.get(), fields);
 
                 Set<String> temp = new HashSet<>(subjectAccesses);
-                temp.removeAll(otherAccesses);
+                temp.retainAll(otherAccesses);
 
                 if (temp.isEmpty()) {
                     p++; // does not share instance variables

@@ -22,7 +22,8 @@ public class ResolverUtils {
 
     public static void initialize(File projectDirectory) {
         CombinedTypeSolver typeSolver = new CombinedTypeSolver();
-        typeSolver.add(new ReflectionTypeSolver());
+        //creates problems with metrics, might need an alternative fix later, or it is just not necessary
+        //typeSolver.add(new ReflectionTypeSolver());
 
         addJavaParserTypeSolvers(projectDirectory, typeSolver);
 
