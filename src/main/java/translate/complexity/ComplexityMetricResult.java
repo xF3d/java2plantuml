@@ -11,4 +11,8 @@ public class ComplexityMetricResult {
     private String name;
     private double max, min;
     private double value;
+
+    public boolean isValid() {
+        return this.min < this.value && this.value < this.max;
+    }
 }

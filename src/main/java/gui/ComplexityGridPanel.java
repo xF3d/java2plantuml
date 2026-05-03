@@ -19,7 +19,7 @@ public class ComplexityGridPanel extends JPanel {
 
     public void addMetric(ComplexityMetricResult result) {
         String valueWithColor;
-        if (result.getMin() < result.getValue() && result.getValue() < result.getMax()) {
+        if (result.isValid()) {
             valueWithColor = "<font color='green'> " + result.getValue() + "</font>";
         } else {
             valueWithColor = "<font color='red'> " + result.getValue() + "</font>";
