@@ -1,9 +1,9 @@
 1. Log metriche complessità, colonne con metriche ordinabili
 2. Tirare fuori un diagramma polare per rappresentare complessivamente lo stato del sistema, relativamente ad ogni metrica, normalizzata in base alla metrica, ribaltare rappresentazione, più ampia è l'area coperta meglio è (coerenza).
-3. Il diagramma UML bisogna in qualche modo, (es: evidenziare in rosso metodi/classi che hanno superato le soglie di qualche metrica)
+VC XM 3. Il diagramma UML bisogna in qualche modo, (es: evidenziare in rosso metodi/classi che hanno superato le soglie di qualche metrica)
 4. Design Pattern
-5. Relazioni incomplete dello schema UML (sistemare implementazione per le interfacce), relazioni solo riguardanti classi da noi scritte
+V 5. Relazioni incomplete dello schema UML (sistemare implementazione per le interfacce), relazioni solo riguardanti classi da noi scritte
 6. Proporre refactoring
 7. Applicare pattern
 8. AI deve indentificare punti per refactoring, inserimento di pattern. (interrogare più AI, il primo deve verificare l'output del secondo, e vice versa, genera diff da consigliare all'utente per cambiare il sistema)
-9. Distinguere le classi di libreria che vengono estese o usate con un colore diverso ad esempio (o stereotipo)
+? 9. Distinguere le classi di libreria che vengono estese o usate con un colore diverso ad esempio (o stereotipo)
