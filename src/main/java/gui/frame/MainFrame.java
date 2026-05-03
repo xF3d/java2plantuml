@@ -1,5 +1,6 @@
 package gui.frame;
 
+import lombok.Getter;
 import source.DirectoryExplorer;
 import source.FileHandler;
 import translate.ClassDiagramConfig;
@@ -37,7 +38,8 @@ public class MainFrame extends JFrame {
 
     private final JPanel bottomPanel = new JPanel();
 
-    private File selectedDirectory;
+    @Getter
+    private static File selectedDirectory;
 
     private Component toRemove = null;
 
@@ -131,12 +133,6 @@ public class MainFrame extends JFrame {
                 contentPanel.updateUI();
 
                 String plantUmlOutput = umlTranslator.toPlantUml();
-
-                // Optional: write to file too
-                File f = new File("output.puml");
-                try (FileOutputStream fos = new FileOutputStream(f)) {
-                    fos.write(plantUmlOutput.getBytes());
-                }
 
                 outputArea.append("\nUML diagram saved to output.puml\n");
 

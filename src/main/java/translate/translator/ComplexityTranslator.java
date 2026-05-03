@@ -2,6 +2,7 @@ package translate.translator;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
@@ -14,13 +15,18 @@ import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.MemberFormatter;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ComplexityTranslator implements Translator {
     private Boolean error = false;
 
+    // full package name --> node
     private final Map<String, Node> classMap = new HashMap<>();
+
+    // full package name --> method Name --> method
     private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
 
     private static final ComplexityEvaluator.Clazz[] classEvaluators = {
@@ -61,9 +67,32 @@ public class ComplexityTranslator implements Translator {
         error = b;
     }
 
+    public List<String> getProblematicClassesUml() {
+        List<String> output = new ArrayList<>();
+        for (var fullPackageName : classMap.keySet()) {
+            ComplexityMetricResult[] results = evaluateClass(fullPackageName);
+            for (ComplexityMetricResult metricResult : results) {
+                if (!metricResult.isValid()) {
+                    if (classMap.get(fullPackageName) instanceof RecordDeclaration) {
+                        output.add("record " + fullPackageName + " #Red\n");
+                    } else {
+                        output.add("class " + fullPackageName + " #Red\n");
+                    }
+                    break;
+                }
+            }
+        }
+
+        return output;
+    }
+
     public ComplexityMetricResult[] evaluateClass(String fullClassName) {
         ComplexityMetricResult[] result = new ComplexityMetricResult[classEvaluators.length];
         Node classNode = classMap.get(fullClassName);
+        if (classNode == null) {
+            throw new RuntimeException("Not found: " + fullClassName);
+        }
+
         for (int i = 0; i < classEvaluators.length; i++) {
             result[i] = classEvaluators[i].calculate(classMap.values(), classNode);
         }
