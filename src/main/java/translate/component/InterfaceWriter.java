@@ -16,19 +16,19 @@ public class InterfaceWriter extends SetTranslatingComponent<ClassOrInterfaceDec
     }
 
     @Override
-    public UmlEntry writeComponentUML(ClassOrInterfaceDeclaration element) {
+    public UmlEntry writeComponentUML(ClassOrInterfaceDeclaration element, MemberFormatter formatter) {
         StringBuilder builder = new StringBuilder();
 
         builder.append("interface ");
-        builder.append(MemberFormatter.fullSimpleName(element));
+        builder.append(formatter.fullSimpleName(element));
         builder.append("{");
         builder.append("\n");
 
-        builder.append(MemberFormatter.node(element));
+        builder.append(formatter.node(element));
         //attributes and methods
 
         builder.append("}\n");
 
-        return new UmlEntry(builder.toString(), MemberFormatter.nodeWithExtends(element));
+        return new UmlEntry(builder.toString(), formatter.nodeWithExtends(element));
     }
 }

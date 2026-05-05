@@ -42,7 +42,7 @@ public abstract class SetTranslatingComponent<T extends Node> {
         return type;
     }
 
-    public UmlPackageEntry writeUML() {
+    public UmlPackageEntry writeUML(MemberFormatter formatter) {
         ArrayList<String> associations = new ArrayList<>();
         HashMap<String, List<String>> packageMap = new HashMap<>();
         for (var element : set) {
@@ -50,9 +50,10 @@ public abstract class SetTranslatingComponent<T extends Node> {
                     .flatMap(CompilationUnit::getPackageDeclaration)
                     .map(PackageDeclaration::getName)
                     .map(Name::asString)
-                    .orElse("");
+                    .orElse("")
+                    .replace(".", MemberFormatter.PACKAGE_DELIMITER);
 
-            var entry = writeComponentUML(element);
+            var entry = writeComponentUML(element, formatter);
             packageMap.computeIfAbsent(packageName, (key) -> new ArrayList<>());
             packageMap.computeIfPresent(packageName, (k, v) -> {
                 v.add(entry.classDefinition());
@@ -64,5 +65,5 @@ public abstract class SetTranslatingComponent<T extends Node> {
         return new UmlPackageEntry(packageMap, associations);
     }
 
-    public abstract UmlEntry writeComponentUML(T element);
+    public abstract UmlEntry writeComponentUML(T element, MemberFormatter formatter);
 }

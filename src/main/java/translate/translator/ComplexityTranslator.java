@@ -4,6 +4,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
+import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.clazz.DITEvaluator;
@@ -13,6 +14,7 @@ import translate.complexity.clazz.RFCEvaluator;
 import translate.complexity.clazz.WMCBaseEvaluator;
 import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.MemberFormatter;
+import translate.structure.PackageManager;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -21,7 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 public class ComplexityTranslator implements Translator {
+
+    @Getter
+    private final PackageManager packageManager = new PackageManager();
+
     private Boolean error = false;
+
+    private final MemberFormatter formatter = new MemberFormatter(packageManager);
 
     // full package name --> node
     private final Map<String, Node> classMap = new HashMap<>();
@@ -32,7 +40,7 @@ public class ComplexityTranslator implements Translator {
     private static final ComplexityEvaluator.Clazz[] classEvaluators = {
             new DITEvaluator(),
             new NOCEvaluator(),
-            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b) -> ComplexityMetricResult.builder().value(1).build()),
+            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b, f) -> ComplexityMetricResult.builder().value(1).build()),
             //new CBOEvaluator(),
             new RFCEvaluator(),
             new LCOMNEvaluator()
@@ -44,7 +52,8 @@ public class ComplexityTranslator implements Translator {
 
     @Override
     public void addNode(Node node) {
-        String fullName = MemberFormatter.fullPackageName(node);
+        // note, this is under teh assumption that every node passed here is a typeDefinition
+        String fullName = formatter.fullPackageName(node.findCompilationUnit().get(), node);
         classMap.put(fullName, node);
 
         //TODO: this doesn't include inherited methods, are they really necessary tho?
@@ -94,7 +103,7 @@ public class ComplexityTranslator implements Translator {
         }
 
         for (int i = 0; i < classEvaluators.length; i++) {
-            result[i] = classEvaluators[i].calculate(classMap.values(), classNode);
+            result[i] = classEvaluators[i].calculate(classMap.values(), classNode, formatter);
         }
 
         return result;
@@ -105,7 +114,7 @@ public class ComplexityTranslator implements Translator {
         Node classNode = classMap.get(fullClassName);
         MethodDeclaration methodDeclaration = methodMap.get(fullClassName).get(method);
         for (int i = 0; i < methodEvaluators.length; i++) {
-            result[i] = methodEvaluators[i].calculate(classNode, methodDeclaration);
+            result[i] = methodEvaluators[i].calculate(classNode, methodDeclaration, formatter);
         }
 
         return result;

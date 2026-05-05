@@ -4,6 +4,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.component.MemberFormatter;
 
 import java.util.Collection;
 
@@ -24,12 +25,12 @@ public class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
     }
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz) {
+    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
         double accumulator = 0;
 
         if (clazz instanceof NodeWithMembers<?> nwm) {
             for (var method : nwm.getMethods()) {
-                accumulator += methodEvaluator.calculate(clazz, method).getValue();
+                accumulator += methodEvaluator.calculate(clazz, method, formatter).getValue();
             }
         }
 

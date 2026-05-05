@@ -13,6 +13,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.Type;
 import gui.Updatable;
+import lombok.Getter;
 import translate.component.AnnotationWriter;
 import translate.component.ClassWriter;
 import translate.component.EnumWriter;
@@ -20,6 +21,7 @@ import translate.component.InterfaceWriter;
 import translate.component.MemberFormatter;
 import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
+import translate.structure.PackageManager;
 
 import javax.swing.*;
 import java.util.HashSet;
@@ -28,6 +30,11 @@ import java.util.Map;
 import java.util.Set;
 
 public class UmlTranslator implements Translator {
+
+    @Getter
+    private final PackageManager packageManager = new PackageManager();
+
+    private final MemberFormatter formatter = new MemberFormatter(packageManager);
 
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<String> fqn = new HashSet<>();
@@ -54,8 +61,8 @@ public class UmlTranslator implements Translator {
     private final Set<String> printed = new HashSet<>();
     @Override
     public void addNode(Node node) {
-        String type = MemberFormatter.nodeClassType(node);
-        String name = MemberFormatter.fullPackageName(node);
+        String type = formatter.nodeClassType(node);
+        String name = formatter.fullPackageName(node);
 
         // Class/Interfaces processed twice
         if (printed.add(name)) {
@@ -76,6 +83,7 @@ public class UmlTranslator implements Translator {
         }
 
         sb.append("@startuml");
+        sb.append("\nset separator " + MemberFormatter.PACKAGE_DELIMITER);
         sb.append("\n");
         //this is for removing shapes in attributes/methods visibility
 
@@ -84,7 +92,7 @@ public class UmlTranslator implements Translator {
 
         Set<String> associations = new HashSet<>();
         for (var writer : componentTranslators) {
-            var result = writer.writeUML();
+            var result = writer.writeUML(formatter);
             sb.append(mapWriter(result.packageMap()));
             associations.addAll(result.associations());
         }
@@ -103,7 +111,7 @@ public class UmlTranslator implements Translator {
         fqn.clear();
         for (SetTranslatingComponent<?> entry : componentTranslators) {
             for (Node r : entry.getSet()) {
-                fqn.add(MemberFormatter.fullPackageName(r));
+                fqn.add(formatter.fullPackageName(r.findCompilationUnit().get(), r));
             }
         }
     }
@@ -138,14 +146,14 @@ public class UmlTranslator implements Translator {
                     break;
                 }
 
-                String nodeFQN = MemberFormatter.fullPackageName(node);
+                String nodeFQN = formatter.fullPackageName(node);
                 for (FieldDeclaration f : c.getFields()) {
                     if (f.isStatic()) continue;
 
                     Type type = f.getVariables().get(0).getType();
                     if (type.isPrimitiveType()) continue;
 
-                    String fieldTypeString = MemberFormatter.fullPackageName(type);
+                    String fieldTypeString = formatter.fullPackageName(type);
 
                     // not one of our classes, we can ignore it
                     if (!fqn.contains(fieldTypeString)) continue;
@@ -158,7 +166,7 @@ public class UmlTranslator implements Translator {
                         sb.append(nodeFQN);
                         sb.append(associationType(node, f, variableName, fieldTypeString));
                         sb.append("\"");
-                        sb.append(MemberFormatter.modifiers(f.getModifiers()));
+                        sb.append(formatter.modifiers(f.getModifiers()));
                         sb.append(variableName);
                         sb.append("\" ");
                         sb.append(fieldTypeString);
@@ -227,7 +235,7 @@ public class UmlTranslator implements Translator {
                 Type type = parameter.getType();
                 if (type.isPrimitiveType()) continue;
 
-                if (MemberFormatter.fullPackageName(type).equals(fieldTypeString)) {
+                if (formatter.fullPackageName(type).equals(fieldTypeString)) {
                     invalidCtor = false;
                     paramName = parameter.getNameAsString();
                     break;
@@ -244,7 +252,7 @@ public class UmlTranslator implements Translator {
 
     private boolean hasGetter(NodeWithMembers<?> methodHolder, String fieldTypeString, String fieldName) {
         for (MethodDeclaration method : methodHolder.getMethods()) {
-            if (!MemberFormatter.fullPackageName(method.getType()).equals(fieldTypeString)) {
+            if (!formatter.fullPackageName(method.getType()).equals(fieldTypeString)) {
                 continue;
             }
 
@@ -284,7 +292,7 @@ public class UmlTranslator implements Translator {
                 Type type = parameter.getType();
                 if (type.isPrimitiveType()) continue;
 
-                if (MemberFormatter.fullPackageName(type).equals(fieldTypeString)) {
+                if (formatter.fullPackageName(type).equals(fieldTypeString)) {
                     invalidMethod = false;
                     paramName = parameter.getNameAsString();
                     break;

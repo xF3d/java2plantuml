@@ -1,5 +1,6 @@
 package translate.complexity.clazz;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.EnumDeclaration;
@@ -20,12 +21,13 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
             .min(-1);
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz) {
+    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
         if (clazz instanceof RecordDeclaration || clazz instanceof EnumDeclaration) {
             return builder.value(0).build();
         }
 
-        String fullPackageName = MemberFormatter.fullSimpleName(clazz);
+        CompilationUnit cu = clazz.findCompilationUnit().get();
+        String fullPackageName = formatter.fullPackageName(cu, clazz);
 
         int amount = 0;
         for (var entry : allClazz) {
@@ -38,8 +40,8 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
                 typeList.addAll(impl.getImplementedTypes());
             }
 
-            for (var type : typeList) {
-                String name = MemberFormatter.fullSimpleName(type);
+            for (ClassOrInterfaceType type : typeList) {
+                String name = formatter.fullPackageName(cu, type);
                 if (name.equals(fullPackageName)) {
                     amount++;
                     break;

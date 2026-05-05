@@ -10,6 +10,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.component.MemberFormatter;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,7 +23,7 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
             .name("LOCMN");
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz) {
+    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
         int p = 0;
         int q = 0;
 

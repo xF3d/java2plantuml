@@ -10,6 +10,7 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.SwitchEntry;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.component.MemberFormatter;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
     private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
@@ -19,7 +20,7 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
 
 
     @Override
-    public ComplexityMetricResult calculate(Node clazz, MethodDeclaration method) {
+    public ComplexityMetricResult calculate(Node clazz, MethodDeclaration method, MemberFormatter formatter) {
         var optBody = method.getBody();
         if (optBody.isEmpty()) {
             return builder.value(1).build();

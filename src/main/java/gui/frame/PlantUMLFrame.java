@@ -97,8 +97,11 @@ public class PlantUMLFrame extends JFrame {
                         if (!(textNode instanceof Element textElement)) continue;
                         if (!"text".equals(textElement.getTagName())) continue;
 
-                        // For some reason the dataQualifiedName replaces $ with "." so small workaround
+                        // we don't need listeners for external classes
                         String className = textElement.getTextContent();
+                        if (className.startsWith("external ")) continue;
+
+                        // For some reason the dataQualifiedName replaces $ with "." so small workaround
                         String parsedFQN = dataQualifiedName.substring(0, dataQualifiedName.length() - className.length()) + className;
 
                         ((EventTarget) textElement).addEventListener("click", evt -> {

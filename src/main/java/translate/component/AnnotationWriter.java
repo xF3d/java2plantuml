@@ -10,15 +10,15 @@ public class AnnotationWriter extends SetTranslatingComponent<AnnotationDeclarat
     }
 
     @Override
-    public UmlEntry writeComponentUML(AnnotationDeclaration element) {
+    public UmlEntry writeComponentUML(AnnotationDeclaration element, MemberFormatter formatter) {
         StringBuilder builder = new StringBuilder();
         builder.append("annotation ");
-        builder.append(MemberFormatter.fullSimpleName(element));
+        builder.append(formatter.fullSimpleName(element));
         builder.append("{\n");
 
         for (var member : element.getMembers()) {
             if (member instanceof FieldDeclaration fieldDeclaration) {
-                builder.append(MemberFormatter.field(fieldDeclaration));
+                builder.append(formatter.field(fieldDeclaration));
             } else if (member instanceof AnnotationMemberDeclaration decl) {
                 builder.append(decl.getNameAsString() + " : " + decl.getTypeAsString());
                 var defaultValueOpt = decl.getDefaultValue();

@@ -7,6 +7,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.component.MemberFormatter;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -19,7 +20,7 @@ public class RFCEvaluator implements ComplexityEvaluator.Clazz {
             .min(-1);
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz) {
+    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
         // in RFC inherited methods must also be calculated
         if (!(clazz instanceof NodeWithMembers<?> nwm)) {
             return null;

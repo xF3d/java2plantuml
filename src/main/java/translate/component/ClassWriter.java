@@ -18,7 +18,7 @@ public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclara
     }
 
     @Override
-    public UmlEntry writeComponentUML(ClassOrInterfaceDeclaration element) {
+    public UmlEntry writeComponentUML(ClassOrInterfaceDeclaration element, MemberFormatter formatter) {
         StringBuilder classDefinitionBuilder = new StringBuilder();
 
         if (isExceptionClass(element)) {
@@ -31,17 +31,17 @@ public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclara
             classDefinitionBuilder.append("class ");
         }
 
-        classDefinitionBuilder.append(MemberFormatter.fullSimpleName(element));
+        classDefinitionBuilder.append(formatter.fullSimpleName(element));
         classDefinitionBuilder.append("{");
         classDefinitionBuilder.append("\n");
 
-        classDefinitionBuilder.append(MemberFormatter.node(element));
+        classDefinitionBuilder.append(formatter.node(element));
         //attributes and methods
 
         classDefinitionBuilder.append("}\n");
 
-        String associations = MemberFormatter.nodeWithImplements(element) +
-            MemberFormatter.nodeWithExtends(element);
+        String associations = formatter.nodeWithImplements(element) +
+            formatter.nodeWithExtends(element);
 
         return new UmlEntry(classDefinitionBuilder.toString(), associations);
     }

@@ -9,11 +9,11 @@ public class EnumWriter extends SetTranslatingComponent<EnumDeclaration> {
     }
 
     @Override
-    public UmlEntry writeComponentUML(EnumDeclaration element) {
+    public UmlEntry writeComponentUML(EnumDeclaration element, MemberFormatter formatter) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("enum ");
-        sb.append(MemberFormatter.fullSimpleName(element));
+        sb.append(formatter.fullSimpleName(element));
         sb.append("{\n");
 
         sb.append("__ Entries __\n");
@@ -25,14 +25,14 @@ public class EnumWriter extends SetTranslatingComponent<EnumDeclaration> {
 
         sb.append("__ Attributes __\n");
 
-        sb.append(MemberFormatter.attributes(element));
+        sb.append(formatter.attributes(element));
 
         sb.append("__ Methods __\n");
 
-        sb.append(MemberFormatter.methods(element));
+        sb.append(formatter.methods(element));
 
         sb.append("}\n");
 
-        return new UmlEntry(sb.toString(), MemberFormatter.nodeWithImplements(element));
+        return new UmlEntry(sb.toString(), formatter.nodeWithImplements(element));
     }
 }

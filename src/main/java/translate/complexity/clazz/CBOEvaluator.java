@@ -23,11 +23,13 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
 
     //TODO: redo from 0, I am about to shot myself
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz) {
+    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
         int fanOut = getFQNusedBy(clazz).size();
         int fanIn = 0;
 
-        String fqn = MemberFormatter.fullPackageName(clazz).replace('$', '.');
+        String fqn = formatter.fullPackageName(
+            clazz.findCompilationUnit().get(), clazz
+        ).replace(MemberFormatter.INNER_CLASS_DELIMITER, ".");
         for (var entry : allClazz) {
             Set<String> result = getFQNusedBy(entry);
             if (result.contains(fqn)) {

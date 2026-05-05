@@ -10,6 +10,7 @@ import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.ResolverUtils;
+import translate.component.MemberFormatter;
 
 import java.util.Collection;
 
@@ -20,7 +21,7 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
             .min(-1);
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> list, Node node) {
+    public ComplexityMetricResult calculate(Collection<Node> list, Node node, MemberFormatter formatter) {
         if (node instanceof RecordDeclaration || node instanceof EnumDeclaration) {
             return builder.value(1).build();
         }

@@ -4,6 +4,7 @@ import translate.translator.Translator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 public class FileHandler {
 
@@ -13,10 +14,9 @@ public class FileHandler {
         this.translator = translator;
     }
 
-
-    void handle(File f) {
+    void handle(List<File> fileList) {
         try {
-            translator.translateFile(new File(f.getAbsolutePath()));
+            translator.translateFiles(fileList);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (Exception e) {
