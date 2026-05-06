@@ -7,89 +7,12 @@ import com.github.javaparser.ast.expr.Name;
 import translate.component.MemberFormatter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class PackageManager {
 
     private static final String ASTERISK_FORMAT = MemberFormatter.PACKAGE_DELIMITER + "*";
     private static final String STATIC_IDENTIFIER = "#";
-
-    static class PackageNode {
-        String name;
-        PackageNode parent;
-        Map<String, PackageNode> children = new HashMap<>();
-        Map<String, ClassNode> classes = new HashMap<>();
-
-        PackageNode(String name, PackageNode parent) {
-            this.name = name;
-            this.parent = parent;
-        }
-
-        public void addClass(String fullInnerClazz) {
-            String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
-
-            ClassNode foundBaseClass = classes.get(split[0]);
-            if (foundBaseClass == null) {
-                ClassNode classNode = new ClassNode(split[0]);
-                classNode.addInner(split);
-                classes.put(split[0], classNode);
-            } else {
-                foundBaseClass.addInner(split);
-            }
-        }
-
-        public boolean containsClass(String fullInnerClazz) {
-            String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
-            return classes.containsKey(split[0]);
-        }
-
-        public boolean containsClassStatic(String fullInnerClazz) {
-            String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
-            ClassNode foundBaseClass = classes.get(split[0]);
-
-            if (foundBaseClass == null) return false;
-
-            return foundBaseClass.containsStatic(fullInnerClazz);
-        }
-    }
-
-    static class ClassNode {
-        String name;
-        Map<String, ClassNode> innerClasses = new HashMap<>();
-
-        ClassNode(String name) {
-            this.name = name;
-        }
-
-        public void addInner(String[] inners) {
-            // first element is just the name itself, so we can skip
-            if (inners.length == 1) return;
-
-            ClassNode current = this;
-            for (int i = 1; i < inners.length; i++) {
-                current.innerClasses.putIfAbsent(inners[i], new ClassNode(inners[i]));
-                current = current.innerClasses.get(inners[i]);
-            }
-        }
-
-        public boolean containsStatic(String fullInnerClazz) {
-            String[] parts = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
-
-            ClassNode current = this;
-
-            if (!current.name.equals(parts[0])) return false;
-
-            for (int i = 1; i < parts.length; i++) {
-                current = current.innerClasses.get(parts[i]);
-                if (current == null) return false;
-            }
-
-            return true;
-        }
-    }
 
     private final PackageNode root = new PackageNode("", null);
 
