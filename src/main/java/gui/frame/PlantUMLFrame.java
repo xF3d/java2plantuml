@@ -16,6 +16,7 @@ import org.w3c.dom.svg.SVGDocument;
 import source.DirectoryExplorer;
 import source.FileHandler;
 import translate.ClassDiagramConfig;
+import translate.component.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
 import visitors.AnnotationVisitor;
@@ -103,9 +104,10 @@ public class PlantUMLFrame extends JFrame {
 
                         // For some reason the dataQualifiedName replaces $ with "." so small workaround
                         String parsedFQN = dataQualifiedName.substring(0, dataQualifiedName.length() - className.length()) + className;
+                        String finalParsedFQN = parsedFQN.replace("..", MemberFormatter.PACKAGE_DELIMITER);
 
                         ((EventTarget) textElement).addEventListener("click", evt -> {
-                            new ClassFrame(parsedFQN, complexityTranslator);
+                            new ClassFrame(finalParsedFQN, complexityTranslator);
                         }, false);
                         break;
                     }
