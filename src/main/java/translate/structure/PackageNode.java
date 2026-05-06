@@ -16,7 +16,7 @@ class PackageNode {
         this.parent = parent;
     }
 
-    public void addClass(String fullInnerClazz) {
+    public void addClassNode(String fullInnerClazz) {
         String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
 
         ClassNode foundBaseClass = classes.get(split[0]);
@@ -29,9 +29,15 @@ class PackageNode {
         }
     }
 
-    public boolean containsClass(String fullInnerClazz) {
+    public ClassNode getClassNode(String fullInnerClazz) {
         String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
-        return classes.containsKey(split[0]);
+
+        ClassNode foundBaseClass = classes.get(split[0]);
+        for (int i = 1; i < split.length && foundBaseClass != null; i++) {
+            foundBaseClass = foundBaseClass.innerClasses.get(split[i]);
+        }
+
+        return foundBaseClass;
     }
 
     public boolean containsClassStatic(String fullInnerClazz) {
