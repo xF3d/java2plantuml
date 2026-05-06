@@ -6,4 +6,4 @@ V 5. Relazioni incomplete dello schema UML (sistemare implementazione per le int
 6. Proporre refactoring
 7. Applicare pattern
 8. AI deve indentificare punti per refactoring, inserimento di pattern. (interrogare più AI, il primo deve verificare l'output del secondo, e vice versa, genera diff da consigliare all'utente per cambiare il sistema)
-? 9. Distinguere le classi di libreria che vengono estese o usate con un colore diverso ad esempio (o stereotipo)
+V 9. Distinguere le classi di libreria che vengono estese o usate con un colore diverso ad esempio (o stereotipo)

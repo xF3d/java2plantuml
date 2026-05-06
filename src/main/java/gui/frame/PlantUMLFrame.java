@@ -93,23 +93,29 @@ public class PlantUMLFrame extends JFrame {
                     if (dataQualifiedName.isEmpty()) continue;
 
                     var childNodes = gElement.getChildNodes();
+                    String foundClass = null;
                     for (int j = 0; j < childNodes.getLength(); j++) {
                         Node textNode = childNodes.item(j);
                         if (!(textNode instanceof Element textElement)) continue;
                         if (!"text".equals(textElement.getTagName())) continue;
 
                         // we don't need listeners for external classes
-                        String className = textElement.getTextContent();
-                        if (className.startsWith("external ")) continue;
+                        String textContent = textElement.getTextContent();
+                        if (textContent.startsWith("external ")) break;
 
-                        // For some reason the dataQualifiedName replaces $ with "." so small workaround
-                        String parsedFQN = dataQualifiedName.substring(0, dataQualifiedName.length() - className.length()) + className;
-                        String finalParsedFQN = parsedFQN.replace("..", MemberFormatter.PACKAGE_DELIMITER);
+                        if (foundClass == null) {
+                            // For some reason the dataQualifiedName replaces $ with "." so small workaround , might not be necessary anymore
+                            String parsedFQN = dataQualifiedName.substring(0, dataQualifiedName.length() - textContent.length()) + textContent;
+                            String finalParsedFQN = parsedFQN.replace("..", MemberFormatter.PACKAGE_DELIMITER);
 
-                        ((EventTarget) textElement).addEventListener("click", evt -> {
-                            new ClassFrame(finalParsedFQN, complexityTranslator);
-                        }, false);
-                        break;
+                            ((EventTarget) textElement).addEventListener("click", evt -> {
+                                new ClassFrame(finalParsedFQN, complexityTranslator);
+                            }, false);
+                            foundClass = finalParsedFQN;
+                        } else {
+                            // TODO: add listeners to methods
+                            // if (!textContent.contains("(")) continue;
+                        }
                     }
                 }
             }
