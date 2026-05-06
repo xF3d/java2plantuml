@@ -136,7 +136,7 @@ public class PackageManager {
             if (lastDot == -1) continue;
 
             String pkg = imp.substring(0, lastDot);
-            String importedClass = imp.substring(lastDot + 1);
+            String importedClass = imp.substring(lastDot + MemberFormatter.PACKAGE_DELIMITER.length());
 
             String[] parts = className.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
             String base = parts[0];
@@ -155,7 +155,7 @@ public class PackageManager {
             if (!imp.endsWith(ASTERISK_FORMAT)) continue;
             if (imp.startsWith(STATIC_IDENTIFIER)) continue;
 
-            String pkg = imp.substring(0, imp.length() - 2);
+            String pkg = imp.substring(0, imp.length() - ASTERISK_FORMAT.length());
             PackageNode packageNode = getPackageNode(pkg);
 
             if (packageNode != null && packageNode.containsClass(className)) {
@@ -200,7 +200,6 @@ public class PackageManager {
         return null;
     }
 
-    // TODO: redo separation logic, use something weird like ! separator, and allow nested class support
     // right now "a.b.C" won't see all the nested classes like "a.b.C.D" and they will be marked as external
     public String resolveClass(CompilationUnit cu, String className) {
         String packageName = cu.getPackageDeclaration()
@@ -220,9 +219,9 @@ public class PackageManager {
             if (singleImport.isStatic()) {
                 importString = STATIC_IDENTIFIER + importString;
                 // TODO figure out if at what point does the class start and replace said part
-            } else {
-                importString = importString.replace(".", MemberFormatter.PACKAGE_DELIMITER);
             }
+
+            importString = importString.replace(".", MemberFormatter.PACKAGE_DELIMITER);
 
             imports.add(importString);
         }
