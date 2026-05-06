@@ -34,7 +34,7 @@ public class ComplexityTranslator implements Translator {
     // full package name --> node
     private final Map<String, Node> classMap = new HashMap<>();
 
-    // full package name --> method Name --> method
+    // full package name --> method Signature --> method
     private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
 
     private static final ComplexityEvaluator.Clazz[] classEvaluators = {
@@ -64,7 +64,7 @@ public class ComplexityTranslator implements Translator {
             }
 
             for (MethodDeclaration method : nwm.getMethods()) {
-                methods.put(method.getNameAsString(), method);
+                methods.put(method.getSignature().asString(), method);
             }
 
             methodMap.put(fullName, methods);
