@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PackageManager {
 
-    private final PackageNode root = new PackageNode("", null);
+    private final PackageNode root = PackageNode.root();
 
     public void addClass(String fqn) {
         String[] parts = fqn.split("\\" + MemberFormatter.PACKAGE_DELIMITER);
@@ -26,20 +26,6 @@ public class PackageManager {
         }
 
         current.addClassNode(parts[parts.length - 1]);
-    }
-
-    private PackageNode getPackageNode(String packageName) {
-        if (packageName == null || packageName.isEmpty()) return root;
-
-        String[] parts = packageName.split("\\" + MemberFormatter.PACKAGE_DELIMITER);
-        PackageNode current = root;
-
-        for (String part : parts) {
-            current = current.children.get(part);
-            if (current == null) return null;
-        }
-
-        return current;
     }
 
     /**
@@ -74,14 +60,14 @@ public class PackageManager {
             if (lastDot == -1) continue;
             String pkg = imp.fqn().substring(0, lastDot);
 
-            PackageNode importPkg = getPackageNode(pkg);
+            PackageNode importPkg = root.getPackageNode(pkg);
             if (importPkg != null && importPkg.containsClassStatic(className)) {
                 return pkg + MemberFormatter.PACKAGE_DELIMITER + className;
             }
         }
 
         // 2. Same package
-        PackageNode currentPkg = getPackageNode(packageLocation);
+        PackageNode currentPkg = root.getPackageNode(packageLocation);
         if (currentPkg != null && currentPkg.containsClassStatic(className)) {
             return packageLocation + MemberFormatter.PACKAGE_DELIMITER + className;
         }
@@ -89,7 +75,7 @@ public class PackageManager {
         // 3. Wildcard imports
         for (PackageImport imp : wildcards) {
             String pkg = imp.fqn();
-            PackageNode packageNode = getPackageNode(pkg);
+            PackageNode packageNode = root.getPackageNode(pkg);
 
             if (packageNode != null && packageNode.containsClassStatic(className)) {
                 return pkg + MemberFormatter.PACKAGE_DELIMITER + className;
@@ -98,25 +84,23 @@ public class PackageManager {
 
         // 4. Static imports
         for (PackageImport imp : staticExplicit) {
-
+            String classFqn = imp.fqn();
+            ClassNode node = root.getStaticPackageNode(classFqn);
+            if (node != null) {
+                String packageName = node.location.name;
+                String classSection = classFqn.substring(packageName.length() + MemberFormatter.PACKAGE_DELIMITER.length());
+                return packageName + MemberFormatter.PACKAGE_DELIMITER + classSection.replace(MemberFormatter.PACKAGE_DELIMITER, MemberFormatter.INNER_CLASS_DELIMITER);
+            }
         }
 
+        // 5. Static wildcard imports
         for (PackageImport imp : staticWildcards) {
-            String classFqn = imp.fqn();
-
-            // classFqn = something like java.util.Map
-            int lastDot = classFqn.lastIndexOf(MemberFormatter.PACKAGE_DELIMITER);
-            if (lastDot == -1) continue;
-
-            String pkg = classFqn.substring(0, lastDot);
-            String clazz = classFqn.substring(lastDot + 1);
-
-            PackageNode pkgNode = getPackageNode(pkg);
-            if (pkgNode == null) continue;
-
-            ClassNode base = pkgNode.getClassNode(clazz);
-            if (base != null && base.containsStatic(className)) {
-                return classFqn + MemberFormatter.INNER_CLASS_DELIMITER + className;
+            String classFqn = imp.fqn() + MemberFormatter.PACKAGE_DELIMITER + className;
+            ClassNode node = root.getStaticPackageNode(classFqn);
+            if (node != null) {
+                String packageName = node.location.name;
+                String classSection = classFqn.substring(packageName.length() + MemberFormatter.PACKAGE_DELIMITER.length());
+                return packageName + MemberFormatter.PACKAGE_DELIMITER + classSection.replace(MemberFormatter.PACKAGE_DELIMITER, MemberFormatter.INNER_CLASS_DELIMITER);
             }
         }
 

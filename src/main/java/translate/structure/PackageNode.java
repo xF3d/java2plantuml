@@ -16,12 +16,16 @@ class PackageNode {
         this.parent = parent;
     }
 
+    static PackageNode root() {
+        return new PackageNode("", null);
+    }
+
     public void addClassNode(String fullInnerClazz) {
         String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
 
         ClassNode foundBaseClass = classes.get(split[0]);
         if (foundBaseClass == null) {
-            ClassNode classNode = new ClassNode(split[0]);
+            ClassNode classNode = new ClassNode(this, split[0]);
             classNode.addInner(split);
             classes.put(split[0], classNode);
         } else {
@@ -48,4 +52,65 @@ class PackageNode {
 
         return foundBaseClass.containsStatic(fullInnerClazz);
     }
+
+    public PackageNode getPackageNode(String packageName) {
+        if (packageName == null || packageName.isEmpty()) return this;
+
+        String[] parts = packageName.split("\\" + MemberFormatter.PACKAGE_DELIMITER);
+        PackageNode current = this;
+
+        for (String part : parts) {
+            current = current.children.get(part);
+            if (current == null) return null;
+        }
+
+        return current;
+    }
+
+    /**
+     *
+     * @param packageName should use MemberFormatter#PACKAGE_DELIMITER  only
+     * @return
+     */
+    public ClassNode getStaticPackageNode(String packageName) {
+        if (packageName == null || packageName.isEmpty()) return null;
+
+        String[] parts = packageName.split("\\" + MemberFormatter.PACKAGE_DELIMITER);
+
+        PackageNode currentPackage = this;
+        int i;
+        for (i = 0; i < parts.length; i++) {
+            String part = parts[i];
+            PackageNode next = currentPackage.children.get(part);
+            if (next == null) break;
+            currentPackage = next;
+        }
+
+        ClassNode currentClass = null;
+        for (; i < parts.length; i++) {
+            String part = parts[i];
+
+            if (currentClass == null) {
+                currentClass = currentPackage.classes.get(part);
+            } else {
+                currentClass = currentClass.innerClasses.get(part);
+            }
+
+            if (currentClass == null) return null;
+        }
+
+        return currentClass;
+    }
+
+    /*
+    public String fqn() {
+        ArrayList<PackageNode> packageNodeList = new ArrayList<>();
+        PackageNode current = parent;
+
+        while (current != null) {
+
+            current = current.parent;
+        }
+
+    }*/
 }
