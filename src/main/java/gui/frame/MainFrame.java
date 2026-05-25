@@ -182,6 +182,7 @@ public class MainFrame extends JFrame {
                 toRemove = jscroll;
                 contentPanel.updateUI();
 
+                new SystemStatus(complexityTranslator);
             } catch (Exception ex) {
                 JLabel errorLabel = new JLabel("An error occurred: " + ex.getMessage());
                 bottomPanel.add(errorLabel);

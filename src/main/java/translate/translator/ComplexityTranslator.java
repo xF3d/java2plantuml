@@ -37,19 +37,6 @@ public class ComplexityTranslator implements Translator {
     // full package name --> method Signature --> method
     private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
 
-    private static final ComplexityEvaluator.Clazz[] classEvaluators = {
-            new DITEvaluator(),
-            new NOCEvaluator(),
-            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b, f) -> ComplexityMetricResult.builder().value(1).build()),
-            //new CBOEvaluator(),
-            new RFCEvaluator(),
-            new LCOMNEvaluator()
-    };
-
-    private static final ComplexityEvaluator.Method[] methodEvaluators = {
-            new CyclomaticEvaluator()
-    };
-
     @Override
     public void addNode(Node node) {
         // note, this is under teh assumption that every node passed here is a typeDefinition
@@ -95,26 +82,49 @@ public class ComplexityTranslator implements Translator {
         return output;
     }
 
+    public ComplexityMetricResult[] evaluateSystem() {
+        // todo: also add system level
+        ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Clazz.EVALUATORS.length];
+
+        if (classMap.isEmpty()) {
+            return new ComplexityMetricResult[0];
+        }
+
+
+        for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
+            ArrayList<ComplexityMetricResult> values = new ArrayList<>();
+
+            for (var classNode : classMap.values()) {
+                values.add(ComplexityEvaluator.Clazz.EVALUATORS[i].calculate(classMap.values(), classNode, formatter));
+            }
+
+            double average = values.stream().mapToDouble(ComplexityMetricResult::getValue).average().getAsDouble();
+            result[i] = values.get(0).toBuilder().value(average).build();
+        }
+
+        return result;
+    }
+
     public ComplexityMetricResult[] evaluateClass(String fullClassName) {
-        ComplexityMetricResult[] result = new ComplexityMetricResult[classEvaluators.length];
+        ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Clazz.EVALUATORS.length];
         Node classNode = classMap.get(fullClassName);
         if (classNode == null) {
             throw new RuntimeException("Not found: " + fullClassName);
         }
 
-        for (int i = 0; i < classEvaluators.length; i++) {
-            result[i] = classEvaluators[i].calculate(classMap.values(), classNode, formatter);
+        for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
+            result[i] = ComplexityEvaluator.Clazz.EVALUATORS[i].calculate(classMap.values(), classNode, formatter);
         }
 
         return result;
     }
 
     public ComplexityMetricResult[] evaluateMethod(String fullClassName, String method) {
-        ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
+        ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Method.EVALUATORS.length];
         Node classNode = classMap.get(fullClassName);
         MethodDeclaration methodDeclaration = methodMap.get(fullClassName).get(method);
-        for (int i = 0; i < methodEvaluators.length; i++) {
-            result[i] = methodEvaluators[i].calculate(classNode, methodDeclaration, formatter);
+        for (int i = 0; i < ComplexityEvaluator.Method.EVALUATORS.length; i++) {
+            result[i] = ComplexityEvaluator.Method.EVALUATORS[i].calculate(classNode, methodDeclaration, formatter);
         }
 
         return result;
