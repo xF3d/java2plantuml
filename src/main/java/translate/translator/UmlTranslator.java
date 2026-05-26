@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.expr.AssignExpr;
 import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
@@ -164,7 +165,7 @@ public class UmlTranslator implements Translator {
                     for (var variableEntry : f.getVariables()) {
                         String variableName = variableEntry.getNameAsString();
                         sb.append(nodeFQN);
-                        sb.append(associationType(node, f, variableName, fieldTypeString));
+                        sb.append(associationType(node, f, variableEntry, fieldTypeString));
                         sb.append("\"");
                         sb.append(formatter.modifiers(f.getModifiers()));
                         sb.append(variableName);
@@ -185,16 +186,17 @@ public class UmlTranslator implements Translator {
      * returns "--*" in case of composition
      * returns "--" (dependency) in case of failure
      */
-    private String associationType(Node clazz, FieldDeclaration field, String fieldName, String fieldTypeString) {
+    private String associationType(Node clazz, FieldDeclaration field, VariableDeclarator variableDecl, String fieldTypeString) {
         if (!(clazz instanceof NodeWithMembers<?> members)) {
             return "--";
         }
 
-        boolean hasSetter = hasSetter(field, members, fieldTypeString, fieldName);
-        boolean hasGetter = hasGetter(members, fieldTypeString, fieldName);
-        boolean hasConstructor = hasConstructor(members, fieldTypeString, fieldName);
+        String variableName = variableDecl.getNameAsString();
+        boolean hasSetter = hasSetter(field, members, fieldTypeString, variableName);
+        boolean hasGetter = hasGetter(members, fieldTypeString, variableName);
+        boolean hasConstructor = hasConstructor(members, fieldTypeString, variableName);
 
-        boolean isComposition = isComposition(field, hasGetter, hasSetter, hasConstructor);
+        boolean isComposition = isComposition(field, variableDecl, hasGetter, hasSetter, hasConstructor);
         boolean isAggregation = isAggregation(field, hasGetter, hasSetter, hasConstructor);
 
         // no conflicts yet but better safe than sorry in case I add more heuristics
@@ -209,7 +211,11 @@ public class UmlTranslator implements Translator {
         return "--";
     }
 
-    private boolean isComposition(FieldDeclaration field, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
+    private boolean isComposition(FieldDeclaration field, VariableDeclarator variableDecl, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
+        if (variableDecl.getInitializer().isPresent()) return true;
+
+        return false;
+        /*
         // if public then it can be modified easily
         if (field.isPublic()) return false;
 
@@ -217,14 +223,15 @@ public class UmlTranslator implements Translator {
         if (hasSetter || hasConstructor) return false;
 
         // there must be no getters
-        return !hasGetter;
+        return !hasGetter;*/
     }
 
 
     private boolean isAggregation(FieldDeclaration field, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
-        if (!hasConstructor && !hasSetter) return false;
+        return false;
+        /*if (!hasConstructor && !hasSetter) return false;
 
-        return hasGetter;
+        return hasGetter;*/
     }
 
     private boolean hasConstructor(NodeWithMembers<?> members, String fieldTypeString, String fieldName) {
