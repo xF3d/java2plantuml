@@ -1,6 +1,7 @@
 package gui.frame;
 
 import gui.ComplexityGridPanel;
+import gui.jlist.JListReferenced;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
@@ -33,22 +34,12 @@ public class ClassFrame extends JFrame {
     }
 
     private JScrollPane getJScrollPane(ComplexityTranslator umlTranslator) {
-        JList<String> complexityList = umlTranslator.getMethodsJList(className);
-        complexityList.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() != 2) { // double-click
-                    return;
-                }
-
-                int index = complexityList.locationToIndex(e.getPoint());
-                if (index == -1) {
-                    return;
-                }
-
-                String selectedItem = complexityList.getModel().getElementAt(index);
+        var complexityList = new JListReferenced(umlTranslator.getMethodsJList(className)) {
+            @Override
+            public void onClick(String selectedItem) {
                 new MethodFrame(className, selectedItem, umlTranslator);
             }
-        });
+        };
 
         return new JScrollPane(complexityList);
     }

@@ -1,5 +1,6 @@
 package gui.frame;
 
+import gui.jlist.JListReferenced;
 import lombok.Getter;
 import source.DirectoryExplorer;
 import source.FileHandler;
@@ -201,22 +202,12 @@ public class MainFrame extends JFrame {
     }
 
     private static JScrollPane getJScrollPane(ComplexityTranslator umlTranslator) {
-        JList<String> complexityList = umlTranslator.getClassJList();
-        complexityList.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() != 2) { // double-click
-                    return;
-                }
-
-                int index = complexityList.locationToIndex(e.getPoint());
-                if (index == -1) {
-                    return;
-                }
-
-                String selectedItem = complexityList.getModel().getElementAt(index);
+        var complexityList = new JListReferenced(umlTranslator.getClassJList()) {
+            @Override
+            public void onClick(String selectedItem) {
                 new ClassFrame(selectedItem, umlTranslator);
             }
-        });
+        };
 
         return new JScrollPane(complexityList);
     }

@@ -7,12 +7,6 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.complexity.clazz.DITEvaluator;
-import translate.complexity.clazz.LCOMNEvaluator;
-import translate.complexity.clazz.NOCEvaluator;
-import translate.complexity.clazz.RFCEvaluator;
-import translate.complexity.clazz.WMCBaseEvaluator;
-import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.MemberFormatter;
 import translate.structure.PackageManager;
 
@@ -130,11 +124,11 @@ public class ComplexityTranslator implements Translator {
         return result;
     }
 
-    public JList<String> getClassJList() {
-        return new JList<>(classMap.keySet().toArray(String[]::new));
+    public String[] getClassJList() {
+        return classMap.keySet().toArray(String[]::new);
     }
 
-    public JList<String> getMethodsJList(String className) {
-        return new JList<>(methodMap.get(className).keySet().toArray(String[]::new));
+    public String[] getMethodsJList(String className) {
+        return methodMap.get(className).keySet().toArray(String[]::new);
     }
 }
