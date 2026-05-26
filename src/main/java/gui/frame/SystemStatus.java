@@ -8,21 +8,17 @@ import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
 
-public class SystemStatus extends JFrame {
+public class SystemStatus {
     private final RadarChart chart;
+    private final JFrame frame;
 
     public SystemStatus(ComplexityTranslator translator) {
-        super("System Status");
-        super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        super.setSize(1000, 600);
-
         this.chart = new RadarChartBuilder()
             .width(800)
             .height(500)
             .build();
 
         ComplexityMetricResult[] results = translator.evaluateSystem();
-
 
         String[] names = new String[results.length];
         double[] values = new double[results.length];
@@ -35,6 +31,9 @@ public class SystemStatus extends JFrame {
         this.chart.setRadiiLabels(names);
         this.chart.addSeries("System", values);
 
-        new SwingWrapper<>(chart).displayChart();
+        this.frame = new SwingWrapper<>(chart).displayChart();
+        this.frame.setTitle("System Status");
+        this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        FrameManager.addFrame(this.frame);
     }
 }
