@@ -19,6 +19,7 @@ import translate.ClassDiagramConfig;
 import translate.component.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
+import util.SignatureParser;
 import visitors.AnnotationVisitor;
 import visitors.ClassVisitor;
 import visitors.EnumVisitor;
@@ -56,7 +57,7 @@ public class PlantUMLFrame extends JFrame {
                 .withVisitor(new AnnotationVisitor(complexityTranslator))
                 .setShowMethods(true)
                 .setShowAttributes(true)
-                .setShowColoredAccessSpecifiers(false)
+                .setShowColoredAccessSpecifiers(true)
                 .build();
 
         FileHandler handler = new FileHandler(complexityTranslator);
@@ -113,8 +114,17 @@ public class PlantUMLFrame extends JFrame {
                             }, false);
                             foundClass = finalParsedFQN;
                         } else {
-                            // TODO: add listeners to methods
-                            // if (!textContent.contains("(")) continue;
+                            // only methods
+                            if (!textContent.contains("(")) continue;
+
+                            // ignore constructors
+                            if(SignatureParser.isConstructor(textContent)) continue;
+
+                            String extractSignature = SignatureParser.extractSignature(textContent);
+                            String finalFoundClass = foundClass;
+                            ((EventTarget) textElement).addEventListener("click", evt -> {
+                                new MethodFrame(finalFoundClass, extractSignature, complexityTranslator);
+                            }, false);
                         }
                     }
                 }

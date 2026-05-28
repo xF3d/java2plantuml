@@ -197,41 +197,23 @@ public class UmlTranslator implements Translator {
         boolean hasConstructor = hasConstructor(members, fieldTypeString, variableName);
 
         boolean isComposition = isComposition(field, variableDecl, hasGetter, hasSetter, hasConstructor);
-        boolean isAggregation = isAggregation(field, hasGetter, hasSetter, hasConstructor);
 
-        // no conflicts yet but better safe than sorry in case I add more heuristics
-        if (isAggregation && isComposition) {
-            return "--";
-        } else if (isAggregation) {
-            return "--o";
-        } else if (isComposition) {
+        // se non è composizione è aggregazione
+        if (isComposition) {
             return "--*";
+        } else {
+            return "--o";
         }
-
-        return "--";
     }
 
     private boolean isComposition(FieldDeclaration field, VariableDeclarator variableDecl, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
+
+        // TODO: plantuml supporta la relazione a molti, aggiungere supporto
         if (variableDecl.getInitializer().isPresent()) return true;
 
+        // costruttore
+
         return false;
-        /*
-        // if public then it can be modified easily
-        if (field.isPublic()) return false;
-
-        // there must be no setters
-        if (hasSetter || hasConstructor) return false;
-
-        // there must be no getters
-        return !hasGetter;*/
-    }
-
-
-    private boolean isAggregation(FieldDeclaration field, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
-        return false;
-        /*if (!hasConstructor && !hasSetter) return false;
-
-        return hasGetter;*/
     }
 
     private boolean hasConstructor(NodeWithMembers<?> members, String fieldTypeString, String fieldName) {

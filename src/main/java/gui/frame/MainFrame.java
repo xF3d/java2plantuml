@@ -119,7 +119,7 @@ public class MainFrame extends JFrame {
                         .withVisitor(new AnnotationVisitor(umlTranslator))
                         .setShowMethods(true)
                         .setShowAttributes(true)
-                        .setShowColoredAccessSpecifiers(false)
+                        .setShowColoredAccessSpecifiers(true)
                         .build();
 
                 FileHandler handler = new FileHandler(umlTranslator);
@@ -161,7 +161,7 @@ public class MainFrame extends JFrame {
                         .withVisitor(new AnnotationVisitor(complexityTranslator))
                         .setShowMethods(true)
                         .setShowAttributes(true)
-                        .setShowColoredAccessSpecifiers(false)
+                        .setShowColoredAccessSpecifiers(true)
                         .build();
 
                 FileHandler handler = new FileHandler(complexityTranslator);
