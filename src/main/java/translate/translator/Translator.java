@@ -7,6 +7,9 @@ import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
+import gui.frame.MainFrame;
+import source.DirectoryExplorer;
+import source.FileHandler;
 import translate.ResolverUtils;
 import translate.structure.PackageManager;
 import visitors.PackageManagerVisitor;
@@ -78,6 +81,18 @@ public interface Translator {
                 e.printStackTrace();
             }
         }
+    }
+
+    default boolean execute() {
+        FileHandler handler = new FileHandler(this);
+
+        var selectedDirectory = MainFrame.getSelectedDirectory();
+        if (selectedDirectory == null || !selectedDirectory.exists()) {
+            return false;
+        }
+
+        new DirectoryExplorer(handler).explore(selectedDirectory);
+        return true;
     }
 
 }

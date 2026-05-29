@@ -48,24 +48,9 @@ public class PlantUMLFrame extends JFrame {
         this.setSize(1000, 600);
 
         this.complexityTranslator = new ComplexityTranslator();
-        TranslatorConfig.config =
-            new ClassDiagramConfig.Builder()
-                .withVisitor(new ClassVisitor(complexityTranslator))
-                .withVisitor(new InterfaceVisitor(complexityTranslator))
-                .withVisitor(new EnumVisitor(complexityTranslator))
-                .withVisitor(new RecordVisitor(complexityTranslator))
-                .withVisitor(new AnnotationVisitor(complexityTranslator))
-                .setShowMethods(true)
-                .setShowAttributes(true)
-                .setShowColoredAccessSpecifiers(true)
-                .build();
+        TranslatorConfig.initDefaults(complexityTranslator);
 
-        FileHandler handler = new FileHandler(complexityTranslator);
-
-        var selectedDirectory = MainFrame.getSelectedDirectory();
-        if (selectedDirectory != null && selectedDirectory.exists()) {
-            new DirectoryExplorer(handler).explore(selectedDirectory);
-        }
+        complexityTranslator.execute();
 
         String problematicClassesFormatted = String.join("", complexityTranslator.getProblematicClassesUml());
         String enrichedUmlOutput = umlOutput.replace("@enduml", "\n" + problematicClassesFormatted + "@enduml");

@@ -110,26 +110,13 @@ public class MainFrame extends JFrame {
             bottomPanel.add(jScrollPane);
             try {
                 UmlTranslator umlTranslator = new UmlTranslator(outputArea, contentPanel::updateUI);
-                TranslatorConfig.config =
-                    new ClassDiagramConfig.Builder()
-                        .withVisitor(new ClassVisitor(umlTranslator))
-                        .withVisitor(new InterfaceVisitor(umlTranslator))
-                        .withVisitor(new EnumVisitor(umlTranslator))
-                        .withVisitor(new RecordVisitor(umlTranslator))
-                        .withVisitor(new AnnotationVisitor(umlTranslator))
-                        .setShowMethods(true)
-                        .setShowAttributes(true)
-                        .setShowColoredAccessSpecifiers(true)
-                        .build();
+                TranslatorConfig.initDefaults(umlTranslator);
 
-                FileHandler handler = new FileHandler(umlTranslator);
-
-                if (selectedDirectory != null && selectedDirectory.exists()) {
-                    new DirectoryExplorer(handler).explore(selectedDirectory);
-                } else {
+                if (!umlTranslator.execute()) {
                     outputArea.append("Selected folder is invalid.\n");
                     return;
                 }
+
                 contentPanel.updateUI();
 
                 String plantUmlOutput = umlTranslator.toPlantUml();
@@ -152,23 +139,9 @@ public class MainFrame extends JFrame {
             processInit();
             try {
                 ComplexityTranslator complexityTranslator = new ComplexityTranslator();
-                TranslatorConfig.config =
-                    new ClassDiagramConfig.Builder()
-                        .withVisitor(new ClassVisitor(complexityTranslator))
-                        .withVisitor(new InterfaceVisitor(complexityTranslator))
-                        .withVisitor(new EnumVisitor(complexityTranslator))
-                        .withVisitor(new RecordVisitor(complexityTranslator))
-                        .withVisitor(new AnnotationVisitor(complexityTranslator))
-                        .setShowMethods(true)
-                        .setShowAttributes(true)
-                        .setShowColoredAccessSpecifiers(true)
-                        .build();
+                TranslatorConfig.initDefaults(complexityTranslator);
 
-                FileHandler handler = new FileHandler(complexityTranslator);
-
-                if (selectedDirectory != null && selectedDirectory.exists()) {
-                    new DirectoryExplorer(handler).explore(selectedDirectory);
-                } else {
+                if (!complexityTranslator.execute()) {
                     JLabel errorLabel = new JLabel("Selected folder is invalid.");
                     bottomPanel.add(errorLabel);
                     toRemove = errorLabel;
