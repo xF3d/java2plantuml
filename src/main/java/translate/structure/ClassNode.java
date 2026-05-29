@@ -5,11 +5,12 @@ import translate.component.MemberFormatter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 class ClassNode {
-    String name;
-    PackageNode location;
-    Map<String, ClassNode> innerClasses = new HashMap<>();
+    final String name;
+    final PackageNode location;
+    Map<String, ClassNode> innerClasses = new ConcurrentHashMap<>();
 
     ClassNode(PackageNode location, String name) {
         this.location = location;

@@ -29,6 +29,7 @@ public interface Translator {
         JavaParser parser = new JavaParser(config);
         PackageManagerVisitor packageManagerVisitor = new PackageManagerVisitor(getPackageManager());
 
+        long start = System.currentTimeMillis();
         // first construct the package map
         for (var f : files) {
             File file = f.getAbsoluteFile();
@@ -50,6 +51,8 @@ public interface Translator {
                 e.printStackTrace();
             }
         }
+        long end = System.currentTimeMillis();
+        System.out.println("Time to create Package Map: " + (end - start));
 
         // then run the visitors which might depend on it
         for (var f : files) {

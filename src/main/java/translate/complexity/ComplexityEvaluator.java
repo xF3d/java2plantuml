@@ -12,9 +12,16 @@ import translate.component.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public interface ComplexityEvaluator {
     interface System {
+        ComplexityEvaluator.System[] EVALUATORS = {
+        };
+
+        ExecutorService EXECUTOR = Executors.newFixedThreadPool(EVALUATORS.length);
+
         ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<Node> allClazz, MemberFormatter formatter);
     }
 
@@ -28,6 +35,8 @@ public interface ComplexityEvaluator {
             new LCOMNEvaluator()
         };
 
+        ExecutorService EXECUTOR = Executors.newFixedThreadPool(EVALUATORS.length);
+
         ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter);
     }
 
@@ -35,6 +44,8 @@ public interface ComplexityEvaluator {
         ComplexityEvaluator.Method[] EVALUATORS = {
             new CyclomaticEvaluator()
         };
+
+        ExecutorService EXECUTOR = Executors.newFixedThreadPool(EVALUATORS.length);
 
         ComplexityMetricResult calculate(Node clazz, MethodDeclaration method, MemberFormatter formatter);
     }

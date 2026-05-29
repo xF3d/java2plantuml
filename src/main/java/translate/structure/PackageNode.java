@@ -4,12 +4,13 @@ import translate.component.MemberFormatter;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 class PackageNode {
-    String name;
-    PackageNode parent;
-    Map<String, PackageNode> children = new HashMap<>();
-    Map<String, ClassNode> classes = new HashMap<>();
+    final String name;
+    final PackageNode parent;
+    Map<String, PackageNode> children = new ConcurrentHashMap<>();
+    Map<String, ClassNode> classes = new ConcurrentHashMap<>();
 
     PackageNode(String name, PackageNode parent) {
         this.name = name;
