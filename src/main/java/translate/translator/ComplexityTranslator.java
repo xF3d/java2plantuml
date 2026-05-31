@@ -7,10 +7,9 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 import translate.structure.PackageManager;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;

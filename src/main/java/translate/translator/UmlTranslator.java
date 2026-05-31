@@ -1,17 +1,8 @@
 package translate.translator;
 
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.Parameter;
-import com.github.javaparser.ast.body.VariableDeclarator;
-import com.github.javaparser.ast.expr.AssignExpr;
-import com.github.javaparser.ast.expr.Expression;
-import com.github.javaparser.ast.expr.FieldAccessExpr;
-import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
-import com.github.javaparser.ast.stmt.ReturnStmt;
 import com.github.javaparser.ast.type.Type;
 import gui.Updatable;
 import lombok.Getter;
@@ -19,7 +10,8 @@ import translate.component.AnnotationWriter;
 import translate.component.ClassWriter;
 import translate.component.EnumWriter;
 import translate.component.InterfaceWriter;
-import translate.component.MemberFormatter;
+import translate.component.formatter.AssociationFormatter;
+import translate.component.formatter.MemberFormatter;
 import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
 import translate.structure.PackageManager;
@@ -36,6 +28,8 @@ public class UmlTranslator implements Translator {
     private final PackageManager packageManager = new PackageManager();
 
     private final MemberFormatter formatter = new MemberFormatter(packageManager);
+    private final AssociationFormatter associationFormatter = new AssociationFormatter(formatter);
+
 
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<String> fqn = new HashSet<>();
@@ -165,7 +159,7 @@ public class UmlTranslator implements Translator {
                     for (var variableEntry : f.getVariables()) {
                         String variableName = variableEntry.getNameAsString();
                         sb.append(nodeFQN);
-                        sb.append(associationType(node, f, variableEntry, fieldTypeString));
+                        sb.append(associationFormatter.associationType(node, f, variableEntry, fieldTypeString));
                         sb.append("\"");
                         sb.append(formatter.modifiers(f.getModifiers()));
                         sb.append(variableName);
@@ -176,151 +170,5 @@ public class UmlTranslator implements Translator {
                 }
             }
         }
-    }
-
-
-    /**
-     * Mostly heuristic, can't be perfect
-     * <br>
-     * returns "--o" in case of aggregation
-     * returns "--*" in case of composition
-     * returns "--" (dependency) in case of failure
-     */
-    private String associationType(Node clazz, FieldDeclaration field, VariableDeclarator variableDecl, String fieldTypeString) {
-        if (!(clazz instanceof NodeWithMembers<?> members)) {
-            return "--";
-        }
-
-        String variableName = variableDecl.getNameAsString();
-        boolean hasSetter = hasSetter(field, members, fieldTypeString, variableName);
-        boolean hasGetter = hasGetter(members, fieldTypeString, variableName);
-        boolean hasConstructor = hasConstructor(members, fieldTypeString, variableName);
-
-        boolean isComposition = isComposition(field, variableDecl, hasGetter, hasSetter, hasConstructor);
-
-        // se non è composizione è aggregazione
-        if (isComposition) {
-            return "--*";
-        } else {
-            return "--o";
-        }
-    }
-
-    private boolean isComposition(FieldDeclaration field, VariableDeclarator variableDecl, boolean hasGetter, boolean hasSetter, boolean hasConstructor) {
-
-        // TODO: plantuml supporta la relazione a molti, aggiungere supporto
-        if (variableDecl.getInitializer().isPresent()) return true;
-
-        // costruttore
-
-        return false;
-    }
-
-    private boolean hasConstructor(NodeWithMembers<?> members, String fieldTypeString, String fieldName) {
-        for (ConstructorDeclaration ctor : members.getConstructors()) {
-            boolean invalidCtor = true;
-            String paramName = null;
-            for (Parameter parameter : ctor.getParameters()) {
-                Type type = parameter.getType();
-                if (type.isPrimitiveType()) continue;
-
-                if (formatter.fullPackageName(type).equals(fieldTypeString)) {
-                    invalidCtor = false;
-                    paramName = parameter.getNameAsString();
-                    break;
-                }
-            }
-
-            if (invalidCtor) continue;
-
-            if (hasAssignment(fieldName, ctor, paramName)) return true;
-        }
-
-        return false;
-    }
-
-    private boolean hasGetter(NodeWithMembers<?> methodHolder, String fieldTypeString, String fieldName) {
-        for (MethodDeclaration method : methodHolder.getMethods()) {
-            if (!formatter.fullPackageName(method.getType()).equals(fieldTypeString)) {
-                continue;
-            }
-
-            for (ReturnStmt retStmt : method.findAll(ReturnStmt.class)) {
-                var expOptional = retStmt.getExpression();
-                if (expOptional.isEmpty()) continue;
-
-                Expression exp = expOptional.get();
-
-                if (exp.isFieldAccessExpr()) {
-                    FieldAccessExpr fieldAccessExpr = exp.asFieldAccessExpr();
-                    if (fieldAccessExpr.getScope().isThisExpr() &&
-                        fieldAccessExpr.getNameAsString().equals(fieldName)) {
-                        return true;
-                    }
-                }
-
-                if (exp.isNameExpr()) {
-                    NameExpr nameExpr = exp.asNameExpr();
-                    if (nameExpr.getNameAsString().equals(fieldName)) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    private boolean hasSetter(FieldDeclaration field, NodeWithMembers<?> methodHolder, String fieldTypeString, String name) {
-        if (field.isFinal()) return false;
-
-        for (MethodDeclaration method : methodHolder.getMethods()) {
-            boolean invalidMethod = true;
-            String paramName = null;
-            for (Parameter parameter : method.getParameters()) {
-                Type type = parameter.getType();
-                if (type.isPrimitiveType()) continue;
-
-                if (formatter.fullPackageName(type).equals(fieldTypeString)) {
-                    invalidMethod = false;
-                    paramName = parameter.getNameAsString();
-                    break;
-                }
-            }
-
-            if (invalidMethod) continue;
-
-            if (hasAssignment(name, method, paramName)) return true;
-        }
-
-        return false;
-    }
-
-    private static boolean hasAssignment(String name, Node methodOrCtor, String paramName) {
-        for (AssignExpr assignExpr : methodOrCtor.findAll(AssignExpr.class)) {
-            if (assignExpr.getOperator() != AssignExpr.Operator.ASSIGN) continue;
-
-            Expression valueExpr = assignExpr.getValue();
-            if (!valueExpr.isNameExpr()) continue;
-
-            if (!valueExpr.asNameExpr().getNameAsString().equals(paramName)) continue;
-
-            Expression target = assignExpr.getTarget();
-            if (target.isFieldAccessExpr()) {
-                FieldAccessExpr fieldAccessExpr = target.asFieldAccessExpr();
-                if (fieldAccessExpr.getScope().isThisExpr() &&
-                    fieldAccessExpr.getNameAsString().equals(name)) {
-                    return true;
-                }
-            }
-
-            if (target.isNameExpr()) {
-                NameExpr nameExpr = target.asNameExpr();
-                if (nameExpr.getNameAsString().equals(name)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }

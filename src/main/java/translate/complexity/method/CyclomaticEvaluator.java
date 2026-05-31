@@ -10,7 +10,7 @@ import com.github.javaparser.ast.stmt.Statement;
 import com.github.javaparser.ast.stmt.SwitchEntry;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
     private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()

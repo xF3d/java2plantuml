@@ -608,7 +608,7 @@
                   x="4894.4847" y="355.5801">-isExceptionClass(element : ClassOrInterfaceDeclaration) : boolean
             </text>
         </g><!--class MemberFormatter-->
-        <g class="entity" data-qualified-name="translate.component.MemberFormatter" data-source-line="143" id="ent0032">
+        <g class="entity" data-qualified-name="translate.component.formatter.MemberFormatter" data-source-line="143" id="ent0032">
             <rect fill="#F1F1F1" height="276.9219" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="325.168" x="6329.9847" y="147.5"/>
             <ellipse cx="6432.3085" cy="163.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>

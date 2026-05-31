@@ -1,4 +1,4 @@
-package translate.component;
+package translate.component.formatter;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Modifier;

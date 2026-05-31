@@ -3,6 +3,7 @@ package translate.component;
 import com.github.javaparser.ast.body.AnnotationDeclaration;
 import com.github.javaparser.ast.body.AnnotationMemberDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import translate.component.formatter.MemberFormatter;
 
 public class AnnotationWriter extends SetTranslatingComponent<AnnotationDeclaration> {
     public AnnotationWriter() {

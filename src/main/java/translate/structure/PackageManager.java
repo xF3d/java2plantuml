@@ -5,7 +5,7 @@ import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Name;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 
 import java.util.ArrayList;
 import java.util.LinkedList;

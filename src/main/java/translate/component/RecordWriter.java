@@ -1,6 +1,7 @@
 package translate.component;
 
 import com.github.javaparser.ast.body.RecordDeclaration;
+import translate.component.formatter.MemberFormatter;
 
 public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
     public RecordWriter() {

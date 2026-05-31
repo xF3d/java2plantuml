@@ -8,7 +8,7 @@ import translate.complexity.clazz.NOCEvaluator;
 import translate.complexity.clazz.RFCEvaluator;
 import translate.complexity.clazz.WMCBaseEvaluator;
 import translate.complexity.method.CyclomaticEvaluator;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;

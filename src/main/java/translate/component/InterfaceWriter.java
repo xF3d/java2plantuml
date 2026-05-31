@@ -2,6 +2,7 @@ package translate.component;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import translate.component.formatter.MemberFormatter;
 
 public class InterfaceWriter extends SetTranslatingComponent<ClassOrInterfaceDeclaration> {
     public InterfaceWriter() {

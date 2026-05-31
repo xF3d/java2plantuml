@@ -10,7 +10,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 
 import java.util.Collection;
 import java.util.HashSet;

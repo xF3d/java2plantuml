@@ -5,6 +5,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
 import com.github.javaparser.ast.expr.Name;
 import lombok.Getter;
+import translate.component.formatter.MemberFormatter;
 
 import java.util.ArrayList;
 import java.util.HashMap;

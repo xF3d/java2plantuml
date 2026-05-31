@@ -1,9 +1,8 @@
 package translate.structure;
 
 import com.google.common.base.Preconditions;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 

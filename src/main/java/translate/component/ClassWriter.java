@@ -2,6 +2,7 @@ package translate.component;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import translate.component.formatter.MemberFormatter;
 
 import java.util.regex.Pattern;
 

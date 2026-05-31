@@ -1,7 +1,6 @@
 package gui.jlist;
 
-import gui.frame.MethodFrame;
-import translate.component.MemberFormatter;
+import translate.component.formatter.MemberFormatter;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

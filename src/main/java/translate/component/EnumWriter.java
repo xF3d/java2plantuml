@@ -2,6 +2,7 @@ package translate.component;
 
 import com.github.javaparser.ast.body.EnumConstantDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
+import translate.component.formatter.MemberFormatter;
 
 public class EnumWriter extends SetTranslatingComponent<EnumDeclaration> {
     public EnumWriter() {
