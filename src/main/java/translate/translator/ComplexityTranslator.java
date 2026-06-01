@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
 
 
 @Getter
@@ -115,13 +116,15 @@ public class ComplexityTranslator implements Translator {
         }
 
         CompletableFuture<ComplexityMetricResult>[] tasks = new CompletableFuture[ComplexityEvaluator.Clazz.EVALUATORS.length];
+        var executor = Executors.newFixedThreadPool(ComplexityEvaluator.Clazz.EVALUATORS.length);
         for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
             int finalI = i;
-            tasks[i] = CompletableFuture.supplyAsync( () -> ComplexityEvaluator.Clazz.EVALUATORS[finalI].calculate(classMap.values(), classNode, formatter), ComplexityEvaluator.Clazz.EXECUTOR);
+            tasks[i] = CompletableFuture.supplyAsync( () -> ComplexityEvaluator.Clazz.EVALUATORS[finalI].calculate(classMap.values(), classNode, formatter), executor);
         }
 
         var completed = CompletableFuture.allOf(tasks);
         completed.join();
+        executor.close();
 
         ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Clazz.EVALUATORS.length];
         for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {

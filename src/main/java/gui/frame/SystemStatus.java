@@ -13,12 +13,15 @@ public class SystemStatus {
     private final JFrame frame;
 
     public SystemStatus(ComplexityTranslator translator) {
+        System.out.println("Creating SystemStatus 1");
         this.chart = new RadarChartBuilder()
             .width(800)
             .height(500)
             .build();
 
+        System.out.println("Calculating results");
         ComplexityMetricResult[] results = translator.evaluateSystem();
+        System.out.println(results.length);
 
         String[] names = new String[results.length];
         double[] values = new double[results.length];
@@ -34,6 +37,7 @@ public class SystemStatus {
         this.frame = new SwingWrapper<>(chart).displayChart();
         this.frame.setTitle("System Status");
         this.frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.frame.setVisible(true);
         FrameManager.addFrame(this.frame);
     }
 }

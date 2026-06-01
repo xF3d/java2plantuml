@@ -35,3 +35,7 @@ jar {
 
     exclude 'META-INF/**'
 }
+
+tasks.named('jar') {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
