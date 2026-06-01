@@ -13,7 +13,7 @@ public abstract class JListReferenced extends JList<String> {
     protected final String[] data;
 
     public JListReferenced(String[] data) {
-        super(removeSeparators(data));
+        super(MemberFormatter.removeSeparators(data));
         this.data = data;
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -30,15 +30,6 @@ public abstract class JListReferenced extends JList<String> {
                 JListReferenced.this.onClick(selectedItem);
             }
         });
-    }
-
-    public static String[] removeSeparators(String[] data) {
-        String[] output = new String[data.length];
-        for (int i = 0; i < data.length; i++) {
-            output[i] = data[i].replace(MemberFormatter.PACKAGE_DELIMITER, ".");
-        }
-
-        return output;
     }
 
     public abstract void onClick(String selectedItem);

@@ -1,13 +1,22 @@
 package translate.complexity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.Accessors;
+
+import javax.swing.*;
 
 @Getter
 @AllArgsConstructor
-@Builder(toBuilder = true)
 public class ComplexityMetricResult {
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public Builder toBuilder() {
+        return new Builder().name(this.name).max(this.max).min(this.min).value(this.value);
+    }
+
     public enum Target {
         HIGHER, LOWER;
 
@@ -33,5 +42,59 @@ public class ComplexityMetricResult {
 
     public double normalize() {
         return target.normalize(value, min, max);
+    }
+
+    public String toHtml() {
+        String valueWithColor = this.getValueWithColor();
+
+        return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + valueWithColor + "</div></html>";
+    }
+
+    public String getValueWithColor() {
+        if (this.isValid()) {
+            return "<font color='green'> " + this.getValue() + "</font>";
+        } else {
+            return "<font color='red'> " + this.getValue() + "</font>";
+        }
+    }
+
+    @Getter
+    @Accessors(fluent = true)
+    public static class Builder {
+        private String name;
+        private double max;
+        private double min;
+        private double value;
+
+        Builder() {
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder max(double max) {
+            this.max = max;
+            return this;
+        }
+
+        public Builder min(double min) {
+            this.min = min;
+            return this;
+        }
+
+        public Builder value(double value) {
+            this.value = value;
+            return this;
+        }
+
+        public ComplexityMetricResult build() {
+            return new ComplexityMetricResult(this.name, this.max, this.min, this.value);
+        }
+
+        public String toString() {
+            return "ComplexityMetricResult.ComplexityMetricResultBuilder(name=" + this.name + ", max=" + this.max + ", min=" + this.min + ", value=" + this.value + ")";
+        }
     }
 }

@@ -15,7 +15,7 @@ import translate.component.formatter.MemberFormatter;
 import java.util.Collection;
 
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
+    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
             .name("DIT")
             .max(4)
             .min(-1);
@@ -47,5 +47,10 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
             // we reached a library class
             return builder.value(depth + 1).build();
         }
+    }
+
+    @Override
+    public String getName() {
+        return "DIT";
     }
 }

@@ -248,4 +248,23 @@ public class MemberFormatter {
         sb.append(")").append("\n");
         return sb.toString();
     }
+
+    /**
+     *
+     * @param data fqn in our own format
+     * @return fqn in java format
+     */
+    public static String removeSeparators(String data) {
+        // technically also replace the MemberFormatter#INNER_CLASS_DELIMITER, but it is already '.'
+        return data.replace(MemberFormatter.PACKAGE_DELIMITER, ".");
+    }
+
+    public static String[] removeSeparators(String[] data) {
+        String[] output = new String[data.length];
+        for (int i = 0; i < data.length; i++) {
+            output[i] = removeSeparators(data[i]);
+        }
+
+        return output;
+    }
 }

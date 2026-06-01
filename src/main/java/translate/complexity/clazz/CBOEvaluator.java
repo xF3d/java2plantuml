@@ -15,7 +15,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CBOEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
+    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
             .name("CBO")
             .max(14)
             .min(-1);
@@ -35,7 +35,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
                 fanIn++;
             }
         }
-        System.out.println(fanOut + " : " + fanIn);
+        //System.out.println(fanOut + " : " + fanIn);
 
         return builder.value(fanOut - fanIn).build();
     }
@@ -55,7 +55,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
                 }
 
                 if (usedTypes.add("EXTERNAL." + type)) {
-                    System.out.println("MethodDecl: '" + type + "'");
+                    //System.out.println("MethodDecl: '" + type + "'");
                 }
             }
         });
@@ -76,7 +76,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
                 }
 
                 if (usedTypes.add("EXTERNAL." + type)) {
-                    System.out.println("MethodDecl: '" + type + "'");
+                    //System.out.println("MethodDecl: '" + type + "'");
                 }
             }
         });
@@ -93,7 +93,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
                 }
 
                 if (usedTypes.add("EXTERNAL." + type)) {
-                    System.out.println("MethodDecl: '" + type + "'");
+                    //System.out.println("MethodDecl: '" + type + "'");
                 }
 
             }
@@ -135,5 +135,8 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
     }
 
 
-
+    @Override
+    public String getName() {
+        return "CBO";
+    }
 }

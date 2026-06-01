@@ -13,7 +13,7 @@ import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
-    private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
+    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
         .name("Cyclomatic")
         .max(20)
         .min(-1);
@@ -109,5 +109,10 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
         }
 
         return count;
+    }
+
+    @Override
+    public String getName() {
+        return "Cyclomatic";
     }
 }

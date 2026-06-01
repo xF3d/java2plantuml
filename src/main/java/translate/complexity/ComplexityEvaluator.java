@@ -16,18 +16,25 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public interface ComplexityEvaluator {
-    interface System {
+    String getName();
+
+    interface System extends ComplexityEvaluator {
         ComplexityEvaluator.System[] EVALUATORS = {
         };
 
         ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<Node> allClazz, MemberFormatter formatter);
     }
 
-    interface Clazz {
+    interface Clazz extends ComplexityEvaluator {
         ComplexityEvaluator.Clazz[] EVALUATORS = {
             new DITEvaluator(),
             new NOCEvaluator(),
-            new WMCBaseEvaluator("WMC/unity", 20,  -1, (a, b, f) -> ComplexityMetricResult.builder().value(1).build()),
+            new WMCBaseEvaluator("WMC/unity", 20, -1) {
+                @Override
+                public ComplexityMetricResult evaluateMethod(Node clazz, MethodDeclaration method, MemberFormatter formatter) {
+                    return ComplexityMetricResult.builder().value(1).build();
+                }
+            },
             //new CBOEvaluator(),
             new RFCEvaluator(),
             new LCOMNEvaluator()
@@ -36,7 +43,7 @@ public interface ComplexityEvaluator {
         ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter);
     }
 
-    interface Method {
+    interface Method extends ComplexityEvaluator {
         ComplexityEvaluator.Method[] EVALUATORS = {
             new CyclomaticEvaluator()
         };

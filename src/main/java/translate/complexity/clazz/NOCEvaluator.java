@@ -15,7 +15,7 @@ import translate.component.formatter.MemberFormatter;
 import java.util.Collection;
 
 public class NOCEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
+    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
             .name("NOC")
             .max(Double.MAX_VALUE)
             .min(-1);
@@ -51,5 +51,10 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
 
 
         return builder.value(amount).build();
+    }
+
+    @Override
+    public String getName() {
+        return "NOC";
     }
 }

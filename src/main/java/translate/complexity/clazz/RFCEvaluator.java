@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RFCEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
+    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
             .name("RFC")
             .max(100)
             .min(-1);
@@ -47,5 +47,10 @@ public class RFCEvaluator implements ComplexityEvaluator.Clazz {
         int nrm = resolvedMethods.size();
 
         return builder.value(nlm + nrm).build();
+    }
+
+    @Override
+    public String getName() {
+        return "RFC";
     }
 }

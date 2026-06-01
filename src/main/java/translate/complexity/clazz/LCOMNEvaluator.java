@@ -19,7 +19,7 @@ import java.util.Optional;
 import java.util.Set;
 
 public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
-    private static ComplexityMetricResult.ComplexityMetricResultBuilder builder = ComplexityMetricResult.builder()
+    private static ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
             .name("LOCMN");
 
     @Override
@@ -127,4 +127,8 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
         return accessedInstanceFields;
     }
 
+    @Override
+    public String getName() {
+        return "LOCMN";
+    }
 }
