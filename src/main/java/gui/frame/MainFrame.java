@@ -1,19 +1,11 @@
 package gui.frame;
 
-import gui.jlist.JListReferenced;
+import gui.components.JListReferenced;
 import lombok.Getter;
-import source.DirectoryExplorer;
-import source.FileHandler;
-import translate.ClassDiagramConfig;
 import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
-import visitors.AnnotationVisitor;
-import visitors.ClassVisitor;
-import visitors.EnumVisitor;
-import visitors.InterfaceVisitor;
-import visitors.RecordVisitor;
 
 import javax.swing.*;
 import java.awt.*;

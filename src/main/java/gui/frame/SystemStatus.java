@@ -1,6 +1,7 @@
 package gui.frame;
 
-import gui.jlist.JListReferenced;
+import gui.components.JListReferenced;
+import gui.components.ReferenceController;
 import org.knowm.xchart.RadarChart;
 import org.knowm.xchart.RadarChartBuilder;
 import org.knowm.xchart.XChartPanel;
@@ -11,11 +12,9 @@ import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.lang.reflect.InvocationTargetException;
 
 public class SystemStatus extends JFrame {
     private final RadarChart chart;

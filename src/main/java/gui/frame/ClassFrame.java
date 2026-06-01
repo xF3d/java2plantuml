@@ -1,12 +1,10 @@
 package gui.frame;
 
 import gui.ComplexityGridPanel;
-import gui.jlist.JListReferenced;
+import gui.components.JListReferenced;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class ClassFrame extends JFrame {
     private final String className;

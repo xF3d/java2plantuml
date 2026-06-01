@@ -1,4 +1,4 @@
-package gui.jlist;
+package gui.components;
 
 import translate.component.formatter.MemberFormatter;
 
