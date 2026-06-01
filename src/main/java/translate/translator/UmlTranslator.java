@@ -1,6 +1,7 @@
 package translate.translator;
 
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.type.Type;
@@ -130,9 +131,9 @@ public class UmlTranslator implements Translator {
 
     private void writeAssociations(StringBuilder sb) {
         for (SetTranslatingComponent<?> entry : componentTranslators) {
-            if (!NodeWithMembers.class.isAssignableFrom(entry.type())) {
-                continue;
-            }
+            if (entry instanceof InterfaceWriter) continue;
+
+            if (!NodeWithMembers.class.isAssignableFrom(entry.type())) continue;
 
             for (Node node : entry.getSet()) {
 
