@@ -1247,7 +1247,7 @@
                   x="2704.4847" y="904.6738">+componentResized() : ComponentAdapter
             </text>
         </g><!--class FileHandler-->
-        <g class="entity" data-qualified-name="source.FileHandler" data-source-line="195" id="ent0038">
+        <g class="entity" data-qualified-name="file.FileHandler" data-source-line="195" id="ent0038">
             <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="234.1338" x="13496.4847" y="235.5"/>
             <ellipse cx="13573.5087" cy="251.5" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>
@@ -1268,7 +1268,7 @@
                   x="13502.4847" y="329.252">~handle(f : File) : void
             </text>
         </g><!--class DirectoryExplorer-->
-        <g class="entity" data-qualified-name="source.DirectoryExplorer" data-source-line="200" id="ent0039">
+        <g class="entity" data-qualified-name="file.DirectoryExplorer" data-source-line="200" id="ent0039">
             <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="287.8164" x="13173.4847" y="227"/>
             <ellipse cx="13259.0741" cy="243" fill="#ADD1B2" rx="11" ry="11" style="stroke:#181818;stroke-width:1;"/>

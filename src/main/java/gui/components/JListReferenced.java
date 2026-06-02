@@ -10,11 +10,11 @@ import java.awt.event.MouseEvent;
  * Replaces the separators with "." for display, but keeps them internally
  */
 public abstract class JListReferenced extends JList<String> {
-    protected final String[] data;
+    protected final String[] fqnReferences;
 
-    public JListReferenced(String[] data) {
-        super(MemberFormatter.removeSeparators(data));
-        this.data = data;
+    public JListReferenced(String[] fqnReferences) {
+        super(MemberFormatter.removeSeparators(fqnReferences));
+        this.fqnReferences = fqnReferences;
         this.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 if (e.getClickCount() != 2) { // double-click
@@ -26,7 +26,7 @@ public abstract class JListReferenced extends JList<String> {
                     return;
                 }
 
-                String selectedItem = data[index];
+                String selectedItem = fqnReferences[index];
                 JListReferenced.this.onClick(selectedItem);
             }
         });

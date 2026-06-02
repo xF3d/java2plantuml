@@ -1,6 +1,6 @@
 package gui.frame;
 
-import gui.components.JListReferenced;
+import file.FileLogger;
 import lombok.Getter;
 import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
@@ -15,6 +15,7 @@ import java.awt.event.ComponentEvent;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.logging.Level;
 
 public class MainFrame extends JFrame {
     private final ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
@@ -27,19 +28,14 @@ public class MainFrame extends JFrame {
 
     private final JLabel sourceFolderLabel = new JLabel();
 
-    private final JPanel bottomPanel = new JPanel();
-
     @Getter
     private static File selectedDirectory;
-
-    private Component toRemove = null;
 
     public MainFrame() {
         super("Java2plantuml");
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setSize(1000, 600);
 
-        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.PAGE_AXIS));
 
         JButton selectFolderButton = new JButton("Select Source Folder");
         selectFolderButton.addActionListener(this::handleFolderSelection);
@@ -61,9 +57,7 @@ public class MainFrame extends JFrame {
 
         contentPanel.add(topPanel);
         contentPanel.add(sourceFolderLabel);
-        contentPanel.add(bottomPanel);
-
-        bottomPanel.setLayout(new GridLayout(1,1));
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
 
         contentPanel.addComponentListener(this.componentResized());
 
@@ -92,20 +86,23 @@ public class MainFrame extends JFrame {
         JTextArea outputArea = new JTextArea();
         outputArea.setEditable(false);
         outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-        JScrollPane jScrollPane = new JScrollPane(outputArea);
 
         outputArea.setText("");
         outputArea.append("Generating UML...\n");
 
         backgroundExecutor.submit(() -> {
             processInit();
-            bottomPanel.add(jScrollPane);
             try {
                 UmlTranslator umlTranslator = new UmlTranslator(outputArea, contentPanel::updateUI);
                 TranslatorConfig.initDefaults(umlTranslator);
 
                 if (!umlTranslator.execute()) {
-                    outputArea.append("Selected folder is invalid.\n");
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Selected folder is invalid.",
+                        "Invalid Folder",
+                        JOptionPane.ERROR_MESSAGE
+                    );
                     return;
                 }
 
@@ -113,15 +110,14 @@ public class MainFrame extends JFrame {
 
                 String plantUmlOutput = umlTranslator.toPlantUml();
 
-                outputArea.append("\nUML diagram saved to output.puml\n");
+                FileLogger.LOGGER.info("\nUML diagram saved to output.puml\n");
 
                 new PlantUMLFrame(plantUmlOutput);
 
             } catch (Exception ex) {
-                outputArea.append("An error occurred: " + ex.getMessage() + "\n");
+                FileLogger.LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 ex.printStackTrace();
             }
-            toRemove = jScrollPane;
 
         });
     }
@@ -134,22 +130,20 @@ public class MainFrame extends JFrame {
                 TranslatorConfig.initDefaults(complexityTranslator);
 
                 if (!complexityTranslator.execute()) {
-                    JLabel errorLabel = new JLabel("Selected folder is invalid.");
-                    bottomPanel.add(errorLabel);
-                    toRemove = errorLabel;
+                    JOptionPane.showMessageDialog(
+                        null,
+                        "Selected folder is invalid.",
+                        "Invalid Folder",
+                        JOptionPane.ERROR_MESSAGE
+                    );
                     return;
                 }
 
-                JScrollPane jscroll = getJScrollPane(complexityTranslator);
-                bottomPanel.add(jscroll);
-                toRemove = jscroll;
                 contentPanel.updateUI();
 
                 new SystemStatus(complexityTranslator);
             } catch (Exception ex) {
-                JLabel errorLabel = new JLabel("An error occurred: " + ex.getMessage());
-                bottomPanel.add(errorLabel);
-                toRemove = errorLabel;
+                FileLogger.LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
                 ex.printStackTrace();
             }
         });
@@ -158,20 +152,6 @@ public class MainFrame extends JFrame {
 
     private void processInit() {
         ResolverUtils.initialize(selectedDirectory);
-        if (toRemove != null) {
-            bottomPanel.remove(toRemove);
-        }
-    }
-
-    private static JScrollPane getJScrollPane(ComplexityTranslator umlTranslator) {
-        var complexityList = new JListReferenced(umlTranslator.getClassJList()) {
-            @Override
-            public void onClick(String selectedItem) {
-                new ClassFrame(selectedItem, umlTranslator);
-            }
-        };
-
-        return new JScrollPane(complexityList);
     }
 
     public ComponentAdapter componentResized() {

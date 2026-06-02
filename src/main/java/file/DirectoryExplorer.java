@@ -1,11 +1,10 @@
-package source;
+package file;
 
 import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.List;
 
 public class DirectoryExplorer {
 
