@@ -83,19 +83,14 @@ public class MainFrame extends JFrame {
 
     private void generateUml(ActionEvent e) {
 
-        JTextArea outputArea = new JTextArea();
-        outputArea.setEditable(false);
-        outputArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
-
-        outputArea.setText("");
-        outputArea.append("Generating UML...\n");
-
         backgroundExecutor.submit(() -> {
             processInit();
             try {
-                UmlTranslator umlTranslator = new UmlTranslator(outputArea, contentPanel::updateUI);
+                UmlTranslator umlTranslator = new UmlTranslator();
                 TranslatorConfig.initDefaults(umlTranslator);
 
+
+                FileLogger.LOGGER.info("Generating UML\n");
                 if (!umlTranslator.execute()) {
                     JOptionPane.showMessageDialog(
                         null,
@@ -105,12 +100,12 @@ public class MainFrame extends JFrame {
                     );
                     return;
                 }
-
-                contentPanel.updateUI();
+                FileLogger.LOGGER.info("UML generation ended\n");
 
                 String plantUmlOutput = umlTranslator.toPlantUml();
 
-                FileLogger.LOGGER.info("\nUML diagram saved to output.puml\n");
+                // todo: check if this still works if not reimplement it
+                //FileLogger.LOGGER.info("\nUML diagram saved to output.puml\n");
 
                 new PlantUMLFrame(plantUmlOutput);
 

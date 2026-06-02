@@ -1,11 +1,10 @@
 package translate.translator;
 
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.type.Type;
-import gui.Updatable;
+import file.FileLogger;
 import lombok.Getter;
 import translate.component.AnnotationWriter;
 import translate.component.ClassWriter;
@@ -17,7 +16,6 @@ import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
 import translate.structure.PackageManager;
 
-import javax.swing.*;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -36,12 +34,7 @@ public class UmlTranslator implements Translator {
     private final Set<String> fqn = new HashSet<>();
     private Boolean error = false;
 
-    private final JTextArea output;
-    private final Updatable updatable;
-
-    public UmlTranslator(JTextArea outputArea, Updatable updatable) {
-        output = outputArea;
-        this.updatable = updatable;
+    public UmlTranslator() {
         componentTranslators.add(new ClassWriter());
         componentTranslators.add(new InterfaceWriter());
         componentTranslators.add(new EnumWriter());
@@ -62,8 +55,7 @@ public class UmlTranslator implements Translator {
 
         // Class/Interfaces processed twice
         if (printed.add(name)) {
-            output.append(type + " Found: " + name + "\n");
-            updatable.update();
+            FileLogger.LOGGER.info(type + " Found: " + name + "\n");
         }
 
         componentTranslators.forEach((s) -> s.safeAdd(node));
