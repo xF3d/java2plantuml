@@ -29,10 +29,11 @@ public class UmlTranslator implements Translator {
     private final MemberFormatter formatter = new MemberFormatter(packageManager);
     private final AssociationFormatter associationFormatter = new AssociationFormatter(formatter);
 
-
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<String> fqn = new HashSet<>();
     private Boolean error = false;
+
+    private String calculatedPlantuml = null;
 
     public UmlTranslator() {
         componentTranslators.add(new ClassWriter());
@@ -62,6 +63,7 @@ public class UmlTranslator implements Translator {
     }
 
     public String toPlantUml() {
+        if (calculatedPlantuml != null) return calculatedPlantuml;
 
         StringBuilder sb = new StringBuilder();
 
@@ -92,7 +94,9 @@ public class UmlTranslator implements Translator {
 
         sb.append("@enduml");
 
-        return sb.toString();
+        this.calculatedPlantuml = sb.toString();
+
+        return calculatedPlantuml;
     }
 
     private void initFqn() {

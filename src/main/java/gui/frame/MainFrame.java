@@ -4,6 +4,7 @@ import file.FileLogger;
 import lombok.Getter;
 import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
+import translate.translator.GroupedTranslators;
 import translate.translator.TranslatorConfig;
 import translate.translator.UmlTranslator;
 
@@ -25,6 +26,9 @@ public class MainFrame extends JFrame {
     private final JPanel topPanel = new JPanel();
     private final JButton umlButton = new JButton("Generate UML");
     private final JButton complexityButton = new JButton("Calculate Complexity");
+    private final JButton recomputeButton = new JButton("Recompute");
+
+    private final GroupedTranslators groupedTranslators = new GroupedTranslators();
 
     private final JLabel sourceFolderLabel = new JLabel();
 
@@ -79,6 +83,7 @@ public class MainFrame extends JFrame {
         umlButton.setEnabled(true);
         complexityButton.setEnabled(true);
         sourceFolderLabel.setText("Selected directory: " + selectedDirectory.getAbsolutePath() + "\n");
+        FileLogger.LOGGER.info("Selected directory: " + selectedDirectory.getAbsolutePath());
     }
 
     private void generateUml(ActionEvent e) {
