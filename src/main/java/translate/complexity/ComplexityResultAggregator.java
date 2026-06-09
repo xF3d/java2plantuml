@@ -5,16 +5,23 @@ import lombok.Getter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ComplexityAggregator {
+public class ComplexityResultAggregator {
+    public static final ComplexityResultAggregator EMPTY = new ComplexityResultAggregator(new ComplexityMetricResult[0]);
+
     private final Map<String, ComplexityMetricResult> aggregator = new HashMap<>();
+
+    @Getter
+    private final ComplexityMetricResult[] rawData;
 
     @Getter(lazy = true)
     private final boolean isValid = calculateValid();
 
-    public ComplexityAggregator(ComplexityMetricResult[] results) {
+    public ComplexityResultAggregator(ComplexityMetricResult[] results) {
         for (var result : results) {
             aggregator.put(result.getName(), result);
         }
+
+        this.rawData = results;
     }
 
     private boolean calculateValid() {

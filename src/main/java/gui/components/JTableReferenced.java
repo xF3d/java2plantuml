@@ -6,11 +6,13 @@ import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public abstract class JTableReferenced extends JPanel {
     private final String[] fqnReferences;
@@ -19,7 +21,10 @@ public abstract class JTableReferenced extends JPanel {
     private final String[] columnNames;
     private final String[][] data;
 
-    public JTableReferenced(ComplexityTranslator translator) {
+    private int selectedColumns = 0;
+    private boolean isDecreasing = false;
+
+    public JTableReferenced(String[] fqnReferences, ComplexityTranslator translator) {
         super(new BorderLayout());
 
         int columnSize = ComplexityEvaluator.Clazz.EVALUATORS.length + 1;
@@ -31,14 +36,14 @@ public abstract class JTableReferenced extends JPanel {
             columnNames[i + 1] = evaluator.getName();
         }
 
-        this.fqnReferences = translator.getClassJList();
+        this.fqnReferences = fqnReferences;
         this.data = new String[fqnReferences.length][columnSize];
 
         for (int i = 0; i < fqnReferences.length; i++) {
             var reference = fqnReferences[i];
             data[i][0] = MemberFormatter.removeSeparators(reference);
 
-            var results = translator.evaluateClass(reference);
+            var results = translator.evaluateClass(reference).getRawData();
             for (int j = 0; j < evaluators.length; j++) {
                 data[i][j + 1] = "<html>" + results[j].getValueWithColor() + "</html>";
             }
@@ -93,6 +98,14 @@ public abstract class JTableReferenced extends JPanel {
 
                 String value = fqnReferences[row];
                 onClick(value);
+            }
+        });
+
+        JTableHeader header = table.getTableHeader();
+        header.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
             }
         });
     }

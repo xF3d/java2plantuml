@@ -24,7 +24,7 @@ public class SystemStatus extends JFrame {
             .height(500)
             .build();
 
-        ComplexityMetricResult[] results = translator.evaluateSystem();
+        ComplexityMetricResult[] results = translator.evaluateSystem().getRawData();
 
         String[] names = new String[results.length];
         double[] values = new double[results.length];
@@ -63,7 +63,7 @@ public class SystemStatus extends JFrame {
     private JPanel getClassTable() {
         if (jclassTable != null) return jclassTable;
 
-        jclassTable = new JTableReferenced(translator) {
+        jclassTable = new JTableReferenced(translator.getClassJList(), translator) {
             @Override
             public void onClick(String selectedFqn) {
                 new ClassFrame(selectedFqn, translator);

@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import lombok.Getter;
+import translate.complexity.ComplexityResultAggregator;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
@@ -61,29 +62,27 @@ public class ComplexityTranslator implements Translator {
     public List<String> getProblematicClassesUml() {
         List<String> output = new ArrayList<>();
         for (var fullPackageName : classMap.keySet()) {
-            ComplexityMetricResult[] results = evaluateClass(fullPackageName);
-            for (ComplexityMetricResult metricResult : results) {
-                if (!metricResult.isValid()) {
-                    if (classMap.get(fullPackageName) instanceof RecordDeclaration) {
-                        output.add("record " + fullPackageName + " #Red\n");
-                    } else {
-                        output.add("class " + fullPackageName + " #Red\n");
-                    }
-                    break;
+            ComplexityResultAggregator results = evaluateClass(fullPackageName);
+            if (!results.isValid()) {
+                if (classMap.get(fullPackageName) instanceof RecordDeclaration) {
+                    output.add("record " + fullPackageName + " #Red\n");
+                } else {
+                    output.add("class " + fullPackageName + " #Red\n");
                 }
+                break;
             }
         }
 
         return output;
     }
 
-    public ComplexityMetricResult[] evaluateSystem() {
+    public ComplexityResultAggregator evaluateSystem() {
         ComplexityMetricResult[] result = new ComplexityMetricResult[
                     ComplexityEvaluator.Clazz.EVALUATORS.length + ComplexityEvaluator.System.EVALUATORS.length
                 ];
 
         if (classMap.isEmpty()) {
-            return new ComplexityMetricResult[0];
+            return ComplexityResultAggregator.EMPTY;
         }
 
         var allClasses = classMap.values();
@@ -106,10 +105,10 @@ public class ComplexityTranslator implements Translator {
             result[i + j] = values.get(0).toBuilder().value(average).build();
         }
 
-        return result;
+        return new ComplexityResultAggregator(result);
     }
 
-    public ComplexityMetricResult[] evaluateClass(String fullClassName) {
+    public ComplexityResultAggregator evaluateClass(String fullClassName) {
         Node classNode = classMap.get(fullClassName);
         if (classNode == null) {
             throw new RuntimeException("Not found: " + fullClassName);
@@ -131,10 +130,10 @@ public class ComplexityTranslator implements Translator {
             result[i] = tasks[i].join();
         }
 
-        return result;
+        return new ComplexityResultAggregator(result);
     }
 
-    public ComplexityMetricResult[] evaluateMethod(String fullClassName, String method) {
+    public ComplexityResultAggregator evaluateMethod(String fullClassName, String method) {
         ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Method.EVALUATORS.length];
         Node classNode = classMap.get(fullClassName);
         MethodDeclaration methodDeclaration = methodMap.get(fullClassName).get(method);
@@ -142,7 +141,7 @@ public class ComplexityTranslator implements Translator {
             result[i] = ComplexityEvaluator.Method.EVALUATORS[i].calculate(classNode, methodDeclaration, formatter);
         }
 
-        return result;
+        return new ComplexityResultAggregator(result);
     }
 
     public String[] getClassJList() {
