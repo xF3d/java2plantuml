@@ -32,7 +32,7 @@ public class ClassFrame extends JFrame {
     }
 
     private JScrollPane getJScrollPane(ComplexityTranslator umlTranslator) {
-        var complexityList = new JListReferenced(umlTranslator.getMethodsJList(className)) {
+        var complexityList = new JListReferenced(umlTranslator.getMethodsArray(className)) {
             @Override
             public void onClick(String selectedItem) {
                 new MethodFrame(className, selectedItem, umlTranslator);

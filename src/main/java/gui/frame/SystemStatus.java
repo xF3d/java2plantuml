@@ -1,6 +1,6 @@
 package gui.frame;
 
-import gui.components.JTableReferenced;
+import gui.components.JTableClass;
 import gui.components.ReferenceController;
 import org.knowm.xchart.RadarChart;
 import org.knowm.xchart.RadarChartBuilder;
@@ -9,7 +9,6 @@ import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SystemStatus extends JFrame {
     private final RadarChart chart;
@@ -46,7 +45,7 @@ public class SystemStatus extends JFrame {
         this.content.add(chartPanel);
         this.content.add(new ReferenceController(
             "<html><p>Classes in the system</p> <br></html>",
-            translator.getClassJList(),
+            translator.getClassesArray(),
             (unused) -> getClassTable()
         ));
 
@@ -63,12 +62,7 @@ public class SystemStatus extends JFrame {
     private JPanel getClassTable() {
         if (jclassTable != null) return jclassTable;
 
-        jclassTable = new JTableReferenced(translator.getClassJList(), translator) {
-            @Override
-            public void onClick(String selectedFqn) {
-                new ClassFrame(selectedFqn, translator);
-            }
-        };
+        jclassTable = new JTableClass(translator);
         return jclassTable;
     }
 }

@@ -1,5 +1,6 @@
 package gui.components;
 
+import gui.frame.ClassFrame;
 import translate.complexity.ComplexityEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
@@ -12,20 +13,21 @@ import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
-public abstract class JTableReferenced extends JPanel {
+public class JTableClass extends JPanel {
     private final String[] fqnReferences;
     private final JTable table;
 
     private final String[] columnNames;
     private final String[][] data;
+    private final ComplexityTranslator translator;
 
     private int selectedColumns = 0;
     private boolean isDecreasing = false;
 
-    public JTableReferenced(String[] fqnReferences, ComplexityTranslator translator) {
+    public JTableClass(ComplexityTranslator translator) {
         super(new BorderLayout());
+        this.translator = translator;
 
         int columnSize = ComplexityEvaluator.Clazz.EVALUATORS.length + 1;
         this.columnNames = new String[columnSize];
@@ -36,7 +38,7 @@ public abstract class JTableReferenced extends JPanel {
             columnNames[i + 1] = evaluator.getName();
         }
 
-        this.fqnReferences = fqnReferences;
+        this.fqnReferences = translator.getClassesArray();
         this.data = new String[fqnReferences.length][columnSize];
 
         for (int i = 0; i < fqnReferences.length; i++) {
@@ -110,5 +112,7 @@ public abstract class JTableReferenced extends JPanel {
         });
     }
 
-    public abstract void onClick(String selectedFqn);
+    public void onClick(String selectedFqn) {
+        new ClassFrame(selectedFqn, translator);
+    }
 }

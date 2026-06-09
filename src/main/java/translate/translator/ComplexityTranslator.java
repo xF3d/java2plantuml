@@ -144,11 +144,11 @@ public class ComplexityTranslator implements Translator {
         return new ComplexityResultAggregator(result);
     }
 
-    public String[] getClassJList() {
+    public String[] getClassesArray() {
         return classMap.keySet().toArray(String[]::new);
     }
 
-    public String[] getMethodsJList(String className) {
+    public String[] getMethodsArray(String className) {
         return methodMap.get(className).keySet().toArray(String[]::new);
     }
 }
