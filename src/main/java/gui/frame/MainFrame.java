@@ -26,7 +26,7 @@ public class MainFrame extends JFrame {
     private final JButton umlButton = new JButton("Generate UML");
     private final JButton complexityButton = new JButton("Calculate Complexity");
 
-    private final JLabel sourceFolderLabel = new JLabel();
+    private final JLabel sourceFolderLabel = new JLabel(); //TODO: add a recalculate button
 
     @Getter
     private static File selectedDirectory;

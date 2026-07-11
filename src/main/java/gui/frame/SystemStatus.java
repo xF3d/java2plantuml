@@ -9,6 +9,7 @@ import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 public class SystemStatus extends JFrame {
     private final RadarChart chart;
@@ -23,14 +24,24 @@ public class SystemStatus extends JFrame {
             .height(500)
             .build();
 
-        ComplexityMetricResult[] results = translator.evaluateSystem().getRawData();
+        var allResults = translator.evaluateSystem().getAggregator().values();
 
-        String[] names = new String[results.length];
-        double[] values = new double[results.length];
+        ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
+        ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
+        for (var result : allResults) {
+            if (result.getTarget() == ComplexityMetricResult.Target.NONE) {
+                otherResults.add(result);
+            } else {
+                chartResults.add(result);
+            }
+        }
 
-        for (int i = 0; i < results.length; i++) {
-            names[i] = results[i].getName();
-            values[i] = results[i].normalize();
+        String[] names = new String[chartResults.size()];
+        double[] values = new double[chartResults.size()];
+
+        for (int i = 0; i < chartResults.size(); i++) {
+            names[i] = chartResults.get(i).getName();
+            values[i] = chartResults.get(i).normalize();
         }
 
         this.chart.setRadiiLabels(names);
@@ -39,6 +50,8 @@ public class SystemStatus extends JFrame {
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
+
+        // finalize stuff
         var scrollPanel = new JScrollPane(content);
         var chartPanel = new XChartPanel<>(chart);
 

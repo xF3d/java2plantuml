@@ -9,18 +9,12 @@ import javax.swing.*;
 @Getter
 @AllArgsConstructor
 public class ComplexityMetricResult {
-    public static Builder builder() {
-        return new Builder();
-    }
-
-    public Builder toBuilder() {
-        return new Builder().name(this.name).max(this.max).min(this.min).value(this.value);
-    }
-
     public enum Target {
-        HIGHER, LOWER;
+        HIGHER, LOWER, NONE;
 
         public double normalize(double value, double min, double max) {
+            if (this == NONE) return value;
+
             if (value < min || max < value) {
                 return 0.0;
             }
@@ -44,18 +38,32 @@ public class ComplexityMetricResult {
         return target.normalize(value, min, max);
     }
 
-    public String toHtml() {
-        String valueWithColor = this.getValueWithColor();
-
-        return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + valueWithColor + "</div></html>";
+    public String toHtml(boolean color) {
+        if (color) {
+            return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + this.getValueWithColor() + "</div></html>";
+        } else {
+            return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + this.getValue() + "</div></html>";
+        }
     }
 
     public String getValueWithColor() {
+        if (this.target == Target.NONE) {
+            return "<font color='gray'> " + this.getValue() + "</font>";
+        }
+
         if (this.isValid()) {
             return "<font color='green'> " + this.getValue() + "</font>";
         } else {
             return "<font color='red'> " + this.getValue() + "</font>";
         }
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public Builder toBuilder() {
+        return new Builder().name(this.name).max(this.max).min(this.min).value(this.value);
     }
 
     @Getter

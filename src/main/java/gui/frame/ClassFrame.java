@@ -19,7 +19,7 @@ public class ClassFrame extends JFrame {
 
         super.getContentPane().setLayout(new BoxLayout(super.getContentPane(), BoxLayout.Y_AXIS));
 
-        var evaluation = translator.evaluateClass(className).getRawData();
+        var evaluation = translator.evaluateClass(className);
         gridInfo.addMetrics(evaluation);
 
         methodScroll = getJScrollPane(translator);

@@ -21,7 +21,7 @@ public class ReferenceController extends JPanel {
         CompletableFuture
             .supplyAsync(() -> toTableAction.apply(references), background)
             .thenAccept(component -> SwingUtilities.invokeLater(() -> {
-                add(component);
+                ReferenceController.this.add(component);
                 updateUI();
             }));
     }
