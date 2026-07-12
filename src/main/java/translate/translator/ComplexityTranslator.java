@@ -27,7 +27,7 @@ public class ComplexityTranslator implements Translator {
     private final PackageManager packageManager = new PackageManager();
     private final MemberFormatter formatter = new MemberFormatter(packageManager);
 
-    private CompletableFuture<ComplexityResultAggregator> systemResult;
+    private CompletableFuture<ComplexityResultAggregator> systemResult; // todo: use this instead
 
     // full package name --> node
     private final Map<String, Node> classMap = new HashMap<>();
@@ -66,7 +66,7 @@ public class ComplexityTranslator implements Translator {
         calculateMetrics();
     }
 
-    public void calculateMetrics() {
+    private void calculateMetrics() {
         var threads = Runtime.getRuntime().availableProcessors();
         var executor = Executors.newFixedThreadPool(threads);
 
@@ -96,7 +96,8 @@ public class ComplexityTranslator implements Translator {
             return new ComplexityResultAggregator(result);
         }, executor);
 
-        CompletableFuture.allOf(classResultFutures.toArray(CompletableFuture[]::new))
+        // cumulative system metrics
+        this.systemResult = CompletableFuture.allOf(classResultFutures.toArray(CompletableFuture[]::new))
             .thenApplyAsync(v ->
                 classResultFutures.stream()
                     .map(CompletableFuture::join)
@@ -157,7 +158,7 @@ public class ComplexityTranslator implements Translator {
             }
         }
 
-        executor.shutdown();
+        this.systemResult.whenComplete((r, e) -> executor.shutdown());
     }
 
     @Override
@@ -183,35 +184,11 @@ public class ComplexityTranslator implements Translator {
     }
 
     public ComplexityResultAggregator evaluateSystem() {
-        ComplexityMetricResult[] result = new ComplexityMetricResult[
-            ComplexityEvaluator.Clazz.EVALUATORS.length + ComplexityEvaluator.System.EVALUATORS.length
-            ];
-
-        if (classMap.isEmpty()) {
-            return ComplexityResultAggregator.EMPTY;
+        try {
+            return systemResult.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
         }
-
-        var allClasses = classMap.values();
-
-        // Evaluate system
-        int j;
-        for (j = 0; j < ComplexityEvaluator.System.EVALUATORS.length; j++) {
-            result[j] = ComplexityEvaluator.System.EVALUATORS[j].calculate(this, allClasses, formatter);
-        }
-
-        // Evaluate Classes
-        for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
-            ArrayList<ComplexityMetricResult> values = new ArrayList<>();
-
-            for (var classNode : classMap.values()) {
-                values.add(ComplexityEvaluator.Clazz.EVALUATORS[i].calculate(allClasses, classNode, formatter));
-            }
-
-            double average = values.stream().mapToDouble(ComplexityMetricResult::getValue).average().getAsDouble();
-            result[i + j] = values.get(0).toBuilder().value(average).build();
-        }
-
-        return new ComplexityResultAggregator(result);
     }
 
     public ComplexityResultAggregator evaluateClass(String fullClassName) {

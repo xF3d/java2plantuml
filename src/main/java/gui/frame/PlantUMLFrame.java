@@ -34,12 +34,12 @@ public class PlantUMLFrame extends JFrame {
     private final JSVGCanvas image;
     private final ComplexityTranslator complexityTranslator;
 
-    public PlantUMLFrame(String umlOutput) throws IOException {
+    public PlantUMLFrame(String umlOutput, ComplexityTranslator complexityTranslator) throws IOException {
         super("PlantUML Display");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(1000, 600);
 
-        this.complexityTranslator = new ComplexityTranslator();
+        this.complexityTranslator = complexityTranslator;
         TranslatorConfig.initDefaults(complexityTranslator);
 
         complexityTranslator.execute();

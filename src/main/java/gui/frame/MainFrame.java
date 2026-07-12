@@ -25,8 +25,11 @@ public class MainFrame extends JFrame {
     private final JPanel topPanel = new JPanel();
     private final JButton umlButton = new JButton("Generate UML");
     private final JButton complexityButton = new JButton("Calculate Complexity");
+    private final JButton recalculateButton = new JButton("Recalculate");
 
-    private final JLabel sourceFolderLabel = new JLabel(); //TODO: add a recalculate button
+    private final JLabel sourceFolderLabel = new JLabel();
+
+    private ComplexityTranslator complexityTranslator = new ComplexityTranslator();
 
     @Getter
     private static File selectedDirectory;
@@ -36,19 +39,19 @@ public class MainFrame extends JFrame {
         super.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         super.setSize(1000, 600);
 
-
         JButton selectFolderButton = new JButton("Select Source Folder");
         selectFolderButton.addActionListener(this::handleFolderSelection);
 
-        umlButton.setEnabled(false);
         umlButton.addActionListener(this::generateUml);
-
-        complexityButton.setEnabled(false);
         complexityButton.addActionListener(this::generateComplexity);
+        recalculateButton.addActionListener(this::recalculate);
+
+        this.setButtons(false);
 
         topPanel.add(selectFolderButton);
         topPanel.add(umlButton);
         topPanel.add(complexityButton);
+        topPanel.add(recalculateButton);
 
         sourceFolderLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         sourceFolderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -76,13 +79,17 @@ public class MainFrame extends JFrame {
         }
 
         selectedDirectory = chooser.getSelectedFile();
-        umlButton.setEnabled(true);
-        complexityButton.setEnabled(true);
+        this.setButtons(true);
         sourceFolderLabel.setText("Selected directory: " + selectedDirectory.getAbsolutePath() + "\n");
     }
 
-    private void generateUml(ActionEvent e) {
+    private void setButtons(boolean state) {
+        umlButton.setEnabled(state);
+        complexityButton.setEnabled(state);
+        recalculateButton.setEnabled(state);
+    }
 
+    private void generateUml(ActionEvent ignored) {
         backgroundExecutor.submit(() -> {
             processInit();
             try {
@@ -107,7 +114,7 @@ public class MainFrame extends JFrame {
                 // todo: check if this still works if not reimplement it
                 //FileLogger.LOGGER.info("\nUML diagram saved to output.puml\n");
 
-                new PlantUMLFrame(plantUmlOutput);
+                new PlantUMLFrame(plantUmlOutput, complexityTranslator);
 
             } catch (Exception ex) {
                 FileLogger.LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
@@ -117,11 +124,10 @@ public class MainFrame extends JFrame {
         });
     }
 
-    private void generateComplexity(ActionEvent e) {
+    private void generateComplexity(ActionEvent ignored) {
         backgroundExecutor.submit(() -> {
             processInit();
             try {
-                ComplexityTranslator complexityTranslator = new ComplexityTranslator();
                 TranslatorConfig.initDefaults(complexityTranslator);
 
                 if (!complexityTranslator.execute()) {
@@ -143,6 +149,11 @@ public class MainFrame extends JFrame {
             }
         });
 
+    }
+
+    private void recalculate(ActionEvent actionEvent) {
+        FrameManager.closeAll();
+        complexityTranslator = new ComplexityTranslator();
     }
 
     private void processInit() {
