@@ -77,7 +77,7 @@ public class UmlTranslator implements Translator {
         sb.append("\n");
         //this is for removing shapes in attributes/methods visibility
 
-        if (!TranslatorConfig.config.isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
+        if (!Config.getInstance().getConfig().isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
 
 
         Set<String> associations = new HashSet<>();

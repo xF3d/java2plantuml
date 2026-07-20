@@ -21,7 +21,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import lombok.AllArgsConstructor;
 import translate.structure.PackageManager;
-import translate.translator.TranslatorConfig;
+import translate.translator.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -130,7 +130,7 @@ public class MemberFormatter {
 
         builder.append(attributes(ctor));
 
-        if (TranslatorConfig.config.isShowMethods()) {
+        if (Config.getInstance().getConfig().isShowMethods()) {
             for (var constructor : ctor.getConstructors()) {
                 builder.append(constructor(constructor));
             }
@@ -148,7 +148,7 @@ public class MemberFormatter {
     public String attributes(NodeWithMembers<?> ctor) {
         StringBuilder builder = new StringBuilder();
 
-        if (TranslatorConfig.config.isShowAttributes()) {
+        if (Config.getInstance().getConfig().isShowAttributes()) {
             for (var field : ctor.getFields()) {
                 builder.append(field(field));
             }
@@ -160,7 +160,7 @@ public class MemberFormatter {
     public String methods(NodeWithMembers<?> ctor) {
         StringBuilder builder = new StringBuilder();
 
-        if (TranslatorConfig.config.isShowMethods()) {
+        if (Config.getInstance().getConfig().isShowMethods()) {
             for (var method : ctor.getMethods()) {
                 builder.append(method(method));
             }

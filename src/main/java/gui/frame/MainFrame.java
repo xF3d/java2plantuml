@@ -4,7 +4,7 @@ import file.FileLogger;
 import lombok.Getter;
 import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
-import translate.translator.TranslatorConfig;
+import translate.translator.Config;
 import translate.translator.UmlTranslator;
 
 import javax.swing.*;
@@ -94,8 +94,7 @@ public class MainFrame extends JFrame {
             processInit();
             try {
                 UmlTranslator umlTranslator = new UmlTranslator();
-                TranslatorConfig.initDefaults(umlTranslator);
-
+                Config.getInstance().updateTranslator(umlTranslator);
 
                 FileLogger.LOGGER.info("Generating UML\n");
                 if (!umlTranslator.execute()) {
@@ -128,7 +127,7 @@ public class MainFrame extends JFrame {
         backgroundExecutor.submit(() -> {
             processInit();
             try {
-                TranslatorConfig.initDefaults(complexityTranslator);
+                Config.getInstance().updateTranslator(complexityTranslator);
 
                 if (!complexityTranslator.execute()) {
                     JOptionPane.showMessageDialog(

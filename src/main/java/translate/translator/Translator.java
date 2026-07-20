@@ -64,7 +64,7 @@ public interface Translator {
                 ParseResult<CompilationUnit> result = parser.parse(file);
                 if (result.isSuccessful() && result.getResult().isPresent()) {
                     CompilationUnit cu = result.getResult().get();
-                    for (VoidVisitor<Void> visitor : TranslatorConfig.config.getVisitorAdapters()) {
+                    for (VoidVisitor<Void> visitor : Config.getInstance().getConfig().getVisitorAdapters()) {
                         cu.accept(visitor, null);
                     }
 

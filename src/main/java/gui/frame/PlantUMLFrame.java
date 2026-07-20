@@ -1,8 +1,5 @@
 package gui.frame;
 
-import net.sourceforge.plantuml.FileFormat;
-import net.sourceforge.plantuml.FileFormatOption;
-import net.sourceforge.plantuml.SourceStringReader;
 import org.apache.batik.swing.JSVGCanvas;
 import org.apache.batik.swing.gvt.GVTTreeRendererAdapter;
 import org.apache.batik.swing.gvt.GVTTreeRendererEvent;
@@ -15,13 +12,11 @@ import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.svg.SVGDocument;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
-import translate.translator.TranslatorConfig;
+import translate.translator.Config;
 import util.PlantUMLParser;
 import util.SignatureParser;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
@@ -42,7 +37,7 @@ public class PlantUMLFrame extends JFrame {
 
         this.umlOutput = umlOutput;
         this.complexityTranslator = complexityTranslator;
-        TranslatorConfig.initDefaults(complexityTranslator);
+        Config.getInstance().updateTranslator(complexityTranslator);
 
         complexityTranslator.execute();
         String xmlSvgOutput = PlantUMLParser.puml2svg(getProblematicPuml());
