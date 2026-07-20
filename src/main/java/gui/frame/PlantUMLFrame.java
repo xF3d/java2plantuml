@@ -16,16 +16,16 @@ import org.w3c.dom.svg.SVGDocument;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 import translate.translator.TranslatorConfig;
+import util.PlantUMLParser;
 import util.SignatureParser;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.AffineTransform;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -33,28 +33,48 @@ public class PlantUMLFrame extends JFrame {
 
     private final JSVGCanvas image;
     private final ComplexityTranslator complexityTranslator;
+    private final String umlOutput;
 
     public PlantUMLFrame(String umlOutput, ComplexityTranslator complexityTranslator) throws IOException {
         super("PlantUML Display");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(1000, 600);
 
+        this.umlOutput = umlOutput;
         this.complexityTranslator = complexityTranslator;
         TranslatorConfig.initDefaults(complexityTranslator);
 
         complexityTranslator.execute();
-
-        String problematicClassesFormatted = String.join("", complexityTranslator.getProblematicClassesUml());
-        String enrichedUmlOutput = umlOutput.replace("@enduml", "\n" + problematicClassesFormatted + "@enduml");
-
-        SourceStringReader ssr = new SourceStringReader(enrichedUmlOutput);
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        ssr.outputImage(os, new FileFormatOption(FileFormat.SVG));
-        String xmlSvgOutput = os.toString();
+        String xmlSvgOutput = PlantUMLParser.puml2svg(getProblematicPuml());
 
         this.image = new JSVGCanvas();
         this.image.setDocumentState(JSVGCanvas.ALWAYS_DYNAMIC);
 
+        // Files
+        File tempSvg = File.createTempFile("plantuml", ".svg");
+        Files.writeString(tempSvg.toPath(), xmlSvgOutput, StandardCharsets.UTF_8);
+        this.image.setURI(tempSvg.toURI().toString());
+
+        JScrollPane scrollPane = new JScrollPane(image);
+
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+
+        this.getContentPane().add(scrollPane);
+
+        setupImageListeners();
+        setupMenu();
+
+        this.setVisible(true);
+        FrameManager.addFrame(this);
+    }
+
+    private String getProblematicPuml() {
+        String problematicClassesFormatted = String.join("", complexityTranslator.getProblematicClassesUml());
+        return umlOutput.replace("@enduml", "\n" + problematicClassesFormatted + "@enduml");
+    }
+
+    private void setupImageListeners() {
         this.image.addSVGDocumentLoaderListener(new SVGDocumentLoaderAdapter() {
             @Override
             public void documentLoadingCompleted(SVGDocumentLoaderEvent e) {
@@ -108,22 +128,6 @@ public class PlantUMLFrame extends JFrame {
             }
         });
 
-        // Files
-        File puml = new File("output.puml");
-        try (FileOutputStream fos = new FileOutputStream(puml)) {
-            fos.write(enrichedUmlOutput.getBytes());
-        }
-        File tempSvg = File.createTempFile("plantuml", ".svg");
-        Files.writeString(tempSvg.toPath(), xmlSvgOutput, StandardCharsets.UTF_8);
-        this.image.setURI(tempSvg.toURI().toString());
-
-        JScrollPane scrollPane = new JScrollPane(image);
-
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-        scrollPane.getHorizontalScrollBar().setUnitIncrement(16);
-
-        this.getContentPane().add(scrollPane);
-
         // fix svg being messed up for some reason
         this.image.addGVTTreeRendererListener(new GVTTreeRendererAdapter() {
             @Override
@@ -132,14 +136,8 @@ public class PlantUMLFrame extends JFrame {
                 image.repaint();
             }
         });
-        setupZooming();
 
-        this.setVisible(true);
-        FrameManager.addFrame(this);
-    }
-
-    private void setupZooming() {
-        image.addMouseWheelListener(e -> {
+        this.image.addMouseWheelListener(e -> {
             if (!e.isControlDown()) return;
 
             e.consume();
@@ -157,7 +155,7 @@ public class PlantUMLFrame extends JFrame {
             image.setRenderingTransform(at);
         });
 
-        image.addKeyListener(new KeyListener() {
+        this.image.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
 
@@ -185,5 +183,88 @@ public class PlantUMLFrame extends JFrame {
             @Override
             public void keyReleased(KeyEvent e) {}
         });
+    }
+
+    private void setupMenu() {
+        JMenuBar menuBar = new JMenuBar();
+
+        JMenu exportMenu = new JMenu("Export");
+        menuBar.add(exportMenu);
+
+        JMenuItem simplePuml = new JMenuItem("Simple puml");
+        simplePuml.addActionListener(e -> {
+            var saver = new SimpleFileSaver(umlOutput, ".puml");
+            saver.showSave();
+        });
+
+        JMenuItem evaluatedPuml = new JMenuItem("Evaluated puml");
+        evaluatedPuml.addActionListener(e -> {
+            var saver = new SimpleFileSaver(getProblematicPuml(), ".puml");
+            saver.showSave();
+        });
+
+        JMenuItem simpleSvg = new JMenuItem("Simple svg");
+        simpleSvg.addActionListener(e -> {
+            var saver = new SimpleFileSaver(PlantUMLParser.puml2svg(umlOutput), ".svg");
+            saver.showSave();
+        });
+
+        JMenuItem evaluatedSvg = new JMenuItem("Evaluated svg");
+        evaluatedSvg.addActionListener(e -> {
+            var saver = new SimpleFileSaver(PlantUMLParser.puml2svg(getProblematicPuml()), ".svg");
+            saver.showSave();
+        });
+
+        exportMenu.add(simplePuml);
+        exportMenu.add(evaluatedPuml);
+        exportMenu.add(simpleSvg);
+        exportMenu.add(evaluatedSvg);
+
+        this.setJMenuBar(menuBar);
+    }
+
+    private class SimpleFileSaver extends JFileChooser {
+        private final String contents;
+        private final String extension;
+
+        public SimpleFileSaver(String contents, String extension) {
+            super();
+            this.contents = contents;
+            this.extension = extension;
+        }
+
+        public void showSave() {
+            if (this.showSaveDialog(PlantUMLFrame.this) != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+
+            File file = this.getSelectedFile();
+
+            // Add extension if needed
+            if (!file.getName().endsWith(extension)) {
+                file = new File(file.getAbsolutePath() + extension);
+            }
+
+            // Confirm overwrite
+            if (file.exists()) {
+                int response = JOptionPane.showConfirmDialog(
+                        this,
+                        "Overwrite existing file?",
+                        "Confirm",
+                        JOptionPane.YES_NO_OPTION
+                );
+
+                if (response != JOptionPane.YES_OPTION) {
+                    return;
+                }
+            }
+
+            // Write the file
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write(contents);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 }
