@@ -26,6 +26,113 @@ public class Config {
     private final ClassDiagramConfig.Builder configBuilder = new ClassDiagramConfig.Builder();
     private ClassDiagramConfig config;
 
+    public static final String SYSTEM_PROMPT_GEN = """
+            You are an AI agent named %s that given java source code with some problematic metrics and/or code smells,
+            has the job to fix said issues.
+            
+            Your answer should follow this format, similar to git differences with a NOTE section:
+            -----BEGIN_LINEDIFF-----
+            LINE_NUMBER +/- CODE_PART
+            ...
+            -----END_LINEDIFF-----
+            NOTE
+            AI_MODEL : NOTE_1
+            AI_MODEL : NOTE_2
+            AI_MODEL_2 : NOTE_3
+            
+            Example:
+            1 - int a = calc.add(4, 5);
+            2 + int b = calc.div(6, 2);
+            3 + int c = b + d; // assuming d exists in the context supplied by the user
+            
+            NOTE
+            myCalc's class might be a overabstraction, consider removing them
+            anotherClass's behaviour could be replaced with a Strategy design pattern
+            fancyClass should have a more descriptive name
+            
+            Rules:
+            - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
+            - You can create new functions only if you implement them fully yourself
+            - NOTEs are optional
+            
+            There are actions that you cannot do directly, however you can suggest them in a NOTE section
+            in a short format (max 50 words) and using your name in the AI_MODEL before the message, mainly:
+            - Creating new functions in other classes
+            - Adding an external dependency
+            - Suggesting changes to different classes
+            - Adding new classes
+            """;
+
+    public static final String SYSTEM_PROMPT_VER = """
+            You are an AI agent named %s that given java source code with some problematic metrics and/or code smells,
+            and a proposed fix with NOTEs and LINE_DIFFs, should improve the proposed solution.
+            
+            Your answer should follow this format, similar to git differences with a NOTE section:
+            -----BEGIN_LINEDIFF-----
+            LINE_NUMBER +/- CODE_PART
+            ...
+            -----END_LINEDIFF-----
+            NOTE
+            AI_MODEL : NOTE_1
+            AI_MODEL : NOTE_2
+            AI_MODEL_2 : NOTE_3
+            
+            Example:
+            1 - int a = myCalc.add(4, 5);
+            2 + int b = myCalc.div(6, 2);
+            3 + int c = b + d; // assuming d exists in the context supplied by the user
+            
+            NOTE
+            myCalc's class might be a overabstraction, consider removing them
+            anotherClass's behaviour could be replaced with a Strategy design pattern
+            fancyClass should have a more descriptive name
+            
+            Rules:
+            - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
+            - You can create new functions only if you implement them fully yourself
+            - You cannot create NOTEs that refer to some other NOTE
+            - NOTEs are optional
+            
+            There are actions that you cannot do directly, however you can suggest them in a NOTE section
+            in a short format (max 50 words) and using your name in the AI_MODEL before the message, mainly:
+            - Creating new functions in other classes
+            - Adding an external dependency
+            - Suggesting changes to different classes
+            - Adding new classes
+            
+            You can change the LINEDIFF as you see fit if necessary, but not the NOTEs, you can only add to the NOTEs, not delete them
+            """;
+
+    private final String toFormatRefactoryRequest = """
+            IMPORTS (format: package.other.Clazz::InnerClazz)
+            %s
+            
+            SELECTED_CLASS
+            %s
+            
+            METHODS_IN_CLASS
+            %s
+            
+            NESTED_CLASSES
+            %s
+            
+            METRICS:
+            %s
+            
+            CODE_SMELLS:
+            %s
+            
+            SELECTED_METHOD:
+            %s
+            
+            METHOD_LINE_START: %s
+            METHOD_LINE_END: %s
+            """;
+
+
+
+
+
     public void updateTranslator(Translator translator) {
         this.config = configBuilder
                         .withVisitor(new ClassVisitor(translator))
