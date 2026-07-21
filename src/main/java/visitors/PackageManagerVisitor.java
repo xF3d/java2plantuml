@@ -7,7 +7,7 @@ import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.AllArgsConstructor;
-import translate.structure.PackageManager;
+import translate.structure.pkg.PackageManager;
 
 @AllArgsConstructor
 public class PackageManagerVisitor extends VoidVisitorAdapter<Void> {

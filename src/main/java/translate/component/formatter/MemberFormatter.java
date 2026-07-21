@@ -20,7 +20,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import lombok.AllArgsConstructor;
-import translate.structure.PackageManager;
+import translate.structure.pkg.PackageManager;
 import translate.translator.Config;
 
 import java.util.ArrayList;

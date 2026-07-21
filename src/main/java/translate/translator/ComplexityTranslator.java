@@ -9,7 +9,9 @@ import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
 import translate.component.formatter.MemberFormatter;
-import translate.structure.PackageManager;
+import translate.structure.complexity.ComplexityClass;
+import translate.structure.complexity.ComplexityMethod;
+import translate.structure.pkg.PackageManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,12 +32,12 @@ public class ComplexityTranslator implements Translator {
     private CompletableFuture<ComplexityResultAggregator> systemResult; // todo: use this instead
 
     // full package name --> node
-    private final Map<String, Node> classMap = new HashMap<>();
-    private final Map<String, CompletableFuture<ComplexityResultAggregator>> classResultMap = new HashMap<>();
+    private final Map<String, Node> tempClassMap = new HashMap<>();
+    private final Map<String, ComplexityClass> classResultMap = new HashMap<>();
 
     // full package name --> method Signature --> method
-    private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
-    private final Map<String, Map<String, CompletableFuture<ComplexityResultAggregator>>> methodResultMap = new HashMap<>();
+    private final Map<String, Map<String, MethodDeclaration>> tempMethodMap = new HashMap<>();
+    private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new HashMap<>();
 
     private Boolean error = false;
 
@@ -43,11 +45,11 @@ public class ComplexityTranslator implements Translator {
     public void addNode(Node node) {
         // note, this is under teh assumption that every node passed here is a typeDefinition
         String fullName = formatter.fullPackageName(node.findCompilationUnit().get(), node);
-        classMap.put(fullName, node);
+        tempClassMap.put(fullName, node);
 
         //TODO: this doesn't include inherited methods, are they really necessary tho?
         if (node instanceof NodeWithMembers<?> nwm) {
-            Map<String, MethodDeclaration> methods = methodMap.get(fullName);
+            Map<String, MethodDeclaration> methods = tempMethodMap.get(fullName);
             if (methods == null) {
                 methods = new HashMap<>();
             }
@@ -56,7 +58,7 @@ public class ComplexityTranslator implements Translator {
                 methods.put(method.getSignature().asString(), method);
             }
 
-            methodMap.put(fullName, methods);
+            tempMethodMap.put(fullName, methods);
         }
     }
 
@@ -71,20 +73,20 @@ public class ComplexityTranslator implements Translator {
         var executor = Executors.newFixedThreadPool(threads);
 
         // calculate class stuff
-        for (var classEntry : classMap.entrySet()) {
-            classResultMap.put(classEntry.getKey(), CompletableFuture.supplyAsync(() -> {
+        for (var classEntry : tempClassMap.entrySet()) {
+            classResultMap.put(classEntry.getKey(), new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
                 ComplexityMetricResult[] resultArray = new ComplexityMetricResult[ComplexityEvaluator.Clazz.EVALUATORS.length];
                 for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
-                    resultArray[i] = ComplexityEvaluator.Clazz.EVALUATORS[i].calculate(classMap.values(), classEntry.getValue(), formatter);
+                    resultArray[i] = ComplexityEvaluator.Clazz.EVALUATORS[i].calculate(tempClassMap.values(), classEntry.getValue(), formatter);
                 }
 
                 return new ComplexityResultAggregator(resultArray);
-            }, executor));
+            }, executor)));
         }
 
 
-        var allClasses = classMap.values();
-        var classResultFutures = classResultMap.values();
+        var allClasses = tempClassMap.values();
+        var classResultFutures = classResultMap.values().stream().map(ComplexityClass::getComplexityResult).toList();
 
         // system metrics
         var systemResults = CompletableFuture.supplyAsync(() -> {
@@ -141,24 +143,28 @@ public class ComplexityTranslator implements Translator {
             }, executor);
 
         // calculate method stuff
-        for (var classMethodEntry : methodMap.entrySet()) {
+        for (var classMethodEntry : tempMethodMap.entrySet()) {
             String classFqn = classMethodEntry.getKey();
             for (var methodEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
-                methodResultMap.get(classFqn).put(methodEntry.getKey(), CompletableFuture.supplyAsync(() -> {
+                methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(methodEntry.getValue(), CompletableFuture.supplyAsync(() -> {
                     ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Method.EVALUATORS.length];
-                    Node classNode = classMap.get(classFqn);
+                    Node classNode = tempClassMap.get(classFqn);
                     MethodDeclaration methodDeclaration = methodEntry.getValue();
                     for (int i = 0; i < ComplexityEvaluator.Method.EVALUATORS.length; i++) {
                         result[i] = ComplexityEvaluator.Method.EVALUATORS[i].calculate(classNode, methodDeclaration, formatter);
                     }
 
                     return new ComplexityResultAggregator(result);
-                }, executor));
+                }, executor)));
             }
         }
 
-        this.systemResult.whenComplete((r, e) -> executor.shutdown());
+        this.systemResult.whenComplete((r, e) -> {
+            tempClassMap.clear();
+            tempMethodMap.clear();
+            executor.shutdown();
+        });
     }
 
     @Override
@@ -168,7 +174,7 @@ public class ComplexityTranslator implements Translator {
 
     public Map<String, ComplexityResultAggregator> getProblematicClasses() {
         Map<String, ComplexityResultAggregator> output = new HashMap<>();
-        for (var fullPackageName : classMap.keySet()) {
+        for (var fullPackageName : classResultMap.keySet()) {
             ComplexityResultAggregator results = evaluateClass(fullPackageName);
             if (!results.isValid()) {
                 output.put(fullPackageName, results);
@@ -180,10 +186,10 @@ public class ComplexityTranslator implements Translator {
 
     public List<String> getProblematicClassesUml() {
         List<String> output = new ArrayList<>();
-        for (var fullPackageName : classMap.keySet()) {
+        for (var fullPackageName : classResultMap.keySet()) {
             ComplexityResultAggregator results = evaluateClass(fullPackageName);
             if (!results.isValid()) {
-                if (classMap.get(fullPackageName) instanceof RecordDeclaration) {
+                if (classResultMap.get(fullPackageName).getNode() instanceof RecordDeclaration) {
                     output.add("record " + fullPackageName + " #Red\n");
                 } else {
                     output.add("class " + fullPackageName + " #Red\n");
@@ -205,7 +211,7 @@ public class ComplexityTranslator implements Translator {
 
     public ComplexityResultAggregator evaluateClass(String fullClassName) {
         try {
-            return classResultMap.get(fullClassName).get();
+            return classResultMap.get(fullClassName).getComplexityResult().get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -213,17 +219,17 @@ public class ComplexityTranslator implements Translator {
 
     public ComplexityResultAggregator evaluateMethod(String fullClassName, String method) {
         try {
-            return methodResultMap.get(fullClassName).get(method).get();
+            return methodResultMap.get(fullClassName).get(method).getComplexityResult().get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
     }
 
     public String[] getClassesArray() {
-        return classMap.keySet().toArray(String[]::new);
+        return classResultMap.keySet().toArray(String[]::new);
     }
 
     public String[] getMethodsArray(String className) {
-        return methodMap.get(className).keySet().toArray(String[]::new);
+        return methodResultMap.get(className).keySet().toArray(String[]::new);
     }
 }

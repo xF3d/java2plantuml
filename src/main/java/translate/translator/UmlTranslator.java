@@ -14,7 +14,7 @@ import translate.component.formatter.AssociationFormatter;
 import translate.component.formatter.MemberFormatter;
 import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
-import translate.structure.PackageManager;
+import translate.structure.pkg.PackageManager;
 
 import java.util.HashSet;
 import java.util.List;

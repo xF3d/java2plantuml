@@ -1,4 +1,4 @@
-package translate.structure;
+package translate.structure.pkg;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;

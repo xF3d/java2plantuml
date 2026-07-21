@@ -1,4 +1,4 @@
-package translate.structure;
+package translate.structure.pkg;
 
 import translate.component.formatter.MemberFormatter;
 

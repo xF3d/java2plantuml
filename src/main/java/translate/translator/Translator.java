@@ -11,7 +11,7 @@ import gui.frame.MainFrame;
 import file.DirectoryExplorer;
 import file.FileHandler;
 import translate.ResolverUtils;
-import translate.structure.PackageManager;
+import translate.structure.pkg.PackageManager;
 import visitors.PackageManagerVisitor;
 
 import java.io.File;

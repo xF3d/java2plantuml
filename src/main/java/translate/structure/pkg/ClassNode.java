@@ -1,4 +1,4 @@
-package translate.structure;
+package translate.structure.pkg;
 
 import com.google.common.base.Preconditions;
 import translate.component.formatter.MemberFormatter;
