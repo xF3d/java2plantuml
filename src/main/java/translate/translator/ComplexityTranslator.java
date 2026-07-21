@@ -166,6 +166,18 @@ public class ComplexityTranslator implements Translator {
         error = b;
     }
 
+    public Map<String, ComplexityResultAggregator> getProblematicClasses() {
+        Map<String, ComplexityResultAggregator> output = new HashMap<>();
+        for (var fullPackageName : classMap.keySet()) {
+            ComplexityResultAggregator results = evaluateClass(fullPackageName);
+            if (!results.isValid()) {
+                output.put(fullPackageName, results);
+            }
+        }
+
+        return output;
+    }
+
     public List<String> getProblematicClassesUml() {
         List<String> output = new ArrayList<>();
         for (var fullPackageName : classMap.keySet()) {

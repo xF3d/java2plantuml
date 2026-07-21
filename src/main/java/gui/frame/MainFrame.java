@@ -1,5 +1,6 @@
 package gui.frame;
 
+import ai.AIManager;
 import file.FileLogger;
 import lombok.Getter;
 import translate.ResolverUtils;
@@ -25,6 +26,7 @@ public class MainFrame extends JFrame {
     private final JPanel topPanel = new JPanel();
     private final JButton umlButton = new JButton("Generate UML");
     private final JButton complexityButton = new JButton("Calculate Complexity");
+    private final JButton aiButton = new JButton("AI Refactor Issues");
     private final JButton recalculateButton = new JButton("Recalculate");
 
     private final JLabel sourceFolderLabel = new JLabel();
@@ -44,6 +46,7 @@ public class MainFrame extends JFrame {
 
         umlButton.addActionListener(this::generateUml);
         complexityButton.addActionListener(this::generateComplexity);
+        aiButton.addActionListener(this::generateRefactor);
         recalculateButton.addActionListener(this::recalculate);
 
         this.setButtons(false);
@@ -51,6 +54,7 @@ public class MainFrame extends JFrame {
         topPanel.add(selectFolderButton);
         topPanel.add(umlButton);
         topPanel.add(complexityButton);
+        topPanel.add(aiButton);
         topPanel.add(recalculateButton);
 
         sourceFolderLabel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
@@ -87,6 +91,12 @@ public class MainFrame extends JFrame {
         umlButton.setEnabled(state);
         complexityButton.setEnabled(state);
         recalculateButton.setEnabled(state);
+
+        if (Config.getInstance().isAiDisabled()) {
+            aiButton.setEnabled(false);
+        } else {
+            aiButton.setEnabled(state);
+        }
     }
 
     private void generateUml(ActionEvent ignored) {
@@ -109,10 +119,6 @@ public class MainFrame extends JFrame {
                 FileLogger.LOGGER.info("UML generation ended\n");
 
                 String plantUmlOutput = umlTranslator.toPlantUml();
-
-                // todo: check if this still works if not reimplement it
-                //FileLogger.LOGGER.info("\nUML diagram saved to output.puml\n");
-
                 new PlantUMLFrame(plantUmlOutput, complexityTranslator);
 
             } catch (Exception ex) {
@@ -148,6 +154,33 @@ public class MainFrame extends JFrame {
             }
         });
 
+    }
+
+    private void generateRefactor(ActionEvent ingored) {
+        backgroundExecutor.submit(() -> {
+            processInit();
+            try {
+                Config.getInstance().updateTranslator(complexityTranslator);
+
+                if (!complexityTranslator.execute()) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Selected folder is invalid.",
+                            "Invalid Folder",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
+                contentPanel.updateUI();
+                AIManager.init();
+
+                
+            } catch (Exception ex) {
+                FileLogger.LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
+                ex.printStackTrace();
+            }
+        });
     }
 
     private void recalculate(ActionEvent actionEvent) {

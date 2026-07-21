@@ -1,30 +1,23 @@
 package translate.translator;
 
+import ai.AIManager;
 import file.FileLogger;
 import lombok.Getter;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
+import org.tomlj.TomlTable;
 import translate.ClassDiagramConfig;
 import visitors.*;
 
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 
 @Getter
 public class Config {
     private static final String CONFIG_NAME = "config.toml";
-
-    @Getter
-    private static Config instance = null;
-
-    public static void init() {
-        instance = new Config();
-        instance.loadFromFile();
-    }
-
-    private final ClassDiagramConfig.Builder configBuilder = new ClassDiagramConfig.Builder();
-    private ClassDiagramConfig config;
 
     public static final String SYSTEM_PROMPT_GEN = """
             You are an AI agent named %s that given java source code with some problematic metrics and/or code smells,
@@ -103,7 +96,7 @@ public class Config {
             You can change the LINEDIFF as you see fit if necessary, but not the NOTEs, you can only add to the NOTEs, not delete them
             """;
 
-    private final String toFormatRefactoryRequest = """
+    public static final String FORM_REFACTOR_PROMPT = """
             IMPORTS (format: package.other.Clazz::InnerClazz)
             %s
             
@@ -131,7 +124,23 @@ public class Config {
 
 
 
+    @Getter
+    private static Config instance = null;
 
+    public static void init() {
+        instance = new Config();
+        instance.loadFromFile();
+        AIManager.update();
+    }
+
+    private final ClassDiagramConfig.Builder configBuilder = new ClassDiagramConfig.Builder();
+    private ClassDiagramConfig config;
+
+    private String ollamaUrl;
+    private String mainModel;
+    private final ArrayList<String> verifyModels = new ArrayList<>();
+
+    private boolean verifyWithMain;
 
     public void updateTranslator(Translator translator) {
         this.config = configBuilder
@@ -149,6 +158,12 @@ public class Config {
         show_methods = true
         show_attributes = true
         show_colored_access_specifiers = true
+        
+        [ai]
+        verify_with_main = true
+        
+        [ollama_main]
+        url = "http://localhost:11434"
         """;
 
         try {
@@ -157,6 +172,11 @@ public class Config {
             FileLogger.LOGGER.severe("Error in regenerating default config");
             e.printStackTrace();
         }
+
+        ollamaUrl = "http://localhost:11434";
+        mainModel = null;
+        verifyModels.clear();
+        verifyWithMain = true;
 
         configBuilder
                 .setShowMethods(true)
@@ -189,7 +209,23 @@ public class Config {
                 .setShowAttributes(showAttributes)
                 .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers);
 
+        ollamaUrl = result.getString("ollama_main.url", null);
+        mainModel = result.getString("ollama_main.main_model", null);
 
+        var array = result.getArrayOrEmpty("ollama_verify");
+        for (int i = 0; i < array.size(); i++) {
+            TomlTable table = array.getTable(i);
+            String verifyName = table.getString("name", null);
+            if (verifyName != null) {
+                verifyModels.add(verifyName);
+            }
+        }
+
+        verifyWithMain = result.getBoolean("ai.verify_with_main", () -> true);
+    }
+
+    public boolean isAiDisabled() {
+        return mainModel == null || ollamaUrl == null;
     }
 
     public Path getConfigPath() {

@@ -58,6 +58,10 @@ public class ComplexityMetricResult {
         }
     }
 
+    public String toAi() {
+        return name + " range between: " + min + " & " + max + " value: " + value + "\n";
+    }
+
     public static Builder builder() {
         return new Builder();
     }
