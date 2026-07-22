@@ -2,6 +2,7 @@ package translate.complexity.clazz;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ThisExpr;
@@ -12,18 +13,14 @@ import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
     private static ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
             .name("LOCMN");
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
         int p = 0;
         int q = 0;
 

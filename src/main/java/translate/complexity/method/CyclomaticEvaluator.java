@@ -1,7 +1,7 @@
 package translate.complexity.method;
 
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.ConditionalExpr;
 import com.github.javaparser.ast.expr.Expression;
@@ -20,7 +20,7 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
 
 
     @Override
-    public ComplexityMetricResult calculate(Node clazz, MethodDeclaration method, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(TypeDeclaration<?> clazz, MethodDeclaration method, MemberFormatter formatter) {
         var optBody = method.getBody();
         if (optBody.isEmpty()) {
             return builder.value(1).build();

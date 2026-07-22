@@ -2,6 +2,7 @@ package translate.complexity.clazz;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
@@ -20,7 +21,7 @@ public class RFCEvaluator implements ComplexityEvaluator.Clazz {
             .min(-1);
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
         // in RFC inherited methods must also be calculated
         if (!(clazz instanceof NodeWithMembers<?> nwm)) {
             return null;

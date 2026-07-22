@@ -2,6 +2,7 @@ package translate.complexity;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.clazz.DITEvaluator;
 import translate.complexity.clazz.LCOMNEvaluator;
 import translate.complexity.clazz.NOCEvaluator;
@@ -12,8 +13,6 @@ import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public interface ComplexityEvaluator {
     String getName();
@@ -22,7 +21,7 @@ public interface ComplexityEvaluator {
         ComplexityEvaluator.System[] EVALUATORS = {
         };
 
-        ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<Node> allClazz, MemberFormatter formatter);
+        ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz, MemberFormatter formatter);
     }
 
     interface Clazz extends ComplexityEvaluator {
@@ -40,7 +39,7 @@ public interface ComplexityEvaluator {
             new LCOMNEvaluator()
         };
 
-        ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter);
+        ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter);
     }
 
     interface Method extends ComplexityEvaluator {
@@ -48,6 +47,6 @@ public interface ComplexityEvaluator {
             new CyclomaticEvaluator()
         };
 
-        ComplexityMetricResult calculate(Node clazz, MethodDeclaration method, MemberFormatter formatter);
+        ComplexityMetricResult calculate(TypeDeclaration<?> clazz, MethodDeclaration method, MemberFormatter formatter);
     }
 }

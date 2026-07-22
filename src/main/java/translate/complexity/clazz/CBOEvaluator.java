@@ -3,6 +3,7 @@ package translate.complexity.clazz;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import com.github.javaparser.resolution.types.ResolvedType;
@@ -22,7 +23,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
 
     //TODO: redo from 0, I am about to shot myself
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
         int fanOut = getFQNusedBy(clazz).size();
         int fanIn = 0;
 

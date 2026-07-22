@@ -3,6 +3,7 @@ package translate.translator;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
@@ -32,7 +33,7 @@ public class ComplexityTranslator implements Translator {
     private CompletableFuture<ComplexityResultAggregator> systemResult; // todo: use this instead
 
     // full package name --> node
-    private final Map<String, Node> tempClassMap = new HashMap<>();
+    private final Map<String, TypeDeclaration<?>> tempClassMap = new HashMap<>();
     private final Map<String, ComplexityClass> classResultMap = new HashMap<>();
 
     // full package name --> method Signature --> method
@@ -43,23 +44,22 @@ public class ComplexityTranslator implements Translator {
 
     @Override
     public void addNode(Node node) {
-        // note, this is under teh assumption that every node passed here is a typeDefinition
-        String fullName = formatter.fullPackageName(node.findCompilationUnit().get(), node);
-        tempClassMap.put(fullName, node);
+        if (!(node instanceof TypeDeclaration<?> decl)) throw new IllegalArgumentException("Should never happen");
+
+        String fullName = formatter.fullPackageName(node.findCompilationUnit().orElseThrow(), node);
+        tempClassMap.put(fullName, decl);
 
         //TODO: this doesn't include inherited methods, are they really necessary tho?
-        if (node instanceof NodeWithMembers<?> nwm) {
-            Map<String, MethodDeclaration> methods = tempMethodMap.get(fullName);
-            if (methods == null) {
-                methods = new HashMap<>();
-            }
-
-            for (MethodDeclaration method : nwm.getMethods()) {
-                methods.put(method.getSignature().asString(), method);
-            }
-
-            tempMethodMap.put(fullName, methods);
+        Map<String, MethodDeclaration> methods = tempMethodMap.get(fullName);
+        if (methods == null) {
+            methods = new HashMap<>();
         }
+
+        for (MethodDeclaration method : decl.getMethods()) {
+            methods.put(method.getSignature().asString(), method);
+        }
+
+        tempMethodMap.put(fullName, methods);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class ComplexityTranslator implements Translator {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
                 methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(methodEntry.getValue(), CompletableFuture.supplyAsync(() -> {
                     ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Method.EVALUATORS.length];
-                    Node classNode = tempClassMap.get(classFqn);
+                    TypeDeclaration<?> classNode = tempClassMap.get(classFqn);
                     MethodDeclaration methodDeclaration = methodEntry.getValue();
                     for (int i = 0; i < ComplexityEvaluator.Method.EVALUATORS.length; i++) {
                         result[i] = ComplexityEvaluator.Method.EVALUATORS[i].calculate(classNode, methodDeclaration, formatter);

@@ -2,13 +2,13 @@ package translate.complexity.clazz;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
 
 import java.util.Collection;
-import java.util.function.BiFunction;
 
 public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
 
@@ -21,7 +21,7 @@ public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
     }
 
     @Override
-    public ComplexityMetricResult calculate(Collection<Node> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
         double accumulator = 0;
 
         if (clazz instanceof NodeWithMembers<?> nwm) {

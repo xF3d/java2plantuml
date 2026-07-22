@@ -97,16 +97,13 @@ public class Config {
             """;
 
     public static final String FORM_REFACTOR_PROMPT = """
-            IMPORTS (format: package.other.Clazz::InnerClazz)
+            IMPORTS
             %s
             
             SELECTED_CLASS
             %s
             
             METHODS_IN_CLASS
-            %s
-            
-            NESTED_CLASSES
             %s
             
             METRICS:

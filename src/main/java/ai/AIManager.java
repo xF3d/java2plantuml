@@ -1,11 +1,20 @@
 package ai;
 
+import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.ImportDeclaration;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.expr.Name;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import lombok.Getter;
+import translate.component.formatter.MemberFormatter;
+import translate.structure.complexity.ComplexityClass;
+import translate.structure.complexity.ComplexityMethod;
+import translate.structure.pkg.PackageImport;
 import translate.translator.Config;
 
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class AIManager {
     private AIManager() {
@@ -47,9 +56,30 @@ public class AIManager {
     private ChatModel suggestionModel = null;
     private ArrayList<ChatModel> verifiers = new ArrayList<>();
 
-    public void chat() {
+    public void chat(ComplexityClass clazz, ComplexityMethod method) {
         if (suggestionModel == null) throw new IllegalCallerException();
 
+        CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
+        ArrayList<String> imports = new ArrayList<>(cu.getImports().size());
+        for (ImportDeclaration singleImport : cu.getImports()) {
+            String importString = singleImport.getNameAsString();
+            if (singleImport.isStatic()) {
+                importString = "static " + importString;
+            }
+
+            if (singleImport.isAsterisk()) {
+                importString += ".*";
+            }
+
+            imports.add(importString);
+        }
+
+        String importString = String.join("\n", imports);
+
+        String mainMessage = Config.FORM_REFACTOR_PROMPT.formatted(
+                importString,
+                clazz.getNode()
+        );
 
     }
 }
