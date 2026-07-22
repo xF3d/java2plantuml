@@ -20,7 +20,7 @@ public class Config {
     private static final String CONFIG_NAME = "config.toml";
 
     public static final String SYSTEM_PROMPT_GEN = """
-            You are an AI agent named %s that given java source code with some problematic metrics and/or code smells,
+            You are an AI agent named %s-GEN that given java source code with some problematic metrics and/or code smells,
             has the job to fix said issues.
             
             Your answer should follow this format, similar to git differences with a NOTE section:
@@ -28,20 +28,19 @@ public class Config {
             LINE_NUMBER +/- CODE_PART
             ...
             -----END_LINEDIFF-----
-            NOTE
             AI_MODEL : NOTE_1
             AI_MODEL : NOTE_2
             AI_MODEL_2 : NOTE_3
             
             Example:
+            -----BEGIN_LINEDIFF-----
             1 - int a = calc.add(4, 5);
             2 + int b = calc.div(6, 2);
             3 + int c = b + d; // assuming d exists in the context supplied by the user
-            
-            NOTE
-            myCalc's class might be a overabstraction, consider removing them
-            anotherClass's behaviour could be replaced with a Strategy design pattern
-            fancyClass should have a more descriptive name
+            -----END_LINEDIFF-----
+            chatgpt-GEN : myCalc's class might be a overabstraction, consider removing them
+            grok : anotherClass's behaviour could be replaced with a Strategy design pattern
+            claude : fancyClass should have a more descriptive name
             
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
@@ -57,34 +56,33 @@ public class Config {
             """;
 
     public static final String SYSTEM_PROMPT_VER = """
-            You are an AI agent named %s that given java source code with some problematic metrics and/or code smells,
-            and a proposed fix with NOTEs and LINE_DIFFs, should improve the proposed solution.
+            You are an AI agent named %s that given java code diffs you need to verify and improve the solution when possible.
             
             Your answer should follow this format, similar to git differences with a NOTE section:
             -----BEGIN_LINEDIFF-----
             LINE_NUMBER +/- CODE_PART
             ...
             -----END_LINEDIFF-----
-            NOTE
             AI_MODEL : NOTE_1
             AI_MODEL : NOTE_2
             AI_MODEL_2 : NOTE_3
             
             Example:
+            -----BEGIN_LINEDIFF-----
             1 - int a = myCalc.add(4, 5);
             2 + int b = myCalc.div(6, 2);
             3 + int c = b + d; // assuming d exists in the context supplied by the user
-            
-            NOTE
-            myCalc's class might be a overabstraction, consider removing them
-            anotherClass's behaviour could be replaced with a Strategy design pattern
-            fancyClass should have a more descriptive name
+            -----END_LINEDIFF-----
+            chatgpt-GEN : myCalc's class might be a overabstraction, consider removing them
+            grok : anotherClass's behaviour could be replaced with a Strategy design pattern
+            claude : fancyClass should have a more descriptive name
             
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             - You can create new functions only if you implement them fully yourself
             - You cannot create NOTEs that refer to some other NOTE
             - NOTEs are optional
+            - If you don't want to change anything, just resend the message AS-IS
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section
             in a short format (max 50 words) and using your name in the AI_MODEL before the message, mainly:
@@ -106,13 +104,16 @@ public class Config {
             METHODS_IN_CLASS
             %s
             
-            METRICS:
+            CLASS_METRICS
             %s
             
-            CODE_SMELLS:
+            METHOD_METRICS
             %s
             
-            SELECTED_METHOD:
+            METHOD_CODE_SMELLS
+            %s
+            
+            SELECTED_METHOD
             %s
             
             METHOD_LINE_START: %s

@@ -2,19 +2,18 @@ package ai;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.expr.Name;
+import dev.langchain4j.data.message.SystemMessage;
+import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.ollama.OllamaChatModel;
 import lombok.Getter;
-import translate.component.formatter.MemberFormatter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
-import translate.structure.pkg.PackageImport;
 import translate.translator.Config;
 
 import java.util.ArrayList;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class AIManager {
     private AIManager() {
@@ -54,9 +53,9 @@ public class AIManager {
     }
 
     private ChatModel suggestionModel = null;
-    private ArrayList<ChatModel> verifiers = new ArrayList<>();
+    private final ArrayList<ChatModel> verifiers = new ArrayList<>();
 
-    public void chat(ComplexityClass clazz, ComplexityMethod method) {
+    public DiffPromptResponse chat(ComplexityClass clazz, ComplexityMethod method) {
         if (suggestionModel == null) throw new IllegalCallerException();
 
         CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
@@ -76,10 +75,57 @@ public class AIManager {
 
         String importString = String.join("\n", imports);
 
+        var decl = clazz.getNode();
+        ArrayList<String> methodSignatures = new ArrayList<>(decl.getMethods().size());
+        for (var methodDecl : decl.getMethods()) {
+            methodSignatures.add(methodDecl.getSignature().asString());
+        }
+
+        String methodSignaturesString = String.join("\n", methodSignatures);
+
+        List<String> methodMetrics;
+        List<String> classMetrics;
+        try {
+            methodMetrics = method.getComplexityResult().get().toAiList();
+            classMetrics = clazz.getComplexityResult().get().toAiList();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        String methodMetricsString = String.join("\n", methodMetrics);
+
+        String classMetricsString = String.join("\n", classMetrics);
+
+        var range = method.getMethod().getRange().orElseThrow();
+
         String mainMessage = Config.FORM_REFACTOR_PROMPT.formatted(
                 importString,
-                clazz.getNode()
+                decl.getNameAsString(),
+                methodSignaturesString,
+                classMetricsString,
+                methodMetricsString,
+                "None", // TODO: add code smells support
+                method.getMethod().toString(),
+                range.begin,
+                range.end
         );
 
+        String response = suggestionModel.chat(
+                SystemMessage.systemMessage(Config.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
+                UserMessage.userMessage(mainMessage)
+        ).aiMessage().text();
+
+        System.out.println(response);
+        String previousResponse = response;
+        for (var verifier : verifiers) {
+            previousResponse = verifier.chat(
+                    SystemMessage.systemMessage(Config.SYSTEM_PROMPT_VER.formatted(verifier.defaultRequestParameters().modelName())),
+                    UserMessage.userMessage(mainMessage + "\n" + previousResponse)
+            ).aiMessage().text();
+
+            System.out.println(previousResponse);
+        }
+
+        return DiffPromptResponse.fromResponse(previousResponse);
     }
 }

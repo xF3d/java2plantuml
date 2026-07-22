@@ -2,10 +2,7 @@ package translate.complexity;
 
 import lombok.Getter;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 public class ComplexityResultAggregator implements Iterable<ComplexityMetricResult> {
     public static final ComplexityResultAggregator EMPTY = new ComplexityResultAggregator(new ComplexityMetricResult[0]);
@@ -37,6 +34,15 @@ public class ComplexityResultAggregator implements Iterable<ComplexityMetricResu
 
     public ComplexityMetricResult get(String key) {
         return aggregator.get(key);
+    }
+
+    public List<String> toAiList() {
+        ArrayList<String> out = new ArrayList<>();
+        for (var metric : this) {
+            out.add(metric.toAi());
+        }
+
+        return out;
     }
 
     @Override
