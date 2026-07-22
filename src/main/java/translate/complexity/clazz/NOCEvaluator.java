@@ -16,13 +16,14 @@ import translate.component.formatter.MemberFormatter;
 import java.util.Collection;
 
 public class NOCEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-            .name("NOC")
-            .max(Double.MAX_VALUE)
-            .min(-1);
 
     @Override
     public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
+                .name("NOC")
+                .max(Double.MAX_VALUE)
+                .min(-1);
+
         if (clazz instanceof RecordDeclaration || clazz instanceof EnumDeclaration) {
             return builder.value(0).build();
         }

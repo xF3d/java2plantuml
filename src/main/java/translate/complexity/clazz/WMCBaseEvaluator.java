@@ -22,6 +22,7 @@ public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+        var b = builder.clone();
         double accumulator = 0;
 
         if (clazz instanceof NodeWithMembers<?> nwm) {
@@ -30,7 +31,7 @@ public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
             }
         }
 
-        return builder.value(accumulator).build();
+        return b.value(accumulator).build();
     }
 
     public abstract ComplexityMetricResult evaluateMethod(Node clazz, MethodDeclaration method, MemberFormatter formatter);

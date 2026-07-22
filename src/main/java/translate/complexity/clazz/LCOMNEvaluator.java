@@ -16,11 +16,12 @@ import translate.component.formatter.MemberFormatter;
 import java.util.*;
 
 public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
-    private static ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-            .name("LOCMN");
 
     @Override
     public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
+                .name("LOCMN");
+
         int p = 0;
         int q = 0;
 

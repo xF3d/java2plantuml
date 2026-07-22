@@ -4,115 +4,114 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.ConditionalExpr;
-import com.github.javaparser.ast.expr.Expression;
 import com.github.javaparser.ast.stmt.CatchClause;
-import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.DoStmt;
+import com.github.javaparser.ast.stmt.ForEachStmt;
+import com.github.javaparser.ast.stmt.ForStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.SwitchEntry;
+import com.github.javaparser.ast.stmt.WhileStmt;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
-    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-        .name("Cyclomatic")
-        .max(20)
-        .min(-1);
-
 
     @Override
     public ComplexityMetricResult calculate(TypeDeclaration<?> clazz, MethodDeclaration method, MemberFormatter formatter) {
+        // Fix 1: Localize builder initialization to guarantee thread safety
+        var builder = ComplexityMetricResult.builder()
+                .name("Cyclomatic")
+                .max(20)
+                .min(-1);
+
         var optBody = method.getBody();
         if (optBody.isEmpty()) {
             return builder.value(1).build();
         }
 
-        var body = optBody.get();
-        int complexity = processStatement(body) + 1;
+        // Base complexity for any executable method is 1
+        CyclomaticVisitor visitor = new CyclomaticVisitor();
+        optBody.get().accept(visitor, null);
 
+        int complexity = visitor.getComplexityScore() + 1;
         return builder.value(complexity).build();
-    }
-
-    public int processStatement(Statement stmt) {
-        int[] out = {0};
-
-        stmt.ifIfStmt(ifStmt -> {
-            out[0] += processStatement(ifStmt.getThenStmt()) + 1;
-            out[0] += processExpression(ifStmt.getCondition());
-            ifStmt.getElseStmt().ifPresent(elseStmt -> {
-                out[0] += processStatement(elseStmt);
-            });
-        });
-
-        stmt.ifSwitchStmt(switchStmt -> {
-            out[0] += switchStmt.getEntries().size();
-            for (SwitchEntry entry : switchStmt.getEntries()) {
-                for (Statement entryStmt : entry.getStatements()) {
-                    out[0] += processStatement(entryStmt);
-                }
-            }
-        });
-
-        stmt.ifForStmt(forStmt -> {
-            forStmt.getCompare().ifPresent(cond -> {
-                out[0] += processExpression(cond);
-            });
-            out[0] += processStatement(forStmt.getBody()) + 1;
-        });
-
-        stmt.ifForEachStmt(forEachStmt -> {
-            out[0] += processStatement(forEachStmt.getBody()) + 1;
-        });
-
-        stmt.ifWhileStmt(whileStmt -> {
-            out[0] += processExpression(whileStmt.getCondition());
-            out[0] += processStatement(whileStmt.getBody()) + 1;
-        });
-
-        stmt.ifDoStmt(doStmt -> {
-            out[0] += processExpression(doStmt.getCondition());
-            out[0] += processStatement(doStmt.getBody()) + 1;
-        });
-
-        stmt.ifBlockStmt(blockStmt -> {
-            for (Statement entryStmt : blockStmt.getStatements()) {
-                out[0] += processStatement(entryStmt);
-            }
-        });
-
-        stmt.ifTryStmt(tryStmt -> {
-            out[0] += processStatement(tryStmt.getTryBlock());
-            for (CatchClause catchClause : tryStmt.getCatchClauses()) {
-                out[0] += processStatement(catchClause.getBody()) + 1;
-            }
-        });
-
-        return out[0];
-    }
-
-    int processExpression(Expression expr) {
-        int count = 0;
-
-        if (expr instanceof BinaryExpr bin) {
-            if (bin.getOperator() == BinaryExpr.Operator.AND ||
-                bin.getOperator() == BinaryExpr.Operator.OR) {
-                count++;
-            }
-            count += processExpression(bin.getLeft());
-            count += processExpression(bin.getRight());
-        }
-
-        if (expr instanceof ConditionalExpr cond) {
-            count++; // ternary
-            count += processExpression(cond.getCondition());
-            count += processExpression(cond.getThenExpr());
-            count += processExpression(cond.getElseExpr());
-        }
-
-        return count;
     }
 
     @Override
     public String getName() {
         return "Cyclomatic";
+    }
+
+    /**
+     * Inner visitor class to robustly isolate and count branching paths.
+     */
+    private static class CyclomaticVisitor extends VoidVisitorAdapter<Void> {
+        private int complexityScore = 0;
+
+        public int getComplexityScore() {
+            return complexityScore;
+        }
+
+        @Override
+        public void visit(IfStmt n, Void arg) {
+            complexityScore++;
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(WhileStmt n, Void arg) {
+            complexityScore++;
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(DoStmt n, Void arg) {
+            complexityScore++;
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(ForStmt n, Void arg) {
+            complexityScore++;
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(ForEachStmt n, Void arg) {
+            complexityScore++;
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(CatchClause n, Void arg) {
+            complexityScore++;
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(SwitchEntry n, Void arg) {
+            // Cyclomatic complexity increments for specific case paths, excluding default
+            if (n.getLabels().isNonEmpty()) {
+                complexityScore++;
+            }
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(ConditionalExpr n, Void arg) {
+            complexityScore++; // Ternary operators count as a branch path
+            super.visit(n, arg);
+        }
+
+        @Override
+        public void visit(BinaryExpr n, Void arg) {
+            // Logical AND/OR expressions split paths
+            if (n.getOperator() == BinaryExpr.Operator.AND || n.getOperator() == BinaryExpr.Operator.OR) {
+                complexityScore++;
+            }
+            super.visit(n, arg);
+        }
     }
 }

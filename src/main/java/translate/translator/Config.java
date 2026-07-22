@@ -207,13 +207,13 @@ public class Config {
                 .setShowAttributes(showAttributes)
                 .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers);
 
-        ollamaUrl = result.getString("ollama_main.url", null);
-        mainModel = result.getString("ollama_main.main_model", null);
+        ollamaUrl = result.getString("ollama_main.url", () -> null);
+        mainModel = result.getString("ollama_main.main_model", () -> null);
 
         var array = result.getArrayOrEmpty("ollama_verify");
         for (int i = 0; i < array.size(); i++) {
             TomlTable table = array.getTable(i);
-            String verifyName = table.getString("name", null);
+            String verifyName = table.getString("name", () -> null);
             if (verifyName != null) {
                 verifyModels.add(verifyName);
             }

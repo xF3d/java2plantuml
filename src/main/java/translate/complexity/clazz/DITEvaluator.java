@@ -16,13 +16,14 @@ import translate.component.formatter.MemberFormatter;
 import java.util.Collection;
 
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-            .name("DIT")
-            .max(4)
-            .min(-1);
 
     @Override
     public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> list, Node node, MemberFormatter formatter) {
+        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
+                .name("DIT")
+                .max(4)
+                .min(-1);
+
         if (node instanceof RecordDeclaration || node instanceof EnumDeclaration) {
             return builder.value(1).build();
         }

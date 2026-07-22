@@ -16,14 +16,15 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CBOEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-            .name("CBO")
-            .max(14)
-            .min(-1);
 
     //TODO: redo from 0, I am about to shot myself
     @Override
     public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
+                .name("CBO")
+                .max(14)
+                .min(-1);
+
         int fanOut = getFQNusedBy(clazz).size();
         int fanIn = 0;
 

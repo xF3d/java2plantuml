@@ -15,13 +15,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class RFCEvaluator implements ComplexityEvaluator.Clazz {
-    private static final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-            .name("RFC")
-            .max(100)
-            .min(-1);
 
     @Override
     public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
+                .name("RFC")
+                .max(100)
+                .min(-1);
+
         // in RFC inherited methods must also be calculated
         if (!(clazz instanceof NodeWithMembers<?> nwm)) {
             return null;

@@ -72,6 +72,7 @@ public class ComplexityMetricResult {
 
     @Getter
     @Accessors(fluent = true)
+    @AllArgsConstructor
     public static class Builder {
         private String name;
         private double max;
@@ -107,6 +108,11 @@ public class ComplexityMetricResult {
 
         public String toString() {
             return "ComplexityMetricResult.ComplexityMetricResultBuilder(name=" + this.name + ", max=" + this.max + ", min=" + this.min + ", value=" + this.value + ")";
+        }
+
+        @Override
+        public Builder clone() {
+            return new Builder(name, max, min, value);
         }
     }
 }
