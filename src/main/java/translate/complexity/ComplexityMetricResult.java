@@ -2,6 +2,7 @@ package translate.complexity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.Accessors;
 
 import javax.swing.*;
@@ -78,6 +79,7 @@ public class ComplexityMetricResult {
         private double max;
         private double min;
         private double value;
+        private Target target = Target.LOWER;
 
         Builder() {
         }
@@ -102,6 +104,11 @@ public class ComplexityMetricResult {
             return this;
         }
 
+        public Builder target(Target target) {
+            this.target = target;
+            return this;
+        }
+
         public ComplexityMetricResult build() {
             return new ComplexityMetricResult(this.name, this.max, this.min, this.value);
         }
@@ -112,7 +119,7 @@ public class ComplexityMetricResult {
 
         @Override
         public Builder clone() {
-            return new Builder(name, max, min, value);
+            return new Builder(name, max, min, value, target);
         }
     }
 }
