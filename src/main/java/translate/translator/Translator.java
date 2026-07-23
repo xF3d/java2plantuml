@@ -24,6 +24,10 @@ public interface Translator {
     void setError(Boolean b);
     PackageManager getPackageManager();
 
+    default void handleCompilationUnit(CompilationUnit unit) {
+
+    }
+
     default void translateFiles(List<File> files) throws FileNotFoundException {
         ParserConfiguration config = new ParserConfiguration()
             .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17)
@@ -64,6 +68,7 @@ public interface Translator {
                 ParseResult<CompilationUnit> result = parser.parse(file);
                 if (result.isSuccessful() && result.getResult().isPresent()) {
                     CompilationUnit cu = result.getResult().get();
+                    handleCompilationUnit(cu);
                     for (VoidVisitor<Void> visitor : Config.getInstance().getConfig().getVisitorAdapters()) {
                         cu.accept(visitor, null);
                     }

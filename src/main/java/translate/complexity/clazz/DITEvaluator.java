@@ -12,42 +12,44 @@ import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.ResolverUtils;
 import translate.component.formatter.MemberFormatter;
+import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
 
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> list, Node node, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
                 .name("DIT")
                 .max(4)
                 .min(-1);
 
-        if (node instanceof RecordDeclaration || node instanceof EnumDeclaration) {
+        if (clazz instanceof RecordDeclaration || clazz instanceof EnumDeclaration) {
             return builder.value(1).build();
         }
 
-        if (node instanceof ClassOrInterfaceDeclaration coi && coi.isInterface()) {
-            return builder.value(1).build();
-        }
+        if (clazz instanceof ClassOrInterfaceDeclaration coi) {
+            if (coi.isInterface()) return builder.value(1).build();
 
+            int depth = 0;
+            try {
+                ResolvedClassDeclaration type = ResolverUtils.resolve(coi, ResolvedClassDeclaration.class);
 
-        int depth = 0;
-        try {
-            ClassOrInterfaceDeclaration decl = (ClassOrInterfaceDeclaration) node;
-            ResolvedClassDeclaration type = (ResolvedClassDeclaration) ResolverUtils.resolve(decl, ResolvedReferenceTypeDeclaration.class);
+                while (type.getSuperClass().isPresent()) {
+                    depth++;
+                    ResolvedReferenceType whatever = type.getSuperClass().get();
+                    type = (ResolvedClassDeclaration) whatever.getTypeDeclaration().get();
+                }
 
-            while (type.getSuperClass().isPresent()) {
-                depth++;
-                ResolvedReferenceType whatever = type.getSuperClass().get();
-                type = (ResolvedClassDeclaration) whatever.getTypeDeclaration().get();
+                return builder.value(depth).build();
+            } catch (Throwable e) {
+                // we reached a library class
+                return builder.value(depth + 1).build();
             }
-
-            return builder.value(depth).build();
-        } catch (Throwable e) {
-            // we reached a library class
-            return builder.value(depth + 1).build();
+        } else {
+            // annotation
+            return builder.value(1).build();
         }
     }
 

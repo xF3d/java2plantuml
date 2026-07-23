@@ -12,27 +12,27 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
+import translate.translator.ComplexityTranslator;
 
 import java.util.*;
 
+/**
+ * Measures how closely related the methods of a class are based on the instance variables they share.
+ * High LCOM indicates poor cohesion, suggesting the class performs multiple unrelated responsibilities and may benefit from being split into smaller classes.
+ */
 public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
                 .name("LOCMN");
 
         int p = 0;
         int q = 0;
 
-        // no point in doing any LOCM evaluation in this case
-        if (!(clazz instanceof NodeWithMembers<?> nwm)) {
-            return builder.value(0).max(1).min(-1).build();
-        }
-
 
         Set<String> fields = new HashSet<>();
-        for (var field : nwm.getFields()) {
+        for (var field : clazz.getFields()) {
             if (field.isStatic()) continue;
 
             for (var variable : field.getVariables()) {
@@ -44,9 +44,9 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
             return builder.value(0).max(1).min(-1).build();
         }
 
-        List<MethodDeclaration> definedMethods = nwm.getMethods().stream()
-            .filter(it -> it.getBody().isPresent())
-            .toList();
+        List<MethodDeclaration> definedMethods = clazz.getMethods().stream()
+                .filter(it -> it.getBody().isPresent())
+                .toList();
         // Total method pairs = n * (n-1) / 2 (for n methods)
         int totalPairs = definedMethods.size() * (definedMethods.size() - 1) / 2;
 

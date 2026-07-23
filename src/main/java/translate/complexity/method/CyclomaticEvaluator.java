@@ -12,15 +12,16 @@ import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.SwitchEntry;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
+import translate.translator.ComplexityTranslator;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
 
     @Override
-    public ComplexityMetricResult calculate(TypeDeclaration<?> clazz, MethodDeclaration method, MemberFormatter formatter) {
-        // Fix 1: Localize builder initialization to guarantee thread safety
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
         var builder = ComplexityMetricResult.builder()
                 .name("Cyclomatic")
                 .max(20)
@@ -31,7 +32,6 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
             return builder.value(1).build();
         }
 
-        // Base complexity for any executable method is 1
         CyclomaticVisitor visitor = new CyclomaticVisitor();
         optBody.get().accept(visitor, null);
 
@@ -44,15 +44,9 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
         return "Cyclomatic";
     }
 
-    /**
-     * Inner visitor class to robustly isolate and count branching paths.
-     */
+    @Getter
     private static class CyclomaticVisitor extends VoidVisitorAdapter<Void> {
         private int complexityScore = 0;
-
-        public int getComplexityScore() {
-            return complexityScore;
-        }
 
         @Override
         public void visit(IfStmt n, Void arg) {

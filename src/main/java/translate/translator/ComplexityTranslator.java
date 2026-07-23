@@ -1,5 +1,6 @@
 package translate.translator;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
@@ -9,6 +10,8 @@ import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
+import translate.complexity.clazz.*;
+import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
@@ -16,10 +19,7 @@ import translate.structure.pkg.PackageManager;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
@@ -31,6 +31,7 @@ public class ComplexityTranslator implements Translator {
     private final MemberFormatter formatter = new MemberFormatter(packageManager);
 
     private CompletableFuture<ComplexityResultAggregator> systemResult; // todo: use this instead
+    private final Set<CompilationUnit> allCompilationUnits = new HashSet<>();
 
     // full package name --> node
     private final Map<String, TypeDeclaration<?>> tempClassMap = new HashMap<>();
@@ -40,7 +41,37 @@ public class ComplexityTranslator implements Translator {
     private final Map<String, Map<String, MethodDeclaration>> tempMethodMap = new HashMap<>();
     private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new HashMap<>();
 
+    private final ComplexityEvaluator.System[] systemEvaluators = {
+            
+    };
+    
+    private final ComplexityEvaluator.Clazz[] classEvaluators;
+
+    private final ComplexityEvaluator.Method[] methodEvaluators = {
+            new CyclomaticEvaluator()
+    };
+
     private Boolean error = false;
+
+    public ComplexityTranslator() {
+        var cbo = new CBOEvaluator();
+        this.classEvaluators = new ComplexityEvaluator.Clazz[] {
+                new DITEvaluator(),
+                new NOCEvaluator(),
+                new WMCBaseEvaluator("WMC/unity", 20, -1) {
+
+                    @Override
+                    public ComplexityMetricResult evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
+                        return ComplexityMetricResult.builder().value(1).build();
+                    }
+                },
+                new RFCEvaluator(),
+                new LCOMNEvaluator(),
+                cbo,
+                new FanInEvaluator(cbo),
+                new FanOutEvaluator(cbo)
+        };
+    }
 
     @Override
     public void addNode(Node node) {
@@ -63,6 +94,11 @@ public class ComplexityTranslator implements Translator {
     }
 
     @Override
+    public void handleCompilationUnit(CompilationUnit unit) {
+        allCompilationUnits.add(unit);
+    }
+
+    @Override
     public void translateFiles(List<File> files) throws FileNotFoundException {
         Translator.super.translateFiles(files);
         calculateMetrics();
@@ -75,9 +111,9 @@ public class ComplexityTranslator implements Translator {
         // calculate class stuff
         for (var classEntry : tempClassMap.entrySet()) {
             classResultMap.put(classEntry.getKey(), new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
-                ComplexityMetricResult[] resultArray = new ComplexityMetricResult[ComplexityEvaluator.Clazz.EVALUATORS.length];
-                for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
-                    resultArray[i] = ComplexityEvaluator.Clazz.EVALUATORS[i].calculate(tempClassMap.values(), classEntry.getValue(), formatter);
+                ComplexityMetricResult[] resultArray = new ComplexityMetricResult[classEvaluators.length];
+                for (int i = 0; i < classEvaluators.length; i++) {
+                    resultArray[i] = classEvaluators[i].calculate(this, classEntry.getValue());
                 }
 
                 return new ComplexityResultAggregator(resultArray);
@@ -90,9 +126,9 @@ public class ComplexityTranslator implements Translator {
 
         // system metrics
         var systemResults = CompletableFuture.supplyAsync(() -> {
-            ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.System.EVALUATORS.length];
-            for (int i = 0; i < ComplexityEvaluator.System.EVALUATORS.length; i++) {
-                result[i] = ComplexityEvaluator.System.EVALUATORS[i].calculate(this, allClasses, formatter);
+            ComplexityMetricResult[] result = new ComplexityMetricResult[systemEvaluators.length];
+            for (int i = 0; i < systemEvaluators.length; i++) {
+                result[i] = systemEvaluators[i].calculate(this, allClasses);
             }
 
             return new ComplexityResultAggregator(result);
@@ -108,13 +144,13 @@ public class ComplexityTranslator implements Translator {
                 if (classResults.isEmpty()) return ComplexityResultAggregator.EMPTY;
 
                 ComplexityMetricResult[] result = new ComplexityMetricResult[
-                    ComplexityEvaluator.Clazz.EVALUATORS.length + ComplexityEvaluator.System.EVALUATORS.length
+                    classEvaluators.length + systemEvaluators.length
                 ];
 
                 int j;
                 try {
                     var rawSystemResults = systemResults.get().getRawData();
-                    for (j = 0; j < ComplexityEvaluator.System.EVALUATORS.length; j++) {
+                    for (j = 0; j < systemEvaluators.length; j++) {
                         result[j] = rawSystemResults[j];
                     }
                 } catch (InterruptedException | ExecutionException e) {
@@ -123,8 +159,8 @@ public class ComplexityTranslator implements Translator {
 
                 // get classes evaluation
                 // TODO: expose builder and handle context-less case
-                for (int i = 0; i < ComplexityEvaluator.Clazz.EVALUATORS.length; i++) {
-                    String name = ComplexityEvaluator.Clazz.EVALUATORS[i].getName();
+                for (int i = j; i < classEvaluators.length; i++) {
+                    String name = classEvaluators[i].getName();
                     double average = 0.0;
                     ComplexityMetricResult.Builder builder = null;
                     for (var classResult : classResults) {
@@ -148,11 +184,11 @@ public class ComplexityTranslator implements Translator {
             for (var methodEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
                 methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(methodEntry.getValue(), CompletableFuture.supplyAsync(() -> {
-                    ComplexityMetricResult[] result = new ComplexityMetricResult[ComplexityEvaluator.Method.EVALUATORS.length];
+                    ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
                     TypeDeclaration<?> classNode = tempClassMap.get(classFqn);
                     MethodDeclaration methodDeclaration = methodEntry.getValue();
-                    for (int i = 0; i < ComplexityEvaluator.Method.EVALUATORS.length; i++) {
-                        result[i] = ComplexityEvaluator.Method.EVALUATORS[i].calculate(classNode, methodDeclaration, formatter);
+                    for (int i = 0; i < methodEvaluators.length; i++) {
+                        result[i] = methodEvaluators[i].calculate(this, classNode, methodDeclaration);
                     }
 
                     return new ComplexityResultAggregator(result);

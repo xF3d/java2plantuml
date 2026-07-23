@@ -29,10 +29,10 @@ public class JTableClass extends JPanel {
         super(new BorderLayout());
         this.translator = translator;
 
-        int columnSize = ComplexityEvaluator.Clazz.EVALUATORS.length + 1;
+        int columnSize = translator.getClassEvaluators().length + 1;
         this.columnNames = new String[columnSize];
         columnNames[0] = "Class";
-        ComplexityEvaluator.Clazz[] evaluators = ComplexityEvaluator.Clazz.EVALUATORS;
+        ComplexityEvaluator.Clazz[] evaluators = translator.getClassEvaluators();
         for (int i = 0; i < evaluators.length; i++) {
             var evaluator = evaluators[i];
             columnNames[i + 1] = evaluator.getName();

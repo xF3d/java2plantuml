@@ -1,141 +1,135 @@
 package translate.complexity.clazz;
 
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.FieldDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.expr.VariableDeclarationExpr;
-import com.github.javaparser.resolution.types.ResolvedReferenceType;
-import com.github.javaparser.resolution.types.ResolvedType;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
+import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import lombok.AllArgsConstructor;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.formatter.MemberFormatter;
+import translate.structure.complexity.ComplexityClass;
+import translate.structure.pkg.PackageManager;
+import translate.translator.ComplexityTranslator;
 
-import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Counts the number of other classes that a class is coupled to.
+ * High CBO indicates strong dependencies, making the class harder to modify, test, and reuse. Lower coupling generally improves maintainability.
+ */
 public class CBOEvaluator implements ComplexityEvaluator.Clazz {
 
-    //TODO: redo from 0, I am about to shot myself
+    private volatile boolean initialized = false;
+    private final Map<String, Set<String>> projectFanOutMap = new ConcurrentHashMap<>();
+    private final Map<String, Set<String>> projectFanInMap = new ConcurrentHashMap<>();
+
     @Override
-    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
                 .name("CBO")
                 .max(14)
                 .min(-1);
 
-        int fanOut = getFQNusedBy(clazz).size();
-        int fanIn = 0;
+        init(translator);
 
-        String fqn = formatter.fullPackageName(
-            clazz.findCompilationUnit().get(), clazz
-        ).replace(MemberFormatter.INNER_CLASS_DELIMITER, ".");
-        for (var entry : allClazz) {
-            Set<String> result = getFQNusedBy(entry);
-            if (result.contains(fqn)) {
-                fanIn++;
-            }
-        }
-        //System.out.println(fanOut + " : " + fanIn);
+        String className = PackageManager.resolveTypeDeclaration(clazz);
 
-        return builder.value(fanOut - fanIn).build();
+        Set<String> cboSet = new HashSet<>(projectFanOutMap.get(className));
+        cboSet.addAll(projectFanInMap.get(className));
+        int cbo = cboSet.size();
+
+        // TODO: testing
+        return builder.value(cbo).build();
     }
 
-    public static Set<String> getFQNusedBy(Node clazz) {
-        Set<String> usedTypes = ConcurrentHashMap.newKeySet();
+    private void init(ComplexityTranslator translator) {
+        if (initialized) return;
 
-        // Field types
-        clazz.findAll(FieldDeclaration.class).forEach(field -> {
-            try {
-                ResolvedType resolved = field.getElementType().resolve();
-                collectReferenceTypes(resolved, usedTypes);
-            } catch (Exception ignored) {
-                var type = field.getElementType().asString().strip();
-                if (type.equals("var")) {
-                    return;
-                }
+        synchronized (this) {
+            if (initialized) return;
 
-                if (usedTypes.add("EXTERNAL." + type)) {
-                    //System.out.println("MethodDecl: '" + type + "'");
+            translator.getClassResultMap().values().stream()
+                    .map(ComplexityClass::getNode)
+                    .forEach(decl -> {
+                        // Ottieni il nome qualificato completo della classe (es. com.azienda.MetricApp)
+                        String className = PackageManager.resolveTypeDeclaration(decl);
+                        Set<String> dependencies = new HashSet<>();
+
+                        // Esegui il visitatore per raccogliere i tipi usati
+                        decl.accept(new DependencyVisitor(translator.getPackageManager(), decl.findCompilationUnit().orElseThrow()), dependencies);
+
+                        // Rimuovi la classe stessa dalle sue dipendenze (auto-coupling non conta)
+                        dependencies.remove(className);
+
+                        projectFanOutMap.put(className, dependencies);
+
+                    });
+
+            for (String className : projectFanOutMap.keySet()) {
+                projectFanInMap.put(className, new HashSet<>());
+            }
+
+            // Calcola il Fan-In invertendo la mappa del Fan-Out
+            for (Map.Entry<String, Set<String>> entry : projectFanOutMap.entrySet()) {
+                String currentClass = entry.getKey();
+                for (String targetClass : entry.getValue()) {
+                    if (projectFanInMap.containsKey(targetClass)) {
+                        projectFanInMap.get(targetClass).add(currentClass);
+                    }
                 }
             }
-        });
 
-        // Method return types
-        clazz.findAll(MethodDeclaration.class).forEach(method -> {
-            if (method.getType().isVarType()) {
-                return;
-            }
 
-            try {
-                ResolvedType resolved = method.getType().resolve();
-                collectReferenceTypes(resolved, usedTypes);
-            } catch (Exception ignored) {
-                var type = method.getType().asString().strip();
-                if (type.equals("var")) {
-                    return;
-                }
-
-                if (usedTypes.add("EXTERNAL." + type)) {
-                    //System.out.println("MethodDecl: '" + type + "'");
-                }
-            }
-        });
-
-        // Local variable types
-        clazz.findAll(VariableDeclarationExpr.class).forEach(var -> {
-            try {
-                ResolvedType resolved = var.getElementType().resolve();
-                collectReferenceTypes(resolved, usedTypes);
-            } catch (Exception ignored) {
-                var type = var.getElementType().asString().strip();
-                if (type.equals("var")) {
-                    return;
-                }
-
-                if (usedTypes.add("EXTERNAL." + type)) {
-                    //System.out.println("MethodDecl: '" + type + "'");
-                }
-
-            }
-        });
-
-        /*
-        // Static method calls (e.g., Math.max())
-        clazz.findAll(MethodCallExpr.class).forEach(call -> {
-            try {
-                ResolvedMethodDeclaration resolved = call.resolve();
-                usedTypes.add(resolved.declaringType().getQualifiedName());
-            } catch (Exception ignored) {
-                if (usedTypes.add("EXTERNAL." + call.getNameAsString() + "." + call.getArguments().size())) {
-                    System.out.println("MethodCall: EXTERNAL." + call.getNameAsString() + "." + call.getArguments().size());
-                }
-            }
-        });*/
-
-        return usedTypes;
-    }
-
-    // Handles generics and nested types (e.g., List<String>)
-    private static void collectReferenceTypes(ResolvedType type, Set<String> collector) {
-        if (type.isReferenceType()) {
-            try {
-                ResolvedReferenceType refType = type.asReferenceType();
-                collector.add(refType.getQualifiedName());
-
-                // Also process type parameters (e.g., Map<K, V>)
-                for (ResolvedType tp : refType.typeParametersValues()) {
-                    if (tp.isWildcard() || tp.isTypeVariable()) continue;
-
-                    collectReferenceTypes(tp, collector);
-                }
-            } catch (Exception ignored) {}
-        } else if (type.isArray()) {
-            collectReferenceTypes(type.asArrayType().getComponentType(), collector);
+            initialized = true;
         }
     }
 
+    @AllArgsConstructor
+    private static class DependencyVisitor extends VoidVisitorAdapter<Set<String>> {
+        private final PackageManager packageManager;
+        private final CompilationUnit context;
+
+        @Override
+        public void visit(ClassOrInterfaceType n, Set<String> arg) {
+            super.visit(n, arg);
+            String name = n.getNameAsString();
+            handleName(name, arg);
+        }
+
+        @Override
+        public void visit(ObjectCreationExpr n, Set<String> arg) {
+            super.visit(n, arg);
+            String name = n.getTypeAsString();
+            handleName(name, arg);
+        }
+
+        private void handleName(String name, Set<String> arg) {
+            String result = packageManager.resolveClass(context, name);
+
+            if (result == null) {
+                arg.add("external " + name);
+            } else {
+                arg.add(result);
+            }
+        }
+    }
+
+    public Set<String> getProjectFanOut(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+        init(translator);
+        String className = PackageManager.resolveTypeDeclaration(clazz);
+        return Collections.unmodifiableSet(projectFanOutMap.get(className));
+    }
+
+    public Set<String> getProjectFanIn(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+        init(translator);
+        String className = PackageManager.resolveTypeDeclaration(clazz);
+        return Collections.unmodifiableSet(projectFanInMap.get(className));
+    }
 
     @Override
     public String getName() {

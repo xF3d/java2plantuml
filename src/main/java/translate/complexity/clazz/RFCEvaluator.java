@@ -1,47 +1,67 @@
 package translate.complexity.clazz;
 
+import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
+import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.nodeTypes.NodeWithExtends;
+import com.github.javaparser.ast.nodeTypes.NodeWithImplements;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
+import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
+import translate.ResolverUtils;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
+import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
+/**
+ * Counts the number of methods that can potentially execute in response to a message sent to an object (its own methods plus methods they invoke).
+ * High RFC means the class has more possible behaviors, increasing complexity, testing effort, and the likelihood of defects.
+ */
 public class RFCEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
                 .name("RFC")
                 .max(100)
                 .min(-1);
 
-        // in RFC inherited methods must also be calculated
-        if (!(clazz instanceof NodeWithMembers<?> nwm)) {
-            return null;
+        // this is for inherited methods aswell, but throws errors when parameter can't be found
+        int nlm;
+        try {
+            ResolvedReferenceTypeDeclaration rtd = ResolverUtils.resolve(clazz, ResolvedReferenceTypeDeclaration.class);
+            nlm = rtd.getAllMethods().size();
+        } catch (Exception e) {
+            nlm = clazz.getMethods().size();
         }
 
-        // this is for inherited methods aswell, but throws errors when parameter can't be found
-        //ResolvedReferenceTypeDeclaration rtd = ComplexityUtils.resolve(clazz);
-        //int nlm = rtd.getAllMethods().size();
-        int nlm = nwm.getMethods().size();
+        String classPackageName = clazz.findCompilationUnit()
+                .flatMap(CompilationUnit::getPackageDeclaration)
+                .map(PackageDeclaration::getName)
+                .map(Name::asString)
+                .orElse("") + MemberFormatter.fullSimpleName(clazz);
 
         Set<String> resolvedMethods = new HashSet<>(); // to avoid double counting
-        for (MethodDeclaration method : nwm.getMethods()) {
+        for (MethodDeclaration method : clazz.getMethods()) {
             method.findAll(MethodCallExpr.class).forEach(call -> {
                 try {
                     ResolvedMethodDeclaration resolved = call.resolve();
+                    if(resolved.getPackageName().equals(classPackageName)) return;
                     resolvedMethods.add(resolved.getQualifiedSignature()); // className.method(args)
                 } catch (Exception e) {
                     //System.out.println(call.getNameAsExpression());
-                    resolvedMethods.add("EXTERNAL." + call.getNameAsExpression() + "." + call.getArguments().size());
+                    resolvedMethods.add("EXTERNAL." + call.getNameAsString() + "." + call.getArguments().size());
                 }
             });
         }

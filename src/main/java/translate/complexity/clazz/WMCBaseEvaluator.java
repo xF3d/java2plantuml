@@ -7,6 +7,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
+import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
 
@@ -21,20 +22,18 @@ public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
     }
 
     @Override
-    public ComplexityMetricResult calculate(Collection<TypeDeclaration<?>> allClazz, Node clazz, MemberFormatter formatter) {
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         var b = builder.clone();
         double accumulator = 0;
 
-        if (clazz instanceof NodeWithMembers<?> nwm) {
-            for (var method : nwm.getMethods()) {
-                accumulator += evaluateMethod(clazz, method, formatter).getValue();
-            }
+        for (var method : clazz.getMethods()) {
+            accumulator += evaluateMethod(translator, clazz, method).getValue();
         }
 
         return b.value(accumulator).build();
     }
 
-    public abstract ComplexityMetricResult evaluateMethod(Node clazz, MethodDeclaration method, MemberFormatter formatter);
+    public abstract ComplexityMetricResult evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method);
 
     @Override
     public String getName() {

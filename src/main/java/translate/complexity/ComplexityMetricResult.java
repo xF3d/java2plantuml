@@ -2,14 +2,11 @@ package translate.complexity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.experimental.Accessors;
 
-import javax.swing.*;
-
 @Getter
-@AllArgsConstructor
 public class ComplexityMetricResult {
+
     public enum Target {
         HIGHER, LOWER, NONE;
 
@@ -29,7 +26,19 @@ public class ComplexityMetricResult {
     private final String name;
     private final double max, min;
     private final double value;
-    private final Target target = Target.LOWER;
+    private final Target target;
+
+    public ComplexityMetricResult(String name, double max, double min, double value, Target target) {
+        this.name = name;
+        this.max = max;
+        this.min = min;
+        this.value = value;
+        this.target = target;
+    }
+
+    public ComplexityMetricResult(String name, double max, double min, double value) {
+        this(name, max, min, value, Target.LOWER);
+    }
 
     public boolean isValid() {
         return this.min < this.value && this.value < this.max;
