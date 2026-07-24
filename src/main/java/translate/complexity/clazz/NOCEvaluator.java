@@ -1,8 +1,6 @@
 package translate.complexity.clazz;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -11,11 +9,10 @@ import com.github.javaparser.ast.nodeTypes.NodeWithImplements;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.formatter.MemberFormatter;
 import translate.structure.complexity.ComplexityClass;
 import translate.translator.ComplexityTranslator;
 
-import java.util.Collection;
+import java.util.ArrayList;
 
 public class NOCEvaluator implements ComplexityEvaluator.Clazz {
 
@@ -40,7 +37,7 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
                 .stream()
                 .map(ComplexityClass::getNode)
                 .forEach((entry) -> {
-            NodeList<ClassOrInterfaceType> typeList = new NodeList<>();
+            ArrayList<ClassOrInterfaceType> typeList = new ArrayList<>();
             if (entry instanceof NodeWithExtends<?> ext) {
                 typeList.addAll(ext.getExtendedTypes());
             }

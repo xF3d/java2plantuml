@@ -5,13 +5,13 @@ import lombok.Getter;
 import java.util.*;
 
 @Getter
-public class ComplexityResultAggregator implements Iterable<ComplexityMetricResult> {
+public class ComplexityResultAggregator {
     public static final ComplexityResultAggregator EMPTY = new ComplexityResultAggregator(new ComplexityMetricResult[0]);
 
     private final Map<String, ComplexityMetricResult> metrics = new HashMap<>();
     private final Set<String> codeSmells = new HashSet<>();
 
-    private final ComplexityMetricResult[] rawData;
+    private final ComplexityMetricResult[] rawMetricData;
 
     @Getter(lazy = true)
     private final boolean isValid = calculateValid();
@@ -21,7 +21,7 @@ public class ComplexityResultAggregator implements Iterable<ComplexityMetricResu
             metrics.put(result.getName(), result);
         }
 
-        this.rawData = results;
+        this.rawMetricData = results;
     }
 
     private boolean calculateValid() {
@@ -36,21 +36,16 @@ public class ComplexityResultAggregator implements Iterable<ComplexityMetricResu
         return metrics.get(key);
     }
 
-    public List<String> toAiList() {
-        ArrayList<String> out = new ArrayList<>();
-        for (var metric : this) {
-            out.add(metric.toAi());
-        }
-
-        return out;
-    }
-
     public void addSmell(String string) {
         codeSmells.add(string);
     }
 
-    @Override
-    public Iterator<ComplexityMetricResult> iterator() {
-        return Arrays.stream(rawData).iterator();
+    public List<String> metricsAiList() {
+        ArrayList<String> out = new ArrayList<>();
+        for (var metric : rawMetricData) {
+            out.add(metric.toAi());
+        }
+
+        return out;
     }
 }

@@ -35,7 +35,7 @@ public class ComplexityTranslator implements Translator {
     private final PackageManager packageManager = new PackageManager();
     private final MemberFormatter formatter = new MemberFormatter(packageManager);
 
-    private CompletableFuture<ComplexityResultAggregator> systemResult; // todo: use this instead
+    private CompletableFuture<ComplexityResultAggregator> systemResult;
     private final Set<CompilationUnit> allCompilationUnits = new HashSet<>();
 
     // full package name --> node
@@ -165,7 +165,7 @@ public class ComplexityTranslator implements Translator {
 
                 int j;
                 try {
-                    var rawSystemResults = systemResults.get().getRawData();
+                    var rawSystemResults = systemResults.get().getRawMetricData();
                     for (j = 0; j < systemEvaluators.length; j++) {
                         result[j] = rawSystemResults[j];
                     }

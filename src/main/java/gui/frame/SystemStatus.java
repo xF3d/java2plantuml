@@ -50,6 +50,9 @@ public class SystemStatus extends JFrame {
         this.chart.addSeries("System", values);
         // </editor-fold>
 
+        ComplexityGridPanel complexityGridPanel = new ComplexityGridPanel(false);
+        complexityGridPanel.addMetrics(otherResults);
+
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
@@ -59,6 +62,7 @@ public class SystemStatus extends JFrame {
         var chartPanel = new XChartPanel<>(chart);
 
         this.content.add(chartPanel);
+        this.content.add(complexityGridPanel);
         this.content.add(new ReferenceController(
             "<html><p>Classes in the system</p> <br></html>",
             translator.getClassesArray(),

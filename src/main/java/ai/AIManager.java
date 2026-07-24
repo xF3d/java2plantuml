@@ -86,8 +86,8 @@ public class AIManager {
         List<String> methodMetrics;
         List<String> classMetrics;
         try {
-            methodMetrics = method.getComplexityResult().get().toAiList();
-            classMetrics = clazz.getComplexityResult().get().toAiList();
+            methodMetrics = method.getComplexityResult().get().metricsAiList();
+            classMetrics = clazz.getComplexityResult().get().metricsAiList();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }

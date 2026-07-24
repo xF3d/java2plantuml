@@ -2,9 +2,11 @@ package translate.complexity;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 @Getter
+@ToString
 public class ComplexityMetricResult {
 
     public enum Target {
@@ -57,10 +59,6 @@ public class ComplexityMetricResult {
     }
 
     public String getValueWithColor() {
-        if (this.target == Target.NONE) {
-            return "<font color='gray'> " + this.getValue() + "</font>";
-        }
-
         if (this.isValid()) {
             return "<font color='green'> " + this.getValue() + "</font>";
         } else {
@@ -77,11 +75,12 @@ public class ComplexityMetricResult {
     }
 
     public Builder toBuilder() {
-        return new Builder().name(this.name).max(this.max).min(this.min).value(this.value);
+        return new Builder(name, max, min, value, target);
     }
 
     @Getter
     @Accessors(fluent = true)
+    @ToString
     @AllArgsConstructor
     public static class Builder {
         private String name;
@@ -119,11 +118,7 @@ public class ComplexityMetricResult {
         }
 
         public ComplexityMetricResult build() {
-            return new ComplexityMetricResult(this.name, this.max, this.min, this.value);
-        }
-
-        public String toString() {
-            return "ComplexityMetricResult.ComplexityMetricResultBuilder(name=" + this.name + ", max=" + this.max + ", min=" + this.min + ", value=" + this.value + ")";
+            return new ComplexityMetricResult(this.name, this.max, this.min, this.value, this.target);
         }
 
         @Override

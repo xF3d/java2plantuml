@@ -45,7 +45,7 @@ public class JTableClass extends JPanel {
             var reference = fqnReferences[i];
             data[i][0] = MemberFormatter.removeSeparators(reference);
 
-            var results = translator.evaluateClass(reference).getRawData();
+            var results = translator.evaluateClass(reference).getRawMetricData();
             for (int j = 0; j < evaluators.length; j++) {
                 data[i][j + 1] = "<html>" + results[j].getValueWithColor() + "</html>";
             }

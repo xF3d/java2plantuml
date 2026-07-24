@@ -19,7 +19,13 @@ public class ComplexityGridPanel extends JPanel {
     }
 
     public void addMetrics(ComplexityResultAggregator aggregator) {
-        for (var result : aggregator) {
+        for (var result : aggregator.getRawMetricData()) {
+            addMetric(result);
+        }
+    }
+
+    public void addMetrics(Iterable<ComplexityMetricResult> iterable) {
+        for (var result : iterable) {
             addMetric(result);
         }
     }
