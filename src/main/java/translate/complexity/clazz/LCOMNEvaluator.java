@@ -1,17 +1,14 @@
 package translate.complexity.clazz;
 
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.FieldAccessExpr;
 import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ThisExpr;
-import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
 import java.util.*;
@@ -25,7 +22,7 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("LOCMN");
+                .name("LCOMN");
 
         int p = 0;
         int q = 0;
@@ -127,6 +124,6 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public String getName() {
-        return "LOCMN";
+        return "LCOMN";
     }
 }
