@@ -6,10 +6,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import lombok.Getter;
-import translate.complexity.ComplexityEvaluator;
-import translate.complexity.ComplexityMetricResult;
-import translate.complexity.ComplexityResultAggregator;
-import translate.complexity.SystemResultAggregator;
+import translate.complexity.*;
 import translate.complexity.clazz.*;
 import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.formatter.MemberFormatter;
@@ -48,13 +45,14 @@ public class ComplexityTranslator implements Translator {
     private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new HashMap<>();
 
     private final ComplexityEvaluator.System[] systemEvaluators = {
-            
+            //new LOCEvaluator()
     };
     
     private final ComplexityEvaluator.Clazz[] classEvaluators;
 
     private final ComplexityEvaluator.Method[] methodEvaluators = {
-            new CyclomaticEvaluator()
+            new CyclomaticEvaluator(),
+            //new LOCEvaluator()
     };
 
     private final CodeSmellEvaluator.Clazz[] classSmellEvaluators = {
@@ -85,7 +83,8 @@ public class ComplexityTranslator implements Translator {
                 new LCOMNEvaluator(),
                 cbo,
                 new FanInEvaluator(cbo),
-                new FanOutEvaluator(cbo)
+                new FanOutEvaluator(cbo),
+                //new LOCEvaluator()
         };
     }
 
