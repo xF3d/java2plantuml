@@ -5,7 +5,6 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
@@ -13,6 +12,11 @@ import translate.complexity.ComplexityResultAggregator;
 import translate.complexity.clazz.*;
 import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.formatter.MemberFormatter;
+import translate.smells.CodeSmellEvaluator;
+import translate.smells.clazz.DataClassEvaluator;
+import translate.smells.clazz.GodClassEvaluator;
+import translate.smells.method.FeatureEnvyEvaluator;
+import translate.smells.method.LongMethodEvaluator;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 import translate.structure.pkg.PackageManager;
@@ -22,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 
@@ -49,6 +54,16 @@ public class ComplexityTranslator implements Translator {
 
     private final ComplexityEvaluator.Method[] methodEvaluators = {
             new CyclomaticEvaluator()
+    };
+
+    private final CodeSmellEvaluator.Clazz[] classSmellEvaluators = {
+            new DataClassEvaluator(),
+            new GodClassEvaluator()
+    };
+
+    private final CodeSmellEvaluator.Method[] methodSmellEvaluators = {
+            new FeatureEnvyEvaluator(),
+            new LongMethodEvaluator()
     };
 
     private Boolean error = false;
@@ -101,13 +116,14 @@ public class ComplexityTranslator implements Translator {
     @Override
     public void translateFiles(List<File> files) throws FileNotFoundException {
         Translator.super.translateFiles(files);
-        calculateMetrics();
+
+        int threads = Runtime.getRuntime().availableProcessors();
+        ExecutorService executor = Executors.newFixedThreadPool(threads);
+        computeEverything(executor);
     }
 
-    private void calculateMetrics() {
-        var threads = Runtime.getRuntime().availableProcessors();
-        var executor = Executors.newFixedThreadPool(threads);
-
+    private void computeEverything(ExecutorService executor) {
+        // <editor-fold desc="Metrics">
         // calculate class stuff
         for (var classEntry : tempClassMap.entrySet()) {
             classResultMap.put(classEntry.getKey(), new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
@@ -164,9 +180,9 @@ public class ComplexityTranslator implements Translator {
                     double average = 0.0;
                     ComplexityMetricResult.Builder builder = null;
                     for (var classResult : classResults) {
-                        if (builder == null) builder = classResult.get(name).toBuilder();
+                        if (builder == null) builder = classResult.getMetric(name).toBuilder();
 
-                        average += classResult.get(name).getValue();
+                        average += classResult.getMetric(name).getValue();
                     }
 
                     average /= classResults.size();
@@ -183,24 +199,66 @@ public class ComplexityTranslator implements Translator {
             String classFqn = classMethodEntry.getKey();
             for (var methodEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
-                methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(methodEntry.getValue(), CompletableFuture.supplyAsync(() -> {
+
+                TypeDeclaration<?> classNode = tempClassMap.get(classFqn);
+                MethodDeclaration method = methodEntry.getValue();
+
+                methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(method, CompletableFuture.supplyAsync(() -> {
                     ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
-                    TypeDeclaration<?> classNode = tempClassMap.get(classFqn);
-                    MethodDeclaration methodDeclaration = methodEntry.getValue();
+
                     for (int i = 0; i < methodEvaluators.length; i++) {
-                        result[i] = methodEvaluators[i].calculate(this, classNode, methodDeclaration);
+                        result[i] = methodEvaluators[i].calculate(this, classNode, method);
                     }
 
                     return new ComplexityResultAggregator(result);
                 }, executor)));
             }
         }
+        // </editor-fold>
 
         this.systemResult.whenComplete((r, e) -> {
             tempClassMap.clear();
             tempMethodMap.clear();
-            executor.shutdown();
+            computeSmells(executor);
         });
+    }
+
+    private void computeSmells(ExecutorService executor) {
+        ArrayList<CompletableFuture<?>> allCodeSmells = new ArrayList<>();
+
+        for (var classEntry : classResultMap.entrySet()) {
+            ComplexityClass complexityClass = classEntry.getValue();
+            TypeDeclaration<?> clazz = complexityClass.getNode();
+
+            allCodeSmells.add(CompletableFuture.runAsync(() -> {
+                for (CodeSmellEvaluator.Clazz classSmellEvaluator : classSmellEvaluators) {
+                    boolean result = classSmellEvaluator.calculate(ComplexityTranslator.this, clazz);
+                    if (result) {
+                        complexityClass.getComplexityResult().join().addSmell(classSmellEvaluator.getType());
+                    }
+                }
+            },executor));
+
+            String fqn = classEntry.getKey();
+            for (var methodEntry : methodResultMap.get(fqn).values()) {
+                var method = methodEntry.getMethod();
+                var complexityResult = methodEntry.getComplexityResult();
+
+                allCodeSmells.add(CompletableFuture.runAsync(() -> {
+                    for (CodeSmellEvaluator.Method methodSmellEvaluator : methodSmellEvaluators) {
+                        boolean result = methodSmellEvaluator.calculate(ComplexityTranslator.this, clazz, method);
+                        if (result) {
+                            complexityResult.join().addSmell(methodSmellEvaluator.getType());
+                        }
+                    }
+
+                }, executor));
+            }
+        }
+
+        CompletableFuture.allOf(allCodeSmells.toArray(CompletableFuture[]::new)).whenComplete( (a, e) ->
+                executor.shutdownNow()
+        );
     }
 
     @Override

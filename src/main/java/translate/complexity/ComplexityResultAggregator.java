@@ -4,13 +4,13 @@ import lombok.Getter;
 
 import java.util.*;
 
+@Getter
 public class ComplexityResultAggregator implements Iterable<ComplexityMetricResult> {
     public static final ComplexityResultAggregator EMPTY = new ComplexityResultAggregator(new ComplexityMetricResult[0]);
 
-    @Getter
-    private final Map<String, ComplexityMetricResult> aggregator = new HashMap<>();
+    private final Map<String, ComplexityMetricResult> metrics = new HashMap<>();
+    private final Set<String> codeSmells = new HashSet<>();
 
-    @Getter
     private final ComplexityMetricResult[] rawData;
 
     @Getter(lazy = true)
@@ -18,22 +18,22 @@ public class ComplexityResultAggregator implements Iterable<ComplexityMetricResu
 
     public ComplexityResultAggregator(ComplexityMetricResult[] results) {
         for (var result : results) {
-            aggregator.put(result.getName(), result);
+            metrics.put(result.getName(), result);
         }
 
         this.rawData = results;
     }
 
     private boolean calculateValid() {
-        for (var result : aggregator.values()) {
+        for (var result : metrics.values()) {
             if (!result.isValid()) return false;
         }
 
         return true;
     }
 
-    public ComplexityMetricResult get(String key) {
-        return aggregator.get(key);
+    public ComplexityMetricResult getMetric(String key) {
+        return metrics.get(key);
     }
 
     public List<String> toAiList() {
@@ -43,6 +43,10 @@ public class ComplexityResultAggregator implements Iterable<ComplexityMetricResu
         }
 
         return out;
+    }
+
+    public void addSmell(String string) {
+        codeSmells.add(string);
     }
 
     @Override

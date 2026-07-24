@@ -1,5 +1,6 @@
 package gui.frame;
 
+import gui.ComplexityGridPanel;
 import gui.components.JTableClass;
 import gui.components.ReferenceController;
 import org.knowm.xchart.RadarChart;
@@ -24,7 +25,7 @@ public class SystemStatus extends JFrame {
             .height(500)
             .build();
 
-        var allResults = translator.evaluateSystem().getAggregator().values();
+        var allResults = translator.evaluateSystem().getMetrics().values();
 
         ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
         ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
@@ -36,6 +37,7 @@ public class SystemStatus extends JFrame {
             }
         }
 
+        // <editor-fold desc="Charted Metrics">
         String[] names = new String[chartResults.size()];
         double[] values = new double[chartResults.size()];
 
@@ -46,6 +48,7 @@ public class SystemStatus extends JFrame {
 
         this.chart.setRadiiLabels(names);
         this.chart.addSeries("System", values);
+        // </editor-fold>
 
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

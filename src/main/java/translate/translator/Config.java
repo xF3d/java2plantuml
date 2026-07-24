@@ -80,7 +80,7 @@ public class Config {
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             - You can create new functions only if you implement them fully yourself
-            - You cannot create NOTEs that refer to some other NOTE
+            - You cannot create NOTEs that refer to some other NOTE or to the LINEDIFF
             - NOTEs are optional
             - If you don't want to change anything, just resend the message AS-IS
             
