@@ -9,6 +9,7 @@ import lombok.Getter;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
+import translate.complexity.SystemResultAggregator;
 import translate.complexity.clazz.*;
 import translate.complexity.method.CyclomaticEvaluator;
 import translate.component.formatter.MemberFormatter;
@@ -35,7 +36,7 @@ public class ComplexityTranslator implements Translator {
     private final PackageManager packageManager = new PackageManager();
     private final MemberFormatter formatter = new MemberFormatter(packageManager);
 
-    private CompletableFuture<ComplexityResultAggregator> systemResult;
+    private CompletableFuture<SystemResultAggregator> systemResult;
     private final Set<CompilationUnit> allCompilationUnits = new HashSet<>();
 
     // full package name --> node
@@ -141,7 +142,7 @@ public class ComplexityTranslator implements Translator {
         var classResultFutures = classResultMap.values().stream().map(ComplexityClass::getComplexityResult).toList();
 
         // system metrics
-        var systemResults = CompletableFuture.supplyAsync(() -> {
+        var systemResultsOnly = CompletableFuture.supplyAsync(() -> {
             ComplexityMetricResult[] result = new ComplexityMetricResult[systemEvaluators.length];
             for (int i = 0; i < systemEvaluators.length; i++) {
                 result[i] = systemEvaluators[i].calculate(this, allClasses);
@@ -157,41 +158,42 @@ public class ComplexityTranslator implements Translator {
                     .map(CompletableFuture::join)
                     .toList(), executor
             ).thenApplyAsync(classResults -> {
-                if (classResults.isEmpty()) return ComplexityResultAggregator.EMPTY;
+                if (classResults.isEmpty()) return new SystemResultAggregator(new ComplexityMetricResult[0], systemResultsOnly.join().getRawMetricData());
 
-                ComplexityMetricResult[] result = new ComplexityMetricResult[
-                    classEvaluators.length + systemEvaluators.length
-                ];
-
-                int j;
-                try {
-                    var rawSystemResults = systemResults.get().getRawMetricData();
-                    for (j = 0; j < systemEvaluators.length; j++) {
-                        result[j] = rawSystemResults[j];
-                    }
-                } catch (InterruptedException | ExecutionException e) {
-                    throw new RuntimeException(e);
-                }
+                ComplexityMetricResult[] classResultMetrics = new ComplexityMetricResult[classEvaluators.length];
 
                 // get classes evaluation
-                // TODO: expose builder and handle context-less case
-                for (int i = j; i < classEvaluators.length; i++) {
-                    String name = classEvaluators[i].getName();
-                    double average = 0.0;
+                for (int i = 0; i < classEvaluators.length; i++) {
+                    var ev = classEvaluators[i];
+                    if (!ev.usefulForSystem()) continue;
+
+                    String name = ev.getName();
+                    double averageValue = 0.0;
+                    double averageMax = 0.0;
+                    double averageMin = 0.0;
                     ComplexityMetricResult.Builder builder = null;
+                    double size = classResults.size();
                     for (var classResult : classResults) {
                         if (builder == null) builder = classResult.getMetric(name).toBuilder();
 
-                        average += classResult.getMetric(name).getValue();
+                        var m = classResult.getMetric(name);
+                        averageValue += m.getValue() / size;
+                        averageMin += m.getMin() / size;
+                        averageMax += m.getMax() / size;
                     }
 
-                    average /= classResults.size();
-
                     if (builder == null) throw new RuntimeException("impossible");
-                    result[i + j] = builder.value(average).build();
+                    classResultMetrics[i] = builder.value(averageValue).min(averageMin).max(averageMax).build();
                 }
 
-                return new ComplexityResultAggregator(result);
+                ComplexityMetricResult[] systemResultsOnlyMetrics;
+                try {
+                    systemResultsOnlyMetrics = systemResultsOnly.get().getRawMetricData();
+                } catch (ExecutionException | InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return new SystemResultAggregator(classResultMetrics, systemResultsOnlyMetrics);
             }, executor);
 
         // calculate method stuff
@@ -295,7 +297,7 @@ public class ComplexityTranslator implements Translator {
         return output;
     }
 
-    public ComplexityResultAggregator evaluateSystem() {
+    public SystemResultAggregator evaluateSystem() {
         try {
             return systemResult.get();
         } catch (InterruptedException | ExecutionException e) {

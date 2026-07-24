@@ -7,6 +7,7 @@ import org.knowm.xchart.RadarChart;
 import org.knowm.xchart.RadarChartBuilder;
 import org.knowm.xchart.XChartPanel;
 import translate.complexity.ComplexityMetricResult;
+import translate.complexity.SystemResultAggregator;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
@@ -25,16 +26,19 @@ public class SystemStatus extends JFrame {
             .height(500)
             .build();
 
-        var allResults = translator.evaluateSystem().getMetrics().values();
+        SystemResultAggregator systemMetrics = translator.evaluateSystem();
+
+        ArrayList<ComplexityMetricResult> allResults = new ArrayList<>(systemMetrics.getSystemMetrics().values());
+        allResults.addAll(systemMetrics.getClassMetrics().values());
 
         ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
         ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
         for (var result : allResults) {
-            if (result.getTarget() == ComplexityMetricResult.Target.NONE) {
-                otherResults.add(result);
-            } else {
+            if (result.isThresholdValid()) {
                 chartResults.add(result);
             }
+
+            otherResults.add(result);
         }
 
         // <editor-fold desc="Charted Metrics">

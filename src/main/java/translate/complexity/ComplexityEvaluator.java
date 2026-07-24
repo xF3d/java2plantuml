@@ -15,6 +15,13 @@ public interface ComplexityEvaluator {
 
     interface Clazz extends ComplexityEvaluator {
         ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz);
+
+        /**
+         * Whatever or not this metric result can be aggregated to get a system evaluation
+         */
+        default boolean usefulForSystem() {
+            return true;
+        }
     }
 
     interface Method extends ComplexityEvaluator {

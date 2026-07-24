@@ -13,7 +13,7 @@ public class FanInEvaluator implements ComplexityEvaluator.Clazz {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         int fanIn = cboEvaluator.getProjectFanIn(translator, clazz).size();
-        return new ComplexityMetricResult("FanIn", Integer.MAX_VALUE, 0, fanIn, ComplexityMetricResult.Target.HIGHER);
+        return new ComplexityMetricResult("FanIn", Double.MAX_VALUE, -1, fanIn, ComplexityMetricResult.Target.HIGHER);
     }
 
     @Override

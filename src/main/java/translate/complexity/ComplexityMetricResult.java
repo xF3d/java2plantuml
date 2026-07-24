@@ -46,6 +46,10 @@ public class ComplexityMetricResult {
         return this.min < this.value && this.value < this.max;
     }
 
+    public boolean isThresholdValid() {
+        return target != Target.NONE && max < Double.MAX_VALUE / 2 && min > Double.MIN_VALUE / 2;
+    }
+
     public double normalize() {
         return target.normalize(value, min, max);
     }

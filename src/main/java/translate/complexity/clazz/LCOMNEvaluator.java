@@ -126,4 +126,9 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
     public String getName() {
         return "LCOMN";
     }
+
+    @Override
+    public boolean usefulForSystem() {
+        return false;
+    }
 }

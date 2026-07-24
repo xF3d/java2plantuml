@@ -6,8 +6,6 @@ import java.util.*;
 
 @Getter
 public class ComplexityResultAggregator {
-    public static final ComplexityResultAggregator EMPTY = new ComplexityResultAggregator(new ComplexityMetricResult[0]);
-
     private final Map<String, ComplexityMetricResult> metrics = new HashMap<>();
     private final Set<String> codeSmells = new HashSet<>();
 
@@ -17,7 +15,9 @@ public class ComplexityResultAggregator {
     private final boolean isValid = calculateValid();
 
     public ComplexityResultAggregator(ComplexityMetricResult[] results) {
-        for (var result : results) {
+        for (ComplexityMetricResult result : results) {
+            if (result == null) continue;
+
             metrics.put(result.getName(), result);
         }
 

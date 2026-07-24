@@ -13,7 +13,7 @@ public class FanOutEvaluator implements ComplexityEvaluator.Clazz {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         int fanOut = cboEvaluator.getProjectFanOut(translator, clazz).size();
-        return new ComplexityMetricResult("FanOut", Integer.MAX_VALUE, 0, fanOut);
+        return new ComplexityMetricResult("FanOut", 30, -1.0, fanOut);
     }
 
     @Override
