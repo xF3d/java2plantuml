@@ -14,17 +14,12 @@ import javax.swing.*;
 import java.util.ArrayList;
 
 public class SystemStatus extends JFrame {
-    private final RadarChart chart;
     private final JPanel content = new JPanel();
     private final ComplexityTranslator translator;
 
     public SystemStatus(ComplexityTranslator translator) {
         super("System Status");
         this.translator = translator;
-        this.chart = new RadarChartBuilder()
-            .width(800)
-            .height(500)
-            .build();
 
         SystemResultAggregator systemMetrics = translator.evaluateSystem();
 
@@ -42,16 +37,24 @@ public class SystemStatus extends JFrame {
         }
 
         // <editor-fold desc="Charted Metrics">
-        String[] names = new String[chartResults.size()];
-        double[] values = new double[chartResults.size()];
+        RadarChart chart = null;
+        if (!chartResults.isEmpty()) {
+            chart = new RadarChartBuilder()
+                    .width(800)
+                    .height(500)
+                    .build();
 
-        for (int i = 0; i < chartResults.size(); i++) {
-            names[i] = chartResults.get(i).getName();
-            values[i] = chartResults.get(i).normalize();
+            String[] names = new String[chartResults.size()];
+            double[] values = new double[chartResults.size()];
+
+            for (int i = 0; i < chartResults.size(); i++) {
+                names[i] = chartResults.get(i).getName();
+                values[i] = chartResults.get(i).normalize();
+            }
+
+            chart.setRadiiLabels(names);
+            chart.addSeries("System", values);
         }
-
-        this.chart.setRadiiLabels(names);
-        this.chart.addSeries("System", values);
         // </editor-fold>
 
         ComplexityGridPanel complexityGridPanel = new ComplexityGridPanel(false);
@@ -61,11 +64,14 @@ public class SystemStatus extends JFrame {
 
         this.content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
-        // finalize stuff
         var scrollPanel = new JScrollPane(content);
-        var chartPanel = new XChartPanel<>(chart);
 
-        this.content.add(chartPanel);
+        // throws on empty chart, so better not create it at all in that case
+        if (chart != null) {
+            var chartPanel = new XChartPanel<>(chart);
+            this.content.add(chartPanel);
+        }
+
         this.content.add(complexityGridPanel);
         this.content.add(new ReferenceController(
             "<html><p>Classes in the system</p> <br></html>",

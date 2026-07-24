@@ -45,14 +45,14 @@ public class ComplexityTranslator implements Translator {
     private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new HashMap<>();
 
     private final ComplexityEvaluator.System[] systemEvaluators = {
-            //new LOCEvaluator()
+            new LOCEvaluator()
     };
     
     private final ComplexityEvaluator.Clazz[] classEvaluators;
 
     private final ComplexityEvaluator.Method[] methodEvaluators = {
             new CyclomaticEvaluator(),
-            //new LOCEvaluator()
+            new LOCEvaluator()
     };
 
     private final CodeSmellEvaluator.Clazz[] classSmellEvaluators = {
@@ -84,7 +84,7 @@ public class ComplexityTranslator implements Translator {
                 cbo,
                 new FanInEvaluator(cbo),
                 new FanOutEvaluator(cbo),
-                //new LOCEvaluator()
+                new LOCEvaluator()
         };
     }
 
@@ -257,9 +257,10 @@ public class ComplexityTranslator implements Translator {
             }
         }
 
-        CompletableFuture.allOf(allCodeSmells.toArray(CompletableFuture[]::new)).whenComplete( (a, e) ->
-                executor.shutdownNow()
-        );
+        CompletableFuture.allOf(allCodeSmells.toArray(CompletableFuture[]::new)).whenComplete( (a, e) -> {
+            executor.shutdownNow();
+            e.printStackTrace();
+        });
     }
 
     @Override

@@ -5,9 +5,15 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.experimental.Accessors;
 
+import java.text.DecimalFormat;
+
 @Getter
 @ToString
 public class ComplexityMetricResult {
+    private static final DecimalFormat DF_3 = new DecimalFormat("0.###");
+    private static final DecimalFormat DF_2 = new DecimalFormat("0.##");
+    private static final DecimalFormat DF_1 = new DecimalFormat("0.#");
+    private static final DecimalFormat DF_0 = new DecimalFormat("0");
 
     public enum Target {
         HIGHER, LOWER, NONE;
@@ -47,7 +53,7 @@ public class ComplexityMetricResult {
     }
 
     public boolean isThresholdValid() {
-        return target != Target.NONE && max < Double.MAX_VALUE / 2 && min > Double.MIN_VALUE / 2;
+        return target != Target.NONE && max < Double.MAX_VALUE / 2 && min > Double.MAX_VALUE / -2;
     }
 
     public double normalize() {
@@ -58,20 +64,38 @@ public class ComplexityMetricResult {
         if (color) {
             return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + this.getValueWithColor() + "</div></html>";
         } else {
-            return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + this.getValue() + "</div></html>";
+            return "<html><div style='white-space: nowrap;'>" + this.getName() + " = " + this.formattedValue() + "</div></html>";
         }
     }
 
     public String getValueWithColor() {
         if (this.isValid()) {
-            return "<font color='green'> " + this.getValue() + "</font>";
+            return "<font color='green'> " + this.formattedValue() + "</font>";
         } else {
-            return "<font color='red'> " + this.getValue() + "</font>";
+            return "<font color='red'> " + this.formattedValue() + "</font>";
         }
     }
 
     public String toAi() {
-        return name + " range between: " + min + " & " + max + " value: " + value + "\n";
+        return name + " range between: " + min + " & " + max + " value: " + formattedValue() + "\n";
+    }
+
+    public String formattedValue() {
+        if (value == 0) {
+            return "0";
+        }
+
+        double abs = Math.abs(value);
+
+        if (abs < 1) {
+            return DF_3.format(value);
+        } else if (abs < 10) {
+            return DF_2.format(value);
+        } else if (abs < 100) {
+            return DF_1.format(value);
+        } else {
+            return DF_0.format(value);
+        }
     }
 
     public static Builder builder() {
