@@ -110,6 +110,9 @@ public class Config {
             METHOD_METRICS
             %s
             
+            CLASS_CODE_SMELLS
+            %s
+            
             METHOD_CODE_SMELLS
             %s
             

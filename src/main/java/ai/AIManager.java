@@ -12,6 +12,7 @@ import translate.structure.complexity.ComplexityMethod;
 import translate.translator.Config;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -83,11 +84,19 @@ public class AIManager {
 
         String methodSignaturesString = String.join("\n", methodSignatures);
 
-        List<String> methodMetrics;
-        List<String> classMetrics;
+        Collection<String> methodMetrics;
+        Collection<String> classMetrics;
+        Collection<String> methodSmells;
+        Collection<String> classSmells;
         try {
-            methodMetrics = method.getComplexityResult().get().metricsAiList();
-            classMetrics = clazz.getComplexityResult().get().metricsAiList();
+            var mthResult = method.getComplexityResult().get();
+            methodMetrics = mthResult.metricsAiList();
+            methodSmells = mthResult.getCodeSmells();
+
+            var clzResult = clazz.getComplexityResult().get();
+            classMetrics = clzResult.metricsAiList();
+            classSmells = clzResult.getCodeSmells();
+
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -95,6 +104,7 @@ public class AIManager {
         String methodMetricsString = String.join("\n", methodMetrics);
 
         String classMetricsString = String.join("\n", classMetrics);
+
 
         var range = method.getMethod().getRange().orElseThrow();
 
@@ -104,7 +114,8 @@ public class AIManager {
                 methodSignaturesString,
                 classMetricsString,
                 methodMetricsString,
-                "None", // TODO: add code smells support
+                classSmells,
+                methodSmells,
                 method.getMethod().toString(),
                 range.begin,
                 range.end
@@ -123,6 +134,7 @@ public class AIManager {
                     UserMessage.userMessage(mainMessage + "\n" + previousResponse)
             ).aiMessage().text();
 
+            // TODO: further validation
             System.out.println(previousResponse);
         }
 
