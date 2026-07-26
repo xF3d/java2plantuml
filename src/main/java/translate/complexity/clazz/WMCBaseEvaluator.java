@@ -1,24 +1,21 @@
 package translate.complexity.clazz;
 
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
-import java.util.Collection;
-
-public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
-
+public class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
+    private final ComplexityEvaluator.Method methodEval;
     private final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder();
 
-    public WMCBaseEvaluator(String name, double max, double min) {
-        builder.name(name)
+    public WMCBaseEvaluator(ComplexityEvaluator.Method methodEval, String name, double max, double min, ComplexityMetricResult.Target target) {
+        this.methodEval = methodEval;
+        this.builder.name(name)
                 .max(max)
-                .min(min);
+                .min(min)
+                .target(target);
     }
 
     @Override
@@ -27,13 +24,15 @@ public abstract class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
         double accumulator = 0;
 
         for (var method : clazz.getMethods()) {
-            accumulator += evaluateMethod(translator, clazz, method).getValue();
+            accumulator += evaluateMethod(translator, clazz, method);
         }
 
         return b.value(accumulator).build();
     }
 
-    public abstract ComplexityMetricResult evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method);
+    public double evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
+        return methodEval.calculate(translator, clazz, method).getValue();
+    }
 
     @Override
     public String getName() {
