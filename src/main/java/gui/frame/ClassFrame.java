@@ -23,7 +23,9 @@ public class ClassFrame extends JFrame {
         gridInfo.addMetrics(evaluation);
 
         methodScroll = getJScrollPane(translator);
+        JLabel smellList = new JLabel("Code Smells: " + String.join(", ", evaluation.getCodeSmells()));
 
+        super.getContentPane().add(smellList);
         super.getContentPane().add(gridInfo);
         super.getContentPane().add(methodScroll);
         super.setVisible(true);

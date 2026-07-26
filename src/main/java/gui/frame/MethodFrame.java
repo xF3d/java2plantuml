@@ -17,7 +17,9 @@ public class MethodFrame extends JFrame {
 
         var evaluation = translator.evaluateMethod(className, methodName);
         gridInfo.addMetrics(evaluation);
+        JLabel smellList = new JLabel("Code Smells: " + String.join(", ", evaluation.getCodeSmells()));
 
+        super.getContentPane().add(smellList);
         super.getContentPane().add(gridInfo);
         super.setVisible(true);
 
