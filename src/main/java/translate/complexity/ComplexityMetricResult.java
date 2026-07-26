@@ -69,6 +69,8 @@ public class ComplexityMetricResult {
     }
 
     public String getValueWithColor() {
+        if (target == Target.NONE) return this.formattedValue();
+
         if (this.isValid()) {
             return "<font color='green'> " + this.formattedValue() + "</font>";
         } else {

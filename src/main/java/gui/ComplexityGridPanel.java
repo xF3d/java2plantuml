@@ -15,7 +15,7 @@ public class ComplexityGridPanel extends JPanel {
     }
 
     public ComplexityGridPanel() {
-        this(false);
+        this(true);
     }
 
     public void addMetrics(ComplexityResultAggregator aggregator) {
