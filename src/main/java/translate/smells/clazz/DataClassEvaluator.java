@@ -7,7 +7,11 @@ import translate.translator.ComplexityTranslator;
 public class DataClassEvaluator implements CodeSmellEvaluator.Clazz {
     @Override
     public boolean calculate(ComplexityTranslator translator, ComplexityClass clazz) {
-        return false;
+        double noc = clazz.evalMetricValue("NOC");
+        double dit = clazz.evalMetricValue("DIT");
+        double nof = clazz.evalMetricValue("NOF");
+
+        return noc <= 1 && dit <= 2 && nof > 8;
     }
 
     @Override

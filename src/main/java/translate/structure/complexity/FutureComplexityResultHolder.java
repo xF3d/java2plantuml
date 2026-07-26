@@ -1,5 +1,6 @@
 package translate.structure.complexity;
 
+import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
 
 import java.util.concurrent.CompletableFuture;
@@ -14,5 +15,13 @@ public interface FutureComplexityResultHolder {
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    default ComplexityMetricResult evalMetric(String key) {
+        return evalResult().getMetric(key);
+    }
+
+    default double evalMetricValue(String key) {
+        return evalMetric(key).getValue();
     }
 }

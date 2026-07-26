@@ -14,7 +14,6 @@ import translate.component.formatter.MemberFormatter;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
 import translate.smells.clazz.GodClassEvaluator;
-import translate.smells.method.FeatureEnvyEvaluator;
 import translate.smells.method.LongMethodEvaluator;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
@@ -74,13 +73,6 @@ public class ComplexityTranslator implements Translator {
         this.classEvaluators = new ComplexityEvaluator.Clazz[] {
                 new DITEvaluator(),
                 new NOCEvaluator(),
-                new WMCBaseEvaluator("WMC/unity", 20, -1) {
-
-                    @Override
-                    public ComplexityMetricResult evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
-                        return ComplexityMetricResult.builder().value(1).build();
-                    }
-                },
                 new RFCEvaluator(),
                 new LCOM1Evaluator(),
                 cbo,

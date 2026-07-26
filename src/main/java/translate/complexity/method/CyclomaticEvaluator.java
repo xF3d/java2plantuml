@@ -24,7 +24,7 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
         var builder = ComplexityMetricResult.builder()
                 .name("Cyclomatic")
-                .max(20)
+                .max(5)
                 .min(-1);
 
         var optBody = method.getBody();
