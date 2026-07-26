@@ -9,7 +9,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Getter
 @AllArgsConstructor
-public class ComplexityClass {
+public class ComplexityClass implements FutureComplexityResultHolder {
     private final TypeDeclaration<?> node;
     private final CompletableFuture<ComplexityResultAggregator> complexityResult;
 }
