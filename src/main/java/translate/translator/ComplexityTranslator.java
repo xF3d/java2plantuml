@@ -9,6 +9,7 @@ import lombok.Getter;
 import translate.complexity.*;
 import translate.complexity.clazz.*;
 import translate.complexity.method.CyclomaticEvaluator;
+import translate.complexity.method.NBDEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
@@ -52,6 +53,7 @@ public class ComplexityTranslator implements Translator {
 
     private final ComplexityEvaluator.Method[] methodEvaluators = {
             new CyclomaticEvaluator(),
+            new NBDEvaluator(),
             new LOCEvaluator()
     };
 
