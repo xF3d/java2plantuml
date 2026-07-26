@@ -62,7 +62,6 @@ public class ComplexityTranslator implements Translator {
     };
 
     private final CodeSmellEvaluator.Method[] methodSmellEvaluators = {
-            new FeatureEnvyEvaluator(),
             new LongMethodEvaluator()
     };
 
