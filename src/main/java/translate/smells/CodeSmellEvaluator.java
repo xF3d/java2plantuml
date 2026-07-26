@@ -1,7 +1,7 @@
 package translate.smells;
 
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import translate.structure.complexity.ComplexityClass;
+import translate.structure.complexity.ComplexityMethod;
 import translate.translator.ComplexityTranslator;
 
 /**
@@ -15,10 +15,10 @@ public interface CodeSmellEvaluator {
     String getType();
 
     interface Clazz extends CodeSmellEvaluator {
-        boolean calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz);
+        boolean calculate(ComplexityTranslator translator, ComplexityClass clazz);
     }
 
     interface Method extends CodeSmellEvaluator {
-        boolean calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method);
+        boolean calculate(ComplexityTranslator translator, ComplexityClass clazz, ComplexityMethod method);
     }
 }

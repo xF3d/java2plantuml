@@ -231,11 +231,10 @@ public class ComplexityTranslator implements Translator {
 
         for (var classEntry : classResultMap.entrySet()) {
             ComplexityClass complexityClass = classEntry.getValue();
-            TypeDeclaration<?> clazz = complexityClass.getNode();
 
             allCodeSmells.add(CompletableFuture.runAsync(() -> {
                 for (CodeSmellEvaluator.Clazz classSmellEvaluator : classSmellEvaluators) {
-                    boolean result = classSmellEvaluator.calculate(ComplexityTranslator.this, clazz);
+                    boolean result = classSmellEvaluator.calculate(ComplexityTranslator.this, complexityClass);
                     if (result) {
                         complexityClass.getComplexityResult().join().addSmell(classSmellEvaluator.getType());
                     }
@@ -244,12 +243,11 @@ public class ComplexityTranslator implements Translator {
 
             String fqn = classEntry.getKey();
             for (var methodEntry : methodResultMap.get(fqn).values()) {
-                var method = methodEntry.getMethod();
                 var complexityResult = methodEntry.getComplexityResult();
 
                 allCodeSmells.add(CompletableFuture.runAsync(() -> {
                     for (CodeSmellEvaluator.Method methodSmellEvaluator : methodSmellEvaluators) {
-                        boolean result = methodSmellEvaluator.calculate(ComplexityTranslator.this, clazz, method);
+                        boolean result = methodSmellEvaluator.calculate(ComplexityTranslator.this, complexityClass, methodEntry);
                         if (result) {
                             complexityResult.join().addSmell(methodSmellEvaluator.getType());
                         }

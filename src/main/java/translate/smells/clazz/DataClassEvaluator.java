@@ -1,12 +1,12 @@
 package translate.smells.clazz;
 
-import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.smells.CodeSmellEvaluator;
+import translate.structure.complexity.ComplexityClass;
 import translate.translator.ComplexityTranslator;
 
 public class DataClassEvaluator implements CodeSmellEvaluator.Clazz {
     @Override
-    public boolean calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public boolean calculate(ComplexityTranslator translator, ComplexityClass clazz) {
         return false;
     }
 
