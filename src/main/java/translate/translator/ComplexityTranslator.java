@@ -84,7 +84,9 @@ public class ComplexityTranslator implements Translator {
                 cbo,
                 new FanInEvaluator(cbo),
                 new FanOutEvaluator(cbo),
-                new LOCEvaluator()
+                new LOCEvaluator(),
+                new NOFEvaluator(),
+                new NOMEvaluator()
         };
     }
 
