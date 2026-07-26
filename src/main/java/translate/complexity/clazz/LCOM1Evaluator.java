@@ -17,12 +17,12 @@ import java.util.*;
  * Measures how closely related the methods of a class are based on the instance variables they share.
  * High LCOM indicates poor cohesion, suggesting the class performs multiple unrelated responsibilities and may benefit from being split into smaller classes.
  */
-public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
+public class LCOM1Evaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("LCOMN");
+                .name("LCOM1");
 
         int p = 0;
         int q = 0;
@@ -81,8 +81,8 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
 
         return builder
                 .max(totalPairs)
-                .min(-totalPairs)
-                .value(p - q)
+                .min(-1)
+                .value(Math.max(p - q, 0))
                 .build();
     }
 
@@ -124,7 +124,7 @@ public class LCOMNEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public String getName() {
-        return "LCOMN";
+        return "LCOM1";
     }
 
     @Override

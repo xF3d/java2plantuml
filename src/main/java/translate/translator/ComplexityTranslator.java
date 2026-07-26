@@ -80,7 +80,7 @@ public class ComplexityTranslator implements Translator {
                     }
                 },
                 new RFCEvaluator(),
-                new LCOMNEvaluator(),
+                new LCOM1Evaluator(),
                 cbo,
                 new FanInEvaluator(cbo),
                 new FanOutEvaluator(cbo),
