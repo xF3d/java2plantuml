@@ -4,7 +4,7 @@ import ai.DiffPromptResponse;
 
 import javax.swing.*;
 
-public class PromptResponsePanel extends JPanel {
+public class PromptResponsePanel extends JScrollPane {
     private final DiffPromptResponse response;
 
     public PromptResponsePanel(DiffPromptResponse response) {
@@ -21,6 +21,16 @@ public class PromptResponsePanel extends JPanel {
         top.add(topText);
 
 
+        JPanel center = new JPanel();
+
+        var centerLabel = new JLabel("New methods");
+        var centerText = new JTextArea();
+        centerText.setEditable(false);
+        centerText.setText(String.join("\n", response.newMethods()));
+
+        center.add(centerLabel);
+        center.add(centerText);
+
 
         JPanel bottom = new JPanel();
 
@@ -33,6 +43,7 @@ public class PromptResponsePanel extends JPanel {
         bottom.add(bottomText);
 
         super.add(top);
+        super.add(center);
         super.add(bottom);
     }
 }

@@ -2,35 +2,42 @@ package ai;
 
 import java.util.ArrayList;
 
-public record DiffPromptResponse(ArrayList<String> diffs, ArrayList<String> notes) {
-    public static final String BEGIN = "-----BEGIN_LINEDIFF-----";
-    public static final String END = "-----END_LINEDIFF-----";
+public record DiffPromptResponse(ArrayList<String> diffs, ArrayList<String> newMethods, ArrayList<String> notes) {
+    public static final String LINEDIFF = "-----LINEDIFF-----";
+    public static final String ADDED_METHODS = "-----ADDED_METHODS-----";
+    public static final String NOTES = "-----NOTES-----";
 
     public static DiffPromptResponse fromResponse(String response) {
-        var out = new DiffPromptResponse(new ArrayList<>(), new ArrayList<>());
+        var out = new DiffPromptResponse(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        boolean inDiff = false;
-
+        int section = 0;
         for (String line : response.lines().toList()) {
             line = line.strip();
 
             switch (line) {
-                case BEGIN -> {
-                    inDiff = true;
+                case LINEDIFF -> {
+                    section = 0;
                     continue;
                 }
-                case END -> {
-                    inDiff = false;
+                case ADDED_METHODS -> {
+                    section = 1;
                     continue;
                 }
+                case NOTES -> {
+                    section = 2;
+                    continue;
+                }
+
                 case "" -> {
                     continue;
                 }
             }
 
-            if (inDiff) {
+            if (section == 0) {
                 out.diffs.add(line);
-            } else {
+            } else if (section == 1) {
+                out.newMethods.add(line);
+            } else if (section == 2) {
                 out.notes.add(line);
             }
         }
@@ -39,10 +46,13 @@ public record DiffPromptResponse(ArrayList<String> diffs, ArrayList<String> note
     }
 
     public String toAi() {
-        String beginLineDiff = BEGIN + "\n";
+        String lineDiff = LINEDIFF + "\n";
         String allDiffs = String.join("\n", diffs);
-        String endLineDiff = "\n" + END + "\n";
-        String allNotes = String.join("\n", notes);
-        return beginLineDiff + allDiffs + endLineDiff + allNotes;
+        String addedMethods = "\n" + ADDED_METHODS + "\n";
+        String allAddedMethods = String.join("\n", newMethods);
+        String notes = "\n" + NOTES + "\n";
+        String allNotes = String.join("\n", this.notes);
+
+        return lineDiff + allDiffs + addedMethods + allAddedMethods + notes + allNotes;
     }
 }

@@ -8,11 +8,13 @@ import translate.translator.ComplexityTranslator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class AIRefactorFrame extends JFrame {
     private final ComplexityTranslator complexityTranslator;
     private int currentCard = 0;
-    private final int cardSize;
+    private AtomicInteger cardSize = new AtomicInteger(1);
 
     public AIRefactorFrame(ComplexityTranslator translator) {
         super("AI Refactoring");
@@ -27,37 +29,37 @@ public class AIRefactorFrame extends JFrame {
         JPanel cards = new JPanel(layout);
         var aiManager = AIManager.getInstance();
 
-        int pageNumber = 1;
         var methods = complexityTranslator.getProblematicMethods();
 
-        for (var classEntry : methods.entrySet()) {
-            String fqn = classEntry.getKey();
-            for (var methodEntry : classEntry.getValue().entrySet()) {
-                String signature = methodEntry.getKey();
-                var method = methodEntry.getValue();
+        CompletableFuture.runAsync(() -> {
+            for (var classEntry : methods.entrySet()) {
+                String fqn = classEntry.getKey();
+                for (var methodEntry : classEntry.getValue().entrySet()) {
+                    String signature = methodEntry.getKey();
+                    var method = methodEntry.getValue();
 
-                var cclass = complexityTranslator.getClassResultMap().get(fqn);
-                var diff = aiManager.chat(cclass, method);
+                    var cclass = complexityTranslator.getClassResultMap().get(fqn);
+                    var diff = aiManager.chat(cclass, method);
 
-                String pageNString = String.valueOf(pageNumber++);
-                JPanel panel = new JPanel();
+                    String pageNString = String.valueOf(cardSize.getAndIncrement());
+                    JPanel panel = new JPanel();
 
-                panel.add(new JLabel("Page " + pageNString));
-                panel.add(new JLabel(fqn.replace(MemberFormatter.PACKAGE_DELIMITER, ".") + "#" + signature));
-                panel.add(new PromptResponsePanel(diff));
-                cards.add(panel, pageNString);
+                    panel.add(new JLabel("Page " + pageNString));
+                    panel.add(new JLabel(fqn.replace(MemberFormatter.PACKAGE_DELIMITER, ".") + "#" + signature));
+                    panel.add(new PromptResponsePanel(diff));
+                    cards.add(panel, pageNString);
+                }
             }
-        }
+        });
 
         // Right arrow
         cards.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("RIGHT"), "next");
 
-        cardSize = pageNumber - 1;
         cards.getActionMap().put("next", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentCard = (currentCard + 1) % cardSize;
+                currentCard = (currentCard + 1) % cardSize.get();
                 layout.show(cards, String.valueOf(currentCard));
             }
         });
@@ -69,7 +71,8 @@ public class AIRefactorFrame extends JFrame {
         cards.getActionMap().put("previous", new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                currentCard = (currentCard - 1 + cardSize) % cardSize;
+                int cs = cardSize.get();
+                currentCard = (currentCard - 1 + cs) % cs;
                 layout.show(cards, String.valueOf(currentCard));
             }
         });
