@@ -261,13 +261,38 @@ public class ComplexityTranslator implements Translator {
         error = b;
     }
 
-    public Map<String, ComplexityResultAggregator> getProblematicClasses() {
-        Map<String, ComplexityResultAggregator> output = new HashMap<>();
-        for (var fullPackageName : classResultMap.keySet()) {
-            ComplexityResultAggregator results = evaluateClass(fullPackageName);
+    public Map<String, ComplexityClass> getProblematicClasses() {
+        Map<String, ComplexityClass> output = new HashMap<>();
+        for (var entry : classResultMap.entrySet()) {
+            String fullPackageName = entry.getKey();
+            var clazz = entry.getValue();
+            var results = clazz.evalResult();
+
             if (!results.isValid()) {
-                output.put(fullPackageName, results);
+                output.put(fullPackageName, clazz);
             }
+        }
+
+        return output;
+    }
+
+    public Map<String, Map<String, ComplexityMethod>> getProblematicMethods() {
+        Map<String, Map<String, ComplexityMethod>> output = new HashMap<>();
+        for (var methodEntry : methodResultMap.entrySet()) {
+            String classFqn = methodEntry.getKey();
+            HashMap<String, ComplexityMethod> methodInvalidMap = new HashMap<>();
+
+            for (var classEntry : methodEntry.getValue().entrySet()) {
+                String signature = classEntry.getKey();
+                var method = classEntry.getValue();
+                var results = method.evalResult();
+
+                if (!results.isValid()) {
+                    methodInvalidMap.put(signature, method);
+                }
+            }
+
+            output.put(classFqn, methodInvalidMap);
         }
 
         return output;

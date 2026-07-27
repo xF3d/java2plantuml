@@ -34,6 +34,7 @@ dependencies {
     // AI
     implementation 'dev.langchain4j:langchain4j-ollama:1.18.0'
     implementation 'dev.langchain4j:langchain4j-open-ai:1.18.0'
+    implementation "dev.langchain4j:langchain4j-http-client-jdk:1.18.0"
 }
 
 jar {
@@ -44,7 +45,9 @@ jar {
         configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 
-    exclude 'META-INF/**'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.RSA'
+    exclude 'META-INF/*.DSA'
 }
 
 tasks.named('jar') {

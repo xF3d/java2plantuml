@@ -241,7 +241,7 @@ public class Config {
     }
 
     public boolean isAiDisabled() {
-        return ModelType.isValid(mainModel);
+        return !ModelType.isValid(mainModel);
     }
 
     public Path getConfigPath() {

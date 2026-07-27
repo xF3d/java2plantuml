@@ -173,8 +173,8 @@ public class MainFrame extends JFrame {
                 }
 
                 contentPanel.updateUI();
-                AIManager.init();
 
+                new AIRefactorFrame(complexityTranslator);
                 
             } catch (Exception ex) {
                 FileLogger.LOGGER.log(Level.SEVERE, ex.getMessage(), ex);
