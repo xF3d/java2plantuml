@@ -33,6 +33,7 @@ dependencies {
 
     // AI
     implementation 'dev.langchain4j:langchain4j-ollama:1.18.0'
+    implementation 'dev.langchain4j:langchain4j-open-ai:1.18.0'
 }
 
 jar {

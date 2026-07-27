@@ -1,6 +1,8 @@
 package translate.translator;
 
 import ai.AIManager;
+import ai.model.APIType;
+import ai.model.ModelType;
 import file.FileLogger;
 import lombok.Getter;
 import org.tomlj.Toml;
@@ -14,6 +16,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Locale;
 
 @Getter
 public class Config {
@@ -137,9 +140,8 @@ public class Config {
     private final ClassDiagramConfig.Builder configBuilder = new ClassDiagramConfig.Builder();
     private ClassDiagramConfig config;
 
-    private String ollamaUrl;
-    private String mainModel;
-    private final ArrayList<String> verifyModels = new ArrayList<>();
+    private ModelType mainModel;
+    private final ArrayList<ModelType> verifyModels = new ArrayList<>();
 
     private boolean verifyWithMain;
 
@@ -163,8 +165,6 @@ public class Config {
         [ai]
         verify_with_main = true
         
-        [ollama_main]
-        url = "http://localhost:11434"
         """;
 
         try {
@@ -174,7 +174,6 @@ public class Config {
             e.printStackTrace();
         }
 
-        ollamaUrl = "http://localhost:11434";
         mainModel = null;
         verifyModels.clear();
         verifyWithMain = true;
@@ -210,15 +209,31 @@ public class Config {
                 .setShowAttributes(showAttributes)
                 .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers);
 
-        ollamaUrl = result.getString("ollama_main.url", () -> null);
-        mainModel = result.getString("ollama_main.main_model", () -> null);
 
-        var array = result.getArrayOrEmpty("ollama_verify");
+        var rawMainType = result.getString("generator.type");
+        if (rawMainType != null) {
+            APIType mainType = APIType.valueOf(rawMainType.toUpperCase(Locale.ROOT));
+            String mainUrl = result.getString("generator.url");
+            String modelName = result.getString("generator.name");
+            String mainKey = result.getString("generator.key");
+            this.mainModel = new ModelType(mainType, modelName, mainUrl, mainKey);
+        }
+
+        var array = result.getArrayOrEmpty("verify");
         for (int i = 0; i < array.size(); i++) {
             TomlTable table = array.getTable(i);
-            String verifyName = table.getString("name", () -> null);
-            if (verifyName != null) {
-                verifyModels.add(verifyName);
+
+            APIType verifyType = APIType.valueOf(table.getString("type").toUpperCase(Locale.ROOT));
+            String verifyUrl = table.getString("url");
+            String verifyName = table.getString("name");
+            String verifyKey = table.getString("key");
+
+            ModelType verify = new ModelType(verifyType, verifyName, verifyUrl, verifyKey);
+
+            if (verify.isValid()) {
+                verifyModels.add(verify);
+            } else {
+                FileLogger.LOGGER.severe("Verifier is invalid: " + verify);
             }
         }
 
@@ -226,7 +241,7 @@ public class Config {
     }
 
     public boolean isAiDisabled() {
-        return mainModel == null || ollamaUrl == null;
+        return ModelType.isValid(mainModel);
     }
 
     public Path getConfigPath() {

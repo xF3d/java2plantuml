@@ -5,7 +5,6 @@ import com.github.javaparser.ast.ImportDeclaration;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatModel;
-import dev.langchain4j.model.ollama.OllamaChatModel;
 import lombok.Getter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
@@ -13,32 +12,26 @@ import translate.translator.Config;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class AIManager {
     private AIManager() {
-        if (Config.getInstance().isAiDisabled()) return;
 
-        String url = Config.getInstance().getOllamaUrl();
-        String main = Config.getInstance().getMainModel();
-        OllamaChatModel.OllamaChatModelBuilder builder = OllamaChatModel.builder().baseUrl(url);
+        Config cfg = Config.getInstance();
+        if (cfg.isAiDisabled()) return;
 
-        this.suggestionModel = builder.modelName(main)
-                .build();
+        this.suggestionModel = cfg.getMainModel().build();
 
-        var verifiersModels = Config.getInstance().getVerifyModels();
-        for (String verifiersModel : verifiersModels) {
+        var verifiersModels = cfg.getVerifyModels();
+        for (var verifiersModel : verifiersModels) {
             this.verifiers.add(
-                    builder.modelName(verifiersModel).build()
+                    verifiersModel.build()
             );
         }
 
         // add at the end the suggestion
-        if (Config.getInstance().isVerifyWithMain()) {
-            this.verifiers.add(
-                    builder.modelName(main).build()
-            );
+        if (cfg.isVerifyWithMain()) {
+            this.verifiers.add(suggestionModel);
         }
     }
 
