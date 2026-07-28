@@ -6,15 +6,17 @@ import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Comparator;
+import java.util.List;
 
 public class JTableClass extends JPanel {
+    private static final Comparator<String> HTML_DOUBLE_COMPARATOR =
+            Comparator.comparingDouble(JTableClass::extractDouble);
+
     private final String[] fqnReferences;
     private final JTable table;
 
@@ -23,7 +25,7 @@ public class JTableClass extends JPanel {
     private final ComplexityTranslator translator;
 
     private int selectedColumns = 0;
-    private boolean isDecreasing = false;
+    private SortOrder sortOrder = SortOrder.UNSORTED;
 
     public JTableClass(ComplexityTranslator translator) {
         super(new BorderLayout());
@@ -94,25 +96,56 @@ public class JTableClass extends JPanel {
                     return;
                 }
 
-                int row = table.rowAtPoint(e.getPoint());
-                int column = table.columnAtPoint(e.getPoint());
+                Point p = e.getPoint();
+
+                int viewRow = table.rowAtPoint(p);
+                int modelRow = table.convertRowIndexToModel(viewRow);
+                int column = table.columnAtPoint(p);
                 if (column != 0) return;
 
-                String value = fqnReferences[row];
+                String value = fqnReferences[modelRow];
                 onClick(value);
             }
         });
+
+
+        var sorter = new TableRowSorter<>(table.getModel());
+        table.setRowSorter(sorter);
+        for (int i = 1; i < columnNames.length; i++) {
+            sorter.setComparator(i, HTML_DOUBLE_COMPARATOR);
+        }
 
         JTableHeader header = table.getTableHeader();
         header.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                int column = table.columnAtPoint(e.getPoint());
+                if (column <= 0) return;
 
+                if (selectedColumns == column) {
+                    sortOrder = SortOrder.values()[(sortOrder.ordinal() + 1) % SortOrder.values().length];
+                } else {
+                    selectedColumns = column;
+                    sortOrder = SortOrder.DESCENDING;
+                }
+
+                sorter.setSortKeys(List.of(new RowSorter.SortKey(column, sortOrder)));
+                sorter.sort();
             }
         });
     }
 
     public void onClick(String selectedFqn) {
         new ClassFrame(selectedFqn, translator);
+    }
+
+    private static double extractDouble(String html) {
+        // remove HTML tags
+        String text = html.replaceAll("<[^>]*>", "").trim();
+
+        // if other characters are present, keep only the number
+        text = text.replaceAll("[^0-9+\\-.,Ee]", "");
+
+        return Double.parseDouble(text);
     }
 }
