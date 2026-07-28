@@ -31,26 +31,26 @@ public class AIRefactorFrame extends JFrame {
 
         var methods = complexityTranslator.getProblematicMethods();
 
-        CompletableFuture.runAsync(() -> {
-            for (var classEntry : methods.entrySet()) {
-                String fqn = classEntry.getKey();
-                for (var methodEntry : classEntry.getValue().entrySet()) {
-                    String signature = methodEntry.getKey();
-                    var method = methodEntry.getValue();
+        for (var classEntry : methods.entrySet()) {
+            String fqn = classEntry.getKey();
+            for (var methodEntry : classEntry.getValue().entrySet()) {
+                String signature = methodEntry.getKey();
+                var method = methodEntry.getValue();
 
-                    var cclass = complexityTranslator.getClassResultMap().get(fqn);
-                    var diff = aiManager.chat(cclass, method);
+                var cclass = complexityTranslator.getClassResultMap().get(fqn);
 
-                    String pageNString = String.valueOf(cardSize.getAndIncrement());
-                    JPanel panel = new JPanel();
+                var diff = aiManager.chat(cclass, method);
 
-                    panel.add(new JLabel("Page " + pageNString));
-                    panel.add(new JLabel(fqn.replace(MemberFormatter.PACKAGE_DELIMITER, ".") + "#" + signature));
-                    panel.add(new PromptResponsePanel(diff));
-                    cards.add(panel, pageNString);
-                }
+                String pageNString = String.valueOf(cardSize.getAndIncrement());
+                JPanel panel = new JPanel();
+
+                panel.add(new JLabel("Page " + pageNString));
+                panel.add(new JLabel(fqn.replace(MemberFormatter.PACKAGE_DELIMITER, ".") + "#" + signature));
+                panel.add(new PromptResponsePanel(diff));
+                cards.add(panel, pageNString);
             }
-        });
+        }
+
 
         // Right arrow
         cards.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)

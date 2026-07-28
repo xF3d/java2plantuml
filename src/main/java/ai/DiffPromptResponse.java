@@ -1,13 +1,18 @@
 package ai;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public record DiffPromptResponse(ArrayList<String> diffs, ArrayList<String> newMethods, ArrayList<String> notes) {
+public record DiffPromptResponse(List<String> diffs, List<String> newMethods, List<String> notes) {
+    public static final DiffPromptResponse EMPTY = new DiffPromptResponse(List.of(), List.of(), List.of());
+
     public static final String LINEDIFF = "-----LINEDIFF-----";
     public static final String ADDED_METHODS = "-----ADDED_METHODS-----";
     public static final String NOTES = "-----NOTES-----";
 
     public static DiffPromptResponse fromResponse(String response) {
+        if (response == null) return EMPTY;
+
         var out = new DiffPromptResponse(new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         int section = 0;

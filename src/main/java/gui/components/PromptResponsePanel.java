@@ -9,6 +9,10 @@ public class PromptResponsePanel extends JScrollPane {
 
     public PromptResponsePanel(DiffPromptResponse response) {
         this.response = response;
+        if (response == DiffPromptResponse.EMPTY) {
+            super.add(new JLabel("There was an error"));
+            return;
+        }
 
         JPanel top = new JPanel();
 

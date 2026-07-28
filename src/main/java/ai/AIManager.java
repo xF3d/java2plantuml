@@ -5,6 +5,7 @@ import com.github.javaparser.ast.ImportDeclaration;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatModel;
+import file.FileLogger;
 import lombok.Getter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
@@ -13,6 +14,7 @@ import translate.translator.Config;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 public class AIManager {
     private AIManager() {
@@ -33,6 +35,12 @@ public class AIManager {
         if (cfg.isVerifyWithMain()) {
             this.verifiers.add(suggestionModel);
         }
+
+        FileLogger.LOGGER.info("AI Init with main model:"
+                + suggestionModel.defaultRequestParameters().modelName()
+                + " and verifiers: "
+                + verifiers.stream().map(it -> it.defaultRequestParameters().modelName()).collect(Collectors.joining(", "))
+        );
     }
 
     @Getter
@@ -114,18 +122,30 @@ public class AIManager {
                 range.end
         );
 
-        String response = suggestionModel.chat(
-                SystemMessage.systemMessage(Config.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
-                UserMessage.userMessage(mainMessage)
-        ).aiMessage().text();
+        String response;
+        try {
+            response = suggestionModel.chat(
+                    SystemMessage.systemMessage(Config.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
+                    UserMessage.userMessage(mainMessage)
+            ).aiMessage().text();
+        } catch (Exception e) {
+            FileLogger.LOGGER.severe("Fatal error in generator: " + e.getMessage());
+            return DiffPromptResponse.EMPTY;
+        }
 
         System.out.println(response);
         String previousResponse = response;
         for (var verifier : verifiers) {
-            previousResponse = verifier.chat(
-                    SystemMessage.systemMessage(Config.SYSTEM_PROMPT_VER.formatted(verifier.defaultRequestParameters().modelName())),
-                    UserMessage.userMessage(mainMessage + "\n" + previousResponse)
-            ).aiMessage().text();
+            String modelName = verifier.defaultRequestParameters().modelName();
+            try {
+                previousResponse = verifier.chat(
+                        SystemMessage.systemMessage(Config.SYSTEM_PROMPT_VER.formatted(modelName)),
+                        UserMessage.userMessage(mainMessage + "\n" + previousResponse)
+                ).aiMessage().text();
+            } catch (Exception e) {
+                FileLogger.LOGGER.warning("Error in verifier " + e.getMessage());
+                continue;
+            }
 
             // TODO: further validation
             System.out.println(previousResponse);
