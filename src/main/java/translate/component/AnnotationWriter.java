@@ -39,7 +39,6 @@ public class AnnotationWriter extends SetTranslatingComponent<AnnotationDeclarat
         return new UmlEntry(builder.toString(), "");
     }
 
-    // TODO used for testing, can be removed later
     public @interface Test {
         final static String a = "";
 

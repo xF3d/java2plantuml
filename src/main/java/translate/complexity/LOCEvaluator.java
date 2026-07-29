@@ -13,7 +13,7 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
             .max(Double.MAX_VALUE)
             .min(0.0)
             .value(0.0)
-            .target(ComplexityMetricResult.Target.NONE);
+            .target(MetricTarget.NONE);
 
     // system eval
     @Override

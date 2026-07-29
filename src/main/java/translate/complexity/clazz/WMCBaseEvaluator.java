@@ -4,13 +4,14 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.complexity.MetricTarget;
 import translate.translator.ComplexityTranslator;
 
 public class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
     private final ComplexityEvaluator.Method methodEval;
     private final ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder();
 
-    public WMCBaseEvaluator(ComplexityEvaluator.Method methodEval, String name, double max, double min, ComplexityMetricResult.Target target) {
+    public WMCBaseEvaluator(ComplexityEvaluator.Method methodEval, String name, double max, double min, MetricTarget target) {
         this.methodEval = methodEval;
         this.builder.name(name)
                 .max(max)

@@ -15,28 +15,12 @@ public class ComplexityMetricResult {
     private static final DecimalFormat DF_1 = new DecimalFormat("0.#");
     private static final DecimalFormat DF_0 = new DecimalFormat("0");
 
-    public enum Target {
-        HIGHER, LOWER, NONE;
-
-        public double normalize(double value, double min, double max) {
-            if (this == NONE) return value;
-
-            if (value < min || max < value) {
-                return 0.0;
-            }
-
-            double normalized = (value - min) / (max - min);
-            if (this == HIGHER) return normalized;
-            else return 1.0 - normalized;
-        }
-    }
-
     private final String name;
     private final double max, min;
     private final double value;
-    private final Target target;
+    private final MetricTarget target;
 
-    public ComplexityMetricResult(String name, double max, double min, double value, Target target) {
+    public ComplexityMetricResult(String name, double max, double min, double value, MetricTarget target) {
         this.name = name;
         this.max = max;
         this.min = min;
@@ -45,7 +29,7 @@ public class ComplexityMetricResult {
     }
 
     public ComplexityMetricResult(String name, double max, double min, double value) {
-        this(name, max, min, value, Target.LOWER);
+        this(name, max, min, value, MetricTarget.LOWER);
     }
 
     public boolean isValid() {
@@ -53,7 +37,7 @@ public class ComplexityMetricResult {
     }
 
     public boolean isThresholdValid() {
-        return target != Target.NONE && max < Double.MAX_VALUE / 2 && min > Double.MAX_VALUE / -2;
+        return target != MetricTarget.NONE && max < Double.MAX_VALUE / 2 && min > Double.MAX_VALUE / -2;
     }
 
     public double normalize() {
@@ -69,7 +53,7 @@ public class ComplexityMetricResult {
     }
 
     public String getValueWithColor() {
-        if (target == Target.NONE) return this.formattedValue();
+        if (target == MetricTarget.NONE) return this.formattedValue();
 
         if (this.isValid()) {
             return "<font color='green'> " + this.formattedValue() + "</font>";
@@ -117,7 +101,7 @@ public class ComplexityMetricResult {
         private double max;
         private double min;
         private double value;
-        private Target target = Target.LOWER;
+        private MetricTarget target = MetricTarget.LOWER;
 
         Builder() {
         }
@@ -142,7 +126,7 @@ public class ComplexityMetricResult {
             return this;
         }
 
-        public Builder target(Target target) {
+        public Builder target(MetricTarget target) {
             this.target = target;
             return this;
         }
