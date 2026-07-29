@@ -12,7 +12,7 @@ import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import java.util.*;
-
+//TODO LCOM*
 /**
  * Measures how closely related the methods of a class are based on the instance variables they share.
  * High LCOM indicates poor cohesion, suggesting the class performs multiple unrelated responsibilities and may benefit from being split into smaller classes.
@@ -78,7 +78,7 @@ public class LCOM1Evaluator implements ComplexityEvaluator.Clazz {
             }
         }
 
-
+        //TODO rivedere soglia
         return builder
                 .max(totalPairs)
                 .min(-1)
@@ -130,5 +130,5 @@ public class LCOM1Evaluator implements ComplexityEvaluator.Clazz {
     @Override
     public boolean usefulForSystem() {
         return false;
-    }
+    } //todo remove for lcom*
 }

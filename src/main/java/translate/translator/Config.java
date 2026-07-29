@@ -49,6 +49,7 @@ public class Config {
             claude : fancyClass should have a more descriptive name
             """;
 
+    //TODO: inviare il contesto classe una volta sola
     public static final String FORM_REFACTOR_PROMPT = """
             IMPORTS
             %s

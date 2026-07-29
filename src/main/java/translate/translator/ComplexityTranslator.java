@@ -27,7 +27,13 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
+/**
+ * TODO: complessità ciclomatica della classe = somma di quella dei metodi
+ *
+ * per il sistema = ciclomatica media delle classi
+ * per ogni classe = ciclomatica somma dei metodi
+ * (per ogni classe WMC-Ciclomatica) / n.classi
+ */
 @Getter
 public class ComplexityTranslator implements Translator {
     private final PackageManager packageManager = new PackageManager();
@@ -79,7 +85,8 @@ public class ComplexityTranslator implements Translator {
                 new FanOutEvaluator(cbo),
                 new LOCEvaluator(),
                 new NOFEvaluator(),
-                new NOMEvaluator()
+                new NOMEvaluator(),
+                new WMCCyclomaticEvaluator()
         };
     }
 
