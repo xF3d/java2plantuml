@@ -10,7 +10,7 @@ public class GodClassEvaluator implements CodeSmellEvaluator.Clazz {
         return !clazz.evalMetric("LCOM1").isValid() &&
                 !clazz.evalMetric("NOF").isValid() &&
                 !clazz.evalMetric("NOM").isValid() &&
-                !clazz.evalMetric("WMC/Cyclomatic").isValid();
+                !clazz.evalMetric("WMC-Cyclomatic").isValid();
     }
 
     @Override
