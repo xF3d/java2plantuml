@@ -12,21 +12,19 @@ import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import java.util.*;
-//TODO LCOM*
 /**
  * Measures how closely related the methods of a class are based on the instance variables they share.
  * High LCOM indicates poor cohesion, suggesting the class performs multiple unrelated responsibilities and may benefit from being split into smaller classes.
+ * Henderson-Sellers LCOM*
  */
-public class LCOM1Evaluator implements ComplexityEvaluator.Clazz {
+public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("LCOM1");
-
-        int p = 0;
-        int q = 0;
-
+                .name("LCOM*")
+                .max(0.725)
+                .min(-0.00000001);
 
         Set<String> fields = new HashSet<>();
         for (var field : clazz.getFields()) {
@@ -38,51 +36,46 @@ public class LCOM1Evaluator implements ComplexityEvaluator.Clazz {
         }
 
         if (fields.isEmpty()) {
-            return builder.value(0).max(1).min(-1).build();
+            return builder.value(0).build();
         }
 
+        // Only defined methods
         List<MethodDeclaration> definedMethods = clazz.getMethods().stream()
                 .filter(it -> it.getBody().isPresent())
                 .toList();
-        // Total method pairs = n * (n-1) / 2 (for n methods)
-        int totalPairs = definedMethods.size() * (definedMethods.size() - 1) / 2;
 
-        for (int i = 0; i < definedMethods.size() - 1; i++) {
-            MethodDeclaration subject = definedMethods.get(i);
-            Optional<BlockStmt> subjectOptBlock = subject.getBody();
+        int p = definedMethods.size();
+        if (p <= 1) {
+            return builder.value(0).build();
+        }
 
-            // should never happen
-            if (subjectOptBlock.isEmpty()) {
-                continue;
-            }
+        // Track how many methods access each field
+        // Field -> Number of distinct methods accessing it
+        Map<String, Integer> fieldAccessCounts = new HashMap<>();
+        for (String field : fields) {
+            fieldAccessCounts.put(field, 0);
+        }
 
-            Set<String> subjectAccesses = collectInstanceVariableAccesses(subjectOptBlock.get(), fields);
+        for (MethodDeclaration method : definedMethods) {
+            BlockStmt body = method.getBody().orElseThrow();
 
-            for (int j = i + 1; j < definedMethods.size(); j++) {
-                MethodDeclaration other = definedMethods.get(j);
-                Optional<BlockStmt> otherOptBlock = other.getBody();
-                if (otherOptBlock.isEmpty()) {
-                    continue;
-                }
-
-                Set<String> otherAccesses = collectInstanceVariableAccesses(otherOptBlock.get(), fields);
-
-                Set<String> temp = new HashSet<>(subjectAccesses);
-                temp.retainAll(otherAccesses);
-
-                if (temp.isEmpty()) {
-                    p++; // does not share instance variables
-                } else {
-                    q++; // does share instance variables
-                }
+            Set<String> accessedInMethod = collectInstanceVariableAccesses(body, fields);
+            for (String fieldName : accessedInMethod) {
+                fieldAccessCounts.put(fieldName, fieldAccessCounts.get(fieldName) + 1);
             }
         }
 
+        double totalAccesses = 0;
+        for (int count : fieldAccessCounts.values()) {
+            totalAccesses += count;
+        }
+        double q = totalAccesses / fields.size();
+
+        double lcomStar = (p - q) / (p - 1);
+
         //TODO rivedere soglia
         return builder
-                .max(totalPairs)
-                .min(-1)
-                .value(Math.max(p - q, 0))
+                .value(lcomStar)
                 .build();
     }
 
@@ -124,11 +117,6 @@ public class LCOM1Evaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public String getName() {
-        return "LCOM1";
+        return "LCOM*";
     }
-
-    @Override
-    public boolean usefulForSystem() {
-        return false;
-    } //todo remove for lcom*
 }
