@@ -4,13 +4,7 @@ import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 import translate.translator.ComplexityTranslator;
 
-/**
- * todo implement
- * LONG_METHOD,
- *     DATA_CLASS,
- *     GOD_CLASS,
- *     FEATURE_ENVY
- */
+
 public interface CodeSmellEvaluator {
     String getType();
 
