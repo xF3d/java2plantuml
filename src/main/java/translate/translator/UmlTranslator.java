@@ -4,6 +4,7 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.ast.type.Type;
+import file.Config;
 import file.FileLogger;
 import lombok.Getter;
 import translate.component.AnnotationWriter;

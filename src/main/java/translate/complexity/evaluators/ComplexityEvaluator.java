@@ -3,12 +3,15 @@ package translate.complexity.evaluators;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.ComplexityMetricResult;
+import translate.complexity.MetricDefinition;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
 
 public interface ComplexityEvaluator {
     String getName();
+
+    //MetricDefinition getDefinition();
 
     interface System extends ComplexityEvaluator {
         ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz);

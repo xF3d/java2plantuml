@@ -7,6 +7,7 @@ import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
+import file.Config;
 import gui.frame.MainFrame;
 import file.DirectoryExplorer;
 import file.FileHandler;

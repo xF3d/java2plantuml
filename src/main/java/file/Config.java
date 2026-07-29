@@ -1,18 +1,19 @@
-package translate.translator;
+package file;
 
 import ai.AIManager;
 import ai.model.APIType;
 import ai.model.ModelType;
-import file.FileLogger;
 import lombok.Getter;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 import translate.ClassDiagramConfig;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
+import translate.translator.Translator;
 import visitors.*;
 
 import java.io.IOException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -163,32 +164,12 @@ public class Config {
     }
 
     public void regenDefaults() {
-        String toml = """
-        [translator]
-        show_methods = true
-        show_attributes = true
-        show_colored_access_specifiers = true
-        
-        [ai]
-        verify_with_main = true
-        
-        """;
-
         try {
-            Files.writeString(getConfigPath(), toml);
+            ResourceExtractor.extractToCurrentDirectory(CONFIG_NAME);
         } catch (IOException e) {
-            FileLogger.LOGGER.severe("Error in regenerating default config");
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-
-        mainModel = null;
-        verifyModels.clear();
-        verifyWithMain = true;
-
-        configBuilder
-                .setShowMethods(true)
-                .setShowAttributes(true)
-                .setShowColoredAccessSpecifiers(true);
+        loadFromFile();
     }
 
     private void loadFromFile() {
@@ -203,8 +184,7 @@ public class Config {
         TomlParseResult result = Toml.parse(toml);
 
         if (result.hasErrors()) {
-            regenDefaults();
-            return;
+            throw new RuntimeException("Invalid config");
         }
 
         boolean showMethods = result.getBoolean("translator.show_methods", () -> true);
@@ -226,21 +206,27 @@ public class Config {
             this.mainModel = new ModelType(mainType, modelName, mainUrl, mainKey);
         }
 
-        var array = result.getArrayOrEmpty("verify");
-        for (int i = 0; i < array.size(); i++) {
-            TomlTable table = array.getTable(i);
+        var verifyModels = result.getArrayOrEmpty("verify");
+        for (int i = 0; i < verifyModels.size(); i++) {
+            TomlTable table = verifyModels.getTable(i);
+            ModelType verify = ModelType.config(table);
 
-            APIType verifyType = APIType.valueOf(table.getString("type").toUpperCase(Locale.ROOT));
-            String verifyUrl = table.getString("url");
-            String verifyName = table.getString("name");
-            String verifyKey = table.getString("key");
-
-            ModelType verify = new ModelType(verifyType, verifyName, verifyUrl, verifyKey);
-
-            if (verify.isValid()) {
-                verifyModels.add(verify);
+            if (verify != null && verify.isValid()) {
+                this.verifyModels.add(verify);
             } else {
                 FileLogger.LOGGER.severe("Verifier is invalid: " + verify);
+            }
+        }
+
+        var metricDefinitions = result.getArrayOrEmpty("metric_definitions");
+        for (int i = 0; i < metricDefinitions.size(); i++) {
+            TomlTable table = metricDefinitions.getTable(i);
+            MetricDefinition definition = MetricDefinition.config(table);
+
+            if (definition != null) {
+                MetricDefinitionRegistry.register(definition);
+            } else {
+                FileLogger.LOGGER.severe("Found invalid metric definition, skipping");
             }
         }
 

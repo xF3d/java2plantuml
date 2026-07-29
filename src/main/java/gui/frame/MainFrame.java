@@ -1,11 +1,10 @@
 package gui.frame;
 
-import ai.AIManager;
 import file.FileLogger;
 import lombok.Getter;
 import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
-import translate.translator.Config;
+import file.Config;
 import translate.translator.UmlTranslator;
 
 import javax.swing.*;

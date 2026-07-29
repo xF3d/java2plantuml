@@ -21,7 +21,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import lombok.AllArgsConstructor;
 import translate.structure.pkg.PackageManager;
-import translate.translator.Config;
+import file.Config;
 
 import java.util.ArrayList;
 import java.util.Collections;

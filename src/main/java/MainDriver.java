@@ -1,6 +1,6 @@
 import file.FileLogger;
 import gui.frame.MainFrame;
-import translate.translator.Config;
+import file.Config;
 
 import javax.swing.*;
 import java.net.URISyntaxException;

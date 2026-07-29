@@ -9,7 +9,7 @@ import file.FileLogger;
 import lombok.Getter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
-import translate.translator.Config;
+import file.Config;
 
 import java.util.ArrayList;
 import java.util.Collection;

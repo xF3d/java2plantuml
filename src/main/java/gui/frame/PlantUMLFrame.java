@@ -12,7 +12,7 @@ import org.w3c.dom.events.EventTarget;
 import org.w3c.dom.svg.SVGDocument;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
-import translate.translator.Config;
+import file.Config;
 import util.PlantUMLParser;
 import util.SignatureParser;
 
