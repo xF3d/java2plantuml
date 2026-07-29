@@ -2,6 +2,8 @@ package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.body.TypeDeclaration;
 import lombok.AllArgsConstructor;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.MetricTarget;
@@ -14,11 +16,11 @@ public class FanInEvaluator implements ComplexityEvaluator.Clazz {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         int fanIn = cboEvaluator.getProjectFanIn(translator, clazz).size();
-        return new ComplexityMetricResult("FanIn", Double.MAX_VALUE, -1, fanIn, MetricTarget.HIGHER);
+        return result(fanIn);
     }
 
     @Override
-    public String getName() {
-        return "FanIn";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("FanIn");
     }
 }

@@ -4,6 +4,8 @@ import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
@@ -14,23 +16,13 @@ import translate.translator.ComplexityTranslator;
 public class NBDEvaluator implements ComplexityEvaluator.Method {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
-        var builder = ComplexityMetricResult.builder()
-                .name("NBD")
-                .max(4)
-                .min(-1);
-
         var bodyOpt = method.getBody();
         if (bodyOpt.isEmpty()) {
-            return builder.value(0).build();
+            return result(0);
         }
 
         var value = scanDepth(bodyOpt.get(), -1);
-        return builder.value(value).build();
-    }
-
-    @Override
-    public String getName() {
-        return "NBD";
+        return result(value);
     }
 
     private static int scanDepth(Node node, int depth) {
@@ -47,5 +39,10 @@ public class NBDEvaluator implements ComplexityEvaluator.Method {
         }
 
         return max;
+    }
+
+    @Override
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("NBD");
     }
 }

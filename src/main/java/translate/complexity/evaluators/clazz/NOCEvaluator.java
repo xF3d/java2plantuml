@@ -7,6 +7,8 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.nodeTypes.NodeWithExtends;
 import com.github.javaparser.ast.nodeTypes.NodeWithImplements;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.structure.complexity.ComplexityClass;
@@ -19,13 +21,9 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         //TODO: should interface be counted?
-        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("NOC")
-                .max(4)
-                .min(-1);
 
         if (clazz instanceof RecordDeclaration || clazz instanceof EnumDeclaration) {
-            return builder.value(0).build();
+            return result(0);
         }
 
         CompilationUnit cu = clazz.findCompilationUnit().get();
@@ -56,11 +54,11 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
         });
 
 
-        return builder.value(amount[0]).build();
+        return result(amount[0]);
     }
 
     @Override
-    public String getName() {
-        return "NOC";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("NOC");
     }
 }

@@ -37,7 +37,7 @@ public class JTableClass extends JPanel {
         ComplexityEvaluator.Clazz[] evaluators = translator.getClassEvaluators();
         for (int i = 0; i < evaluators.length; i++) {
             var evaluator = evaluators[i];
-            columnNames[i + 1] = evaluator.getName();
+            columnNames[i + 1] = evaluator.getDefinition().metric();
         }
 
         this.fqnReferences = translator.getClassesArray();

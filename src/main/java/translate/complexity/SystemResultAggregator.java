@@ -16,13 +16,13 @@ public class SystemResultAggregator {
         for (ComplexityMetricResult result : classMetrics) {
             if (result == null) continue;
 
-            this.classMetrics.put(result.getName(), result);
+            this.classMetrics.put(result.metric(), result);
         }
 
         for (ComplexityMetricResult result : systemMetrics) {
             if (result == null) continue;
 
-            this.systemMetrics.put(result.getName(), result);
+            this.systemMetrics.put(result.metric(), result);
         }
     }
 

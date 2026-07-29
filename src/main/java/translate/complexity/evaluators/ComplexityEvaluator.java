@@ -9,9 +9,7 @@ import translate.translator.ComplexityTranslator;
 import java.util.Collection;
 
 public interface ComplexityEvaluator {
-    String getName();
-
-    //MetricDefinition getDefinition();
+    MetricDefinition getDefinition();
 
     interface System extends ComplexityEvaluator {
         ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz);
@@ -30,5 +28,9 @@ public interface ComplexityEvaluator {
 
     interface Method extends ComplexityEvaluator {
         ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method);
+    }
+
+    default ComplexityMetricResult result(double value) {
+        return new ComplexityMetricResult(getDefinition(), value);
     }
 }

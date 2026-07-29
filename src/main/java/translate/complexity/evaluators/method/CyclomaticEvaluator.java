@@ -13,6 +13,8 @@ import com.github.javaparser.ast.stmt.SwitchEntry;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.Getter;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
@@ -21,26 +23,16 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
-        var builder = ComplexityMetricResult.builder()
-                .name("Cyclomatic")
-                .max(5)
-                .min(-1);
-
         var optBody = method.getBody();
         if (optBody.isEmpty()) {
-            return builder.value(1).build();
+            return result(1);
         }
 
         CyclomaticVisitor visitor = new CyclomaticVisitor();
         optBody.get().accept(visitor, null);
 
         int complexity = visitor.getComplexityScore() + 1;
-        return builder.value(complexity).build();
-    }
-
-    @Override
-    public String getName() {
-        return "Cyclomatic";
+        return result(complexity);
     }
 
     @Getter
@@ -106,5 +98,10 @@ public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
             }
             super.visit(n, arg);
         }
+    }
+
+    @Override
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("Cyclomatic");
     }
 }

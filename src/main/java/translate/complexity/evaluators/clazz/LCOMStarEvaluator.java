@@ -7,6 +7,8 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ThisExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
@@ -21,11 +23,6 @@ public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
-        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("LCOM*")
-                .max(0.725)
-                .min(-0.00000001);
-
         Set<String> fields = new HashSet<>();
         for (var field : clazz.getFields()) {
             if (field.isStatic()) continue;
@@ -36,7 +33,7 @@ public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
         }
 
         if (fields.isEmpty()) {
-            return builder.value(0).build();
+            return result(0);
         }
 
         // Only defined methods
@@ -46,7 +43,7 @@ public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
 
         int p = definedMethods.size();
         if (p <= 1) {
-            return builder.value(0).build();
+            return result(0);
         }
 
         // Track how many methods access each field
@@ -74,9 +71,7 @@ public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
         double lcomStar = (p - q) / (p - 1);
 
         //TODO rivedere soglia
-        return builder
-                .value(lcomStar)
-                .build();
+        return result(lcomStar);
     }
 
     public Set<String> collectInstanceVariableAccesses(BlockStmt blockStmt, Set<String> instanceVariableNames) {
@@ -116,7 +111,7 @@ public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
     }
 
     @Override
-    public String getName() {
-        return "LCOM*";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("LCOM*");
     }
 }

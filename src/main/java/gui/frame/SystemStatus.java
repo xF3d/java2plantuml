@@ -48,7 +48,7 @@ public class SystemStatus extends JFrame {
             double[] values = new double[chartResults.size()];
 
             for (int i = 0; i < chartResults.size(); i++) {
-                names[i] = chartResults.get(i).getName();
+                names[i] = chartResults.get(i).metric();
                 values[i] = chartResults.get(i).normalize();
             }
 

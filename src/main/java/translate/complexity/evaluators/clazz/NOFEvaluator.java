@@ -1,6 +1,8 @@
 package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.body.TypeDeclaration;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
@@ -12,16 +14,11 @@ public class NOFEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
-        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("NOF")
-                .max(9)
-                .min(-1);
-
-        return builder.value(clazz.getFields().size()).build();
+        return result(clazz.getFields().size());
     }
 
     @Override
-    public String getName() {
-        return "NOF";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("NOF");
     }
 }

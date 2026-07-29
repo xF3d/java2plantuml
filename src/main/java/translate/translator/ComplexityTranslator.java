@@ -170,23 +170,16 @@ public class ComplexityTranslator implements Translator {
                     var ev = classEvaluators[i];
                     if (!ev.usefulForSystem()) continue;
 
-                    String name = ev.getName();
+                    MetricDefinition definition = ev.getDefinition();
+                    String name = definition.metric();
                     double averageValue = 0.0;
-                    double averageMax = 0.0;
-                    double averageMin = 0.0;
-                    ComplexityMetricResult.Builder builder = null;
                     double size = classResults.size();
                     for (var classResult : classResults) {
-                        if (builder == null) builder = classResult.getMetric(name).toBuilder();
-
                         var m = classResult.getMetric(name);
                         averageValue += m.getValue() / size;
-                        averageMin += m.getMin() / size;
-                        averageMax += m.getMax() / size;
                     }
 
-                    if (builder == null) throw new RuntimeException("impossible");
-                    classResultMetrics[i] = builder.value(averageValue).min(averageMin).max(averageMax).build();
+                    classResultMetrics[i] = new ComplexityMetricResult(definition, averageValue);
                 }
 
                 ComplexityMetricResult[] systemResultsOnlyMetrics;

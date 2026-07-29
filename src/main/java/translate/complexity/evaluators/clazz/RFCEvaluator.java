@@ -9,6 +9,8 @@ import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import translate.ResolverUtils;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
@@ -25,11 +27,6 @@ public class RFCEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
-        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("RFC")
-                .max(100)
-                .min(-1);
-
         // this is for inherited methods aswell, but throws errors when parameter can't be found
         int nlm;
         try {
@@ -61,11 +58,11 @@ public class RFCEvaluator implements ComplexityEvaluator.Clazz {
 
         int nrm = resolvedMethods.size();
 
-        return builder.value(nlm + nrm).build();
+        return result(nlm + nrm);
     }
 
     @Override
-    public String getName() {
-        return "RFC";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("NOM");
     }
 }

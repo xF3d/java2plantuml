@@ -4,18 +4,14 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.ComplexityMetricResult;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.MetricTarget;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
 
 public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvaluator.Clazz, ComplexityEvaluator.Method {
-    private static final ComplexityMetricResult.Builder BUILDER = ComplexityMetricResult.builder()
-            .name("LOC")
-            .max(Double.MAX_VALUE)
-            .min(0.0)
-            .value(0.0)
-            .target(MetricTarget.NONE);
 
     // system eval
     @Override
@@ -30,34 +26,34 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
             lineTotal += range.getLineCount();
         }
 
-        return BUILDER.clone().value(lineTotal).build();
+        return result(lineTotal);
     }
 
     // class eval
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         var rangeOpt = clazz.getRange();
-        if (rangeOpt.isEmpty()) return BUILDER.build();
+        if (rangeOpt.isEmpty()) return result(0);
 
         var range = rangeOpt.get();
 
-        return BUILDER.clone().value(range.getLineCount()).build();
+        return result(range.getLineCount());
     }
 
     // method eval
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
         var rangeOpt = method.getRange();
-        if (rangeOpt.isEmpty()) return BUILDER.build();
+        if (rangeOpt.isEmpty()) return result(0);
 
         var range = rangeOpt.get();
 
-        return BUILDER.clone().value(range.getLineCount()).build();
+        return result(range.getLineCount());
     }
 
     @Override
-    public String getName() {
-        return "LOC";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("LOC");
     }
 
     // just use custom impl

@@ -6,6 +6,8 @@ import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.AllArgsConstructor;
+import translate.complexity.MetricDefinition;
+import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.structure.complexity.ComplexityClass;
@@ -30,11 +32,6 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
-        ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("CBO")
-                .max(14)
-                .min(-1);
-
         init(translator);
 
         String className = PackageManager.resolveTypeDeclaration(clazz);
@@ -43,8 +40,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
         cboSet.addAll(projectFanInMap.get(className));
         int cbo = cboSet.size();
 
-        // TODO: testing
-        return builder.value(cbo).build();
+        return result(cbo);
     }
 
     private void init(ComplexityTranslator translator) {
@@ -132,7 +128,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
     }
 
     @Override
-    public String getName() {
-        return "CBO";
+    public MetricDefinition getDefinition() {
+        return MetricDefinitionRegistry.get("CBO");
     }
 }

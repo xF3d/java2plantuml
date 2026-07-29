@@ -20,9 +20,9 @@ target = "LOWER"
 
 [[metric_definitions]]
 metric = "FanIn"
-max = 1.7976931348623157e300 # close to Double.MAX_VALUE
+max = 1.7976931348623157e308 # Double.MAX_VALUE
 min = -1.0
-target = "HIGHER"
+target = "NONE"
 
 [[metric_definitions]]
 metric = "FanOut"
@@ -80,6 +80,6 @@ target = "LOWER"
 
 [[metric_definitions]]
 metric = "LOC"
-max = 1.7976931348623157e300 # close to Double.MAX_VALUE
+max = 1.7976931348623157e308 # Double.MAX_VALUE
 min = -1.0
 target = "NONE"
