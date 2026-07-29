@@ -1,8 +1,8 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.MetricTarget;
 import translate.translator.ComplexityTranslator;

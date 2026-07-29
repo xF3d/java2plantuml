@@ -1,7 +1,7 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
 import translate.complexity.MetricTarget;
-import translate.complexity.method.CyclomaticEvaluator;
+import translate.complexity.evaluators.method.CyclomaticEvaluator;
 
 public class WMCCyclomaticEvaluator extends WMCBaseEvaluator {
     public WMCCyclomaticEvaluator() {

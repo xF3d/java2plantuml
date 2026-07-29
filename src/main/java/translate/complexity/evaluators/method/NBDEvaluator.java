@@ -1,10 +1,10 @@
-package translate.complexity.method;
+package translate.complexity.evaluators.method;
 
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 

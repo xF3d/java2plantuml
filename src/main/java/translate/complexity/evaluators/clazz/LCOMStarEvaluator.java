@@ -1,4 +1,4 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -7,7 +7,7 @@ import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.ThisExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 

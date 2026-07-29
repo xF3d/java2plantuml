@@ -21,7 +21,7 @@
                   textLength="73.1377" x="6893.4847" y="154.5332">complexity
             </text>
         </g><!--cluster method-->
-        <g class="cluster" data-qualified-name="translate.complexity.method" data-source-line="5" id="ent0003">
+        <g class="cluster" data-qualified-name="translate.complexity.evaluators.method" data-source-line="5" id="ent0003">
             <path d="M10911.9847,191 L10963.5365,191 A3.75,3.75 0 0 1 10966.0365,193.5 L10973.0365,214.6094 L11442.9847,214.6094 A2.5,2.5 0 0 1 11445.4847,217.1094 L11445.4847,358.5 A2.5,2.5 0 0 1 11442.9847,361 L10911.9847,361 A2.5,2.5 0 0 1 10909.4847,358.5 L10909.4847,193.5 A2.5,2.5 0 0 1 10911.9847,191"
                   fill="none" style="stroke:#000000;stroke-width:1.5;"/>
             <line style="stroke:#000000;stroke-width:1.5;" x1="10909.4847" x2="10973.0365" y1="214.6094" y2="214.6094"/>
@@ -29,7 +29,7 @@
                   textLength="50.5518" x="10913.4847" y="207.5332">method
             </text>
         </g><!--cluster clazz-->
-        <g class="cluster" data-qualified-name="translate.complexity.clazz" data-source-line="35" id="ent0012">
+        <g class="cluster" data-qualified-name="translate.complexity.evaluators.clazz" data-source-line="35" id="ent0012">
             <path d="M7300.9847,182 L7335.4467,182 A3.75,3.75 0 0 1 7337.9467,184.5 L7344.9467,205.6094 L10882.9847,205.6094 A2.5,2.5 0 0 1 10885.4847,208.1094 L10885.4847,367.5 A2.5,2.5 0 0 1 10882.9847,370 L7300.9847,370 A2.5,2.5 0 0 1 7298.4847,367.5 L7298.4847,184.5 A2.5,2.5 0 0 1 7300.9847,182"
                   fill="none" style="stroke:#000000;stroke-width:1.5;"/>
             <line style="stroke:#000000;stroke-width:1.5;" x1="7298.4847" x2="7344.9467" y1="205.6094" y2="205.6094"/>
@@ -281,7 +281,7 @@
             </text>
             <line style="stroke:#181818;stroke-width:0.5;" x1="7101.9847" x2="7279.0189" y1="337.4375" y2="337.4375"/>
         </g><!--class ComplexityEvaluator$Clazz-->
-        <g class="entity" data-qualified-name="translate.complexity.ComplexityEvaluator.Clazz" data-source-line="278"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.ComplexityEvaluator.Clazz" data-source-line="278"
            id="ent0048">
             <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="500.25" x="8835.4847" y="714"/>
@@ -298,7 +298,7 @@
                 ComplexityMetricResult
             </text>
         </g><!--class ComplexityEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.ComplexityEvaluator" data-source-line="281"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.ComplexityEvaluator" data-source-line="281"
            id="ent0049">
             <rect fill="#F1F1F1" height="48" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;" width="160.3857"
                   x="6905.4847" y="262"/>
@@ -311,7 +311,7 @@
             <line style="stroke:#181818;stroke-width:0.5;" x1="6906.4847" x2="7064.8705" y1="294" y2="294"/>
             <line style="stroke:#181818;stroke-width:0.5;" x1="6906.4847" x2="7064.8705" y1="302" y2="302"/>
         </g><!--class ComplexityEvaluator$Method-->
-        <g class="entity" data-qualified-name="translate.complexity.ComplexityEvaluator.Method" data-source-line="283"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.ComplexityEvaluator.Method" data-source-line="283"
            id="ent0050">
             <rect fill="#F1F1F1" height="65.6094" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="504.1465" x="10925.4847" y="714"/>
@@ -328,7 +328,7 @@
                 ComplexityMetricResult
             </text>
         </g><!--class CyclomaticEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.method.CyclomaticEvaluator" data-source-line="6"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.method.CyclomaticEvaluator" data-source-line="6"
            id="ent0004">
             <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="504.1465" x="10925.4847" y="227"/>
@@ -355,7 +355,7 @@
                   x="10931.4847" y="338.3613">~processExpression(expr : Expression) : int
             </text>
         </g><!--class NOCEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.clazz.NOCEvaluator" data-source-line="36"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.clazz.NOCEvaluator" data-source-line="36"
            id="ent0013">
             <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="500.25" x="9103.4847" y="244.5"/>
@@ -376,7 +376,7 @@
                 ComplexityMetricResult
             </text>
         </g><!--class CBOEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.clazz.CBOEvaluator" data-source-line="40"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.clazz.CBOEvaluator" data-source-line="40"
            id="ent0014">
             <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="500.25" x="8568.4847" y="227"/>
@@ -405,7 +405,7 @@
                 -collectReferenceTypes(type : ResolvedType, collector : Set&lt;String&gt;) : void
             </text>
         </g><!--class DITEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.clazz.DITEvaluator" data-source-line="46"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.clazz.DITEvaluator" data-source-line="46"
            id="ent0015">
             <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="467.5947" x="8065.4847" y="244.5"/>
@@ -426,7 +426,7 @@
                 ComplexityMetricResult
             </text>
         </g><!--class WMCBaseEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.clazz.WMCBaseEvaluator" data-source-line="50"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.clazz.WMCBaseEvaluator" data-source-line="50"
            id="ent0016">
             <rect fill="#F1F1F1" height="136.0469" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="715.0488" x="7314.9847" y="218"/>
@@ -457,7 +457,7 @@
                 ComplexityMetricResult
             </text>
         </g><!--class RFCEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.clazz.RFCEvaluator" data-source-line="57"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.clazz.RFCEvaluator" data-source-line="57"
            id="ent0017">
             <rect fill="#F1F1F1" height="83.2188" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="500.25" x="10369.4847" y="244.5"/>
@@ -478,7 +478,7 @@
                 ComplexityMetricResult
             </text>
         </g><!--class LCOMNEvaluator-->
-        <g class="entity" data-qualified-name="translate.complexity.clazz.LCOMNEvaluator" data-source-line="61"
+        <g class="entity" data-qualified-name="translate.complexity.evaluators.clazz.LCOMStarEvaluator" data-source-line="61"
            id="ent0018">
             <rect fill="#F1F1F1" height="100.8281" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="696.373" x="9638.4847" y="235.5"/>

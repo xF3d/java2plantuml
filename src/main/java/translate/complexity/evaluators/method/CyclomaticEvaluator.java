@@ -1,4 +1,4 @@
-package translate.complexity.method;
+package translate.complexity.evaluators.method;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -13,9 +13,8 @@ import com.github.javaparser.ast.stmt.SwitchEntry;
 import com.github.javaparser.ast.stmt.WhileStmt;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.Getter;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
-import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {

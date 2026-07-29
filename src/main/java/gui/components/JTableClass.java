@@ -1,7 +1,7 @@
 package gui.components;
 
 import gui.frame.ClassFrame;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 

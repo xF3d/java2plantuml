@@ -1,20 +1,15 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedClassDeclaration;
-import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import com.github.javaparser.resolution.types.ResolvedReferenceType;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.ResolverUtils;
-import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
-
-import java.util.Collection;
 
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
 

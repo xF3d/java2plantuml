@@ -1,27 +1,27 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.body.TypeDeclaration;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 /**
- * Number of Fields
+ * Number of Methods
  */
-public class NOFEvaluator implements ComplexityEvaluator.Clazz {
+public class NOMEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         ComplexityMetricResult.Builder builder = ComplexityMetricResult.builder()
-                .name("NOF")
-                .max(9)
+                .name("NOM")
+                .max(15)
                 .min(-1);
 
-        return builder.value(clazz.getFields().size()).build();
+        return builder.value(clazz.getMethods().size()).build();
     }
 
     @Override
     public String getName() {
-        return "NOF";
+        return "NOM";
     }
 }

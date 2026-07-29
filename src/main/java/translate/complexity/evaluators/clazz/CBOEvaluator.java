@@ -1,4 +1,4 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -6,7 +6,7 @@ import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.AllArgsConstructor;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.pkg.PackageManager;

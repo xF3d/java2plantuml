@@ -1,28 +1,21 @@
-package translate.complexity.clazz;
+package translate.complexity.evaluators.clazz;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
-import com.github.javaparser.ast.body.CallableDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
-import com.github.javaparser.ast.nodeTypes.NodeWithExtends;
-import com.github.javaparser.ast.nodeTypes.NodeWithImplements;
-import com.github.javaparser.ast.nodeTypes.NodeWithMembers;
 import com.github.javaparser.resolution.declarations.ResolvedMethodDeclaration;
 import com.github.javaparser.resolution.declarations.ResolvedReferenceTypeDeclaration;
 import translate.ResolverUtils;
-import translate.complexity.ComplexityEvaluator;
+import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.Stack;
 
 /**
  * Counts the number of methods that can potentially execute in response to a message sent to an object (its own methods plus methods they invoke).
