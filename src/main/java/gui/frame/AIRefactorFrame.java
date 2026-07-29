@@ -8,14 +8,14 @@ import translate.translator.ComplexityTranslator;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class AIRefactorFrame extends JFrame {
     private final ComplexityTranslator complexityTranslator;
     private int currentCard = 0;
-    private AtomicInteger cardSize = new AtomicInteger(1);
+    private AtomicInteger cardSize = new AtomicInteger(0);
 
+    // TODO: clonare progetto e mostrare differenze
     public AIRefactorFrame(ComplexityTranslator translator) {
         super("AI Refactoring");
         super.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -41,7 +41,7 @@ public class AIRefactorFrame extends JFrame {
 
                 var diff = aiManager.chat(cclass, method);
 
-                String pageNString = String.valueOf(cardSize.getAndIncrement());
+                String pageNString = String.valueOf(cardSize.getAndIncrement() + 1);
                 JPanel panel = new JPanel();
 
                 panel.add(new JLabel("Page " + pageNString));
@@ -51,7 +51,6 @@ public class AIRefactorFrame extends JFrame {
             }
         }
 
-
         // Right arrow
         cards.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
                 .put(KeyStroke.getKeyStroke("RIGHT"), "next");
@@ -60,7 +59,7 @@ public class AIRefactorFrame extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 currentCard = (currentCard + 1) % cardSize.get();
-                layout.show(cards, String.valueOf(currentCard));
+                layout.show(cards, String.valueOf(currentCard + 1));
             }
         });
 
@@ -73,7 +72,7 @@ public class AIRefactorFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 int cs = cardSize.get();
                 currentCard = (currentCard - 1 + cs) % cs;
-                layout.show(cards, String.valueOf(currentCard));
+                layout.show(cards, String.valueOf(currentCard + 1));
             }
         });
 
