@@ -57,7 +57,7 @@ public class AIManager {
     private ChatModel suggestionModel = null;
     private final ArrayList<ChatModel> verifiers = new ArrayList<>();
 
-    public DiffPromptResponse chat(ComplexityClass clazz, ComplexityMethod method) {
+    public DiffPromptResponse fixMethod(ComplexityClass clazz, ComplexityMethod method) {
         if (suggestionModel == null) throw new IllegalCallerException();
 
         CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
@@ -102,21 +102,22 @@ public class AIManager {
             throw new RuntimeException(e);
         }
 
-        String methodMetricsString = String.join("\n", methodMetrics);
-
         String classMetricsString = String.join("\n", classMetrics);
+        String classSmellsStrings = String.join("\n", classSmells);
+        String methodMetricsString = String.join("\n", methodMetrics);
+        String methodSmellsStrings = String.join("\n", methodSmells);
 
 
         var range = method.getMethod().getRange().orElseThrow();
 
-        String mainMessage = Config.FORM_REFACTOR_PROMPT.formatted(
+        String mainMessage = Prompts.CLASS_CONTEXT.formatted(
                 importString,
                 decl.getNameAsString(),
                 methodSignaturesString,
                 classMetricsString,
+                classSmellsStrings,
                 methodMetricsString,
-                classSmells,
-                methodSmells,
+                methodSmellsStrings,
                 method.getMethod().toString(),
                 range.begin,
                 range.end
@@ -125,7 +126,7 @@ public class AIManager {
         String response;
         try {
             response = suggestionModel.chat(
-                    SystemMessage.systemMessage(Config.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
+                    SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
                     UserMessage.userMessage(mainMessage)
             ).aiMessage().text();
         } catch (Exception e) {
@@ -139,7 +140,7 @@ public class AIManager {
             String modelName = verifier.defaultRequestParameters().modelName();
             try {
                 previousResponse = verifier.chat(
-                        SystemMessage.systemMessage(Config.SYSTEM_PROMPT_VER.formatted(modelName)),
+                        SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_VER.formatted(modelName)),
                         UserMessage.userMessage(mainMessage + "\n" + previousResponse)
                 ).aiMessage().text();
             } catch (Exception e) {
@@ -152,5 +153,10 @@ public class AIManager {
         }
 
         return DiffPromptResponse.fromResponse(previousResponse);
+    }
+
+    public DiffPromptResponse fixMethods(ComplexityClass clazz, Collection<ComplexityMethod> methods) {
+        // TODO: switch usage with this one
+        throw new UnsupportedOperationException();
     }
 }

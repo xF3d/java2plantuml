@@ -39,7 +39,7 @@ public class AIRefactorFrame extends JFrame {
 
                 var cclass = complexityTranslator.getClassResultMap().get(fqn);
 
-                var diff = aiManager.chat(cclass, method);
+                var diff = aiManager.fixMethod(cclass, method);
 
                 String pageNString = String.valueOf(cardSize.getAndIncrement() + 1);
                 JPanel panel = new JPanel();
