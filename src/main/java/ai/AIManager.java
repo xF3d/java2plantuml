@@ -85,27 +85,22 @@ public class AIManager {
 
         String methodSignaturesString = String.join("\n", methodSignatures);
 
-        Collection<String> methodMetrics;
-        Collection<String> classMetrics;
-        Collection<String> methodSmells;
-        Collection<String> classSmells;
+        String methodMetrics;
+        String classMetrics;
+        String methodSmells;
+        String classSmells;
         try {
             var mthResult = method.getComplexityResult().get();
-            methodMetrics = mthResult.metricsAiList();
-            methodSmells = mthResult.getCodeSmells();
+            methodMetrics = mthResult.metricsAi();
+            methodSmells = mthResult.codeSmellsAi();
 
             var clzResult = clazz.getComplexityResult().get();
-            classMetrics = clzResult.metricsAiList();
-            classSmells = clzResult.getCodeSmells();
+            classMetrics = clzResult.metricsAi();
+            classSmells = clzResult.codeSmellsAi();
 
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
-
-        String classMetricsString = String.join("\n", classMetrics);
-        String classSmellsStrings = String.join("\n", classSmells);
-        String methodMetricsString = String.join("\n", methodMetrics);
-        String methodSmellsStrings = String.join("\n", methodSmells);
 
 
         var range = method.getMethod().getRange().orElseThrow();
@@ -114,10 +109,10 @@ public class AIManager {
                 importString,
                 decl.getNameAsString(),
                 methodSignaturesString,
-                classMetricsString,
-                classSmellsStrings,
-                methodMetricsString,
-                methodSmellsStrings,
+                classMetrics,
+                classSmells,
+                methodMetrics,
+                methodSmells,
                 method.getMethod().toString(),
                 range.begin,
                 range.end

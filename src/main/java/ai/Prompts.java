@@ -86,6 +86,9 @@ public class Prompts {
             """;
 
     public static final String METHOD_CONTEXT = """
+            METHOD_METRICS
+            %s
+            
             METHOD_CODE_SMELLS
             %s
             

@@ -48,4 +48,12 @@ public class ComplexityResultAggregator {
 
         return out;
     }
+
+    public String metricsAi() {
+        return String.join("\n", metricsAiList());
+    }
+
+    public String codeSmellsAi() {
+        return String.join(", ", codeSmells);
+    }
 }
