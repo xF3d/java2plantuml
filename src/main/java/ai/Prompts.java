@@ -5,34 +5,37 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Prompts {
     public static final String FORMAT_USAGE = """
-            Your answer should always follow this strict format (LINEDIFF uses the standard git diff patch format)
+            Your answer should always follow this strict format, where text wrapped by {{}} are place holders
             
-            -----LINEDIFF-----
-            ...
-            -----ADDED_METHODS-----
-            Full java method signature + method body
+            -----METHODS-----
+            {{New methods and MUST have the rewritten method}}
             -----NOTES-----
-            AI_MODEL : NOTE_1
-            AI_MODEL : NOTE_2
-            AI_MODEL_2 : NOTE_3
+            {{AI_MODEL_NAME}} : {{NOTE_1}}
+            {{AI_MODEL_NAME}} : {{NOTE_2}}
+            {{AI_MODEL_NAME_2}} : {{NOTE_3}}
             
-            Example:
-            -----LINEDIFF-----
-            1 - int a = calc.add(4, 5);
-            2 + int b = calc.div(6, 2);
-            3 + int c = b + d; // assuming d exists in the context supplied by the user
-            -----ADDED_METHODS-----
-            void myMethod(int a, int b) {
-                // impl
+            
+            
+            Example (DO NOT USE IN CONTEXT OR AS A FIRST PROMPT):
+            -----METHODS-----
+            public void myMethod(int a, int b) {
+                {{Implementation}}
+            }
+            
+            private void newMethod() {
+                {{Another Implementation}}
             }
             -----NOTES-----
             chatgpt-GEN : myCalc's class might be a overabstraction, consider removing them
             grok : anotherClass's behaviour could be replaced with a Strategy design pattern
             claude : fancyClass should have a more descriptive name
+            
+            
+            
             """;
 
     public static final String SYSTEM_PROMPT_VER = """
-            You are an AI agent named "%s" that given java code diffs you need to verify and improve the solution only when possible.
+            You are an AI agent named "%s" that given java code and a proposed new implementation and new methods you need to verify and improve the solution only when possible.
             You will be also given relevant context like:
             - Metrics (which themselves don't indicate problems but can be helpful)
             - CodeSmells (which are indeed problems that need to be addressed).
@@ -41,11 +44,11 @@ public class Prompts {
             """
             + FORMAT_USAGE +
             """
-            
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself
-            - NOTEs are optional and don't contain explanation of what you did, they merely talk about stuff you can't fix directly and tips for the user, regarding maybe class structure, metrics, suggestions etc, should never refer to your changes like LINEDIFF or ADDED_METHODS
+            - You can create new functions only if you implement them fully yourself, so don't leave TODOs
+            - NOTEs are optional
+            - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
             - If you don't want to change anything, just resend the message you received without changing it
             - You can add notes with your name only
             
@@ -69,11 +72,11 @@ public class Prompts {
             """
             + FORMAT_USAGE +
             """
-            
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             - You can create new functions only if you implement them fully yourself
-            - NOTEs are optional and don't contain explanation of what you did, they merely talk about stuff you can't fix directly and tips for the user, regarding maybe class structure, metrics, suggestions etc, should never refer to your changes like LINEDIFF or ADDED_METHODS
+            - NOTEs are optional
+            - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
             - Only answer in the format provided
             - You can add notes with your name only
             
@@ -99,7 +102,6 @@ public class Prompts {
             METHOD_LINE_END: %s
             """;
 
-    //TODO: inviare il contesto classe una volta sola
     public static final String CLASS_CONTEXT = """
             IMPORTS
             %s
@@ -116,5 +118,5 @@ public class Prompts {
             CLASS_CODE_SMELLS
             %s
             
-            """ + METHOD_CONTEXT;
+            """;
 }

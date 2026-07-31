@@ -12,7 +12,6 @@ import translate.structure.complexity.ComplexityMethod;
 import file.Config;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -105,7 +104,7 @@ public class AIManager {
 
         var range = method.getMethod().getRange().orElseThrow();
 
-        String mainMessage = Prompts.CLASS_CONTEXT.formatted(
+        String mainMessage = (Prompts.CLASS_CONTEXT + Prompts.METHOD_CONTEXT).formatted(
                 importString,
                 decl.getNameAsString(),
                 methodSignaturesString,
@@ -148,10 +147,5 @@ public class AIManager {
         }
 
         return DiffPromptResponse.fromResponse(previousResponse);
-    }
-
-    public DiffPromptResponse fixMethods(ComplexityClass clazz, Collection<ComplexityMethod> methods) {
-        // TODO: switch usage with this one
-        throw new UnsupportedOperationException();
     }
 }
