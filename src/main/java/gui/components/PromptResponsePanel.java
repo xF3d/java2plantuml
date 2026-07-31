@@ -14,16 +14,7 @@ public class PromptResponsePanel extends JScrollPane {
             return;
         }
 
-        JPanel top = new JPanel();
-
-        var topLabel = new JLabel("Code difference");
-        var topText = new JTextArea();
-        topText.setEditable(false);
-        topText.setText(String.join("\n", response.diffs()));
-
-        top.add(topLabel);
-        top.add(topText);
-
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         JPanel center = new JPanel();
 
@@ -46,7 +37,6 @@ public class PromptResponsePanel extends JScrollPane {
         bottomText.add(bottomLabel);
         bottom.add(bottomText);
 
-        super.add(top);
         super.add(center);
         super.add(bottom);
     }
