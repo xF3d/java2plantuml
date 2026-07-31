@@ -106,7 +106,7 @@ public class MainFrame extends JFrame {
                 Config.getInstance().updateTranslator(umlTranslator);
 
                 FileLogger.LOGGER.info("Generating UML\n");
-                if (!umlTranslator.execute()) {
+                if (!umlTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                         null,
                         "Selected folder is invalid.",
@@ -118,6 +118,17 @@ public class MainFrame extends JFrame {
                 FileLogger.LOGGER.info("UML generation ended\n");
 
                 String plantUmlOutput = umlTranslator.toPlantUml();
+
+                if (!complexityTranslator.execute(selectedDirectory)) {
+                    JOptionPane.showMessageDialog(
+                            null,
+                            "Selected folder is invalid.",
+                            "Invalid Folder",
+                            JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+
                 new PlantUMLFrame(plantUmlOutput, complexityTranslator);
 
             } catch (Exception ex) {
@@ -134,7 +145,7 @@ public class MainFrame extends JFrame {
             try {
                 Config.getInstance().updateTranslator(complexityTranslator);
 
-                if (!complexityTranslator.execute()) {
+                if (!complexityTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                         null,
                         "Selected folder is invalid.",
@@ -161,7 +172,7 @@ public class MainFrame extends JFrame {
             try {
                 Config.getInstance().updateTranslator(complexityTranslator);
 
-                if (!complexityTranslator.execute()) {
+                if (!complexityTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                             null,
                             "Selected folder is invalid.",

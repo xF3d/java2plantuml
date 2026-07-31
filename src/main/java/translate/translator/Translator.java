@@ -24,6 +24,7 @@ public interface Translator {
     void addNode(Node node);
     void setError(Boolean b);
     PackageManager getPackageManager();
+    boolean hasExecuted();
 
     default void handleCompilationUnit(CompilationUnit unit) {
 
@@ -89,10 +90,11 @@ public interface Translator {
         }
     }
 
-    default boolean execute() {
+    default boolean execute(File selectedDirectory) {
+        if (hasExecuted()) return true;
+
         FileHandler handler = new FileHandler(this);
 
-        var selectedDirectory = MainFrame.getSelectedDirectory();
         if (selectedDirectory == null || !selectedDirectory.exists()) {
             return false;
         }
@@ -100,5 +102,4 @@ public interface Translator {
         new DirectoryExplorer(handler).explore(selectedDirectory);
         return true;
     }
-
 }

@@ -74,6 +74,7 @@ public class ComplexityTranslator implements Translator {
     };
 
     private Boolean error = false;
+    private boolean executed = false;
 
     public ComplexityTranslator() {
         var cbo = new CBOEvaluator();
@@ -124,6 +125,12 @@ public class ComplexityTranslator implements Translator {
         int threads = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(threads);
         computeEverything(executor);
+        executed = true;
+    }
+
+    @Override
+    public boolean hasExecuted() {
+        return executed;
     }
 
     private void computeEverything(ExecutorService executor) {
