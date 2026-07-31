@@ -76,7 +76,7 @@ public class SystemStatus extends JFrame {
         this.content.add(new ReferenceController(
             "<html><p>Classes in the system</p> <br></html>",
             translator.getClassesArray(),
-            (unused) -> getClassTable()
+            (unused) -> new JTableClass(translator)
         ));
 
         this.setContentPane(scrollPanel);
@@ -86,13 +86,5 @@ public class SystemStatus extends JFrame {
         this.setVisible(true);
         this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
         FrameManager.addFrame(this);
-    }
-
-    private JPanel jclassTable = null;
-    private JPanel getClassTable() {
-        if (jclassTable != null) return jclassTable;
-
-        jclassTable = new JTableClass(translator);
-        return jclassTable;
     }
 }

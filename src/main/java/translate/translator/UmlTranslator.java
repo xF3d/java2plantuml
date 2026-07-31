@@ -17,6 +17,7 @@ import translate.component.RecordWriter;
 import translate.component.SetTranslatingComponent;
 import translate.structure.pkg.PackageManager;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,8 @@ public class UmlTranslator implements Translator {
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<String> fqn = new HashSet<>();
     private Boolean error = false;
+
+    private boolean executed;
 
     private String calculatedPlantuml = null;
 
@@ -61,6 +64,18 @@ public class UmlTranslator implements Translator {
         }
 
         componentTranslators.forEach((s) -> s.safeAdd(node));
+    }
+
+    @Override
+    public boolean execute(File selectedDirectory) {
+        boolean result = Translator.super.execute(selectedDirectory);
+        executed = true;
+        return result;
+    }
+
+    @Override
+    public boolean hasExecuted() {
+        return executed;
     }
 
     public String toPlantUml() {
