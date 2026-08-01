@@ -5,16 +5,15 @@ import ai.DiffPromptResponse;
 import javax.swing.*;
 
 public class PromptResponsePanel extends JScrollPane {
-    private final DiffPromptResponse response;
 
     public PromptResponsePanel(DiffPromptResponse response) {
-        this.response = response;
-        if (response == DiffPromptResponse.EMPTY) {
+        if (response.isEmpty()) {
             super.add(new JLabel("There was an error"));
             return;
         }
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        JPanel main = new JPanel();
+        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
 
         JPanel center = new JPanel();
 
@@ -37,7 +36,9 @@ public class PromptResponsePanel extends JScrollPane {
         bottomText.add(bottomLabel);
         bottom.add(bottomText);
 
-        super.add(center);
-        super.add(bottom);
+        main.add(center);
+        main.add(bottom);
+
+        super.add(main);
     }
 }
