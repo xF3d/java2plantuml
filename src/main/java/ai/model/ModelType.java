@@ -30,10 +30,4 @@ public record ModelType(APIType type, String modelName, String url, String apiKe
     public ChatModel build() {
         return type.build(modelName, url, apiKey);
     }
-
-    public static boolean isValid(ModelType type) {
-        if (type == null) return false;
-
-        return type.isValid();
-    }
 }

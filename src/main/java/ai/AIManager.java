@@ -17,9 +17,7 @@ import java.util.stream.Collectors;
 
 public class AIManager {
     private AIManager() {
-
         Config cfg = Config.getInstance();
-        if (cfg.isAiDisabled()) return;
 
         this.suggestionModel = cfg.getMainModel().build();
 

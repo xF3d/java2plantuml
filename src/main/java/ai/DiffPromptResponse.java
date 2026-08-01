@@ -44,7 +44,12 @@ public record DiffPromptResponse(List<String> newMethods, List<String> notes) {
             }
         }
 
+
         return out;
+    }
+
+    public boolean isEmpty() {
+        return notes.isEmpty() && newMethods.isEmpty();
     }
 
     public String original() {

@@ -121,10 +121,6 @@ public class Config {
         verifyWithMain = result.getBoolean("ai.verify_with_main", () -> true);
     }
 
-    public boolean isAiDisabled() {
-        return !ModelType.isValid(mainModel);
-    }
-
     public Path getConfigPath() {
         return Path.of(CONFIG_NAME);
     }

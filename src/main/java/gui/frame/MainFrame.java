@@ -90,12 +90,7 @@ public class MainFrame extends JFrame {
         umlButton.setEnabled(state);
         complexityButton.setEnabled(state);
         recalculateButton.setEnabled(state);
-
-        if (Config.getInstance().isAiDisabled()) {
-            aiButton.setEnabled(false);
-        } else {
-            aiButton.setEnabled(state);
-        }
+        aiButton.setEnabled(state);
     }
 
     private void generateUml(ActionEvent ignored) {
