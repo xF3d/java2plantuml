@@ -342,10 +342,14 @@ public class ComplexityTranslator implements Translator {
 
     public ComplexityResultAggregator evaluateMethod(String fullClassName, String method) {
         try {
-            return methodResultMap.get(fullClassName).get(method).getComplexityResult().get();
+            return getMethod(fullClassName, method).getComplexityResult().get();
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ComplexityMethod getMethod(String fullClassName, String method) {
+        return methodResultMap.get(fullClassName).get(method);
     }
 
     public String[] getClassesArray() {
