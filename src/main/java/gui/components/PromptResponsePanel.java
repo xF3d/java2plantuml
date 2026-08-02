@@ -1,6 +1,7 @@
 package gui.components;
 
 import ai.DiffPromptResponse;
+import gui.GuiUtils;
 
 import javax.swing.*;
 
@@ -8,14 +9,15 @@ public class PromptResponsePanel extends JScrollPane {
 
     public PromptResponsePanel(DiffPromptResponse response) {
         if (response.isEmpty()) {
-            super.add(new JLabel("There was an error"));
+            setViewportView(new JLabel("There was an error"));
             return;
         }
 
         JPanel main = new JPanel();
-        main.setLayout(new BoxLayout(main, BoxLayout.Y_AXIS));
+        GuiUtils.setVerticalLayout(main);
 
         JPanel center = new JPanel();
+        GuiUtils.setVerticalLayout(center);
 
         var centerLabel = new JLabel("New methods");
         var centerText = new JTextArea();
@@ -27,18 +29,20 @@ public class PromptResponsePanel extends JScrollPane {
 
 
         JPanel bottom = new JPanel();
+        GuiUtils.setVerticalLayout(bottom);
 
         var bottomLabel = new JLabel("Notes");
         var bottomText = new JTextArea();
         bottomText.setEditable(false);
         bottomText.setText(String.join("\n", response.notes()));
 
-        bottomText.add(bottomLabel);
+        bottom.add(bottomLabel);
         bottom.add(bottomText);
 
         main.add(center);
         main.add(bottom);
 
-        super.add(main);
+        setViewportView(main);
     }
+
 }

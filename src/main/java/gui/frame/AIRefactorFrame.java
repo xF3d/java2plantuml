@@ -259,6 +259,7 @@ public class AIRefactorFrame extends JFrame {
     public void addCard(String name, DiffPromptResponse diff) {
         String pageNString = String.valueOf(cardSize.getAndIncrement() + 1);
         JPanel panel = new JPanel();
+        GuiUtils.setVerticalLayout(panel);
 
         panel.add(new JLabel("Page " + pageNString + "/" + responses.length));
         panel.add(new JLabel(name));
