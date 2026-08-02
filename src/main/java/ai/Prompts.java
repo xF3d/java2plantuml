@@ -5,7 +5,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class Prompts {
     public static final String FORMAT_USAGE = """
-            Your answer should always follow this strict format, where text wrapped by {{}} are place holders
+            Your answer should always follow this strict format, where text wrapped by {{}} are place holders.
             
             -----METHODS-----
             {{New methods and MUST have the rewritten method}}
@@ -13,6 +13,12 @@ public class Prompts {
             {{AI_MODEL_NAME}} : {{NOTE_1}}
             {{AI_MODEL_NAME}} : {{NOTE_2}}
             {{AI_MODEL_NAME_2}} : {{NOTE_3}}
+            
+            
+            
+            All {{Note_n}} must be maximum of 50 words and contain suggestions, not commments.
+            {{AI_MODEL_NAME}} entries might contain other AI model names different than yours, that is because
+            multiple AI are interacting with it, but you must only use your own name when adding notes.
             
             
             
@@ -32,6 +38,8 @@ public class Prompts {
             
             
             
+            Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
+            The rewritten method should maintain the same signature as the previous one.
             """;
 
     public static final String SYSTEM_PROMPT_VER = """
@@ -39,7 +47,7 @@ public class Prompts {
             You will be also given relevant context like:
             - Metrics (which themselves don't indicate problems but can be helpful)
             - CodeSmells (which are indeed problems that need to be addressed).
-            - Changes suggested
+            - Previous response
             
             """
             + FORMAT_USAGE +
@@ -52,8 +60,7 @@ public class Prompts {
             - If you don't want to change anything, just resend the message you received without changing it
             - You can add notes with your name only
             
-            There are actions that you cannot do directly, however you can suggest them in a NOTE section
-            in a short format (max 50 words) and using your name in the AI_MODEL before the message, mainly:
+            There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
             - Adding an external dependency
             - Suggesting changes to different classes
@@ -80,8 +87,7 @@ public class Prompts {
             - Only answer in the format provided
             - You can add notes with your name only
             
-            There are actions that you cannot do directly, however you can suggest them in a NOTE section
-            in a short format (max 50 words) and using your name in the AI_MODEL before the message, mainly:
+            There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
             - Adding an external dependency
             - Suggesting changes to different classes
@@ -95,7 +101,7 @@ public class Prompts {
             METHOD_CODE_SMELLS
             %s
             
-            SELECTED_METHOD
+            ORIGINAL_SELECTED_METHOD
             %s
             
             METHOD_LINE_START: %s
