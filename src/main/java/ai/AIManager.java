@@ -10,6 +10,7 @@ import lombok.Getter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 import file.Config;
+import translate.structure.pkg.PackageManager;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -19,7 +20,12 @@ public class AIManager {
     private AIManager() {
         Config cfg = Config.getInstance();
 
-        this.suggestionModel = cfg.getMainModel().build();
+        var modelToBuild = cfg.getMainModel();
+        if (modelToBuild == null) {
+            return;
+        }
+
+        this.suggestionModel = modelToBuild.build();
 
         var verifiersModels = cfg.getVerifyModels();
         for (var verifiersModel : verifiersModels) {
@@ -144,6 +150,7 @@ public class AIManager {
             System.out.println(previousResponse);
         }
 
-        return DiffPromptResponse.fromResponse(previousResponse);
+        String origin = PackageManager.resolveTypeDeclaration(clazz.getNode()) + "#" + methodSignaturesString;
+        return DiffPromptResponse.fromResponse(origin, previousResponse);
     }
 }
