@@ -3,9 +3,7 @@ package gui.frame;
 import gui.ComplexityGridPanel;
 import gui.components.JTableClass;
 import gui.components.ReferenceController;
-import org.knowm.xchart.RadarChart;
-import org.knowm.xchart.RadarChartBuilder;
-import org.knowm.xchart.XChartPanel;
+import gui.components.SystemChartPanel;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.SystemResultAggregator;
 import translate.translator.ComplexityTranslator;
@@ -36,25 +34,6 @@ public class SystemStatus extends JFrame {
             otherResults.add(result);
         }
 
-        // <editor-fold desc="Charted Metrics">
-        RadarChart chart = null;
-        if (!chartResults.isEmpty()) {
-            chart = new RadarChartBuilder()
-                    .width(800)
-                    .height(500)
-                    .build();
-
-            String[] names = new String[chartResults.size()];
-            double[] values = new double[chartResults.size()];
-
-            for (int i = 0; i < chartResults.size(); i++) {
-                names[i] = chartResults.get(i).metric();
-                values[i] = chartResults.get(i).normalize();
-            }
-
-            chart.setRadiiLabels(names);
-            chart.addSeries("System", values);
-        }
         // </editor-fold>
 
         ComplexityGridPanel complexityGridPanel = new ComplexityGridPanel(false);
@@ -66,11 +45,9 @@ public class SystemStatus extends JFrame {
 
         var scrollPanel = new JScrollPane(content);
 
-        // throws on empty chart, so better not create it at all in that case
-        if (chart != null) {
-            var chartPanel = new XChartPanel<>(chart);
-            this.content.add(chartPanel);
-        }
+        SystemChartPanel systemChartPanel = new SystemChartPanel();
+        systemChartPanel.addProject("System", chartResults);
+        this.content.add(systemChartPanel);
 
         this.content.add(complexityGridPanel);
         this.content.add(new ReferenceController(
