@@ -139,7 +139,7 @@ public class AIManager {
             try {
                 previousResponse = verifier.chat(
                         SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_VER.formatted(modelName)),
-                        UserMessage.userMessage(mainMessage + "\n" + previousResponse)
+                        UserMessage.userMessage(mainMessage + "\n Previous Response: " + previousResponse)
                 ).aiMessage().text();
             } catch (Exception e) {
                 FileLogger.LOGGER.warning("Error in verifier " + e.getMessage());

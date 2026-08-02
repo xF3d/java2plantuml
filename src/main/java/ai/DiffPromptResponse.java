@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public record DiffPromptResponse(String origin, List<String> newMethods, List<String> notes) {
-    public static final DiffPromptResponse EMPTY = new DiffPromptResponse(null, List.of(), List.of());
+    public static final DiffPromptResponse EMPTY = new DiffPromptResponse("null", List.of(), List.of());
 
     public static final String ORIGIN = "-----ORIGIN-----";
     public static final String METHODS = "-----METHODS-----";
