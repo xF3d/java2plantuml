@@ -36,7 +36,7 @@ public class AnnotationWriter extends SetTranslatingComponent<AnnotationDeclarat
 
         builder.append("}\n");
 
-        return new UmlEntry(builder.toString(), "");
+        return new UmlEntry(builder.toString());
     }
 
     public @interface Test {

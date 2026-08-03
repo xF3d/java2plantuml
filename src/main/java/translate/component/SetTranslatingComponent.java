@@ -3,6 +3,7 @@ package translate.component;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Name;
 import lombok.Getter;
 import translate.component.formatter.MemberFormatter;
@@ -44,7 +45,7 @@ public abstract class SetTranslatingComponent<T extends Node> {
     }
 
     public UmlPackageEntry writeUML(MemberFormatter formatter) {
-        ArrayList<String> associations = new ArrayList<>();
+        ArrayList<UmlAssociation> associations = new ArrayList<>();
         HashMap<String, List<String>> packageMap = new HashMap<>();
         for (var element : set) {
             String packageName = element.findCompilationUnit()
@@ -60,7 +61,7 @@ public abstract class SetTranslatingComponent<T extends Node> {
                 v.add(entry.classDefinition());
                 return v;
             });
-            associations.add(entry.associations());
+            associations.addAll(entry.associations());
         }
 
         return new UmlPackageEntry(packageMap, associations);

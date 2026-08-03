@@ -14,7 +14,7 @@ public class EnumWriter extends SetTranslatingComponent<EnumDeclaration> {
         StringBuilder sb = new StringBuilder();
 
         sb.append("enum ");
-        sb.append(formatter.fullSimpleName(element));
+        sb.append(MemberFormatter.fullSimpleName(element));
         sb.append("{\n");
 
         sb.append("__ Entries __\n");

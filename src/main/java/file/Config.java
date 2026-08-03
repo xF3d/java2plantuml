@@ -86,6 +86,16 @@ public class Config {
                 .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers)
                 .setShowAssociations(showAssociations);
 
+        var wlArray = result.getArrayOrEmpty("uml_translator.package_whitelist");
+        for (int i = 0; i < wlArray.size(); i++) {
+            configBuilder.withWhitelist(wlArray.getString(i));
+        }
+
+        var blArray = result.getArrayOrEmpty("uml_translator.package_blacklist");
+        for (int i = 0; i < blArray.size(); i++) {
+            configBuilder.withBlacklist(blArray.getString(i));
+        }
+
 
         var rawMainType = result.getString("generator.type");
         if (rawMainType != null) {

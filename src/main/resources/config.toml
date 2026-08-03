@@ -3,6 +3,8 @@ show_methods = true
 show_attributes = true
 show_colored_access_specifiers = true
 show_associations = true
+package_whitelist = []
+package_blacklist = []
 
 [ai]
 verify_with_main = true

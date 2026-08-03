@@ -7,14 +7,9 @@ import com.github.javaparser.ast.type.Type;
 import file.Config;
 import file.FileLogger;
 import lombok.Getter;
-import translate.component.AnnotationWriter;
-import translate.component.ClassWriter;
-import translate.component.EnumWriter;
-import translate.component.InterfaceWriter;
+import translate.component.*;
 import translate.component.formatter.AssociationFormatter;
 import translate.component.formatter.MemberFormatter;
-import translate.component.RecordWriter;
-import translate.component.SetTranslatingComponent;
 import translate.structure.pkg.PackageManager;
 
 import java.io.File;
@@ -96,14 +91,19 @@ public class UmlTranslator implements Translator {
         if (!Config.getInstance().getConfig().isShowColoredAccessSpecifiers()) sb.append("skinparam classAttributeIconSize 0\n");
 
 
-        Set<String> associations = new HashSet<>();
+        Set<UmlAssociation> associations = new HashSet<>();
         for (var writer : componentTranslators) {
             var result = writer.writeUML(formatter);
             sb.append(mapWriter(result.packageMap()));
             associations.addAll(result.associations());
         }
 
-        associations.forEach(sb::append);
+        var filter = Config.getInstance().getConfig().getPackageFilter();
+        associations.forEach(it -> {
+            if (filter.isValid(it.from()) && filter.isValid(it.to())) {
+                sb.append(it).append("\n");
+            }
+        });
 
         initFqn();
 
@@ -120,17 +120,22 @@ public class UmlTranslator implements Translator {
 
     private void initFqn() {
         fqn.clear();
+        var filter = Config.getInstance().getConfig().getPackageFilter();
         for (SetTranslatingComponent<?> entry : componentTranslators) {
             for (Node r : entry.getSet()) {
-                fqn.add(formatter.fullPackageName(r.findCompilationUnit().get(), r));
+                String name = formatter.fullPackageName(r.findCompilationUnit().orElseThrow(), r);
+                if (filter.isValid(name)) fqn.add(name);
             }
         }
     }
 
     private String mapWriter(Map<String, List<String>> map) {
         StringBuilder builder = new StringBuilder();
+        var filter = Config.getInstance().getConfig().getPackageFilter();
         for (var entry : map.entrySet()) {
             String packageName = entry.getKey();
+            if (!filter.isValid(packageName)) continue;
+
             if (packageName.isEmpty()) {
                 entry.getValue().forEach(builder::append);
                 continue;

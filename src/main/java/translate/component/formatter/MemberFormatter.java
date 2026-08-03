@@ -20,6 +20,7 @@ import com.github.javaparser.ast.nodeTypes.NodeWithType;
 import com.github.javaparser.ast.nodeTypes.NodeWithVariables;
 import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import lombok.AllArgsConstructor;
+import translate.component.UmlAssociation;
 import translate.structure.pkg.PackageManager;
 import file.Config;
 
@@ -97,32 +98,40 @@ public class MemberFormatter {
         return String.join(String.valueOf(delimiter), names);
     }
 
-    public <N extends TypeDeclaration<?>, T extends TypeDeclaration<N> & NodeWithImplements<N>> String nodeWithImplements(T ctor) {
-        StringBuilder builder = new StringBuilder();
+    public <N extends TypeDeclaration<?>, T extends TypeDeclaration<N> & NodeWithImplements<N>> List<UmlAssociation> nodeWithImplements(T ctor) {
+        CompilationUnit cu = ctor.findCompilationUnit().orElseThrow();
+        var implemented = ctor.getImplementedTypes();
+        ArrayList<UmlAssociation> associations = new ArrayList<>(implemented.size());
 
-        CompilationUnit cu = ctor.findCompilationUnit().get();
-        for (ClassOrInterfaceType e : ctor.getImplementedTypes()) {
-            builder.append(fullPackageName(cu, ctor));
-            builder.append(" ..|> ");
-            builder.append(fullPackageName(cu, e));
-            builder.append("\n");
+        for (ClassOrInterfaceType e : implemented) {
+            associations.add(
+                    new UmlAssociation(
+                            fullPackageName(cu, ctor),
+                            "..|>",
+                            fullPackageName(cu, e)
+                    )
+            );
         }
 
-        return builder.toString();
+        return associations;
     }
 
-    public <N extends TypeDeclaration<?>, T extends TypeDeclaration<N> & NodeWithExtends<N>> String nodeWithExtends(T ctor) {
-        StringBuilder builder = new StringBuilder();
+    public <N extends TypeDeclaration<?>, T extends TypeDeclaration<N> & NodeWithExtends<N>> List<UmlAssociation> nodeWithExtends(T ctor) {
+        CompilationUnit cu = ctor.findCompilationUnit().orElseThrow();
+        var extended = ctor.getExtendedTypes();
+        ArrayList<UmlAssociation> associations = new ArrayList<>(extended.size());
 
-        CompilationUnit cu = ctor.findCompilationUnit().get();
         for (ClassOrInterfaceType e : ctor.getExtendedTypes()) {
-            builder.append(fullPackageName(cu, ctor));
-            builder.append(" --|> ");
-            builder.append(fullPackageName(cu, e));
-            builder.append("\n");
+            associations.add(
+                    new UmlAssociation(
+                            fullPackageName(cu, ctor),
+                            "--|>",
+                            fullPackageName(cu, e)
+                    )
+            );
         }
 
-        return builder.toString();
+        return associations;
     }
 
     public String node(NodeWithMembers<?> ctor) {

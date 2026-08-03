@@ -41,8 +41,8 @@ public class ClassWriter extends SetTranslatingComponent<ClassOrInterfaceDeclara
 
         classDefinitionBuilder.append("}\n");
 
-        String associations = formatter.nodeWithImplements(element) +
-            formatter.nodeWithExtends(element);
+        var associations = formatter.nodeWithImplements(element);
+        associations.addAll(formatter.nodeWithExtends(element));
 
         return new UmlEntry(classDefinitionBuilder.toString(), associations);
     }
