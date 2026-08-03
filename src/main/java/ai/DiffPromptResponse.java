@@ -21,9 +21,9 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
 
         int section = 0;
         for (String line : response.lines().toList()) {
-            line = line.strip();
+            String strip = line.strip();
 
-            switch (line) {
+            switch (strip) {
                 case METHODS -> {
                     section = 0;
                     continue;
@@ -59,9 +59,9 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
         String origin = null;
         int section = 0;
         for (String line : full.lines().toList()) {
-            line = line.strip();
+            String strip = line.strip();
 
-            switch (line) {
+            switch (strip) {
                 case ORIGIN -> {
                     section = 2;
                     continue;
