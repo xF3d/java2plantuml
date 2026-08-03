@@ -22,6 +22,7 @@ public class PromptResponsePanel extends JScrollPane {
         var centerLabel = new JLabel("New methods");
         var centerText = new JTextArea();
         centerText.setEditable(false);
+        centerText.setFocusable(false);
         centerText.setText(String.join("\n", response.newMethods()));
 
         center.add(centerLabel);
@@ -34,6 +35,7 @@ public class PromptResponsePanel extends JScrollPane {
         var bottomLabel = new JLabel("Notes");
         var bottomText = new JTextArea();
         bottomText.setEditable(false);
+        bottomText.setFocusable(false);
         bottomText.setText(String.join("\n", response.notes()));
 
         bottom.add(bottomLabel);
