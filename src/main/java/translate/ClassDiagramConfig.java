@@ -4,6 +4,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +18,11 @@ public class ClassDiagramConfig {
     private boolean showMethods;
     private boolean showAttributes;
     private boolean showColoredAccessSpecifiers;
+    private boolean showAssociations;
 
     //builder
+    @Setter
+    @Accessors(chain = true)
     public static class Builder implements UmlConfigBuilder {
 
         //default values for attributes
@@ -26,24 +30,10 @@ public class ClassDiagramConfig {
         private boolean showMethods = true;
         private boolean showAttributes = true;
         private boolean showColoredAccessSpecifiers = false;
+        private boolean showAssociations;
 
         public Builder withVisitor(VoidVisitorAdapter<Void> visitor) {
             visitorAdapters.add(visitor);
-            return this;
-        }
-
-        public Builder setShowMethods(boolean showMethods) {
-            this.showMethods = showMethods;
-            return this;
-        }
-
-        public Builder setShowAttributes(boolean showAttributes) {
-            this.showAttributes = showAttributes;
-            return this;
-        }
-
-        public Builder setShowColoredAccessSpecifiers(boolean showColoredAccessSpecifiers) {
-            this.showColoredAccessSpecifiers = showColoredAccessSpecifiers;
             return this;
         }
 
@@ -55,6 +45,7 @@ public class ClassDiagramConfig {
             config.setShowAttributes(showAttributes);
             config.setShowColoredAccessSpecifiers(showColoredAccessSpecifiers);
             config.setShowMethods(showMethods);
+            config.setShowAssociations(showAssociations);
             return config;
         }
     }

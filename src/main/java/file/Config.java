@@ -75,14 +75,16 @@ public class Config {
             throw new RuntimeException("Invalid config");
         }
 
-        boolean showMethods = result.getBoolean("translator.show_methods", () -> true);
-        boolean showAttributes = result.getBoolean("translator.show_attributes", () -> true);
-        boolean showColoredAccessSpecifiers = result.getBoolean("translator.show_colored_access_specifiers", () -> true);
+        boolean showMethods = result.getBoolean("uml_translator.show_methods", () -> true);
+        boolean showAttributes = result.getBoolean("uml_translator.show_attributes", () -> true);
+        boolean showColoredAccessSpecifiers = result.getBoolean("uml_translator.show_colored_access_specifiers", () -> true);
+        boolean showAssociations = result.getBoolean("uml_translator.show_associations", () -> true);
 
         configBuilder
                 .setShowMethods(showMethods)
                 .setShowAttributes(showAttributes)
-                .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers);
+                .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers)
+                .setShowAssociations(showAssociations);
 
 
         var rawMainType = result.getString("generator.type");

@@ -106,7 +106,10 @@ public class UmlTranslator implements Translator {
         associations.forEach(sb::append);
 
         initFqn();
-        writeAssociations(sb);
+
+        if (Config.getInstance().getConfig().isShowAssociations()) {
+            writeAssociations(sb);
+        }
 
         sb.append("@enduml");
 
