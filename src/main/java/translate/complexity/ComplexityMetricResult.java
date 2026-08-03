@@ -52,7 +52,11 @@ public class ComplexityMetricResult {
     }
 
     public String toAi() {
-        return metric() + " range between: " + min() + " & " + max() + " value: " + formattedValue() + "\n";
+        if (isThresholdValid()) {
+            return metric() + " range between: " + min() + " & " + max() + " value: " + formattedValue();
+        } else {
+            return metric() + " value: " + formattedValue();
+        }
     }
 
     public String formattedValue() {
