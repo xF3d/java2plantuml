@@ -14,13 +14,13 @@ public enum APIType {
         if (this == OLLAMA) return OllamaChatModel.builder()
                 .modelName(name)
                 .baseUrl(url)
-                .timeout(Duration.ofDays(365))
+                .timeout(Duration.ofMinutes(5))
                 .build();
         return OpenAiChatModel.builder()
                 .modelName(name)
                 .baseUrl(url)
                 .apiKey(apiKey)
-                .timeout(Duration.ofDays(365))
+                .timeout(Duration.ofDays(5))
                 .build();
     }
 }

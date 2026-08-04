@@ -126,7 +126,7 @@ public class AIManager {
 
 
         String origin = PackageManager.resolveTypeDeclaration(clazz.getNode()) + "#" + method.getMethod().getSignature();
-        var response = validatedChat(suggestionModel, origin,
+        ValidatedResponse response = validatedChat(suggestionModel, origin,
                 SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
                 UserMessage.userMessage(mainMessage)
         );
@@ -166,10 +166,11 @@ public class AIManager {
         if (diff.isEmpty()) return "Invalid response";
 
         String code = diff.codeMethods();
+        String toParse = "class DummyClazz {\n" + code + "\n}";
         try {
-            StaticJavaParser.parse("class AAAAAAAAAAAAAA {" + code + "}");
+            StaticJavaParser.parse(toParse);
         } catch (Exception e) {
-            return "Parsing error";
+            return "Parsing error, tried to parse: " + toParse + "\nError: " + e.getMessage();
         }
 
         return null;
@@ -186,11 +187,11 @@ public class AIManager {
                 continue;
             }
 
-            String result = handleValidation(origin, stringResponse);
-            if (result == null) {
+            String error = handleValidation(origin, stringResponse);
+            if (error == null) {
                 return new ValidatedResponse(stringResponse, null);
             } else {
-                lastResponse = new ValidatedResponse(null, result);
+                lastResponse = new ValidatedResponse(null, error);
             }
         }
 

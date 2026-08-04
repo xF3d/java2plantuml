@@ -14,6 +14,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -58,6 +60,12 @@ public class AIRefactorFrame extends JFrame {
 
         super.add(cards);
         super.setVisible(true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                aiExecutor.shutdownNow();
+            }
+        });
         FrameManager.addFrame(this);
     }
 
@@ -191,20 +199,24 @@ public class AIRefactorFrame extends JFrame {
 
                 this.aiExecutor.submit(() -> {
 
-                    var cclass = complexityTranslator.getClassResultMap().get(fqn);
+                    try {
+                        var cclass = complexityTranslator.getClassResultMap().get(fqn);
 
-                    DiffPromptResponse diff = aiManager.fixMethod(cclass, methodEntry);
-                    if (gen != generation.get()) {
-                        return;
-                    }
-
-                    SwingUtilities.invokeLater(() -> {
+                        DiffPromptResponse diff = aiManager.fixMethod(cclass, methodEntry);
                         if (gen != generation.get()) {
                             return;
                         }
 
-                        this.addCard(diff);
-                    });
+                        SwingUtilities.invokeLater(() -> {
+                            if (gen != generation.get()) {
+                                return;
+                            }
+
+                            this.addCard(diff);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 });
             }
         }
@@ -306,6 +318,7 @@ public class AIRefactorFrame extends JFrame {
     public void addCard(DiffPromptResponse diff) {
         int current = cardSize.getAndIncrement();
         String pageNString = String.valueOf(current + 1);
+        responses[current] = diff;
         JPanel panel = new JPanel();
         GuiUtils.setVerticalLayout(panel);
 
