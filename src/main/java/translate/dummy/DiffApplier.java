@@ -30,7 +30,7 @@ public final class DiffApplier implements ReversibleAction {
         this.original = original;
 
         this.addedMethods = new ArrayList<>();
-        String toParse = "class DUMMY {\n" + String.join("\n", diff.newMethods()) + "}\n";
+        String toParse = "class DUMMY {\n" + diff.codeMethods() + "}\n";
         ParseResult<CompilationUnit> result = PARSER.parse(toParse);
         if (result.isSuccessful() && result.getResult().isPresent()) {
             CompilationUnit cu = result.getResult().get();
@@ -53,7 +53,7 @@ public final class DiffApplier implements ReversibleAction {
         this.original = original;
 
         this.addedMethods = new ArrayList<>();
-        String toParse = "class DUMMY {\n" + String.join("\n", diff.newMethods()) + "}\n";
+        String toParse = "class DUMMY {\n" + diff.codeMethods() + "\n}";
         ParseResult<CompilationUnit> result = PARSER.parse(toParse);
         if (result.isSuccessful() && result.getResult().isPresent()) {
             CompilationUnit cu = result.getResult().get();
