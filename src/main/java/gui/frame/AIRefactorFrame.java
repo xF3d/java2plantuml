@@ -49,7 +49,7 @@ public class AIRefactorFrame extends JFrame {
 
         this.complexityTranslator = translator;
         this.dummyProject = new DummyProject(complexityTranslator);
-        this.aiExecutor = Executors.newVirtualThreadPerTaskExecutor();
+        this.aiExecutor = Executors.newSingleThreadExecutor();
 
         CardLayout cardLayout = new CardLayout();
         this.cards = new JPanel(cardLayout);

@@ -8,6 +8,7 @@ package_blacklist = []
 
 [ai]
 verify_with_main = true
+validation_retries = 3
 
 [[metric_definitions]]
 metric = "CBO"

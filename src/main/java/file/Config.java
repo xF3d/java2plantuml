@@ -40,6 +40,7 @@ public class Config {
     private final ArrayList<ModelType> verifyModels = new ArrayList<>();
 
     private boolean verifyWithMain;
+    private long validationRetries;
 
     public void updateTranslator(Translator translator) {
         this.config = configBuilder
@@ -131,6 +132,7 @@ public class Config {
         }
 
         verifyWithMain = result.getBoolean("ai.verify_with_main", () -> true);
+        validationRetries = result.getLong("ai.validation_retries", () -> 3);
     }
 
     public Path getConfigPath() {

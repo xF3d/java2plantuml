@@ -1,7 +1,9 @@
 package ai;
 
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
+import dev.langchain4j.data.message.ChatMessage;
 import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.chat.ChatModel;
@@ -121,36 +123,77 @@ public class AIManager {
                 range.end
         );
 
-        String response;
-        try {
-            response = suggestionModel.chat(
-                    SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
-                    UserMessage.userMessage(mainMessage)
-            ).aiMessage().text();
-        } catch (Exception e) {
-            FileLogger.LOGGER.severe("Fatal error in generator: " + e.getMessage());
+
+
+        String origin = PackageManager.resolveTypeDeclaration(clazz.getNode()) + "#" + method.getMethod().getSignature();
+        var response = validatedChat(suggestionModel, origin,
+                SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_GEN.formatted(Config.getInstance().getMainModel())),
+                UserMessage.userMessage(mainMessage)
+        );
+
+        if (!response.isValid()) {
+            FileLogger.LOGGER.severe("Fatal error in generator: " + response.error());
             return DiffPromptResponse.EMPTY;
         }
 
         System.out.println(response);
-        String previousResponse = response;
+        ValidatedResponse previousResponse = response;
         for (var verifier : verifiers) {
             String modelName = verifier.defaultRequestParameters().modelName();
-            try {
-                previousResponse = verifier.chat(
-                        SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_VER.formatted(modelName)),
-                        UserMessage.userMessage(mainMessage + "\n Previous Response: " + previousResponse)
-                ).aiMessage().text();
-            } catch (Exception e) {
-                FileLogger.LOGGER.warning("Error in verifier " + e.getMessage());
+            previousResponse = validatedChat(verifier, origin,
+                    SystemMessage.systemMessage(Prompts.SYSTEM_PROMPT_VER.formatted(modelName)),
+                    UserMessage.userMessage(mainMessage + "\n Previous Response: " + previousResponse.message())
+            );
+
+            if (!previousResponse.isValid()) {
+                FileLogger.LOGGER.warning("Error in verifier " + previousResponse.error());
                 continue;
             }
 
-            // TODO: further validation
             System.out.println(previousResponse);
         }
 
-        String origin = PackageManager.resolveTypeDeclaration(clazz.getNode()) + "#" + methodSignaturesString;
-        return DiffPromptResponse.fromResponse(origin, previousResponse);
+        return DiffPromptResponse.fromResponse(origin, previousResponse.message());
+    }
+
+    /**
+     * @return null on success, error message on fail
+     */
+    private String handleValidation(String origin, String message) {
+        if (message == null) return "Invalid message";
+
+        DiffPromptResponse diff = DiffPromptResponse.fromResponse(origin, message);
+        if (diff.isEmpty()) return "Invalid response";
+
+        String code = diff.codeMethods();
+        try {
+            StaticJavaParser.parse("class AAAAAAAAAAAAAA {" + code + "}");
+        } catch (Exception e) {
+            return "Parsing error";
+        }
+
+        return null;
+    }
+
+    private ValidatedResponse validatedChat(ChatModel model, String origin, ChatMessage... messages) {
+        ValidatedResponse lastResponse = null;
+        for (int i = 0; i < Config.getInstance().getValidationRetries(); i++) {
+            String stringResponse;
+            try {
+                stringResponse = model.chat(messages).aiMessage().text();
+            } catch (Exception e) {
+                lastResponse = new ValidatedResponse(null, e.getMessage());
+                continue;
+            }
+
+            String result = handleValidation(origin, stringResponse);
+            if (result == null) {
+                return new ValidatedResponse(stringResponse, null);
+            } else {
+                lastResponse = new ValidatedResponse(null, result);
+            }
+        }
+
+        return lastResponse;
     }
 }

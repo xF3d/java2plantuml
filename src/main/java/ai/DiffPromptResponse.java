@@ -97,6 +97,10 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
         return notes.isEmpty() && newMethods.isEmpty();
     }
 
+    public String codeMethods() {
+        return String.join("\n", newMethods);
+    }
+
     public String original() {
         String origin = ORIGIN + "\n";
         String originValue = origin + "\n";
