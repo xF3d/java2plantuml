@@ -40,7 +40,7 @@ public final class DiffApplier implements ReversibleAction {
         }
 
 
-        String[] split = diff.original().split("#");
+        String[] split = diff.origin().split("#");
         if (split.length != 2) throw new IllegalStateException("Invalid origin format");
 
         this.toUpdatePath = toUpdateTranslator.getMethod(split[0], split[1]).getMethod()
@@ -63,7 +63,7 @@ public final class DiffApplier implements ReversibleAction {
         }
 
 
-        String[] split = diff.original().split("#");
+        String[] split = diff.origin().split("#");
         if (split.length != 2) throw new IllegalStateException("Invalid origin format");
 
         this.toUpdatePath = original

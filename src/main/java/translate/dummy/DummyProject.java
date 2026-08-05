@@ -53,7 +53,7 @@ public class DummyProject {
         ArrayList<DiffApplier> appliers = new ArrayList<>();
 
         for (var diff : diffs) {
-            String[] split = diff.original().split(Pattern.quote("#"));
+            String[] split = diff.origin().split(Pattern.quote("#"));
             if (split.length != 2) throw new RuntimeException("Invalid diff " + diff);
 
             String fqn = split[0];
@@ -84,7 +84,7 @@ public class DummyProject {
         setTranslator();
 
         for (var diff : diffs) {
-            String[] split = diff.original().split(Pattern.quote("#"));
+            String[] split = diff.origin().split(Pattern.quote("#"));
             if (split.length != 2) throw new RuntimeException("Invalid diff " + diff);
 
             String fqn = split[0];
