@@ -21,18 +21,9 @@ public class SystemStatus extends JFrame {
 
         SystemResultAggregator systemMetrics = translator.evaluateSystem();
 
-        ArrayList<ComplexityMetricResult> allResults = new ArrayList<>(systemMetrics.getSystemMetrics().values());
-        allResults.addAll(systemMetrics.getClassMetrics().values());
-
-        ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
-        ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
-        for (var result : allResults) {
-            if (result.isThresholdValid()) {
-                chartResults.add(result);
-            }
-
-            otherResults.add(result);
-        }
+        var results = systemMetrics.displayList();
+        ArrayList<ComplexityMetricResult> chartResults = results[0];
+        ArrayList<ComplexityMetricResult> otherResults = results[1];
 
         // </editor-fold>
 

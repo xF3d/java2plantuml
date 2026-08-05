@@ -37,4 +37,27 @@ public class SystemResultAggregator {
 
         return true;
     }
+
+    public ArrayList<ComplexityMetricResult>[] displayList() {
+        ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
+        ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
+
+        for (var result : systemMetrics.values()) {
+            if (result.isThresholdValid()) {
+                chartResults.add(result);
+            }
+
+            otherResults.add(result);
+        }
+
+        for (var result : classMetrics.values()) {
+            if (result.isThresholdValid()) {
+                chartResults.add(result);
+            }
+
+            otherResults.add(result);
+        }
+
+        return new ArrayList[] {chartResults, otherResults};
+    }
 }

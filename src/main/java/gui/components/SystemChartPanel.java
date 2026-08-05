@@ -20,21 +20,6 @@ public class SystemChartPanel extends JPanel {
         updateChart();
     }
 
-    public void addProject(String name, ComplexityTranslator translator) {
-        var systemMetrics = translator.evaluateSystem();
-        ArrayList<ComplexityMetricResult> allResults = new ArrayList<>(systemMetrics.getSystemMetrics().values());
-        allResults.addAll(systemMetrics.getClassMetrics().values());
-
-        ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
-        for (var result : allResults) {
-            if (result.isThresholdValid()) {
-                chartResults.add(result);
-            }
-        }
-
-        addProject(name, chartResults);
-    }
-
     public void updateChart() {
         if (isEmpty()) return;
         this.removeAll();

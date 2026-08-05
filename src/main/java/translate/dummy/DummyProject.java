@@ -1,8 +1,10 @@
 package translate.dummy;
 
 import ai.DiffPromptResponse;
+import file.Config;
 import file.FolderSync;
 import gui.components.SystemChartPanel;
+import gui.frame.CompareFrame;
 import gui.frame.FrameManager;
 import gui.frame.MainFrame;
 import translate.translator.ComplexityTranslator;
@@ -60,7 +62,7 @@ public class DummyProject {
             String signature = split[1];
 
             var originalMethod = originalTranslator.getMethod(fqn, signature).getMethod();
-            appliers.add(new DiffApplier(originalMethod.clone(), diff, dummyTranslator));
+            appliers.add(new DiffApplier(originalMethod, diff, dummyTranslator));
         }
 
         appliers.forEach(DiffApplier::apply);
@@ -68,15 +70,7 @@ public class DummyProject {
         var tempTranslator = new ComplexityTranslator();
         tempTranslator.execute(dummyLocation.toFile());
 
-        JFrame comparison = new JFrame();
-        SystemChartPanel panel = new SystemChartPanel();
-
-
-        comparison.add(panel);
-        comparison.setVisible(true);
-        comparison.setExtendedState(comparison.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-        FrameManager.addFrame(comparison);
-
+        new CompareFrame(originalTranslator, dummyTranslator);
         appliers.forEach(DiffApplier::revert);
     }
 
