@@ -25,7 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * High CBO indicates strong dependencies, making the class harder to modify, test, and reuse. Lower coupling generally improves maintainability.
  */
 public class CBOEvaluator implements ComplexityEvaluator.Clazz {
-    //TODO soglie configurabili
     private volatile boolean initialized = false;
     private final Map<String, Set<String>> projectFanOutMap = new ConcurrentHashMap<>();
     private final Map<String, Set<String>> projectFanInMap = new ConcurrentHashMap<>();
@@ -49,8 +48,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
         synchronized (this) {
             if (initialized) return;
 
-            translator.getClassResultMap().values().stream()
-                    .map(ComplexityClass::getNode)
+            translator.getTempClassMap().values().stream()
                     .forEach(decl -> {
                         // Ottieni il nome qualificato completo della classe (es. com.azienda.MetricApp)
                         String className = PackageManager.resolveTypeDeclaration(decl);

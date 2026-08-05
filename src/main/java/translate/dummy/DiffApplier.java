@@ -75,12 +75,7 @@ public final class DiffApplier implements ReversibleAction {
 
     @Override
     public void apply() {
-        CompilationUnit cu = null;
-        try {
-            cu = StaticJavaParser.parse(toUpdatePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        CompilationUnit cu = parsePath();
 
         TypeDeclaration<?> clazz = getOwningClass(cu, original);
 
@@ -112,12 +107,7 @@ public final class DiffApplier implements ReversibleAction {
 
     @Override
     public void revert() {
-        CompilationUnit cu = null;
-        try {
-            cu = StaticJavaParser.parse(toUpdatePath);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        CompilationUnit cu = parsePath();
 
         TypeDeclaration<?> clazz = getOwningClass(cu, original);
 
@@ -165,5 +155,18 @@ public final class DiffApplier implements ReversibleAction {
                 .setSymbolResolver(ResolverUtils.getResolver());
 
         return new JavaParser(config);
+    }
+
+    private CompilationUnit parsePath() {
+        try {
+            var parseResult = PARSER.parse(toUpdatePath);
+            if (parseResult.isSuccessful()) {
+                return parseResult.getResult().orElseThrow();
+            }
+
+            return null;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

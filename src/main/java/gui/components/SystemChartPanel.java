@@ -4,8 +4,10 @@ import org.knowm.xchart.RadarChart;
 import org.knowm.xchart.RadarChartBuilder;
 import org.knowm.xchart.XChartPanel;
 import translate.complexity.ComplexityMetricResult;
+import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +18,21 @@ public class SystemChartPanel extends JPanel {
     public void addProject(String name, List<ComplexityMetricResult> chartResults) {
         projectMetrics.put(name, chartResults);
         updateChart();
+    }
+
+    public void addProject(String name, ComplexityTranslator translator) {
+        var systemMetrics = translator.evaluateSystem();
+        ArrayList<ComplexityMetricResult> allResults = new ArrayList<>(systemMetrics.getSystemMetrics().values());
+        allResults.addAll(systemMetrics.getClassMetrics().values());
+
+        ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
+        for (var result : allResults) {
+            if (result.isThresholdValid()) {
+                chartResults.add(result);
+            }
+        }
+
+        addProject(name, chartResults);
     }
 
     public void updateChart() {

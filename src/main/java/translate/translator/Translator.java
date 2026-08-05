@@ -7,16 +7,15 @@ import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
-import file.Config;
-import gui.frame.MainFrame;
 import file.DirectoryExplorer;
 import file.FileHandler;
 import translate.ResolverUtils;
 import translate.structure.pkg.PackageManager;
-import visitors.PackageManagerVisitor;
+import visitors.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.List;
 
 public interface Translator {
@@ -63,6 +62,14 @@ public interface Translator {
         long end = System.currentTimeMillis();
         System.out.println("Time to create Package Map: " + (end - start));
 
+        // TODO: maybe configure this
+        ArrayList<VoidVisitor<Void>> visitors = new ArrayList<>();
+        visitors.add(new ClassVisitor(this));
+        visitors.add(new EnumVisitor(this));
+        visitors.add(new InterfaceVisitor(this));
+        visitors.add(new AnnotationVisitor(this));
+        visitors.add(new RecordVisitor(this));
+
         // then run the visitors which might depend on it
         for (var f : files) {
             File file = f.getAbsoluteFile();
@@ -71,7 +78,7 @@ public interface Translator {
                 if (result.isSuccessful() && result.getResult().isPresent()) {
                     CompilationUnit cu = result.getResult().get();
                     handleCompilationUnit(cu);
-                    for (VoidVisitor<Void> visitor : Config.getInstance().getConfig().getVisitorAdapters()) {
+                    for (VoidVisitor<Void> visitor : visitors) {
                         cu.accept(visitor, null);
                     }
 

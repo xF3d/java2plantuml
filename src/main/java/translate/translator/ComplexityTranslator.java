@@ -24,10 +24,7 @@ import translate.structure.pkg.PackageManager;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 /**
  * TODO: complessità ciclomatica della classe = somma di quella dei metodi
@@ -45,12 +42,12 @@ public class ComplexityTranslator implements Translator {
     private final Set<CompilationUnit> allCompilationUnits = new HashSet<>();
 
     // full package name --> node
-    private final Map<String, TypeDeclaration<?>> tempClassMap = new HashMap<>();
-    private final Map<String, ComplexityClass> classResultMap = new HashMap<>();
+    private final Map<String, TypeDeclaration<?>> tempClassMap = new ConcurrentHashMap<>();
+    private final Map<String, ComplexityClass> classResultMap = new ConcurrentHashMap<>();
 
     // full package name --> method Signature --> method
-    private final Map<String, Map<String, MethodDeclaration>> tempMethodMap = new HashMap<>();
-    private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new HashMap<>();
+    private final Map<String, Map<String, MethodDeclaration>> tempMethodMap = new ConcurrentHashMap<>();
+    private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new ConcurrentHashMap<>();
 
     private final ComplexityEvaluator.System[] systemEvaluators = {
             new LOCEvaluator()
@@ -349,7 +346,17 @@ public class ComplexityTranslator implements Translator {
     }
 
     public ComplexityMethod getMethod(String fullClassName, String method) {
-        return methodResultMap.get(fullClassName).get(method);
+        var mthMap = methodResultMap.get(fullClassName);
+        if (mthMap == null) {
+            throw new IllegalArgumentException("Invalid class: " + fullClassName);
+        }
+
+        var result = mthMap.get(method);
+        if (result == null) {
+            throw new IllegalArgumentException("Invalid method: " + fullClassName + "#" + method);
+        }
+
+        return result;
     }
 
     public String[] getClassesArray() {
