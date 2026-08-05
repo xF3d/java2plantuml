@@ -31,6 +31,7 @@ public final class FolderSync {
 
         try (var stream = Files.list(source)) {
             expectedNames = stream
+                    .filter(p -> !shouldIgnore(p))
                     .map(p -> p.getFileName().toString())
                     .collect(Collectors.toSet());
         }
@@ -38,6 +39,10 @@ public final class FolderSync {
         // Copy/update everything from source
         try (var stream = Files.list(source)) {
             for (Path srcChild : stream.toList()) {
+                if (shouldIgnore(srcChild)) {
+                    continue;
+                }
+
                 Path dstChild = destination.resolve(srcChild.getFileName());
 
                 if (Files.isDirectory(srcChild)) {
@@ -128,5 +133,10 @@ public final class FolderSync {
                 return FileVisitResult.CONTINUE;
             }
         });
+    }
+
+    private static boolean shouldIgnore(Path path) {
+        String name = path.getFileName().toString();
+        return name.endsWith(".lock") || name.endsWith(".lck") || name.endsWith(".tmp");
     }
 }

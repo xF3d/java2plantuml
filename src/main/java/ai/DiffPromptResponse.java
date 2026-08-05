@@ -103,7 +103,7 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
 
     public String original() {
         String origin = ORIGIN + "\n";
-        String originValue = origin + "\n";
+        String originValue = this.origin + "\n";
         String addedMethods = METHODS + "\n";
         String allAddedMethods = String.join("\n", newMethods);
         String notes = "\n" + NOTES + "\n";
@@ -115,7 +115,7 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
     private static final String SEPARATOR = "---------------------------------------";
 
     public static String toFileContents(Collection<DiffPromptResponse> responses) {
-        return responses.stream().map(DiffPromptResponse::original).collect(Collectors.joining(SEPARATOR));
+        return responses.stream().map(DiffPromptResponse::original).collect(Collectors.joining(SEPARATOR + "\n"));
     }
 
     public static List<DiffPromptResponse> fromFileContents(String contents) {
