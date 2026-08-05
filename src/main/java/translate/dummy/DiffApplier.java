@@ -1,17 +1,14 @@
 package translate.dummy;
 
 import ai.DiffPromptResponse;
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
-import com.github.javaparser.ParserConfiguration;
-import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
+import util.ProjectJavaParser;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,14 +21,12 @@ public final class DiffApplier implements ReversibleAction {
     private List<MethodDeclaration> addedMethods;
     private Path toUpdatePath;
 
-    private static final JavaParser PARSER = getParser();
-
     public DiffApplier(MethodDeclaration original, DiffPromptResponse diff, ComplexityTranslator toUpdateTranslator) throws IllegalStateException {
         this.original = original;
 
         this.addedMethods = new ArrayList<>();
         String toParse = "class DUMMY {\n" + diff.codeMethods() + "}\n";
-        ParseResult<CompilationUnit> result = PARSER.parse(toParse);
+        ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(toParse);
         if (result.isSuccessful() && result.getResult().isPresent()) {
             CompilationUnit cu = result.getResult().get();
             cu.findAll(MethodDeclaration.class, addedMethods::add);
@@ -54,7 +49,7 @@ public final class DiffApplier implements ReversibleAction {
 
         this.addedMethods = new ArrayList<>();
         String toParse = "class DUMMY {\n" + diff.codeMethods() + "\n}";
-        ParseResult<CompilationUnit> result = PARSER.parse(toParse);
+        ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(toParse);
         if (result.isSuccessful() && result.getResult().isPresent()) {
             CompilationUnit cu = result.getResult().get();
             cu.findAll(MethodDeclaration.class, addedMethods::add);
@@ -149,17 +144,9 @@ public final class DiffApplier implements ReversibleAction {
         throw new IllegalStateException("Replacement method not found");
     }
 
-    private static JavaParser getParser() {
-        ParserConfiguration config = new ParserConfiguration()
-                .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17)
-                .setSymbolResolver(ResolverUtils.getResolver());
-
-        return new JavaParser(config);
-    }
-
     private CompilationUnit parsePath() {
         try {
-            var parseResult = PARSER.parse(toUpdatePath);
+            var parseResult = ProjectJavaParser.PARSER.parse(toUpdatePath);
             if (parseResult.isSuccessful()) {
                 return parseResult.getResult().orElseThrow();
             }

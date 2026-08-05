@@ -1,16 +1,14 @@
 package translate.translator;
 
-import com.github.javaparser.JavaParser;
 import com.github.javaparser.ParseResult;
-import com.github.javaparser.ParserConfiguration;
 import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
 import file.DirectoryExplorer;
 import file.FileHandler;
-import translate.ResolverUtils;
 import translate.structure.pkg.PackageManager;
+import util.ProjectJavaParser;
 import visitors.*;
 
 import java.io.File;
@@ -30,11 +28,6 @@ public interface Translator {
     }
 
     default void translateFiles(List<File> files) throws FileNotFoundException {
-        ParserConfiguration config = new ParserConfiguration()
-            .setLanguageLevel(ParserConfiguration.LanguageLevel.JAVA_17)
-            .setSymbolResolver(ResolverUtils.getResolver());
-
-        JavaParser parser = new JavaParser(config);
         PackageManagerVisitor packageManagerVisitor = new PackageManagerVisitor(getPackageManager());
 
         long start = System.currentTimeMillis();
@@ -42,7 +35,7 @@ public interface Translator {
         for (var f : files) {
             File file = f.getAbsoluteFile();
             try {
-                ParseResult<CompilationUnit> result = parser.parse(file);
+                ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(file);
                 if (result.isSuccessful() && result.getResult().isPresent()) {
                     CompilationUnit cu = result.getResult().get();
                     cu.accept(packageManagerVisitor, null);
@@ -74,7 +67,7 @@ public interface Translator {
         for (var f : files) {
             File file = f.getAbsoluteFile();
             try {
-                ParseResult<CompilationUnit> result = parser.parse(file);
+                ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(file);
                 if (result.isSuccessful() && result.getResult().isPresent()) {
                     CompilationUnit cu = result.getResult().get();
                     handleCompilationUnit(cu);
