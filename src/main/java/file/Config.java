@@ -91,6 +91,8 @@ public class Config {
             configBuilder.withBlacklist(blArray.getString(i));
         }
 
+        config = configBuilder.build();
+
 
         var rawMainType = result.getString("generator.type");
         if (rawMainType != null) {
