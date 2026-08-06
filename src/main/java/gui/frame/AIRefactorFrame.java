@@ -102,7 +102,9 @@ public class AIRefactorFrame extends JFrame {
         JMenuBar menuBar = new JMenuBar();
 
         menuBar.add(setupPromptMenu());
+        menuBar.add(setupSaveMenu());
         menuBar.add(setupShowMenu());
+        menuBar.add(setupApproveMenu());
 
         this.setJMenuBar(menuBar);
     }
@@ -113,48 +115,40 @@ public class AIRefactorFrame extends JFrame {
         JMenuItem startPrompt = new JMenuItem("Start");
         startPrompt.addActionListener(this::start);
 
+        JMenuItem resetPrompt = new JMenuItem("Reset");
+        resetPrompt.addActionListener(this::reset);
+
+        promptsMenu.add(startPrompt);
+        promptsMenu.add(resetPrompt);
+
+        return promptsMenu;
+    }
+
+    private JMenu setupSaveMenu() {
+        JMenu saveMenu = new JMenu("Save");
+
         JMenuItem exportPrompt = new JMenuItem("Export");
         exportPrompt.addActionListener(this::export);
 
         JMenuItem importPrompt = new JMenuItem("Import");
         importPrompt.addActionListener(this::importAction);
 
-        JMenuItem resetPrompt = new JMenuItem("Reset");
-        resetPrompt.addActionListener(this::reset);
+        saveMenu.add(exportPrompt);
+        saveMenu.add(importPrompt);
 
-        promptsMenu.add(startPrompt);
-        promptsMenu.add(exportPrompt);
-        promptsMenu.add(importPrompt);
-        promptsMenu.add(resetPrompt);
-
-        return promptsMenu;
+        return saveMenu;
     }
 
     private JMenu setupShowMenu() {
         JMenu showMenu = new JMenu("Show Complexity");
 
         JMenuItem showSelected = new JMenuItem("Selected");
-        showSelected.addActionListener(e -> {
-            ArrayList<DiffPromptResponse> selectedResponse = new ArrayList<>();
-
-            for (int i = 0; i < responses.length; i++) {
-                if (!selected[i]) continue;
-
-                var response = responses[i];
-                if (response.isEmpty()) continue;
-
-                selectedResponse.add(response);
-            }
-
-            dummyProject.showDiffs(selectedResponse);
-        });
+        showSelected.addActionListener(e -> dummyProject.showDiffs(getSelected()));
 
         JMenuItem showAll = new JMenuItem("All");
-        showAll.addActionListener(e -> {
-            dummyProject.showDiffs(
-                    Arrays.stream(responses).filter(d -> !d.isEmpty()).toList()
-            );
-        });
+        showAll.addActionListener(e -> dummyProject.showDiffs(
+                Arrays.stream(responses).filter(d -> !d.isEmpty()).toList()
+        ));
 
         showMenu.add(showSelected);
         showMenu.add(showAll);
@@ -166,8 +160,12 @@ public class AIRefactorFrame extends JFrame {
         JMenu approveMenu = new JMenu("Approve");
 
         JMenuItem approveSelected = new JMenuItem("Selected");
+        approveSelected.addActionListener(e -> dummyProject.applyDiffs(getSelected()));
 
         JMenuItem approveAll = new JMenuItem("All");
+        approveAll.addActionListener(e -> dummyProject.applyDiffs(
+                Arrays.stream(responses).filter(d -> !d.isEmpty()).toList()
+        ));
 
         approveMenu.add(approveSelected);
         approveMenu.add(approveAll);
@@ -177,6 +175,7 @@ public class AIRefactorFrame extends JFrame {
 
     public void start(ActionEvent ignored) {
         FileLogger.LOGGER.info("Start AI evaluation");
+        reset(null);
         var aiManager = AIManager.getInstance();
 
         var methods = complexityTranslator.getProblematicMethods();
@@ -311,7 +310,7 @@ public class AIRefactorFrame extends JFrame {
 
         currentCard = 0;
         aiExecutor.shutdownNow();
-        aiExecutor = Executors.newVirtualThreadPerTaskExecutor();
+        aiExecutor = Executors.newSingleThreadExecutor();
         cardSize.set(0);
     }
 
@@ -335,5 +334,19 @@ public class AIRefactorFrame extends JFrame {
         cards.add(panel, pageNString);
         cards.revalidate();
         cards.repaint();
+    }
+
+    public List<DiffPromptResponse> getSelected() {
+        ArrayList<DiffPromptResponse> selectedResponses = new ArrayList<>();
+        for (int i = 0; i < responses.length; i++) {
+            if (!selected[i]) continue;
+
+            var response = responses[i];
+            if (response.isEmpty()) continue;
+
+            selectedResponses.add(response);
+        }
+
+        return selectedResponses;
     }
 }
