@@ -8,7 +8,7 @@ public class Prompts {
             Your answer should always follow this strict format, where text wrapped by {{}} are place holders.
             
             -----METHODS-----
-            {{New methods and MUST have the rewritten method}}
+            {{New methods, MUST have the rewritten method with the same signature}}
             -----NOTES-----
             {{AI_MODEL_NAME}} : {{NOTE_1}}
             {{AI_MODEL_NAME}} : {{NOTE_2}}
@@ -19,7 +19,7 @@ public class Prompts {
             All {{Note_n}} must be maximum of 50 words and contain suggestions, not commments.
             {{AI_MODEL_NAME}} entries might contain other AI model names different than yours, that is because
             multiple AI are interacting with it, but you must only use your own name when adding notes.
-            
+            Must be Java 17 language level max.
             
             
             Example (DO NOT USE IN CONTEXT OR AS A FIRST PROMPT):
