@@ -1,9 +1,9 @@
 package ai;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import com.github.javaparser.ast.body.MethodDeclaration;
+import util.ProjectJavaParser;
+
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -127,6 +127,20 @@ public record DiffPromptResponse(String clazz, String method, List<String> newMe
         String allNotes = String.join("\n", this.notes);
 
         return origin + originValue + addedMethods + allAddedMethods + notes + allNotes;
+    }
+
+    public boolean isValid() {
+        String toParser = "class DUMMY {\n" + codeMethods() + "\n}";
+        var cuResult = ProjectJavaParser.PARSER.parse(toParser);
+        if (!cuResult.isSuccessful()) return false;
+
+        var resultOpt = cuResult.getResult();
+        if (resultOpt.isEmpty()) return false;
+
+        var result = resultOpt.get();
+        return result.findAll(MethodDeclaration.class)
+                .stream()
+                .anyMatch(decl -> decl.getSignature().asString().equals(method));
     }
 
     private static final String SEPARATOR = "---------------------------------------";

@@ -165,14 +165,7 @@ public class AIManager {
         DiffPromptResponse diff = DiffPromptResponse.fromResponse(origin, message);
         if (diff.isEmpty()) return "Invalid response";
 
-        String code = diff.codeMethods();
-        String toParse = "class DummyClazz {\n" + code + "\n}";
-        try {
-            StaticJavaParser.parse(toParse);
-        } catch (Exception e) {
-            return "Parsing error, tried to parse: " + toParse + "\nError: " + e.getMessage();
-        }
-
+        if (!diff.isValid()) return "Invalid method body";
         return null;
     }
 
