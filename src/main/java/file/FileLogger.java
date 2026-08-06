@@ -32,7 +32,6 @@ public class FileLogger {
                 }
             });
 
-            fileHandler.setFormatter(new SimpleFormatter());
             LOGGER.addHandler(fileHandler);
         } catch (IOException e) {
             e.printStackTrace();
