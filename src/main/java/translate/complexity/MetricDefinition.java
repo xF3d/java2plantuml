@@ -9,8 +9,8 @@ public record MetricDefinition(String metric, double min, double max, MetricTarg
     public static MetricDefinition config(TomlTable table) {
         try {
             String metric = table.getString("metric");
-            double min = table.getDouble("min");
-            double max = table.getDouble("max");
+            double min = Math.nextDown(table.getDouble("min"));
+            double max = Math.nextUp(table.getDouble("max"));
             MetricTarget target = MetricTarget.valueOf(table.getString("target", () -> "LOWER").toUpperCase(Locale.ROOT));
 
             return new MetricDefinition(metric, min, max, target);

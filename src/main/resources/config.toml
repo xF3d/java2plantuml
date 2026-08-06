@@ -22,26 +22,26 @@ mvn_path = ""
 
 [[metric_definitions]]
 metric = "CBO"
-max = 14.0
-min = -1.0
+max = 13.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "DIT"
-max = 4.0
-min = -1.0
+max = 3.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "FanIn"
 max = 1.7976931348623157e308 # Double.MAX_VALUE
-min = -1.0
+min = 0.0
 target = "NONE"
 
 [[metric_definitions]]
 metric = "FanOut"
-max = 30.0
-min = -1.0
+max = 29.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
@@ -52,44 +52,44 @@ target = "LOWER"
 
 [[metric_definitions]]
 metric = "NOC"
-max = 4.0
-min = -1.0
+max = 3.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "NOF"
-max = 9.0
-min = -1.0
+max = 8.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "NOM"
-max = 15.0
-min = -1.0
+max = 14.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "RFC"
 max = 100.0
-min = -1.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "WMC-Cyclomatic"
-max = 35.0
-min = -1.0
+max = 34.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "Cyclomatic"
-max = 5.0
-min = -1.0
+max = 4.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
 metric = "NBD"
-max = 4.0
-min = -1.0
+max = 3.0
+min = 0.0
 target = "LOWER"
 
 [[metric_definitions]]
