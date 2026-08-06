@@ -7,6 +7,7 @@ import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.BodyDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import file.FileLogger;
 import translate.translator.ComplexityTranslator;
 import util.ProjectJavaParser;
 
@@ -62,6 +63,11 @@ public final class DiffApplier implements ReversibleAction {
 
     @Override
     public void apply() {
+        if (!isValid()) {
+            FileLogger.LOGGER.warning("Invalid Patch: at Apply");
+            return;
+        }
+
         CompilationUnit cu = parsePath();
 
         TypeDeclaration<?> clazz = getOwningClass(cu, original);
@@ -94,21 +100,38 @@ public final class DiffApplier implements ReversibleAction {
 
     @Override
     public void revert() {
+        if (!isValid()) {
+            FileLogger.LOGGER.warning("Invalid Patch: at Revert");
+            return;
+        }
+
         CompilationUnit cu = parsePath();
 
         TypeDeclaration<?> clazz = getOwningClass(cu, original);
 
-        clazz.getMethods().removeIf(md ->
-                addedMethods.stream()
-                        .filter(m -> !m.getSignature().equals(original.getSignature()))
-                        .anyMatch(m -> md.getSignature().equals(m.getSignature())));
-
         NodeList<BodyDeclaration<?>> members = clazz.getMembers();
+        List<Integer> toRemove = new ArrayList<>(members.size());
         for (int i = 0; i < members.size(); i++) {
-            if (members.get(i) instanceof MethodDeclaration md &&
-                    md.getSignature().equals(original.getSignature())) {
-                members.set(i, original.clone());
-                break;
+            var member = members.get(i);
+            if (member instanceof MethodDeclaration md) {
+                boolean isAddedMethod = addedMethods.stream()
+                        .filter(m -> !m.getSignature().equals(original.getSignature()))
+                        .anyMatch(m -> md.getSignature().equals(m.getSignature()));
+
+                if (isAddedMethod) {
+                    toRemove.add(i);
+                }
+            }
+        }
+
+        toRemove.forEach(it -> members.remove(it.intValue()));
+
+        for (int i = 0; i < members.size(); i++) {
+            var member = members.get(i);
+            if (member instanceof MethodDeclaration md) {
+                if (md.getSignature().equals(original.getSignature())) {
+                    members.set(i, original.clone());
+                }
             }
         }
 
@@ -134,6 +157,15 @@ public final class DiffApplier implements ReversibleAction {
         }
 
         throw new IllegalStateException("Replacement method not found: " + original.getSignature());
+    }
+
+    public boolean isValid() {
+        try {
+            findReplacement();
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     private CompilationUnit parsePath() {
