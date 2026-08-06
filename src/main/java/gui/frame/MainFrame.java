@@ -98,7 +98,6 @@ public class MainFrame extends JFrame {
             processInit();
             try {
                 UmlTranslator umlTranslator = new UmlTranslator();
-                Config.getInstance().updateTranslator(umlTranslator);
 
                 FileLogger.LOGGER.info("Generating UML\n");
                 if (!umlTranslator.execute(selectedDirectory)) {
@@ -138,8 +137,6 @@ public class MainFrame extends JFrame {
         backgroundExecutor.submit(() -> {
             processInit();
             try {
-                Config.getInstance().updateTranslator(complexityTranslator);
-
                 if (!complexityTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                         null,
@@ -165,8 +162,6 @@ public class MainFrame extends JFrame {
         backgroundExecutor.submit(() -> {
             processInit();
             try {
-                Config.getInstance().updateTranslator(complexityTranslator);
-
                 if (!complexityTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                             null,

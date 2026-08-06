@@ -8,6 +8,7 @@ import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 import translate.ClassDiagramConfig;
+import translate.VisitorsBuilder;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.translator.Translator;
@@ -42,15 +43,8 @@ public class Config {
     private boolean verifyWithMain;
     private long validationRetries;
 
-    public void updateTranslator(Translator translator) {
-        this.config = configBuilder
-                        .withVisitor(new ClassVisitor(translator))
-                        .withVisitor(new InterfaceVisitor(translator))
-                        .withVisitor(new EnumVisitor(translator))
-                        .withVisitor(new RecordVisitor(translator))
-                        .withVisitor(new AnnotationVisitor(translator))
-                        .build();
-    }
+    private Path mvnPath;
+    private VisitorsBuilder visitorsBuilder;
 
     public void regenDefaults() {
         try {
@@ -133,6 +127,21 @@ public class Config {
 
         verifyWithMain = result.getBoolean("ai.verify_with_main", () -> true);
         validationRetries = result.getLong("ai.validation_retries", () -> 3);
+
+        String mvnPathStr = result.getString("build_runner.mvn_path");
+        if (mvnPathStr != null) {
+            mvnPath = Path.of(mvnPathStr);
+        } else {
+            mvnPath = null;
+        }
+
+        visitorsBuilder = new VisitorsBuilder(
+                result.getBoolean("translators.allow_classes", () -> true),
+                result.getBoolean("translators.allow_interfaces", () -> true),
+                result.getBoolean("translators.allow_records", () -> true),
+                result.getBoolean("translators.allow_enums", () -> true),
+                result.getBoolean("translators.allow_annotations", () -> true)
+        );
     }
 
     public Path getConfigPath() {

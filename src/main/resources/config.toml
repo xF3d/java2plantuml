@@ -1,3 +1,10 @@
+[translators]
+allow_classes = true
+allow_interfaces = true
+allow_records = true
+allow_enums = true
+allow_annotations = true
+
 [uml_translator]
 show_methods = true
 show_attributes = true
@@ -9,6 +16,9 @@ package_blacklist = []
 [ai]
 verify_with_main = true
 validation_retries = 3
+
+[build_runner]
+mvn_path = ""
 
 [[metric_definitions]]
 metric = "CBO"

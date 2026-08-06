@@ -5,8 +5,10 @@ import com.github.javaparser.Problem;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.visitor.VoidVisitor;
+import file.Config;
 import file.DirectoryExplorer;
 import file.FileHandler;
+import file.FileLogger;
 import translate.structure.pkg.PackageManager;
 import util.ProjectJavaParser;
 import visitors.*;
@@ -30,21 +32,22 @@ public interface Translator {
     default void translateFiles(List<File> files) throws FileNotFoundException {
         PackageManagerVisitor packageManagerVisitor = new PackageManagerVisitor(getPackageManager());
 
+        List<CompilationUnit> compilationUnits = new ArrayList<>();
+
         long start = System.currentTimeMillis();
-        // first construct the package map
+        // Parse each file once and cache the CompilationUnits
         for (var f : files) {
             File file = f.getAbsoluteFile();
             try {
                 ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(file);
                 if (result.isSuccessful() && result.getResult().isPresent()) {
-                    CompilationUnit cu = result.getResult().get();
-                    cu.accept(packageManagerVisitor, null);
+                    compilationUnits.add(result.getResult().get());
                 } else {
-                    System.err.println("Parsing failed for: " + file.getPath() + "\n");
+                    FileLogger.LOGGER.warning("Parsing failed for: " + file.getPath() + "\n");
                     List<Problem> problems = result.getProblems();
                     for (Problem problem : problems) {
-                        System.err.println("Problem: " + problem.getMessage());
-                        problem.getLocation().ifPresent(loc -> System.out.println(" at " + loc));
+                        FileLogger.LOGGER.warning("Problem: " + problem.getMessage());
+                        problem.getLocation().ifPresent(loc -> FileLogger.LOGGER.warning(" at " + loc));
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -52,42 +55,28 @@ public interface Translator {
                 e.printStackTrace();
             }
         }
+
         long end = System.currentTimeMillis();
-        System.out.println("Time to create Package Map: " + (end - start));
+        FileLogger.LOGGER.info("Time to parse sources: " + (end - start));
 
-        // TODO: maybe configure this
-        ArrayList<VoidVisitor<Void>> visitors = new ArrayList<>();
-        visitors.add(new ClassVisitor(this));
-        visitors.add(new EnumVisitor(this));
-        visitors.add(new InterfaceVisitor(this));
-        visitors.add(new AnnotationVisitor(this));
-        visitors.add(new RecordVisitor(this));
+        start = System.currentTimeMillis();
+        // first construct the package map
+        for (var cu : compilationUnits) {
+                cu.accept(packageManagerVisitor, null);
+        }
+        end = System.currentTimeMillis();
+        FileLogger.LOGGER.info("Time to create Package Map: " + (end - start));
 
+        start = System.currentTimeMillis();
         // then run the visitors which might depend on it
-        for (var f : files) {
-            File file = f.getAbsoluteFile();
-            try {
-                ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(file);
-                if (result.isSuccessful() && result.getResult().isPresent()) {
-                    CompilationUnit cu = result.getResult().get();
-                    handleCompilationUnit(cu);
-                    for (VoidVisitor<Void> visitor : visitors) {
-                        cu.accept(visitor, null);
-                    }
-
-                } else {
-                    System.err.println("Parsing failed for: " + file.getPath() + "\n");
-                    List<Problem> problems = result.getProblems();
-                    for (Problem problem : problems) {
-                        System.err.println("Problem: " + problem.getMessage());
-                        problem.getLocation().ifPresent(loc -> System.out.println(" at " + loc));
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                setError(true);
-                e.printStackTrace();
+        for (CompilationUnit cu : compilationUnits) {
+            handleCompilationUnit(cu);
+            for (VoidVisitor<Void> visitor : Config.getInstance().getVisitorsBuilder().createVisitors(this)) {
+                cu.accept(visitor, null);
             }
         }
+        end = System.currentTimeMillis();
+        FileLogger.LOGGER.info("Time to visit type definitions: " + (end - start));
     }
 
     default boolean execute(File selectedDirectory) {

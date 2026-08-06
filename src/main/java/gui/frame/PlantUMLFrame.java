@@ -37,7 +37,6 @@ public class PlantUMLFrame extends JFrame {
 
         this.umlOutput = umlOutput;
         this.complexityTranslator = complexityTranslator;
-        Config.getInstance().updateTranslator(complexityTranslator);
 
         String xmlSvgOutput = PlantUMLParser.puml2svg(getProblematicPuml());
 
