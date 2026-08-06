@@ -110,7 +110,7 @@ public final class DiffApplier implements ReversibleAction {
         TypeDeclaration<?> clazz = getOwningClass(cu, original);
 
         NodeList<BodyDeclaration<?>> members = clazz.getMembers();
-        List<Integer> toRemove = new ArrayList<>(members.size());
+        List<MethodDeclaration> toRemove = new ArrayList<>(members.size());
         for (int i = 0; i < members.size(); i++) {
             var member = members.get(i);
             if (member instanceof MethodDeclaration md) {
@@ -119,12 +119,12 @@ public final class DiffApplier implements ReversibleAction {
                         .anyMatch(m -> md.getSignature().equals(m.getSignature()));
 
                 if (isAddedMethod) {
-                    toRemove.add(i);
+                    toRemove.add(md);
                 }
             }
         }
 
-        toRemove.forEach(it -> members.remove(it.intValue()));
+        toRemove.forEach(members::remove);
 
         for (int i = 0; i < members.size(); i++) {
             var member = members.get(i);
