@@ -55,13 +55,7 @@ public class DummyProject {
         ArrayList<DiffApplier> appliers = new ArrayList<>();
 
         for (var diff : diffs) {
-            String[] split = diff.origin().split(Pattern.quote("#"));
-            if (split.length != 2) throw new RuntimeException("Invalid diff " + diff);
-
-            String fqn = split[0];
-            String signature = split[1];
-
-            var originalMethod = originalTranslator.getMethod(fqn, signature).getMethod();
+            var originalMethod = originalTranslator.getMethod(diff.clazz(), diff.method()).getMethod();
             appliers.add(new DiffApplier(originalMethod, diff, dummyTranslator));
         }
 
@@ -78,13 +72,7 @@ public class DummyProject {
         setTranslator();
 
         for (var diff : diffs) {
-            String[] split = diff.origin().split(Pattern.quote("#"));
-            if (split.length != 2) throw new RuntimeException("Invalid diff " + diff);
-
-            String fqn = split[0];
-            String signature = split[1];
-
-            var originalMethod = originalTranslator.getMethod(fqn, signature).getMethod();
+            var originalMethod = originalTranslator.getMethod(diff.clazz(), diff.method()).getMethod();
             new DiffApplier(originalMethod, diff).apply();
         }
     }

@@ -34,11 +34,7 @@ public final class DiffApplier implements ReversibleAction {
             throw new IllegalStateException("Invalid parsing");
         }
 
-
-        String[] split = diff.origin().split("#");
-        if (split.length != 2) throw new IllegalStateException("Invalid origin format");
-
-        this.toUpdatePath = toUpdateTranslator.getMethod(split[0], split[1]).getMethod()
+        this.toUpdatePath = toUpdateTranslator.getMethod(diff.clazz(), diff.method()).getMethod()
                 .findCompilationUnit().orElseThrow()
                 .getStorage().orElseThrow()
                 .getPath();
@@ -56,10 +52,6 @@ public final class DiffApplier implements ReversibleAction {
         } else {
             throw new IllegalStateException("Invalid parsing");
         }
-
-
-        String[] split = diff.origin().split("#");
-        if (split.length != 2) throw new IllegalStateException("Invalid origin format");
 
         this.toUpdatePath = original
                 .findCompilationUnit().orElseThrow()
@@ -141,7 +133,7 @@ public final class DiffApplier implements ReversibleAction {
             }
         }
 
-        throw new IllegalStateException("Replacement method not found");
+        throw new IllegalStateException("Replacement method not found: " + original.getSignature());
     }
 
     private CompilationUnit parsePath() {

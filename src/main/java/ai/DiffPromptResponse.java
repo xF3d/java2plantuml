@@ -7,17 +7,26 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public record DiffPromptResponse(String origin, List<String> newMethods, List<String> notes) {
-    public static final DiffPromptResponse EMPTY = new DiffPromptResponse("null", List.of(), List.of());
+public record DiffPromptResponse(String clazz, String method, List<String> newMethods, List<String> notes) {
+    public static final DiffPromptResponse EMPTY = new DiffPromptResponse("null", "null", List.of(), List.of());
 
     public static final String ORIGIN = "-----ORIGIN-----";
     public static final String METHODS = "-----METHODS-----";
     public static final String NOTES = "-----NOTES-----";
 
     public static DiffPromptResponse fromResponse(String origin, String response) {
+        if (origin == null) throw new IllegalArgumentException("Null origin");
+
+        String[] split = origin.split(Pattern.quote("#"));
+        if (split.length != 2) throw new IllegalArgumentException("Illegal origin: " + origin);
+
+        return fromResponse(split[0], split[1], response);
+    }
+
+    public static DiffPromptResponse fromResponse(String clazz, String method, String response) {
         if (response == null) return EMPTY;
 
-        var out = new DiffPromptResponse(origin, new ArrayList<>(), new ArrayList<>());
+        var out = new DiffPromptResponse(clazz, method, new ArrayList<>(), new ArrayList<>());
 
         int section = 0;
         for (String line : response.lines().toList()) {
@@ -89,8 +98,12 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
             }
         }
 
+        if (origin == null) return EMPTY;
 
-        return new DiffPromptResponse(origin, newMethods, notes);
+        String[] split = origin.split(Pattern.quote("#"));
+        if (split.length != 2) return EMPTY;
+
+        return new DiffPromptResponse(split[0], split[1], newMethods, notes);
     }
 
     public boolean isEmpty() {
@@ -101,9 +114,13 @@ public record DiffPromptResponse(String origin, List<String> newMethods, List<St
         return String.join("\n", newMethods);
     }
 
+    public String origin() {
+        return clazz + "#" + method;
+    }
+
     public String asSave() {
         String origin = ORIGIN + "\n";
-        String originValue = this.origin + "\n";
+        String originValue = this.origin() + "\n";
         String addedMethods = METHODS + "\n";
         String allAddedMethods = String.join("\n", newMethods);
         String notes = "\n" + NOTES + "\n";
