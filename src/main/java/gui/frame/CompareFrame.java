@@ -14,24 +14,38 @@ public class CompareFrame extends JFrame {
 
     public CompareFrame(ComplexityTranslator originalTranslator, ComplexityTranslator dummyTranslator) {
         super("Comparing");
+
         this.originalTranslator = originalTranslator;
         this.dummyTranslator = dummyTranslator;
-
-        SystemChartPanel panel = new SystemChartPanel();
 
         var displayOriginal = originalTranslator.evaluateSystem().displayList();
         var displayDummy = dummyTranslator.evaluateSystem().displayList();
 
-        panel.addProject("Original", displayOriginal[0]);
-        panel.addProject("Updated", displayDummy[0]);
+        JPanel content = new JPanel();
+        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
-        super.add(panel);
+        SystemChartPanel chartPanel = new SystemChartPanel();
+        chartPanel.addProject("Original", displayOriginal[0]);
+        chartPanel.addProject("Updated", displayDummy[0]);
 
-        addGridPanel("Original metrics: ", displayOriginal[1]);
-        addGridPanel("Updated metrics: ", displayDummy[1]);
+        content.add(chartPanel);
 
-        super.setVisible(true);
-        super.setExtendedState(super.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        content.add(new JLabel("Original metrics:"));
+        ComplexityGridPanel originalPanel = new ComplexityGridPanel();
+        originalPanel.addMetrics(displayOriginal[1]);
+        content.add(originalPanel);
+
+        content.add(new JLabel("Updated metrics:"));
+        ComplexityGridPanel updatedPanel = new ComplexityGridPanel();
+        updatedPanel.addMetrics(displayDummy[1]);
+        content.add(updatedPanel);
+
+        setContentPane(new JScrollPane(content));
+
+        setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setVisible(true);
+
         FrameManager.addFrame(this);
     }
 

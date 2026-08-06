@@ -64,7 +64,7 @@ public class DummyProject {
         var tempTranslator = new ComplexityTranslator();
         tempTranslator.execute(dummyLocation.toFile());
 
-        new CompareFrame(originalTranslator, dummyTranslator);
+        new CompareFrame(originalTranslator, tempTranslator);
         appliers.forEach(DiffApplier::revert);
     }
 
