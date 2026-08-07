@@ -13,12 +13,12 @@ import java.util.Map;
 
 @Getter
 public class SimpleTranslator implements Translator {
-    private final PackageManager packageManager = new PackageManager();
-    private final MemberFormatter formatter = new MemberFormatter(packageManager);
+    protected final PackageManager packageManager = new PackageManager();
+    protected final MemberFormatter formatter = new MemberFormatter(packageManager);
 
-    private final Map<String, TypeDeclaration<?>> classMap = new HashMap<>();
-    private final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
-    private boolean executed;
+    protected final Map<String, TypeDeclaration<?>> classMap = new HashMap<>();
+    protected final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
+    protected boolean executed;
 
     @Override
     public void addNode(Node node) {
@@ -27,7 +27,6 @@ public class SimpleTranslator implements Translator {
         String fullName = formatter.fullPackageName(node.findCompilationUnit().orElseThrow(), node);
         classMap.put(fullName, decl);
 
-        //TODO: this doesn't include inherited methods, are they really necessary tho?
         Map<String, MethodDeclaration> methods = methodMap.get(fullName);
         if (methods == null) {
             methods = new HashMap<>();

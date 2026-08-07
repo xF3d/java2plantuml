@@ -26,27 +26,14 @@ import java.io.FileNotFoundException;
 import java.util.*;
 import java.util.concurrent.*;
 
-/**
- * TODO: complessità ciclomatica della classe = somma di quella dei metodi
- *
- * per il sistema = ciclomatica media delle classi
- * per ogni classe = ciclomatica somma dei metodi
- * (per ogni classe WMC-Ciclomatica) / n.classi
- */
 @Getter
-public class ComplexityTranslator implements Translator {
-    private final PackageManager packageManager = new PackageManager();
-    private final MemberFormatter formatter = new MemberFormatter(packageManager);
+public class ComplexityTranslator extends SimpleTranslator {
 
     private CompletableFuture<SystemResultAggregator> systemResult;
     private final Set<CompilationUnit> allCompilationUnits = new HashSet<>();
 
-    // full package name --> node
-    private final Map<String, TypeDeclaration<?>> tempClassMap = new ConcurrentHashMap<>();
     private final Map<String, ComplexityClass> classResultMap = new ConcurrentHashMap<>();
 
-    // full package name --> method Signature --> method
-    private final Map<String, Map<String, MethodDeclaration>> tempMethodMap = new ConcurrentHashMap<>();
     private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new ConcurrentHashMap<>();
 
     private final ComplexityEvaluator.System[] systemEvaluators = {
@@ -71,7 +58,6 @@ public class ComplexityTranslator implements Translator {
     };
 
     private Boolean error = false;
-    private boolean executed = false;
 
     public ComplexityTranslator() {
         var cbo = new CBOEvaluator();
@@ -91,38 +77,17 @@ public class ComplexityTranslator implements Translator {
     }
 
     @Override
-    public void addNode(Node node) {
-        if (!(node instanceof TypeDeclaration<?> decl)) throw new IllegalArgumentException("Should never happen");
-
-        String fullName = formatter.fullPackageName(node.findCompilationUnit().orElseThrow(), node);
-        tempClassMap.put(fullName, decl);
-
-        //TODO: this doesn't include inherited methods, are they really necessary tho?
-        Map<String, MethodDeclaration> methods = tempMethodMap.get(fullName);
-        if (methods == null) {
-            methods = new HashMap<>();
-        }
-
-        for (MethodDeclaration method : decl.getMethods()) {
-            methods.put(method.getSignature().asString(), method);
-        }
-
-        tempMethodMap.put(fullName, methods);
-    }
-
-    @Override
     public void handleCompilationUnit(CompilationUnit unit) {
         allCompilationUnits.add(unit);
     }
 
     @Override
     public void translateFiles(List<File> files) throws FileNotFoundException {
-        Translator.super.translateFiles(files);
+        super.translateFiles(files);
 
         int threads = Runtime.getRuntime().availableProcessors();
         ExecutorService executor = Executors.newFixedThreadPool(threads);
         computeEverything(executor);
-        executed = true;
     }
 
     @Override
@@ -133,7 +98,7 @@ public class ComplexityTranslator implements Translator {
     private void computeEverything(ExecutorService executor) {
         // <editor-fold desc="Metrics">
         // calculate class stuff
-        for (var classEntry : tempClassMap.entrySet()) {
+        for (var classEntry : classMap.entrySet()) {
             classResultMap.put(classEntry.getKey(), new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
                 ComplexityMetricResult[] resultArray = new ComplexityMetricResult[classEvaluators.length];
                 for (int i = 0; i < classEvaluators.length; i++) {
@@ -145,7 +110,7 @@ public class ComplexityTranslator implements Translator {
         }
 
 
-        var allClasses = tempClassMap.values();
+        var allClasses = classMap.values();
         var classResultFutures = classResultMap.values().stream().map(ComplexityClass::getComplexityResult).toList();
 
         // system metrics
@@ -197,12 +162,12 @@ public class ComplexityTranslator implements Translator {
             }, executor);
 
         // calculate method stuff
-        for (var classMethodEntry : tempMethodMap.entrySet()) {
+        for (var classMethodEntry : methodMap.entrySet()) {
             String classFqn = classMethodEntry.getKey();
             for (var methodEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
 
-                TypeDeclaration<?> classNode = tempClassMap.get(classFqn);
+                TypeDeclaration<?> classNode = classMap.get(classFqn);
                 MethodDeclaration method = methodEntry.getValue();
 
                 methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(method, CompletableFuture.supplyAsync(() -> {
@@ -219,8 +184,8 @@ public class ComplexityTranslator implements Translator {
         // </editor-fold>
 
         this.systemResult.whenComplete((r, e) -> {
-            tempClassMap.clear();
-            tempMethodMap.clear();
+            classMap.clear();
+            methodMap.clear();
             computeSmells(executor);
         });
     }
