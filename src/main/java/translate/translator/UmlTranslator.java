@@ -28,7 +28,6 @@ public class UmlTranslator implements Translator {
 
     private final Set<SetTranslatingComponent<?>> componentTranslators = new HashSet<>();
     private final Set<String> fqn = new HashSet<>();
-    private Boolean error = false;
 
     private boolean executed;
 
@@ -40,11 +39,6 @@ public class UmlTranslator implements Translator {
         componentTranslators.add(new EnumWriter());
         componentTranslators.add(new RecordWriter());
         componentTranslators.add(new AnnotationWriter());
-    }
-
-    @Override
-    public void setError(Boolean b) {
-        this.error = b;
     }
 
     private final Set<String> printed = new HashSet<>();
@@ -77,11 +71,6 @@ public class UmlTranslator implements Translator {
         if (calculatedPlantuml != null) return calculatedPlantuml;
 
         StringBuilder sb = new StringBuilder();
-
-        if (error) {
-            sb.append("Error occured while parsing.");
-            return sb.toString();
-        }
 
         sb.append("@startuml");
         sb.append("\nset separator " + MemberFormatter.PACKAGE_DELIMITER);

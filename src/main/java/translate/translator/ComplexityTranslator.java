@@ -57,8 +57,6 @@ public class ComplexityTranslator extends SimpleTranslator {
             new LongMethodEvaluator()
     };
 
-    private Boolean error = false;
-
     public ComplexityTranslator() {
         var cbo = new CBOEvaluator();
         this.classEvaluators = new ComplexityEvaluator.Clazz[] {
@@ -225,11 +223,6 @@ public class ComplexityTranslator extends SimpleTranslator {
             executor.shutdownNow();
             e.printStackTrace();
         });
-    }
-
-    @Override
-    public void setError(Boolean b) {
-        error = b;
     }
 
     public Map<String, ComplexityClass> getProblematicClasses() {

@@ -48,7 +48,7 @@ public class CBOEvaluator implements ComplexityEvaluator.Clazz {
         synchronized (this) {
             if (initialized) return;
 
-            translator.getTempClassMap().values().stream()
+            translator.getClassMap().values().stream()
                     .forEach(decl -> {
                         // Ottieni il nome qualificato completo della classe (es. com.azienda.MetricApp)
                         String className = PackageManager.resolveTypeDeclaration(decl);

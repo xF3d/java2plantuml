@@ -40,11 +40,6 @@ public class SimpleTranslator implements Translator {
     }
 
     @Override
-    public void setError(Boolean b) {
-
-    }
-
-    @Override
     public boolean execute(File selectedDirectory) {
         boolean result = Translator.super.execute(selectedDirectory);
         executed = true;

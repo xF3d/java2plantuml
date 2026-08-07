@@ -17,10 +17,8 @@ public class FileHandler {
     void handle(List<File> fileList) {
         try {
             translator.translateFiles(fileList);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
         } catch (Exception e) {
-            translator.setError(true);
+            FileLogger.LOGGER.severe("Problem in handling files: " + e.getMessage());
         }
     }
 }

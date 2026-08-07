@@ -21,7 +21,6 @@ import java.util.List;
 public interface Translator {
 
     void addNode(Node node);
-    void setError(Boolean b);
     PackageManager getPackageManager();
     boolean hasExecuted();
 
@@ -51,8 +50,7 @@ public interface Translator {
                     }
                 }
             } catch (FileNotFoundException e) {
-                setError(true);
-                e.printStackTrace();
+                FileLogger.LOGGER.severe("File not found: " + f.getAbsoluteFile());
             }
         }
 
