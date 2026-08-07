@@ -54,7 +54,7 @@ public class Prompts {
             """
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself, so don't leave TODOs
+            - You can create new functions only if you implement them fully yourself, blueprints, or anything not fully implemented
             - NOTEs are optional
             - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
             - If you don't want to change anything, just resend the message you received without changing it
@@ -81,7 +81,7 @@ public class Prompts {
             """
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself
+            - You can create new functions only if you implement them fully yourself, blueprints, or anything not fully implemented
             - NOTEs are optional
             - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
             - Only answer in the format provided
@@ -92,20 +92,6 @@ public class Prompts {
             - Adding an external dependency
             - Suggesting changes to different classes
             - Adding new classes
-            """;
-
-    public static final String METHOD_CONTEXT = """
-            METHOD_METRICS
-            %s
-            
-            METHOD_CODE_SMELLS
-            %s
-            
-            ORIGINAL_SELECTED_METHOD
-            %s
-            
-            METHOD_LINE_START: %s
-            METHOD_LINE_END: %s
             """;
 
     public static final String CLASS_CONTEXT = """
@@ -125,4 +111,17 @@ public class Prompts {
             %s
             
             """;
+
+    public static final String METHOD_CONTEXT = """
+            METHOD_METRICS
+            %s
+            
+            METHOD_CODE_SMELLS
+            %s
+            
+            ORIGINAL_SELECTED_METHOD
+            %s
+            
+            """;
+
 }

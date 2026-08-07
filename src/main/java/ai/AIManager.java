@@ -107,9 +107,6 @@ public class AIManager {
             throw new RuntimeException(e);
         }
 
-
-        var range = method.getMethod().getRange().orElseThrow();
-
         String mainMessage = (Prompts.CLASS_CONTEXT + Prompts.METHOD_CONTEXT).formatted(
                 importString,
                 decl.getNameAsString(),
@@ -118,9 +115,7 @@ public class AIManager {
                 classSmells,
                 methodMetrics,
                 methodSmells,
-                method.getMethod().toString(),
-                range.begin,
-                range.end
+                method.getMethod().toString()
         );
 
 
