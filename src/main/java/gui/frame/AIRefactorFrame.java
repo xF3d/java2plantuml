@@ -327,6 +327,7 @@ public class AIRefactorFrame extends JFrame {
         panel.add(new PromptResponsePanel(diff));
 
         JCheckBox checkBox = new JCheckBox("Approve");
+        checkBox.setFocusable(false);
         checkBox.addActionListener(e -> selected[current] = checkBox.isSelected());
 
         panel.add(checkBox);
