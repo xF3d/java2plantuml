@@ -40,7 +40,7 @@ public class AIRefactorFrame extends JFrame {
     private boolean[] selected = new boolean[0];
 
     private final AtomicInteger generation = new AtomicInteger(0);
-    private final DummyProject dummyProject;
+    private DummyProject dummyProject;
 
     public AIRefactorFrame(ComplexityTranslator translator) {
         super("AI Refactoring");
@@ -306,6 +306,7 @@ public class AIRefactorFrame extends JFrame {
         responses = new DiffPromptResponse[0];
         selected = new boolean[0];
 
+        dummyProject = new DummyProject(complexityTranslator);
         generation.incrementAndGet();
 
         currentCard = 0;
