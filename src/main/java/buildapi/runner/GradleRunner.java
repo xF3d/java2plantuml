@@ -1,5 +1,6 @@
 package buildapi.runner;
 
+import buildapi.TestParser;
 import buildapi.result.CompileResult;
 import buildapi.result.TestResult;
 import org.gradle.tooling.GradleConnector;
@@ -45,13 +46,10 @@ public class GradleRunner implements BuildRunner {
                     .forTasks("test")
                     .run();
 
-            return parseGradleReports(projectDir);
+            return TestParser.parseJUnitReports(projectDir.resolve("build/test-results/test"));
         } catch (Exception e) {
             return TestResult.fail(e.getMessage());
         }
     }
 
-    public static TestResult parseGradleReports(Path projectDir) {
-        return null;
-    }
 }

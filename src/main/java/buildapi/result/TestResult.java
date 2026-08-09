@@ -2,7 +2,7 @@ package buildapi.result;
 
 public record TestResult(
         boolean success,
-        int testsRun,
+        int testsTotal,
         int testsPassed,
         int testsFailed,
         int testsSkipped,
