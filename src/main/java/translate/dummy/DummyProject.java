@@ -1,11 +1,10 @@
 package translate.dummy;
 
 import ai.DiffPromptResponse;
-import file.Config;
+import buildapi.result.TestResult;
+import buildapi.runner.BuildRunner;
 import file.FolderSync;
-import gui.components.SystemChartPanel;
 import gui.frame.CompareFrame;
-import gui.frame.FrameManager;
 import gui.frame.MainFrame;
 import translate.translator.ComplexityTranslator;
 
@@ -19,18 +18,19 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.regex.Pattern;
 
 public class DummyProject {
     private final Path dummyLocation;
     private final CompletableFuture<Void> copyingTask;
     private ComplexityTranslator dummyTranslator = null;
     private final ComplexityTranslator originalTranslator;
+    private final BuildRunner buildRunner;
 
     public DummyProject(Path dummyLocation, ComplexityTranslator originalTranslator) {
         this.dummyLocation = dummyLocation;
         this.originalTranslator = originalTranslator;
         File mainProject = MainFrame.getSelectedDirectory();
+        this.buildRunner = BuildRunner.of(mainProject.toPath());
 
         try (ExecutorService exe = Executors.newVirtualThreadPerTaskExecutor()) {
             copyingTask = CompletableFuture.runAsync(
@@ -49,8 +49,8 @@ public class DummyProject {
         this(getTempProject(), originalTranslator);
     }
 
-    public void showDiffs(List<DiffPromptResponse> diffs) {
-        setTranslator();
+    synchronized public void showDiffs(List<DiffPromptResponse> diffs) {
+        init();
 
         ArrayList<DiffApplier> appliers = new ArrayList<>();
 
@@ -64,20 +64,42 @@ public class DummyProject {
         var tempTranslator = new ComplexityTranslator();
         tempTranslator.execute(dummyLocation.toFile());
 
-        new CompareFrame(originalTranslator, tempTranslator);
-        appliers.forEach(DiffApplier::revert);
+        var exe = Executors.newFixedThreadPool(2);
+        var dummyResult = CompletableFuture.supplyAsync( () -> buildRunner.test(dummyLocation), exe);
+        var originalResult = CompletableFuture.supplyAsync( () -> buildRunner.test(MainFrame.getSelectedDirectory().toPath()), exe);
+
+        dummyResult.whenComplete((result, error) -> {
+            System.out.println("dummy completed");
+            System.out.println("result = " + result);
+            System.out.println("error = " + error);
+
+            if (error != null) {
+                error.printStackTrace();
+            }
+        });
+
+        dummyResult.thenCombineAsync(originalResult, (dummy, original) -> {
+            SwingUtilities.invokeLater(
+                    () -> new CompareFrame(originalTranslator, tempTranslator, original, dummy)
+            );
+            return null;
+        }, exe).whenComplete((r, e) -> {
+            appliers.forEach(DiffApplier::revert);
+            exe.shutdown();
+            e.printStackTrace();
+        });
+
     }
 
     public void applyDiffs(List<DiffPromptResponse> diffs) {
-        setTranslator();
-
+        init();
         for (var diff : diffs) {
             var originalMethod = originalTranslator.getMethod(diff.clazz(), diff.method()).getMethod();
             new DiffApplier(originalMethod, diff).apply();
         }
     }
 
-    private void setTranslator() {
+    private void init() {
         if (dummyTranslator != null) return;
 
         try {

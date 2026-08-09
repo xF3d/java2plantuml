@@ -1,27 +1,30 @@
 package gui.frame;
 
+import buildapi.result.TestResult;
 import gui.ComplexityGridPanel;
 import gui.components.SystemChartPanel;
+import gui.components.TestResultPanel;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.List;
 
 public class CompareFrame extends JFrame {
-    private final ComplexityTranslator originalTranslator;
-    private final ComplexityTranslator dummyTranslator;
+    private final JPanel content = new JPanel();
 
-    public CompareFrame(ComplexityTranslator originalTranslator, ComplexityTranslator dummyTranslator) {
+    public CompareFrame(
+            ComplexityTranslator originalTranslator,
+            ComplexityTranslator dummyTranslator,
+            TestResult originalResult,
+            TestResult dummyResult
+    ) {
         super("Comparing");
-
-        this.originalTranslator = originalTranslator;
-        this.dummyTranslator = dummyTranslator;
 
         var displayOriginal = originalTranslator.evaluateSystem().displayList();
         var displayDummy = dummyTranslator.evaluateSystem().displayList();
 
-        JPanel content = new JPanel();
         content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
 
         SystemChartPanel chartPanel = new SystemChartPanel();
@@ -30,17 +33,16 @@ public class CompareFrame extends JFrame {
 
         content.add(chartPanel);
 
-        content.add(new JLabel("Original metrics:"));
-        ComplexityGridPanel originalPanel = new ComplexityGridPanel();
-        originalPanel.addMetrics(displayOriginal[1]);
-        content.add(originalPanel);
-
-        content.add(new JLabel("Updated metrics:"));
-        ComplexityGridPanel updatedPanel = new ComplexityGridPanel();
-        updatedPanel.addMetrics(displayDummy[1]);
-        content.add(updatedPanel);
+        addGridPanel("Original metrics: ", displayOriginal[1]);
+        addGridPanel("Updated metrics: ", displayDummy[1]);
 
         setContentPane(new JScrollPane(content));
+
+        JPanel testResults = new JPanel(new BorderLayout());
+
+        testResults.add(new TestResultPanel("Original", originalResult), BorderLayout.WEST);
+        testResults.add(new TestResultPanel("Updated", dummyResult), BorderLayout.EAST);
+        content.add(testResults);
 
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -50,11 +52,11 @@ public class CompareFrame extends JFrame {
     }
 
     private void addGridPanel(String title, List<ComplexityMetricResult> resultList) {
-        super.add(new JLabel(title));
+        content.add(new JLabel(title));
 
         var metricPanel = new ComplexityGridPanel();
         metricPanel.addMetrics(resultList);
 
-        super.add(metricPanel);
+        content.add(metricPanel);
     }
 }
