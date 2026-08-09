@@ -36,8 +36,8 @@ public class AIRefactorFrame extends JFrame {
     private int currentCard = 0;
     private final AtomicInteger cardSize = new AtomicInteger(0);
 
-    private DiffPromptResponse[] responses = null;
-    private boolean[] selected = null;
+    private DiffPromptResponse[] responses = new DiffPromptResponse[0];
+    private boolean[] selected = new boolean[0];
 
     private final AtomicInteger generation = new AtomicInteger(0);
     private final DummyProject dummyProject;
@@ -140,7 +140,7 @@ public class AIRefactorFrame extends JFrame {
     }
 
     private JMenu setupShowMenu() {
-        JMenu showMenu = new JMenu("Show Complexity");
+        JMenu showMenu = new JMenu("Compare");
 
         JMenuItem showSelected = new JMenuItem("Selected");
         showSelected.addActionListener(e -> dummyProject.showDiffs(getSelected()));
@@ -303,8 +303,8 @@ public class AIRefactorFrame extends JFrame {
         cards.revalidate();
         cards.repaint();
 
-        responses = null;
-        selected = null;
+        responses = new DiffPromptResponse[0];
+        selected = new boolean[0];
 
         generation.incrementAndGet();
 
