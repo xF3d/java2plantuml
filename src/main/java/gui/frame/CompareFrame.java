@@ -38,11 +38,11 @@ public class CompareFrame extends JFrame {
 
         setContentPane(new JScrollPane(content));
 
-        JPanel testResults = new JPanel(new BorderLayout());
+        //JPanel testResults = new JPanel(new BorderLayout());
 
-        testResults.add(new TestResultPanel("Original", originalResult), BorderLayout.WEST);
-        testResults.add(new TestResultPanel("Updated", dummyResult), BorderLayout.EAST);
-        content.add(testResults);
+        //testResults.add(new TestResultPanel("Original", originalResult), BorderLayout.WEST);
+        //testResults.add(new TestResultPanel("Updated", dummyResult), BorderLayout.EAST);
+        //content.add(testResults);
 
         setExtendedState(getExtendedState() | JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
