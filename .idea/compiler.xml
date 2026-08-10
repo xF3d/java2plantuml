@@ -12,7 +12,7 @@
         <module name="java2plantuml.test" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel target="17">
+    <bytecodeTargetLevel target="25">
       <module name="java2plantuml_main" target="1.8" />
       <module name="java2plantuml_test" target="1.8" />
     </bytecodeTargetLevel>
