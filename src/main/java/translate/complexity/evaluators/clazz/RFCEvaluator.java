@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Response for a Class
  * Counts the number of methods that can potentially execute in response to a message sent to an object (its own methods plus methods they invoke).
  * High RFC means the class has more possible behaviors, increasing complexity, testing effort, and the likelihood of defects.
  */
@@ -63,6 +64,6 @@ public class RFCEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
     public MetricDefinition getDefinition() {
-        return MetricDefinitionRegistry.get("NOM");
+        return MetricDefinitionRegistry.get("RFC");
     }
 }

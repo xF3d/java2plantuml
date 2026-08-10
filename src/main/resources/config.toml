@@ -70,7 +70,7 @@ target = "LOWER"
 
 [[metric_definitions]]
 metric = "RFC"
-max = 100.0
+max = 50.0
 min = 0.0
 target = "LOWER"
 
