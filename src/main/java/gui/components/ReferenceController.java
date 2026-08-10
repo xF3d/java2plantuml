@@ -20,9 +20,19 @@ public class ReferenceController extends JPanel {
         this.add(entryLabel);
         CompletableFuture
             .supplyAsync(() -> toTableAction.apply(references), background)
-            .thenAccept(component -> SwingUtilities.invokeLater(() -> {
-                ReferenceController.this.add(component);
-                updateUI();
+            .whenComplete((component, error) -> SwingUtilities.invokeLater(() -> {
+                background.shutdown();
+
+                if (error != null) {
+                    error.printStackTrace();
+                    return;
+                }
+
+                SwingUtilities.invokeLater(() -> {
+                    add(component);
+                    revalidate();
+                    repaint();
+                });
             }));
     }
 }
