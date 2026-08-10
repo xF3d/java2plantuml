@@ -1,7 +1,7 @@
 package gui.frame;
 
 import gui.ComplexityGridPanel;
-import gui.components.JTableClass;
+import gui.components.ClassTableMetricsPanel;
 import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;
 import translate.complexity.ComplexityMetricResult;
@@ -44,7 +44,7 @@ public class SystemStatus extends JFrame {
         this.content.add(new ReferenceController(
             "<html><p>Classes in the system</p> <br></html>",
             translator.getClassesArray(),
-            (unused) -> new JTableClass(translator)
+            (unused) -> new ClassTableMetricsPanel(translator)
         ));
 
         this.setContentPane(scrollPanel);

@@ -1,6 +1,6 @@
 package gui.components;
 
-import gui.frame.ClassFrame;
+import translate.complexity.ComplexityMetricResult;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
@@ -13,41 +13,42 @@ import java.awt.event.MouseEvent;
 import java.util.Comparator;
 import java.util.List;
 
-public class JTableClass extends JPanel {
+public abstract class BaseTableMetricsPanel<T extends ComplexityEvaluator> extends JPanel {
     private static final Comparator<String> HTML_DOUBLE_COMPARATOR =
-            Comparator.comparingDouble(JTableClass::extractDouble);
+            Comparator.comparingDouble(BaseTableMetricsPanel::extractDouble);
 
-    private final String[] fqnReferences;
-    private final JTable table;
+    protected final JTable table;
 
-    private final String[] columnNames;
-    private final String[][] data;
-    private final ComplexityTranslator translator;
+    protected int selectedColumns = 0;
+    protected SortOrder sortOrder = SortOrder.UNSORTED;
 
-    private int selectedColumns = 0;
-    private SortOrder sortOrder = SortOrder.UNSORTED;
+    protected final String[] fqnReferences;
+    protected final String[] columnNames;
+    protected final String[][] data;
 
-    public JTableClass(ComplexityTranslator translator) {
+    protected final ComplexityTranslator translator;
+
+    public BaseTableMetricsPanel(ComplexityTranslator translator) {
         super(new BorderLayout());
         this.translator = translator;
 
-        int columnSize = translator.getClassEvaluators().length + 1;
+        int columnSize = getEvaluators().length + 1;
         this.columnNames = new String[columnSize];
         columnNames[0] = "Class";
-        ComplexityEvaluator.Clazz[] evaluators = translator.getClassEvaluators();
+        ComplexityEvaluator[] evaluators = getEvaluators();
         for (int i = 0; i < evaluators.length; i++) {
             var evaluator = evaluators[i];
             columnNames[i + 1] = evaluator.getDefinition().metric();
         }
 
-        this.fqnReferences = translator.getClassesArray();
+        this.fqnReferences = getReferences();
         this.data = new String[fqnReferences.length][columnSize];
 
         for (int i = 0; i < fqnReferences.length; i++) {
             var reference = fqnReferences[i];
             data[i][0] = MemberFormatter.removeSeparators(reference);
 
-            var results = translator.evaluateClass(reference).getRawMetricData();
+            var results = evaluateReference(reference);
             for (int j = 0; j < evaluators.length; j++) {
                 data[i][j + 1] = "<html>" + results[j].getValueWithColor() + "</html>";
             }
@@ -135,9 +136,13 @@ public class JTableClass extends JPanel {
         });
     }
 
-    public void onClick(String selectedFqn) {
-        new ClassFrame(selectedFqn, translator);
-    }
+    public abstract void onClick(String selectedFqn);
+
+    public abstract T[] getEvaluators();
+
+    public abstract String[] getReferences();
+
+    public abstract ComplexityMetricResult[] evaluateReference(String reference);
 
     private static double extractDouble(String html) {
         // remove HTML tags
