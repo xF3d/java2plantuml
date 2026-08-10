@@ -1,6 +1,7 @@
 package translate.complexity;
 
 import org.tomlj.TomlTable;
+import util.DoubleFormatter;
 
 import java.util.Locale;
 
@@ -17,5 +18,9 @@ public record MetricDefinition(String metric, double min, double max, MetricTarg
         } catch (Throwable ignored) {
             return null;
         }
+    }
+
+    public String printableThreshold() {
+        return metric + " [" + DoubleFormatter.format(min) + ", " + DoubleFormatter.format(max) + "]";
     }
 }
