@@ -12,6 +12,7 @@ import translate.complexity.evaluators.LOCEvaluator;
 import translate.complexity.evaluators.clazz.*;
 import translate.complexity.evaluators.method.CyclomaticEvaluator;
 import translate.complexity.evaluators.method.NBDEvaluator;
+import translate.complexity.evaluators.system.NumberOfClassesEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
@@ -37,7 +38,8 @@ public class ComplexityTranslator extends SimpleTranslator {
     private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new ConcurrentHashMap<>();
 
     private final ComplexityEvaluator.System[] systemEvaluators = {
-            new LOCEvaluator()
+            new LOCEvaluator(),
+            new NumberOfClassesEvaluator()
     };
     
     private final ComplexityEvaluator.Clazz[] classEvaluators;

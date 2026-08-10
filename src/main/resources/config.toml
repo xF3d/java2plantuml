@@ -97,3 +97,9 @@ metric = "LOC"
 max = 1.7976931348623157e308 # Double.MAX_VALUE
 min = -1.0
 target = "NONE"
+
+[[metric_definitions]]
+metric = "Number of Classes"
+max = 1.7976931348623157e308 # Double.MAX_VALUE
+min = -1.0
+target = "NONE"
