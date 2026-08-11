@@ -68,16 +68,6 @@ public class DummyProject {
         var dummyResult = CompletableFuture.supplyAsync( () -> buildRunner.test(dummyLocation), exe);
         var originalResult = CompletableFuture.supplyAsync( () -> buildRunner.test(MainFrame.getSelectedDirectory().toPath()), exe);
 
-        dummyResult.whenComplete((result, error) -> {
-            System.out.println("dummy completed");
-            System.out.println("result = " + result);
-            System.out.println("error = " + error);
-
-            if (error != null) {
-                error.printStackTrace();
-            }
-        });
-
         dummyResult.thenCombineAsync(originalResult, (dummy, original) -> {
             SwingUtilities.invokeLater(
                     () -> new CompareFrame(originalTranslator, tempTranslator, original, dummy)
