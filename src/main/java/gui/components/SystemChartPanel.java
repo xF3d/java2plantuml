@@ -3,12 +3,15 @@ package gui.components;
 import org.knowm.xchart.RadarChart;
 import org.knowm.xchart.RadarChartBuilder;
 import org.knowm.xchart.XChartPanel;
+import org.knowm.xchart.internal.chartpart.Chart;
 import translate.complexity.ComplexityMetricResult;
 
 import javax.swing.*;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.util.*;
 
 public class SystemChartPanel extends JPanel {
     private final HashMap<String, List<ComplexityMetricResult>> projectMetrics = new HashMap<>();
@@ -56,10 +59,46 @@ public class SystemChartPanel extends JPanel {
         }
 
         var chartPanel = new XChartPanel<>(chart);
+        chartPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (projectMetrics.size() == 1) return;
+
+                var seriesMap = chart.getSeriesMap();
+                var newSeries = shiftRight(seriesMap);
+
+                seriesMap.clear();
+                seriesMap.putAll(newSeries);
+
+                chartPanel.repaint();
+            }
+        });
         this.add(chartPanel);
     }
 
     public boolean isEmpty() {
         return projectMetrics.values().stream().allMatch(Collection::isEmpty);
+    }
+
+    public static <K, V> LinkedHashMap<K, V> shiftRight(Map<K, V> map) {
+        LinkedHashMap<K, V> result = new LinkedHashMap<>();
+
+        if (map.isEmpty()) {
+            return result;
+        }
+
+        List<Map.Entry<K, V>> entries = new ArrayList<>(map.entrySet());
+
+        // Last element goes to position 1
+        Map.Entry<K, V> last = entries.get(entries.size() - 1);
+        result.put(last.getKey(), last.getValue());
+
+        // All other elements move one position forward
+        for (int i = 0; i < entries.size() - 1; i++) {
+            Map.Entry<K, V> entry = entries.get(i);
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
     }
 }
