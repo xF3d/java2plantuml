@@ -127,6 +127,10 @@ public class PackageManager {
         return resolveClass(packageName, imports, className);
     }
 
+    public String mapRaw(String fqn) {
+        return root.mapRaw(fqn);
+    }
+
     public static String resolveTypeDeclaration(TypeDeclaration<?> declaration) {
         String fullSimpleName =  MemberFormatter.fullSimpleName(declaration);
         String packageName = declaration.findCompilationUnit()
