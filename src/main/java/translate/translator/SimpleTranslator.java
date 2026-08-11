@@ -1,6 +1,7 @@
 package translate.translator;
 
 import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import lombok.Getter;
@@ -8,16 +9,17 @@ import translate.component.formatter.MemberFormatter;
 import translate.structure.pkg.PackageManager;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class SimpleTranslator implements Translator {
     protected final PackageManager packageManager = new PackageManager();
     protected final MemberFormatter formatter = new MemberFormatter(packageManager);
 
-    protected final Map<String, TypeDeclaration<?>> classMap = new HashMap<>();
-    protected final Map<String, Map<String, MethodDeclaration>> methodMap = new HashMap<>();
+    protected final Map<String, TypeDeclaration<?>> classMap = new ConcurrentHashMap<>();
+    protected final Map<String, Map<String, MethodDeclaration>> methodMap = new ConcurrentHashMap<>();
+    protected final Map<String, Map<String, ConstructorDeclaration>> constructorsMap = new ConcurrentHashMap<>();
     protected boolean executed;
 
     @Override
@@ -29,7 +31,7 @@ public class SimpleTranslator implements Translator {
 
         Map<String, MethodDeclaration> methods = methodMap.get(fullName);
         if (methods == null) {
-            methods = new HashMap<>();
+            methods = new ConcurrentHashMap<>();
         }
 
         for (MethodDeclaration method : decl.getMethods()) {
@@ -37,6 +39,17 @@ public class SimpleTranslator implements Translator {
         }
 
         methodMap.put(fullName, methods);
+
+        Map<String, ConstructorDeclaration> ctors = constructorsMap.get(fullName);
+        if (ctors == null) {
+            ctors = new ConcurrentHashMap<>();
+        }
+
+        for (ConstructorDeclaration ctor : decl.getConstructors()) {
+            ctors.put(ctor.getSignature().asString(), ctor);
+        }
+
+        constructorsMap.put(fullName, ctors);
     }
 
     @Override
@@ -54,5 +67,28 @@ public class SimpleTranslator implements Translator {
     @Override
     public boolean hasExecuted() {
         return executed;
+    }
+
+    public TypeDeclaration<?> getTypeDeclaration(String fullClassName) throws IllegalArgumentException {
+        var clazz = classMap.get(fullClassName);
+        if (clazz == null) {
+            throw new IllegalArgumentException("Invalid class: " + fullClassName);
+        }
+
+        return clazz;
+    }
+
+    public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws IllegalArgumentException {
+        var mthMap = methodMap.get(fullClassName);
+        if (mthMap == null) {
+            throw new IllegalArgumentException("Invalid class: " + fullClassName);
+        }
+
+        var result = mthMap.get(method);
+        if (result == null) {
+            throw new IllegalArgumentException("Invalid method: " + fullClassName + "#" + method);
+        }
+
+        return result;
     }
 }

@@ -305,7 +305,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
     }
 
-    public ComplexityMethod getMethod(String fullClassName, String method) {
+    public ComplexityMethod getMethod(String fullClassName, String method) throws IllegalArgumentException {
         var mthMap = methodResultMap.get(fullClassName);
         if (mthMap == null) {
             throw new IllegalArgumentException("Invalid class: " + fullClassName);
@@ -317,6 +317,11 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
 
         return result;
+    }
+
+    @Override
+    public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws IllegalArgumentException {
+        return getMethod(fullClassName, method).getMethod();
     }
 
     public String[] getClassesArray() {
