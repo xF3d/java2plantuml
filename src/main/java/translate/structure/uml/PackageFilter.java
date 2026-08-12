@@ -22,7 +22,7 @@ public class PackageFilter {
             if (inWhitelist) break;
         }
 
-        if (!inWhitelist) return false;
+        if (!inWhitelist && !whitelist.isEmpty()) return false;
 
         for (var bl : blacklist) {
             if (entry.startsWith(bl)) {
