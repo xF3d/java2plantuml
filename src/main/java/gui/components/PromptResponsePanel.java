@@ -1,13 +1,13 @@
 package gui.components;
 
-import ai.DiffPromptResponse;
+import ai.reponse.DiffMethodResponse;
 import gui.GuiUtils;
 
 import javax.swing.*;
 
 public class PromptResponsePanel extends JScrollPane {
 
-    public PromptResponsePanel(DiffPromptResponse response) {
+    public PromptResponsePanel(DiffMethodResponse response) {
         if (response.isEmpty()) {
             setViewportView(new JLabel("There was an error"));
             return;

@@ -1,7 +1,6 @@
 package translate.dummy;
 
-import ai.DiffPromptResponse;
-import buildapi.result.TestResult;
+import ai.reponse.DiffMethodResponse;
 import buildapi.runner.BuildRunner;
 import file.FolderSync;
 import gui.frame.CompareFrame;
@@ -49,7 +48,7 @@ public class DummyProject {
         this(getTempProject(), originalTranslator);
     }
 
-    synchronized public void showDiffs(List<DiffPromptResponse> diffs) {
+    synchronized public void showDiffs(List<DiffMethodResponse> diffs) {
         init();
 
         ArrayList<DiffApplier> appliers = new ArrayList<>();
@@ -81,7 +80,7 @@ public class DummyProject {
 
     }
 
-    public void applyDiffs(List<DiffPromptResponse> diffs) {
+    public void applyDiffs(List<DiffMethodResponse> diffs) {
         init();
         for (var diff : diffs) {
             var originalMethod = originalTranslator.getMethodDeclaration(diff.clazz(), diff.method());

@@ -1,6 +1,6 @@
 package translate.dummy;
 
-import ai.DiffPromptResponse;
+import ai.reponse.DiffMethodResponse;
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.NodeList;
@@ -22,7 +22,7 @@ public final class DiffApplier implements ReversibleAction {
     private List<MethodDeclaration> addedMethods;
     private Path toUpdatePath;
 
-    public DiffApplier(MethodDeclaration original, DiffPromptResponse diff, ComplexityTranslator toUpdateTranslator) throws IllegalStateException {
+    public DiffApplier(MethodDeclaration original, DiffMethodResponse diff, ComplexityTranslator toUpdateTranslator) throws IllegalStateException {
         this.original = original;
 
         this.addedMethods = new ArrayList<>();
@@ -41,7 +41,7 @@ public final class DiffApplier implements ReversibleAction {
                 .getPath();
     }
 
-    public DiffApplier(MethodDeclaration original, DiffPromptResponse diff) throws IllegalStateException {
+    public DiffApplier(MethodDeclaration original, DiffMethodResponse diff) throws IllegalStateException {
         this.original = original;
 
         this.addedMethods = new ArrayList<>();

@@ -1,7 +1,7 @@
 package gui.frame;
 
 import ai.AIManager;
-import ai.DiffPromptResponse;
+import ai.reponse.DiffMethodResponse;
 import file.FileLogger;
 import gui.GuiUtils;
 import gui.components.PromptResponsePanel;
@@ -36,7 +36,7 @@ public class AIRefactorFrame extends JFrame {
     private int currentCard = 0;
     private final AtomicInteger cardSize = new AtomicInteger(0);
 
-    private DiffPromptResponse[] responses = new DiffPromptResponse[0];
+    private DiffMethodResponse[] responses = new DiffMethodResponse[0];
     private boolean[] selected = new boolean[0];
 
     private final AtomicInteger generation = new AtomicInteger(0);
@@ -186,7 +186,7 @@ public class AIRefactorFrame extends JFrame {
         }
 
         final int finalTotalSize = totalSize;
-        responses = new DiffPromptResponse[finalTotalSize];
+        responses = new DiffMethodResponse[finalTotalSize];
         selected = new boolean[finalTotalSize];
 
         int gen = generation.get();
@@ -201,7 +201,7 @@ public class AIRefactorFrame extends JFrame {
                     try {
                         var cclass = complexityTranslator.getClassResultMap().get(fqn);
 
-                        DiffPromptResponse diff = aiManager.fixMethod(cclass, methodEntry);
+                        DiffMethodResponse diff = aiManager.fixMethod(cclass, methodEntry);
                         if (gen != generation.get()) {
                             return;
                         }
@@ -232,7 +232,7 @@ public class AIRefactorFrame extends JFrame {
 
 
         File exportFile = chooser.getSelectedFile();
-        String content = DiffPromptResponse.toFileContents(List.of(
+        String content = DiffMethodResponse.toFileContents(List.of(
                 Arrays.copyOfRange(responses, 0, cardSize.get())
         ));
         try {
@@ -271,8 +271,8 @@ public class AIRefactorFrame extends JFrame {
             return;
         }
 
-        List<DiffPromptResponse> diffs = DiffPromptResponse.fromFileContents(contents);
-        if (diffs.isEmpty() || diffs.stream().allMatch(DiffPromptResponse::isEmpty)) {
+        List<DiffMethodResponse> diffs = DiffMethodResponse.fromFileContents(contents);
+        if (diffs.isEmpty() || diffs.stream().allMatch(DiffMethodResponse::isEmpty)) {
             JOptionPane.showMessageDialog(
                     null,
                     "Could not read meaningful data",
@@ -286,7 +286,7 @@ public class AIRefactorFrame extends JFrame {
         reset(null);
 
         int size = diffs.size();
-        responses = new DiffPromptResponse[size];
+        responses = new DiffMethodResponse[size];
         selected = new boolean[size];
         for (int i = 0; i < size; i++) {
             var response = diffs.get(i);
@@ -303,7 +303,7 @@ public class AIRefactorFrame extends JFrame {
         cards.revalidate();
         cards.repaint();
 
-        responses = new DiffPromptResponse[0];
+        responses = new DiffMethodResponse[0];
         selected = new boolean[0];
 
         dummyProject = new DummyProject(complexityTranslator);
@@ -315,7 +315,7 @@ public class AIRefactorFrame extends JFrame {
         cardSize.set(0);
     }
 
-    public void addCard(DiffPromptResponse diff) {
+    public void addCard(DiffMethodResponse diff) {
         int current = cardSize.getAndIncrement();
         String pageNString = String.valueOf(current + 1);
         responses[current] = diff;
@@ -338,8 +338,8 @@ public class AIRefactorFrame extends JFrame {
         cards.repaint();
     }
 
-    public List<DiffPromptResponse> getSelected() {
-        ArrayList<DiffPromptResponse> selectedResponses = new ArrayList<>();
+    public List<DiffMethodResponse> getSelected() {
+        ArrayList<DiffMethodResponse> selectedResponses = new ArrayList<>();
         for (int i = 0; i < responses.length; i++) {
             if (!selected[i]) continue;
 

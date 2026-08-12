@@ -1,4 +1,4 @@
-package ai;
+package ai.reponse;
 
 import com.github.javaparser.ast.body.MethodDeclaration;
 import util.ProjectJavaParser;
@@ -7,14 +7,14 @@ import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public record DiffPromptResponse(String clazz, String method, List<String> newMethods, List<String> notes) {
-    public static final DiffPromptResponse EMPTY = new DiffPromptResponse("null", "null", List.of(), List.of());
+public record DiffMethodResponse(String clazz, String method, List<String> newMethods, List<String> notes) {
+    public static final DiffMethodResponse EMPTY = new DiffMethodResponse("null", "null", List.of(), List.of());
 
     public static final String ORIGIN = "-----ORIGIN-----";
     public static final String METHODS = "-----METHODS-----";
     public static final String NOTES = "-----NOTES-----";
 
-    public static DiffPromptResponse fromResponse(String origin, String response) {
+    public static DiffMethodResponse fromResponse(String origin, String response) {
         if (origin == null) throw new IllegalArgumentException("Null origin");
 
         String[] split = origin.split(Pattern.quote("#"));
@@ -23,10 +23,10 @@ public record DiffPromptResponse(String clazz, String method, List<String> newMe
         return fromResponse(split[0], split[1], response);
     }
 
-    public static DiffPromptResponse fromResponse(String clazz, String method, String response) {
+    public static DiffMethodResponse fromResponse(String clazz, String method, String response) {
         if (response == null) return EMPTY;
 
-        var out = new DiffPromptResponse(clazz, method, new ArrayList<>(), new ArrayList<>());
+        var out = new DiffMethodResponse(clazz, method, new ArrayList<>(), new ArrayList<>());
 
         int section = 0;
         for (String line : response.lines().toList()) {
@@ -58,7 +58,7 @@ public record DiffPromptResponse(String clazz, String method, List<String> newMe
         return out;
     }
 
-    public static DiffPromptResponse fromString(String full) {
+    public static DiffMethodResponse fromString(String full) {
         if (full == null) return EMPTY;
 
         ArrayList<String> newMethods = new ArrayList<>();
@@ -103,7 +103,7 @@ public record DiffPromptResponse(String clazz, String method, List<String> newMe
         String[] split = origin.split(Pattern.quote("#"));
         if (split.length != 2) return EMPTY;
 
-        return new DiffPromptResponse(split[0], split[1], newMethods, notes);
+        return new DiffMethodResponse(split[0], split[1], newMethods, notes);
     }
 
     public boolean isEmpty() {
@@ -145,11 +145,11 @@ public record DiffPromptResponse(String clazz, String method, List<String> newMe
 
     private static final String SEPARATOR = "---------------------------------------";
 
-    public static String toFileContents(Collection<DiffPromptResponse> responses) {
-        return responses.stream().map(DiffPromptResponse::asSave).collect(Collectors.joining(SEPARATOR + "\n"));
+    public static String toFileContents(Collection<DiffMethodResponse> responses) {
+        return responses.stream().map(DiffMethodResponse::asSave).collect(Collectors.joining(SEPARATOR + "\n"));
     }
 
-    public static List<DiffPromptResponse> fromFileContents(String contents) {
-        return Arrays.stream(contents.split(Pattern.quote(SEPARATOR))).map(DiffPromptResponse::fromString).toList();
+    public static List<DiffMethodResponse> fromFileContents(String contents) {
+        return Arrays.stream(contents.split(Pattern.quote(SEPARATOR))).map(DiffMethodResponse::fromString).toList();
     }
 }
