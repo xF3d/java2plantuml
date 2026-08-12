@@ -31,9 +31,7 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
         String fullPackageName = formatter.fullPackageName(cu, clazz);
 
         final int[] amount = {0};
-        translator.getClassResultMap().values()
-                .stream()
-                .map(ComplexityClass::getNode)
+        translator.getClassMap().values()
                 .forEach((entry) -> {
             ArrayList<ClassOrInterfaceType> typeList = new ArrayList<>();
             if (entry instanceof NodeWithExtends<?> ext) {

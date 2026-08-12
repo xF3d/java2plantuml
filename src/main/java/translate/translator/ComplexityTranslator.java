@@ -208,12 +208,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
         // </editor-fold>
 
-        this.systemResult.whenComplete((r, e) -> {
-            classMap.clear();
-            methodMap.clear();
-            constructorsMap.clear();
-            computeSmells(executor);
-        });
+        this.systemResult.whenComplete((r, e) -> computeSmells(executor));
     }
 
     private void computeSmells(ExecutorService executor) {
