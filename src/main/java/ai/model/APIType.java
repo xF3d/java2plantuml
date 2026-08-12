@@ -20,7 +20,7 @@ public enum APIType {
                 .modelName(name)
                 .baseUrl(url)
                 .apiKey(apiKey)
-                .timeout(Duration.ofDays(5))
+                .timeout(Duration.ofMinutes(5))
                 .build();
     }
 }
