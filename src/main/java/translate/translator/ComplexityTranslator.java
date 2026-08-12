@@ -173,7 +173,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                 MethodDeclaration method = methodEntry.getValue();
                 MethodLike<?> methodLike = MethodLike.of(method);
 
-                methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
+                var cmethod = new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
                     ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
 
                     for (int i = 0; i < methodEvaluators.length; i++) {
@@ -181,7 +181,10 @@ public class ComplexityTranslator extends SimpleTranslator {
                     }
 
                     return new ComplexityResultAggregator(result);
-                }, executor)));
+                }, executor));
+
+                classResultMap.get(classFqn).addMethod(cmethod);
+                methodResultMap.get(classFqn).put(methodEntry.getKey(), cmethod);
             }
         }
 
@@ -195,7 +198,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                 ConstructorDeclaration ctor = ctorEntry.getValue();
                 MethodLike<?> methodLike = MethodLike.of(ctor);
 
-                methodResultMap.get(classFqn).put(ctorEntry.getKey(), new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
+                var cmethod = new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
                     ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
 
                     for (int i = 0; i < methodEvaluators.length; i++) {
@@ -203,7 +206,10 @@ public class ComplexityTranslator extends SimpleTranslator {
                     }
 
                     return new ComplexityResultAggregator(result);
-                }, executor)));
+                }, executor));
+
+                classResultMap.get(classFqn).addMethod(cmethod);
+                methodResultMap.get(classFqn).put(ctorEntry.getKey(), cmethod);
             }
         }
         // </editor-fold>

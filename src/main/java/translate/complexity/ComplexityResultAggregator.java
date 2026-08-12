@@ -50,7 +50,11 @@ public class ComplexityResultAggregator {
     }
 
     public String metricsAi() {
-        return String.join("\n", metricsAiList());
+        return metricsAi("\n");
+    }
+
+    public String metricsAi(String joining) {
+        return String.join(joining, metricsAiList());
     }
 
     public String codeSmellsAi() {
