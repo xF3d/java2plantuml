@@ -1,9 +1,9 @@
 package translate.complexity.evaluators;
 
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.MetricDefinition;
+import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
@@ -27,7 +27,7 @@ public interface ComplexityEvaluator {
     }
 
     interface Method extends ComplexityEvaluator {
-        ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method);
+        ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method);
     }
 
     default ComplexityMetricResult result(double value) {

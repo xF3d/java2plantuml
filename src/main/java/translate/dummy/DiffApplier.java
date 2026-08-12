@@ -35,7 +35,7 @@ public final class DiffApplier implements ReversibleAction {
             throw new IllegalStateException("Invalid parsing");
         }
 
-        this.toUpdatePath = toUpdateTranslator.getMethod(diff.clazz(), diff.method()).getMethod()
+        this.toUpdatePath = toUpdateTranslator.getMethodDeclaration(diff.clazz(), diff.method())
                 .findCompilationUnit().orElseThrow()
                 .getStorage().orElseThrow()
                 .getPath();

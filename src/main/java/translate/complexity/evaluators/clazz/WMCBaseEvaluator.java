@@ -8,6 +8,7 @@ import translate.complexity.MetricDefinition;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.MetricTarget;
+import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
 @Getter
@@ -21,13 +22,17 @@ public class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
         double accumulator = 0;
 
         for (var method : clazz.getMethods()) {
-            accumulator += evaluateMethod(translator, clazz, method);
+            accumulator += evaluateMethod(translator, clazz, MethodLike.of(method));
+        }
+
+        for (var ctor : clazz.getConstructors()) {
+            accumulator += evaluateMethod(translator, clazz, MethodLike.of(ctor));
         }
 
         return result(accumulator);
     }
 
-    public double evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
+    public double evaluateMethod(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
         return methodEval.calculate(translator, clazz, method).getValue();
     }
 }

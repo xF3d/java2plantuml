@@ -112,8 +112,8 @@ public class AIRefactorFrame extends JFrame {
     private JMenu setupPromptMenu() {
         JMenu promptsMenu = new JMenu("Prompts");
 
-        JMenuItem startPrompt = new JMenuItem("Start");
-        startPrompt.addActionListener(this::start);
+        JMenuItem startPrompt = new JMenuItem("Refactor Methods");
+        startPrompt.addActionListener(this::refactorMethods);
 
         JMenuItem resetPrompt = new JMenuItem("Reset");
         resetPrompt.addActionListener(this::reset);
@@ -173,7 +173,7 @@ public class AIRefactorFrame extends JFrame {
         return approveMenu;
     }
 
-    public void start(ActionEvent ignored) {
+    public void refactorMethods(ActionEvent ignored) {
         FileLogger.LOGGER.info("Start AI evaluation");
         reset(null);
         var aiManager = AIManager.getInstance();

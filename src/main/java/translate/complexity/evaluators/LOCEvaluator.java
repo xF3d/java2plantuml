@@ -1,12 +1,11 @@
 package translate.complexity.evaluators;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
-import translate.complexity.MetricTarget;
+import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
 import java.util.Collection;
@@ -42,8 +41,8 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
 
     // method eval
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
-        var rangeOpt = method.getRange();
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
+        var rangeOpt = method.raw().getRange();
         if (rangeOpt.isEmpty()) return result(0);
 
         var range = rangeOpt.get();

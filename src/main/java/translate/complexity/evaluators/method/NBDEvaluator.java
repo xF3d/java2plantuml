@@ -1,13 +1,13 @@
 package translate.complexity.evaluators.method;
 
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
 /**
@@ -15,8 +15,8 @@ import translate.translator.ComplexityTranslator;
  */
 public class NBDEvaluator implements ComplexityEvaluator.Method {
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
-        var bodyOpt = method.getBody();
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
+        var bodyOpt = method.body();
         if (bodyOpt.isEmpty()) {
             return result(0);
         }

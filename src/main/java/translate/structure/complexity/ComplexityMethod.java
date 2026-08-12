@@ -10,6 +10,14 @@ import java.util.concurrent.CompletableFuture;
 @Getter
 @AllArgsConstructor
 public class ComplexityMethod implements FutureComplexityResultHolder {
-    private final MethodDeclaration method;
+    private final MethodLike<?> method;
     private final CompletableFuture<ComplexityResultAggregator> complexityResult;
+
+    public boolean isConstructor() {
+        return method instanceof MethodLike.Constructor;
+    }
+
+    public boolean isMethod() {
+        return method instanceof MethodLike.Method;
+    }
 }

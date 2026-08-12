@@ -55,7 +55,7 @@ public class DummyProject {
         ArrayList<DiffApplier> appliers = new ArrayList<>();
 
         for (var diff : diffs) {
-            var originalMethod = originalTranslator.getMethod(diff.clazz(), diff.method()).getMethod();
+            var originalMethod = originalTranslator.getMethodDeclaration(diff.clazz(), diff.method());
             appliers.add(new DiffApplier(originalMethod, diff, dummyTranslator));
         }
 
@@ -84,7 +84,7 @@ public class DummyProject {
     public void applyDiffs(List<DiffPromptResponse> diffs) {
         init();
         for (var diff : diffs) {
-            var originalMethod = originalTranslator.getMethod(diff.clazz(), diff.method()).getMethod();
+            var originalMethod = originalTranslator.getMethodDeclaration(diff.clazz(), diff.method());
             new DiffApplier(originalMethod, diff).apply();
         }
     }

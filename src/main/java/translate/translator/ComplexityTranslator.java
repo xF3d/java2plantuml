@@ -1,7 +1,7 @@
 package translate.translator;
 
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -13,14 +13,16 @@ import translate.complexity.evaluators.clazz.*;
 import translate.complexity.evaluators.method.CyclomaticEvaluator;
 import translate.complexity.evaluators.method.NBDEvaluator;
 import translate.complexity.evaluators.system.NumberOfClassesEvaluator;
-import translate.component.formatter.MemberFormatter;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
 import translate.smells.clazz.GodClassEvaluator;
 import translate.smells.method.LongMethodEvaluator;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
-import translate.structure.pkg.PackageManager;
+import translate.structure.complexity.MethodLike;
+import translate.translator.exceptions.InvalidSelectedClassException;
+import translate.translator.exceptions.InvalidSelectedConstructorException;
+import translate.translator.exceptions.InvalidSelectedMethodException;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -169,12 +171,35 @@ public class ComplexityTranslator extends SimpleTranslator {
 
                 TypeDeclaration<?> classNode = classMap.get(classFqn);
                 MethodDeclaration method = methodEntry.getValue();
+                MethodLike<?> methodLike = MethodLike.of(method);
 
-                methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(method, CompletableFuture.supplyAsync(() -> {
+                methodResultMap.get(classFqn).put(methodEntry.getKey(), new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
                     ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
 
                     for (int i = 0; i < methodEvaluators.length; i++) {
-                        result[i] = methodEvaluators[i].calculate(this, classNode, method);
+                        result[i] = methodEvaluators[i].calculate(this, classNode, methodLike);
+                    }
+
+                    return new ComplexityResultAggregator(result);
+                }, executor)));
+            }
+        }
+
+        // calculate constructor stuff
+        for (var classMethodEntry : constructorsMap.entrySet()) {
+            String classFqn = classMethodEntry.getKey();
+            for (var ctorEntry : classMethodEntry.getValue().entrySet()) {
+                methodResultMap.putIfAbsent(classFqn, new HashMap<>());
+
+                TypeDeclaration<?> classNode = classMap.get(classFqn);
+                ConstructorDeclaration ctor = ctorEntry.getValue();
+                MethodLike<?> methodLike = MethodLike.of(ctor);
+
+                methodResultMap.get(classFqn).put(ctorEntry.getKey(), new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
+                    ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
+
+                    for (int i = 0; i < methodEvaluators.length; i++) {
+                        result[i] = methodEvaluators[i].calculate(this, classNode, methodLike);
                     }
 
                     return new ComplexityResultAggregator(result);
@@ -186,6 +211,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         this.systemResult.whenComplete((r, e) -> {
             classMap.clear();
             methodMap.clear();
+            constructorsMap.clear();
             computeSmells(executor);
         });
     }
@@ -253,7 +279,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                 var method = classEntry.getValue();
                 var results = method.evalResult();
 
-                if (!results.isValid()) {
+                if (method.isMethod() && !results.isValid()) {
                     methodInvalidMap.put(signature, method);
                 }
             }
@@ -305,24 +331,38 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
     }
 
-    public ComplexityMethod getMethod(String fullClassName, String method) throws IllegalArgumentException {
+    public ComplexityMethod getMethod(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
         var mthMap = methodResultMap.get(fullClassName);
         if (mthMap == null) {
-            throw new IllegalArgumentException("Invalid class: " + fullClassName);
+            throw new InvalidSelectedClassException(fullClassName);
         }
 
         var result = mthMap.get(method);
         if (result == null) {
-            throw new IllegalArgumentException("Invalid method: " + fullClassName + "#" + method);
+            throw new InvalidSelectedMethodException(fullClassName, method);
         }
 
         return result;
     }
 
     @Override
-    public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws IllegalArgumentException {
-        return getMethod(fullClassName, method).getMethod();
+    public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
+        try {
+            return getMethod(fullClassName, method).getMethod().raw().asMethodDeclaration();
+        } catch (IllegalStateException e) {
+            throw new InvalidSelectedMethodException(fullClassName, method);
+        }
     }
+
+    @Override
+    public ConstructorDeclaration getConstructorDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedConstructorException {
+        try {
+            return getMethod(fullClassName, method).getMethod().raw().asConstructorDeclaration();
+        } catch (IllegalStateException e) {
+            throw new InvalidSelectedConstructorException(fullClassName, method);
+        }
+    }
+
 
     public String[] getClassesArray() {
         return classResultMap.keySet().toArray(String[]::new);

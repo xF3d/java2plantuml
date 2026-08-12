@@ -6,7 +6,12 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import lombok.Getter;
 import translate.component.formatter.MemberFormatter;
+import translate.structure.complexity.MethodLike;
 import translate.structure.pkg.PackageManager;
+import translate.translator.exceptions.InvalidMethodLikeException;
+import translate.translator.exceptions.InvalidSelectedClassException;
+import translate.translator.exceptions.InvalidSelectedConstructorException;
+import translate.translator.exceptions.InvalidSelectedMethodException;
 
 import java.io.File;
 import java.util.Map;
@@ -69,26 +74,53 @@ public class SimpleTranslator implements Translator {
         return executed;
     }
 
+    /*
     public TypeDeclaration<?> getTypeDeclaration(String fullClassName) throws IllegalArgumentException {
         var clazz = classMap.get(fullClassName);
         if (clazz == null) {
-            throw new IllegalArgumentException("Invalid class: " + fullClassName);
+            throw new InvalidSelectedClassException(fullClassName);
         }
 
         return clazz;
+    }*/
+
+    public ConstructorDeclaration getConstructorDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
+        var ctorMap = constructorsMap.get(fullClassName);
+        if (ctorMap == null) {
+            throw new InvalidSelectedClassException(fullClassName);
+        }
+
+        var result = ctorMap.get(method);
+        if (result == null) {
+            throw new InvalidSelectedConstructorException(fullClassName, method);
+        }
+
+        return result;
     }
 
-    public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws IllegalArgumentException {
+    public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
         var mthMap = methodMap.get(fullClassName);
         if (mthMap == null) {
-            throw new IllegalArgumentException("Invalid class: " + fullClassName);
+            throw new InvalidSelectedClassException(fullClassName);
         }
 
         var result = mthMap.get(method);
         if (result == null) {
-            throw new IllegalArgumentException("Invalid method: " + fullClassName + "#" + method);
+            throw new InvalidSelectedMethodException(fullClassName, method);
         }
 
         return result;
+    }
+
+    public MethodLike<?> getMethodLike(String fullClassName, String method) throws InvalidMethodLikeException {
+        try {
+            return MethodLike.of(getMethodDeclaration(fullClassName, method));
+        } catch (InvalidSelectedMethodException e) {
+            try {
+                return MethodLike.of(getConstructorDeclaration(fullClassName, method));
+            } catch (IllegalArgumentException ee) {
+                throw new InvalidMethodLikeException(fullClassName, method);
+            }
+        }
     }
 }

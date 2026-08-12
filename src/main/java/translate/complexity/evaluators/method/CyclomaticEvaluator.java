@@ -1,6 +1,5 @@
 package translate.complexity.evaluators.method;
 
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.BinaryExpr;
 import com.github.javaparser.ast.expr.ConditionalExpr;
@@ -17,13 +16,14 @@ import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.ComplexityMetricResult;
+import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodDeclaration method) {
-        var optBody = method.getBody();
+    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
+        var optBody = method.body();
         if (optBody.isEmpty()) {
             return result(1);
         }
