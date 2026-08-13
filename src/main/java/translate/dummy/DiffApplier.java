@@ -17,7 +17,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class DiffApplier implements ReversibleAction {
+public final class DiffApplier {
     private MethodDeclaration original;
     private List<MethodDeclaration> addedMethods;
     private Path toUpdatePath;
@@ -61,7 +61,6 @@ public final class DiffApplier implements ReversibleAction {
     }
 
 
-    @Override
     public void apply() {
         if (!isValid()) {
             FileLogger.LOGGER.warning("Invalid Patch: at Apply");
@@ -89,50 +88,6 @@ public final class DiffApplier implements ReversibleAction {
                 continue;
             }
             clazz.addMember(method.clone());
-        }
-
-        try {
-            Files.writeString(toUpdatePath, cu.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    @Override
-    public void revert() {
-        if (!isValid()) {
-            FileLogger.LOGGER.warning("Invalid Patch: at Revert");
-            return;
-        }
-
-        CompilationUnit cu = parsePath();
-
-        TypeDeclaration<?> clazz = getOwningClass(cu, original);
-
-        NodeList<BodyDeclaration<?>> members = clazz.getMembers();
-        List<MethodDeclaration> toRemove = new ArrayList<>(members.size());
-        for (int i = 0; i < members.size(); i++) {
-            var member = members.get(i);
-            if (member instanceof MethodDeclaration md) {
-                boolean isAddedMethod = addedMethods.stream()
-                        .filter(m -> !m.getSignature().equals(original.getSignature()))
-                        .anyMatch(m -> md.getSignature().equals(m.getSignature()));
-
-                if (isAddedMethod) {
-                    toRemove.add(md);
-                }
-            }
-        }
-
-        toRemove.forEach(members::remove);
-
-        for (int i = 0; i < members.size(); i++) {
-            var member = members.get(i);
-            if (member instanceof MethodDeclaration md) {
-                if (md.getSignature().equals(original.getSignature())) {
-                    members.set(i, original.clone());
-                }
-            }
         }
 
         try {

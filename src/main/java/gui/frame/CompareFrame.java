@@ -1,9 +1,7 @@
 package gui.frame;
 
-import buildapi.result.TestResult;
 import gui.ComplexityGridPanel;
 import gui.components.SystemChartPanel;
-import gui.components.TestResultPanel;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
@@ -16,9 +14,7 @@ public class CompareFrame extends JFrame {
 
     public CompareFrame(
             ComplexityTranslator originalTranslator,
-            ComplexityTranslator dummyTranslator,
-            TestResult originalResult,
-            TestResult dummyResult
+            ComplexityTranslator dummyTranslator
     ) {
         super("Comparing");
 

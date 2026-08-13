@@ -20,7 +20,7 @@ import java.util.concurrent.Executors;
 
 public class DummyProject {
     private final Path dummyLocation;
-    private final CompletableFuture<Void> copyingTask;
+    private CompletableFuture<Void> copyingTask;
     private ComplexityTranslator dummyTranslator = null;
     private final ComplexityTranslator originalTranslator;
     private final BuildRunner buildRunner;
@@ -28,20 +28,10 @@ public class DummyProject {
     public DummyProject(Path dummyLocation, ComplexityTranslator originalTranslator) {
         this.dummyLocation = dummyLocation;
         this.originalTranslator = originalTranslator;
+
         File mainProject = MainFrame.getSelectedDirectory();
         this.buildRunner = BuildRunner.of(mainProject.toPath());
-
-        try (ExecutorService exe = Executors.newVirtualThreadPerTaskExecutor()) {
-            copyingTask = CompletableFuture.runAsync(
-                    () -> {
-                        try {
-                            FolderSync.sync(mainProject.toPath(), dummyLocation);
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }, exe
-            );
-        }
+        recopy();
     }
 
     public DummyProject(ComplexityTranslator originalTranslator) {
@@ -63,7 +53,9 @@ public class DummyProject {
         var tempTranslator = new ComplexityTranslator();
         tempTranslator.execute(dummyLocation.toFile());
 
-        var exe = Executors.newFixedThreadPool(2);
+        new CompareFrame(originalTranslator, tempTranslator);
+
+        /*
         var dummyResult = CompletableFuture.supplyAsync( () -> buildRunner.test(dummyLocation), exe);
         var originalResult = CompletableFuture.supplyAsync( () -> buildRunner.test(MainFrame.getSelectedDirectory().toPath()), exe);
 
@@ -73,10 +65,10 @@ public class DummyProject {
             );
             return null;
         }, exe).whenComplete((r, e) -> {
-            appliers.forEach(DiffApplier::revert);
+            recopy();
             exe.shutdown();
             e.printStackTrace();
-        });
+        });*/
 
     }
 
@@ -101,6 +93,22 @@ public class DummyProject {
         this.dummyTranslator.execute(dummyLocation.toFile());
     }
 
+    private void recopy() {
+        File mainProject = MainFrame.getSelectedDirectory();
+
+        dummyTranslator = null;
+        try (ExecutorService exe = Executors.newVirtualThreadPerTaskExecutor()) {
+            copyingTask = CompletableFuture.runAsync(
+                    () -> {
+                        try {
+                            FolderSync.sync(mainProject.toPath(), dummyLocation);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }, exe
+            );
+        }
+    }
 
     public static Path getTempProject() {
         Path folder = Paths.get(
