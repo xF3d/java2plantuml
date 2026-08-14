@@ -1,6 +1,6 @@
 package translate.dummy;
 
-import ai.reponse.DiffMethodResponse;
+import ai.reponse.ApplicableDiff;
 import buildapi.runner.BuildRunner;
 import file.FolderSync;
 import gui.frame.CompareFrame;
@@ -11,7 +11,6 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -38,17 +37,16 @@ public class DummyProject {
         this(getTempProject(), originalTranslator);
     }
 
-    synchronized public void showDiffs(List<DiffMethodResponse> diffs) {
+    synchronized public void showDiffs(List<? extends ApplicableDiff> diffs) {
         init();
 
-        ArrayList<DiffApplier> appliers = new ArrayList<>();
-
         for (var diff : diffs) {
-            var originalMethod = originalTranslator.getMethodDeclaration(diff.clazz(), diff.method());
-            appliers.add(new DiffApplier(originalMethod, diff, dummyTranslator));
+            try {
+                diff.apply(originalTranslator, diff.getPath(dummyTranslator));
+            } catch (Exception ignored) {
+                // method is not present anymore
+            }
         }
-
-        appliers.forEach(DiffApplier::apply);
 
         var tempTranslator = new ComplexityTranslator();
         tempTranslator.execute(dummyLocation.toFile());
@@ -72,11 +70,15 @@ public class DummyProject {
 
     }
 
-    public void applyDiffs(List<DiffMethodResponse> diffs) {
+    public void applyDiffs(List<? extends ApplicableDiff> diffs) {
         init();
+
         for (var diff : diffs) {
-            var originalMethod = originalTranslator.getMethodDeclaration(diff.clazz(), diff.method());
-            new DiffApplier(originalMethod, diff).apply();
+            try {
+                diff.apply(originalTranslator, diff.getPath(originalTranslator));
+            } catch (Exception e) {
+                // method is not present anymore
+            }
         }
     }
 
