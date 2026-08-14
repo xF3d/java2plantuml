@@ -64,7 +64,10 @@ public class Prompts {
             {{Added fields, fields should not be removed}}
             {{Added methods and rewritten methods with the same signature, no methods should be removed}}
             -----ADDED-----
-            {{Added fully implemented classes}}
+            {{File contents with class, imports, package definition}}
+            ===============
+            {{File contents with class, imports, package definition n°2}}
+            ...
             -----NOTES-----
             {{AI_MODEL_NAME}} : {{NOTE_1}}
             {{AI_MODEL_NAME}} : {{NOTE_2}}
@@ -93,14 +96,16 @@ public class Prompts {
                 MyPrinter.print("Inside new method);
             }
             -----ADDED-----
-            @CLASS_POSITION("org.my.package")
+            package org.my.package;
+            
             public class MyPrinter {
                 public static void print(String toprint) {
                     System.out.println(toprint);
                 }
             }
-            
-            @CLASS_POSITION("org.my.otherpackage")
+            ===============
+            package org.my.otherpackage;
+
             public record Calculator(int x, int y) {
                 public int add() {
                     return x + y;
