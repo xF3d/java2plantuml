@@ -23,4 +23,6 @@ public interface ApplicableDiff {
     boolean isEmpty();
 
     boolean isValid();
+
+    String origin();
 }

@@ -85,6 +85,7 @@ public record DiffMethodResponse(
         return String.join("\n", newMethods);
     }
 
+    @Override
     public String origin() {
         return clazz + "#" + method;
     }

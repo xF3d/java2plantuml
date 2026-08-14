@@ -1,10 +1,13 @@
 package gui.frame;
 
 import ai.AIManager;
+import ai.reponse.ApplicableDiff;
 import ai.reponse.DiffMethodResponse;
 import file.FileLogger;
 import gui.GuiUtils;
 import gui.components.PromptResponsePanel;
+import serialization.ApplicableDiffTypeList;
+import serialization.JacksonMapper;
 import translate.component.formatter.MemberFormatter;
 import translate.dummy.DummyProject;
 import translate.structure.complexity.ComplexityMethod;
@@ -36,7 +39,7 @@ public class AIRefactorFrame extends JFrame {
     private int currentCard = 0;
     private final AtomicInteger cardSize = new AtomicInteger(0);
 
-    private DiffMethodResponse[] responses = new DiffMethodResponse[0];
+    private ApplicableDiff[] responses = new ApplicableDiff[0];
     private boolean[] selected = new boolean[0];
 
     private final AtomicInteger generation = new AtomicInteger(0);
@@ -232,11 +235,10 @@ public class AIRefactorFrame extends JFrame {
 
 
         File exportFile = chooser.getSelectedFile();
-        String content = DiffMethodResponse.toFileContents(List.of(
-                Arrays.copyOfRange(responses, 0, cardSize.get())
-        ));
         try {
-            Files.writeString(exportFile.toPath(), content);
+            JacksonMapper.getMapper()
+                    .writerFor(ApplicableDiffTypeList.TYPE)
+                    .writeValue(exportFile, List.of(responses));
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(
                     null,
@@ -257,22 +259,12 @@ public class AIRefactorFrame extends JFrame {
 
         File importFile = chooser.getSelectedFile();
 
-        String contents;
+        List<ApplicableDiff> diffs;
         try {
-            contents = Files.readString(importFile.toPath());
+            diffs = JacksonMapper.getMapper()
+                    .readerFor(ApplicableDiffTypeList.TYPE)
+                    .readValue(importFile);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(
-                    null,
-                    ex.getMessage(),
-                    "Import error",
-                    JOptionPane.ERROR_MESSAGE
-            );
-            FileLogger.LOGGER.warning(ex.getMessage());
-            return;
-        }
-
-        List<DiffMethodResponse> diffs = DiffMethodResponse.fromFileContents(contents);
-        if (diffs.isEmpty() || diffs.stream().allMatch(DiffMethodResponse::isEmpty)) {
             JOptionPane.showMessageDialog(
                     null,
                     "Could not read meaningful data",
@@ -280,6 +272,18 @@ public class AIRefactorFrame extends JFrame {
                     JOptionPane.ERROR_MESSAGE
             );
             FileLogger.LOGGER.warning("Could not read meaningful data");
+            ex.printStackTrace();
+            return;
+        }
+
+        if (diffs.isEmpty() || diffs.stream().allMatch(ApplicableDiff::isEmpty)) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "All read data was empty",
+                    "Import error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            FileLogger.LOGGER.warning("All read data was empty");
             return;
         }
 
@@ -315,7 +319,7 @@ public class AIRefactorFrame extends JFrame {
         cardSize.set(0);
     }
 
-    public void addCard(DiffMethodResponse diff) {
+    public void addCard(ApplicableDiff diff) {
         int current = cardSize.getAndIncrement();
         String pageNString = String.valueOf(current + 1);
         responses[current] = diff;
@@ -338,8 +342,8 @@ public class AIRefactorFrame extends JFrame {
         cards.repaint();
     }
 
-    public List<DiffMethodResponse> getSelected() {
-        ArrayList<DiffMethodResponse> selectedResponses = new ArrayList<>();
+    public List<ApplicableDiff> getSelected() {
+        ArrayList<ApplicableDiff> selectedResponses = new ArrayList<>();
         for (int i = 0; i < responses.length; i++) {
             if (!selected[i]) continue;
 

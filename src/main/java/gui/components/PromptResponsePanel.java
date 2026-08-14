@@ -1,5 +1,6 @@
 package gui.components;
 
+import ai.reponse.ApplicableDiff;
 import ai.reponse.DiffMethodResponse;
 import gui.GuiUtils;
 
@@ -7,12 +8,18 @@ import javax.swing.*;
 
 public class PromptResponsePanel extends JScrollPane {
 
-    public PromptResponsePanel(DiffMethodResponse response) {
+    public PromptResponsePanel(ApplicableDiff response) {
         if (response.isEmpty()) {
             setViewportView(new JLabel("There was an error"));
             return;
         }
 
+        if (response instanceof DiffMethodResponse diffMethodResponse) {
+            setupMethod(diffMethodResponse);
+        }
+    }
+
+    private void setupMethod(DiffMethodResponse response) {
         JPanel main = new JPanel();
         GuiUtils.setVerticalLayout(main);
 
@@ -46,5 +53,4 @@ public class PromptResponsePanel extends JScrollPane {
 
         setViewportView(main);
     }
-
 }
