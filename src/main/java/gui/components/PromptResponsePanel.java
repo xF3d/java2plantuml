@@ -1,10 +1,13 @@
 package gui.components;
 
 import ai.reponse.ApplicableDiff;
+import ai.reponse.DiffClassResponse;
 import ai.reponse.DiffMethodResponse;
 import gui.GuiUtils;
 
 import javax.swing.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PromptResponsePanel extends JScrollPane {
 
@@ -16,6 +19,10 @@ public class PromptResponsePanel extends JScrollPane {
 
         if (response instanceof DiffMethodResponse diffMethodResponse) {
             setupMethod(diffMethodResponse);
+        } else if (response instanceof DiffClassResponse diffClassResponse) {
+            setupClass(diffClassResponse);
+        } else {
+            throw new RuntimeException("Invalid Applicable Diff detected");
         }
     }
 
@@ -23,34 +30,52 @@ public class PromptResponsePanel extends JScrollPane {
         JPanel main = new JPanel();
         GuiUtils.setVerticalLayout(main);
 
-        JPanel center = new JPanel();
-        GuiUtils.setVerticalLayout(center);
+        JPanel newMethodsArea = setupLabelArea("New Methods", String.join("\n", response.newMethods()));
+        JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
 
-        var centerLabel = new JLabel("New methods");
-        var centerText = new JTextArea();
-        centerText.setEditable(false);
-        centerText.setFocusable(false);
-        centerText.setText(String.join("\n", response.newMethods()));
-
-        center.add(centerLabel);
-        center.add(centerText);
-
-
-        JPanel bottom = new JPanel();
-        GuiUtils.setVerticalLayout(bottom);
-
-        var bottomLabel = new JLabel("Notes");
-        var bottomText = new JTextArea();
-        bottomText.setEditable(false);
-        bottomText.setFocusable(false);
-        bottomText.setText(String.join("\n", response.notes()));
-
-        bottom.add(bottomLabel);
-        bottom.add(bottomText);
-
-        main.add(center);
-        main.add(bottom);
+        main.add(newMethodsArea);
+        main.add(notesArea);
 
         setViewportView(main);
+    }
+
+    private void setupClass(DiffClassResponse response) {
+        JPanel main = new JPanel();
+        GuiUtils.setVerticalLayout(main);
+
+        JPanel addedImportsArea = setupLabelArea("Added Imports", String.join("\n", response.addedImports()));
+        JPanel changesArea = setupLabelArea("Changes", String.join("\n", response.changes()));
+
+        List<JPanel> addedClassesAreas = new ArrayList<>();
+        List<String> added = response.added();
+        for (int i = 0; i < added.size(); i++) {
+            String code = added.get(i);
+            addedClassesAreas.add(
+                    setupLabelArea("Added Class " + (i + 1), code)
+            );
+        }
+
+        JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
+
+        main.add(addedImportsArea);
+        main.add(changesArea);
+        addedClassesAreas.forEach(main::add);
+        main.add(notesArea);
+    }
+
+    private JPanel setupLabelArea(String title, String contents) {
+        var panel = new JPanel();
+        GuiUtils.setVerticalLayout(panel);
+
+        var label = new JLabel(title);
+        var area = new JTextArea();
+        area.setEditable(false);
+        area.setFocusable(false);
+        area.setText(contents);
+
+        panel.add(label);
+        panel.add(area);
+
+        return panel;
     }
 }
