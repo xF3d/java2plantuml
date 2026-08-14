@@ -25,10 +25,6 @@ public record DiffMethodResponse(
 ) implements ApplicableDiff {
     public static final DiffMethodResponse EMPTY = new DiffMethodResponse("null", "null", List.of(), List.of());
 
-    public static final String ORIGIN = "-----ORIGIN-----";
-    public static final String METHODS = "-----METHODS-----";
-    public static final String NOTES = "-----NOTES-----";
-
     public static DiffMethodResponse fromResponse(String origin, String response) {
         if (origin == null) throw new IllegalArgumentException("Null origin");
 
@@ -51,31 +47,6 @@ public record DiffMethodResponse(
         return new DiffMethodResponse(clazz, method, methods, notes);
     }
 
-    public static DiffMethodResponse fromString(String full) {
-        if (full == null) return EMPTY;
-
-        SectionData data = SectionData.parseSections(full);
-
-        if (!data.hasSections("ORIGIN", "METHODS", "NOTES")) return EMPTY;
-
-        List<String> originLines = data.get("ORIGIN");
-        List<String> methods = data.get("METHODS");
-        List<String> notes = data.get("NOTES");
-
-        if (originLines.size() != 1) return EMPTY;
-
-        String[] split = originLines.getFirst().split(Pattern.quote("#"));
-
-        if (split.length != 2) return EMPTY;
-
-        return new DiffMethodResponse(
-                split[0],
-                split[1],
-                new ArrayList<>(methods),
-                new ArrayList<>(notes)
-        );
-    }
-
     @Override
     public boolean isEmpty() {
         return notes.isEmpty() && newMethods.isEmpty();
@@ -88,17 +59,6 @@ public record DiffMethodResponse(
     @Override
     public String origin() {
         return clazz + "#" + method;
-    }
-
-    public String asSave() {
-        String origin = ORIGIN + "\n";
-        String originValue = this.origin() + "\n";
-        String addedMethods = METHODS + "\n";
-        String allAddedMethods = String.join("\n", newMethods);
-        String notes = "\n" + NOTES + "\n";
-        String allNotes = String.join("\n", this.notes);
-
-        return origin + originValue + addedMethods + allAddedMethods + notes + allNotes;
     }
 
     @Override
@@ -205,15 +165,5 @@ public record DiffMethodResponse(
                 .findCompilationUnit().orElseThrow()
                 .getStorage().orElseThrow()
                 .getPath();
-    }
-
-    private static final String SEPARATOR = "---------------------------------------";
-
-    public static String toFileContents(Collection<DiffMethodResponse> responses) {
-        return responses.stream().map(DiffMethodResponse::asSave).collect(Collectors.joining(SEPARATOR + "\n"));
-    }
-
-    public static List<DiffMethodResponse> fromFileContents(String contents) {
-        return Arrays.stream(contents.split(Pattern.quote(SEPARATOR))).map(DiffMethodResponse::fromString).toList();
     }
 }
