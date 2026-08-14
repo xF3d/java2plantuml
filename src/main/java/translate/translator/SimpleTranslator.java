@@ -14,6 +14,7 @@ import translate.translator.exceptions.InvalidSelectedConstructorException;
 import translate.translator.exceptions.InvalidSelectedMethodException;
 
 import java.io.File;
+import java.io.InvalidClassException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -74,15 +75,14 @@ public class SimpleTranslator implements Translator {
         return executed;
     }
 
-    /*
-    public TypeDeclaration<?> getTypeDeclaration(String fullClassName) throws IllegalArgumentException {
+    public TypeDeclaration<?> getTypeDeclaration(String fullClassName) throws InvalidSelectedClassException {
         var clazz = classMap.get(fullClassName);
         if (clazz == null) {
             throw new InvalidSelectedClassException(fullClassName);
         }
 
         return clazz;
-    }*/
+    }
 
     public ConstructorDeclaration getConstructorDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
         var ctorMap = constructorsMap.get(fullClassName);

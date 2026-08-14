@@ -318,8 +318,8 @@ public class ComplexityTranslator extends SimpleTranslator {
 
     public ComplexityResultAggregator evaluateClass(String fullClassName) {
         try {
-            return classResultMap.get(fullClassName).getComplexityResult().get();
-        } catch (InterruptedException | ExecutionException e) {
+            return getClass(fullClassName).getComplexityResult().get();
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
@@ -327,9 +327,18 @@ public class ComplexityTranslator extends SimpleTranslator {
     public ComplexityResultAggregator evaluateMethod(String fullClassName, String method) {
         try {
             return getMethod(fullClassName, method).getComplexityResult().get();
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ComplexityClass getClass(String fullClassName) {
+        var result = classResultMap.get(fullClassName);
+        if (result == null) {
+            throw new InvalidSelectedClassException(fullClassName);
+        }
+
+        return result;
     }
 
     public ComplexityMethod getMethod(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
@@ -347,10 +356,19 @@ public class ComplexityTranslator extends SimpleTranslator {
     }
 
     @Override
+    public TypeDeclaration<?> getTypeDeclaration(String fullClassName) throws InvalidSelectedClassException {
+        try {
+            return getClass(fullClassName).getNode();
+        } catch (Exception e) {
+            throw new InvalidSelectedClassException(fullClassName);
+        }
+    }
+
+    @Override
     public MethodDeclaration getMethodDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedMethodException {
         try {
             return getMethod(fullClassName, method).getMethod().raw().asMethodDeclaration();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             throw new InvalidSelectedMethodException(fullClassName, method);
         }
     }
@@ -359,7 +377,7 @@ public class ComplexityTranslator extends SimpleTranslator {
     public ConstructorDeclaration getConstructorDeclaration(String fullClassName, String method) throws InvalidSelectedClassException, InvalidSelectedConstructorException {
         try {
             return getMethod(fullClassName, method).getMethod().raw().asConstructorDeclaration();
-        } catch (IllegalStateException e) {
+        } catch (Exception e) {
             throw new InvalidSelectedConstructorException(fullClassName, method);
         }
     }
