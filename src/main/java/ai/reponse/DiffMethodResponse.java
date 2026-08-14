@@ -39,10 +39,10 @@ public record DiffMethodResponse(
 
         SectionData data = SectionData.parseSections(response);
 
-        if (!data.hasSections("METHODS", "NOTES")) return EMPTY;
+        if (!data.hasSections("METHODS")) return EMPTY;
 
         List<String> methods = data.get("METHODS");
-        List<String> notes = data.get("NOTES");
+        List<String> notes = data.orElse("NOTES", List.of());
 
         return new DiffMethodResponse(clazz, method, methods, notes);
     }
@@ -87,7 +87,7 @@ public record DiffMethodResponse(
             codeCu.findAll(MethodDeclaration.class, addedMethods::add);
             return addedMethods;
         } else {
-            FileLogger.LOGGER.warning("Invalid Apply Patch: Parsing");
+            FileLogger.LOGGER.warning("Invalid Apply Patch Method: Parsing");
             return List.of();
         }
     }
@@ -95,7 +95,7 @@ public record DiffMethodResponse(
     @Override
     public void apply(SimpleTranslator originalTranslator, Path toUpdatePath) {
         if (!isValid()) {
-            FileLogger.LOGGER.warning("Invalid Apply Patch: Invalid");
+            FileLogger.LOGGER.warning("Invalid Apply Patch Method: Invalid");
             return;
         }
 

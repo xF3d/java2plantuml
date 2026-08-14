@@ -27,6 +27,10 @@ public class SectionData {
         return sections.get(key);
     }
 
+    public List<String> orElse(String key, List<String> def) {
+        return sections.getOrDefault(key, def);
+    }
+
     public static SectionData parseSections(String full) {
         SectionData data = new SectionData();
 
