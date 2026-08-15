@@ -1,5 +1,6 @@
 package translate.component;
 
+import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import translate.component.formatter.MemberFormatter;
 
@@ -15,11 +16,15 @@ public class RecordWriter extends SetTranslatingComponent<RecordDeclaration> {
         builder.append(MemberFormatter.fullSimpleName(element));
         builder.append("{");
         builder.append("\n");
+
         for (var parameter : element.getParameters()) {
             builder.append(formatter.modifiers(parameter.getModifiers()));
             builder.append(formatter.variable(parameter));
             builder.append("\n");
         }
+
+        // static fields and stuff
+        builder.append(formatter.attributes(element));
 
         //attributes
         builder.append(formatter.node(element));

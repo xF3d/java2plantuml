@@ -19,6 +19,7 @@ public enum APIType {
         return OpenAiChatModel.builder()
                 .modelName(name)
                 .baseUrl(url)
+                .parallelToolCalls(true)
                 .apiKey(apiKey)
                 .timeout(Duration.ofMinutes(5))
                 .build();

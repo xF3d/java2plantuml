@@ -1,5 +1,7 @@
 package ai.reponse;
 
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -9,9 +11,14 @@ import java.util.regex.Pattern;
 
 import static java.util.regex.Pattern.*;
 
+@AllArgsConstructor
 public class SectionData {
     private static final Pattern SECTION_PATTERN = compile("^-----([^-]+)-----$");
-    private final Map<String, List<String>> sections = new LinkedHashMap<>();
+    private final Map<String, List<String>> sections;
+
+    public SectionData() {
+        this.sections = new LinkedHashMap<>();
+    }
 
     public boolean hasSections(String... args) {
         for (String arg : args) {
@@ -61,5 +68,22 @@ public class SectionData {
         }
 
         return data;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+
+        for (Map.Entry<String, List<String>> entry : sections.entrySet()) {
+            result.append("-----")
+                    .append(entry.getKey())
+                    .append("-----\n");
+
+            for (String line : entry.getValue()) {
+                result.append(line).append('\n');
+            }
+        }
+
+        return result.toString();
     }
 }
