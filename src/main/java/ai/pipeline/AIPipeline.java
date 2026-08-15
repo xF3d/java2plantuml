@@ -1,5 +1,6 @@
 package ai.pipeline;
 
+import ai.AIManager;
 import ai.reponse.MessageValidator;
 import ai.reponse.ValidatedResponse;
 import ai.chat.BaseChat;
@@ -69,6 +70,7 @@ public abstract class AIPipeline {
         System.out.println(response);
         ValidatedResponse previousResponse = response;
 
+        var verifiersAi = AIManager.getInstance().getVerifiers();
         for (int i = 0; i < verifiers.size(); i++) {
             BaseChat verifier = verifiers.get(i);
 
@@ -79,7 +81,7 @@ public abstract class AIPipeline {
                 continue;
             }
 
-            String name = cfg.getVerifyModels().get(i).modelName();
+            String name = verifiersAi.get(i).defaultRequestParameters().modelName();
             notes.addAll(
                     previousResponse.parsed().notes()
                             .stream()
