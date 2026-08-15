@@ -1,4 +1,4 @@
-package ai;
+package ai.reponse;
 
 public record ValidatedResponse(String message, String error) {
     public boolean isValid() {

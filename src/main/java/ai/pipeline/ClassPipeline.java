@@ -3,6 +3,7 @@ package ai.pipeline;
 import ai.*;
 import ai.chat.BaseChat;
 import ai.reponse.MessageValidator;
+import ai.reponse.ValidatedResponse;
 import dev.langchain4j.service.AiServices;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.pkg.PackageManager;

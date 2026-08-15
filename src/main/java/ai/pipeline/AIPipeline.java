@@ -1,7 +1,7 @@
 package ai.pipeline;
 
 import ai.reponse.MessageValidator;
-import ai.ValidatedResponse;
+import ai.reponse.ValidatedResponse;
 import ai.chat.BaseChat;
 import file.Config;
 import file.FileLogger;

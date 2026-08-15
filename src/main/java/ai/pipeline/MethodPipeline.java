@@ -3,7 +3,7 @@ package ai.pipeline;
 import ai.AIManager;
 import ai.reponse.MessageValidator;
 import ai.Prompts;
-import ai.ValidatedResponse;
+import ai.reponse.ValidatedResponse;
 import ai.chat.BaseChat;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.service.AiServices;
