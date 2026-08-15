@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
+import file.Config;
 import lombok.Getter;
 import translate.complexity.*;
 import translate.complexity.evaluators.ComplexityEvaluator;
@@ -255,9 +256,12 @@ public class ComplexityTranslator extends SimpleTranslator {
     }
 
     public Map<String, ComplexityClass> getProblematicClasses() {
+        var filter = Config.getInstance().getConfig().getPackageFilter();
         Map<String, ComplexityClass> output = new HashMap<>();
         for (var entry : classResultMap.entrySet()) {
             String fullPackageName = entry.getKey();
+            if (!filter.isValid(fullPackageName)) continue;
+
             var clazz = entry.getValue();
             var results = clazz.evalResult();
 
@@ -270,10 +274,13 @@ public class ComplexityTranslator extends SimpleTranslator {
     }
 
     public Map<String, Map<String, ComplexityMethod>> getProblematicMethods() {
+        var filter = Config.getInstance().getConfig().getPackageFilter();
         Map<String, Map<String, ComplexityMethod>> output = new HashMap<>();
         for (var methodEntry : methodResultMap.entrySet()) {
             String classFqn = methodEntry.getKey();
             HashMap<String, ComplexityMethod> methodInvalidMap = new HashMap<>();
+
+            if (!filter.isValid(classFqn)) continue;
 
             for (var classEntry : methodEntry.getValue().entrySet()) {
                 String signature = classEntry.getKey();
