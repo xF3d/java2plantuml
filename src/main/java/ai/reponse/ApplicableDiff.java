@@ -9,6 +9,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.translator.SimpleTranslator;
 
 import java.nio.file.Path;
+import java.util.List;
 
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
@@ -29,6 +30,12 @@ public interface ApplicableDiff {
     boolean isValid();
 
     String origin();
+
+    List<String> notes();
+
+    String asAi();
+
+    ApplicableDiff withNotes(List<String> notes);
 
     static void addOrReplaceMethod(MethodDeclaration newMethod, TypeDeclaration<?> typeDefinition) {
         NodeList<BodyDeclaration<?>> members = typeDefinition.getMembers();

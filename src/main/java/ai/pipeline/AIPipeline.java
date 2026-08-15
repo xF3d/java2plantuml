@@ -7,6 +7,7 @@ import file.Config;
 import file.FileLogger;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -33,16 +34,17 @@ public abstract class AIPipeline {
             String stringResponse;
             try {
                 stringResponse = model.chat(message);
+                System.out.println(stringResponse);
             } catch (Exception e) {
-                lastResponse = new ValidatedResponse(null, e.getMessage());
+                lastResponse = ValidatedResponse.error(e.getMessage());
                 continue;
             }
 
-            String error = validator.validate(origin, stringResponse);
-            if (error == null) {
-                return new ValidatedResponse(stringResponse, null);
+            ValidatedResponse validated = validator.validate(origin, stringResponse);
+            if (validated.isValid()) {
+                return validated;
             } else {
-                lastResponse = new ValidatedResponse(null, error);
+                lastResponse = validated;
             }
         }
 
@@ -52,25 +54,46 @@ public abstract class AIPipeline {
     protected ValidatedResponse message(String mainMessage) {
         ValidatedResponse response = this.validatedChat(suggestion, mainMessage);
 
-        if (!response.isValid()) {
+        if (response.isError()) {
             FileLogger.LOGGER.severe("Fatal error in generator: " + response.error());
-            return null;
+            return ValidatedResponse.error(response.error());
         }
+
+        var cfg = Config.getInstance();
+        List<String> notes = new ArrayList<>(response.parsed().notes()
+                .stream()
+                .map(it -> cfg.getMainModel().modelName() + " : " + it)
+                .toList()
+        );
 
         System.out.println(response);
         ValidatedResponse previousResponse = response;
-        for (BaseChat verifier : verifiers) {
-            previousResponse = this.validatedChat(verifier, mainMessage + "\n Previous Response: " + previousResponse.message());
 
-            if (!previousResponse.isValid()) {
+        for (int i = 0; i < verifiers.size(); i++) {
+            BaseChat verifier = verifiers.get(i);
+
+            previousResponse = this.validatedChat(verifier, mainMessage + "\n Previous Response: " + previousResponse.parsed().asAi());
+
+            if (previousResponse.isError()) {
                 FileLogger.LOGGER.warning("Error in verifier " + previousResponse.error());
                 continue;
             }
 
+            String name = cfg.getVerifyModels().get(i).modelName();
+            notes.addAll(
+                    previousResponse.parsed().notes()
+                            .stream()
+                            .map(it -> name + " : " + it)
+                            .toList()
+            );
             System.out.println(previousResponse);
         }
 
-        return previousResponse;
+        if (previousResponse.isError()) {
+            return previousResponse;
+        }
+
+        return ValidatedResponse.fromDiff(previousResponse.parsed().withNotes(notes));
     }
 
     // Message calc + run of message

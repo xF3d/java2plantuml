@@ -72,7 +72,7 @@ public class AIManager {
             return DiffMethodResponse.EMPTY;
         }
 
-        return DiffMethodResponse.fromResponse(pipeline.getOrigin(), validated.message());
+        return (DiffMethodResponse) validated.parsed();
     }
 
     public DiffClassResponse fixClass(SimpleTranslator translator, ComplexityClass clazz) {
@@ -85,6 +85,6 @@ public class AIManager {
             return DiffClassResponse.EMPTY;
         }
 
-        return DiffClassResponse.fromResponse(pipeline.getOrigin(), validated.message());
+        return (DiffClassResponse) validated.parsed();
     }
 }

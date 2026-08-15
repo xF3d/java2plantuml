@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 public record DiffClassResponse(
         String clazz,
@@ -200,5 +202,22 @@ public record DiffClassResponse(
     @Override
     public String origin() {
         return clazz;
+    }
+
+    @Override
+    public ApplicableDiff withNotes(List<String> notes) {
+        return new DiffClassResponse(clazz, addedImports, changes, added, notes);
+    }
+
+    @Override
+    public String asAi() {
+        var map = Map.of(
+                "ADDED_IMPORTS", addedImports,
+                "CHANGES", changes,
+                "ADDED", List.of(String.join(SEPARATOR, added)),
+                "NOTES", Collections.<String>emptyList()
+        );
+
+        return new SectionData(map).toString();
     }
 }

@@ -62,6 +62,21 @@ public record DiffMethodResponse(
     }
 
     @Override
+    public String asAi() {
+        var map = Map.of(
+                "METHODS", newMethods,
+                "NOTES", Collections.<String>emptyList()
+        );
+
+        return new SectionData(map).toString();
+    }
+
+    @Override
+    public ApplicableDiff withNotes(List<String> notes) {
+        return new DiffMethodResponse(clazz, method, newMethods, notes);
+    }
+
+    @Override
     public boolean isValid() {
         if (isEmpty()) return false;
 
