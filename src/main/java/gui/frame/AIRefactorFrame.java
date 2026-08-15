@@ -2,6 +2,7 @@ package gui.frame;
 
 import ai.AIManager;
 import ai.reponse.ApplicableDiff;
+import ai.reponse.DiffClassResponse;
 import ai.reponse.DiffMethodResponse;
 import file.FileLogger;
 import gui.GuiUtils;
@@ -10,6 +11,7 @@ import serialization.ApplicableDiffTypeList;
 import serialization.JacksonMapper;
 import translate.component.formatter.MemberFormatter;
 import translate.dummy.DummyProject;
+import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 import translate.translator.ComplexityTranslator;
 
@@ -21,7 +23,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -115,13 +116,18 @@ public class AIRefactorFrame extends JFrame {
     private JMenu setupPromptMenu() {
         JMenu promptsMenu = new JMenu("Prompts");
 
-        JMenuItem startPrompt = new JMenuItem("Refactor Methods");
-        startPrompt.addActionListener(this::refactorMethods);
+        JMenuItem refactorMethods = new JMenuItem("Refactor Methods");
+        refactorMethods.addActionListener(this::refactorMethods);
+
+        JMenuItem refactorClasses = new JMenuItem("Refactor Classes");
+        refactorClasses.addActionListener(this::refactorClasses);
+
 
         JMenuItem resetPrompt = new JMenuItem("Reset");
         resetPrompt.addActionListener(this::reset);
 
-        promptsMenu.add(startPrompt);
+        promptsMenu.add(refactorMethods);
+        promptsMenu.add(refactorClasses);
         promptsMenu.add(resetPrompt);
 
         return promptsMenu;
@@ -177,7 +183,7 @@ public class AIRefactorFrame extends JFrame {
     }
 
     public void refactorMethods(ActionEvent ignored) {
-        FileLogger.LOGGER.info("Start AI evaluation");
+        FileLogger.LOGGER.info("Start AI evaluation methods");
         reset(null);
         var aiManager = AIManager.getInstance();
 
@@ -221,6 +227,45 @@ public class AIRefactorFrame extends JFrame {
                     }
                 });
             }
+        }
+    }
+
+    private void refactorClasses(ActionEvent actionEvent) {
+        FileLogger.LOGGER.info("Start AI evaluation classes");
+        reset(null);
+        var aiManager = AIManager.getInstance();
+
+        Map<String, ComplexityClass> problematicClasses = complexityTranslator.getProblematicClasses();
+
+        int totalSize = problematicClasses.size();
+
+        responses = new DiffMethodResponse[totalSize];
+        selected = new boolean[totalSize];
+
+        int gen = generation.get();
+        for (var complexityClass : problematicClasses.values()) {
+
+            this.aiExecutor.submit(() -> {
+
+                try {
+
+                    DiffClassResponse diff = aiManager.fixClass(complexityTranslator, complexityClass);
+                    if (gen != generation.get()) {
+                        return;
+                    }
+
+                    SwingUtilities.invokeLater(() -> {
+                        if (gen != generation.get()) {
+                            return;
+                        }
+
+                        this.addCard(diff);
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
+
         }
     }
 

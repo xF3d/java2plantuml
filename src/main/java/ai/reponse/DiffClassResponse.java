@@ -78,8 +78,12 @@ public record DiffClassResponse(
             applyAddClass(projectRoot, clazz);
         }
 
-        TypeDeclaration<?> originalClazz = originalTranslator.getTypeDeclaration(clazz);
-        CompilationUnit originalCu = originalClazz.findCompilationUnit().orElseThrow();
+        CompilationUnit originalCu = originalTranslator.getTypeDeclaration(clazz)
+                .findCompilationUnit().orElseThrow()
+                .clone();
+
+
+        TypeDeclaration<?> originalClazz = originalCu.findFirst(TypeDeclaration.class).orElseThrow();
 
         NodeList<ImportDeclaration> imports = parseImports();
         if (imports == null) throw new RuntimeException("impossible");
@@ -87,7 +91,11 @@ public record DiffClassResponse(
 
         CompilationUnit changes = parseChanges();
         if (changes == null) throw new RuntimeException("impossible");
-        changes.findAll(MethodDeclaration.class).forEach(originalClazz::addMember);
+
+        // TODO: Address replace method
+        changes.findAll(MethodDeclaration.class).forEach(m -> ApplicableDiff.addOrReplaceMethod(m, originalClazz));
+
+
         changes.findAll(FieldDeclaration.class).forEach(originalClazz::addMember);
 
         try {

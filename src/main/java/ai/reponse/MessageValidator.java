@@ -10,11 +10,10 @@ public interface MessageValidator {
     MessageValidator CLASS = (origin, message) -> {
         if (message == null) return "Invalid message";
 
-        // TODO change
-        DiffMethodResponse diff = DiffMethodResponse.fromResponse(origin, message);
-        if (diff.isEmpty()) return "Invalid response";
+        DiffClassResponse diff = DiffClassResponse.fromResponse(origin, message);
+        if (diff.isEmpty()) return "Response is empty or formatted incorrectly";
 
-        if (!diff.isValid()) return "Invalid method body";
+        if (!diff.isValid()) return "Invalid response";
         return null;
     };
 
@@ -22,7 +21,7 @@ public interface MessageValidator {
         if (message == null) return "Invalid message";
 
         DiffMethodResponse diff = DiffMethodResponse.fromResponse(origin, message);
-        if (diff.isEmpty()) return "Invalid response";
+        if (diff.isEmpty()) return "Response is empty or formatted incorrectly";
 
         if (!diff.isValid()) return "Invalid method body";
         return null;

@@ -122,34 +122,8 @@ public record DiffMethodResponse(
                         cc -> cc.getFullyQualifiedName().equals(c.getFullyQualifiedName())))
                 .orElseThrow(() -> new IllegalStateException("Target class not found"));
 
-        MethodDeclaration replacement = null;
         for (MethodDeclaration method : addedMethods) {
-            if (method.getSignature().equals(originalMethod.getSignature())) {
-                replacement = method;
-            }
-        }
-
-        // should never happen
-        if (replacement == null) {
-            FileLogger.LOGGER.warning("Invalid Patch: at Apply");
-            return;
-        }
-
-        NodeList<BodyDeclaration<?>> members = clazz.getMembers();
-
-        for (int i = 0; i < members.size(); i++) {
-            if (members.get(i) instanceof MethodDeclaration md &&
-                    md.getSignature().equals(originalMethod.getSignature())) {
-                members.set(i, replacement.clone());
-                break;
-            }
-        }
-
-        for (MethodDeclaration method : addedMethods) {
-            if (method == replacement) {
-                continue;
-            }
-            clazz.addMember(method.clone());
+            ApplicableDiff.addOrReplaceMethod(method, clazz);
         }
 
         try {

@@ -82,10 +82,9 @@ public class AIManager {
         var validated = pipeline.ask();
         if (!validated.isValid()) {
             FileLogger.LOGGER.warning("Fix method suggestion validation error, last error: " + validated.error());
-            //return DiffMethodResponse.EMPTY;
+            return DiffClassResponse.EMPTY;
         }
 
-        return null;
-        //return DiffMethodResponse.fromResponse(pipeline.getOrigin(), validated.message());
+        return DiffClassResponse.fromResponse(pipeline.getOrigin(), validated.message());
     }
 }
