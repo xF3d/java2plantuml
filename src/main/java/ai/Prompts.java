@@ -3,6 +3,9 @@ package ai;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.ImportDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
+import com.github.javaparser.ast.body.Parameter;
+import com.github.javaparser.ast.body.RecordDeclaration;
+import com.github.javaparser.ast.expr.SimpleName;
 import lombok.experimental.UtilityClass;
 import translate.structure.complexity.ComplexityClass;
 
@@ -301,6 +304,13 @@ public class Prompts {
         String fieldStrings = decl.getFields().stream()
                 .map(FieldDeclaration::toString)
                 .collect(Collectors.joining("\n"));
+        if (decl instanceof RecordDeclaration recordDeclaration) {
+            fieldStrings += recordDeclaration.getParameters().stream()
+                    .map(Parameter::getName)
+                    .map(SimpleName::asString)
+                    .collect(Collectors.joining("\n"));
+        }
+
         String methodSignaturesString = String.join("\n", methodSignatures);
 
         String classMetrics;
@@ -323,5 +333,30 @@ public class Prompts {
                 classMetrics,
                 classSmells
         );
+    }
+
+    private static ArrayList<String> getImportStrings(CompilationUnit cu) {
+        ArrayList<String> imports = new ArrayList<>(cu.getImports().size() + 1);
+
+        cu.getPackageDeclaration().ifPresent((p) -> {
+            imports.add("package " + p.getNameAsString() + ";");
+        });
+
+        for (ImportDeclaration singleImport : cu.getImports()) {
+            String importString = singleImport.toString();
+            if (singleImport.isStatic()) {
+                importString = "import static " + importString;
+                imports.add(importString);
+                continue;
+            }
+
+            if (singleImport.isAsterisk()) {
+                importString += ".*";
+            }
+
+            imports.add("import " + importString);
+        }
+
+        return imports;
     }
 }
