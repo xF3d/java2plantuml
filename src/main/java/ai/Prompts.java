@@ -18,20 +18,18 @@ public class Prompts {
     // TODO: dove mettere test?
     // TODO: class context
     public static final String FORMAT_USAGE_REFACTOR_METHOD = """
-            Your answer should always follow this strict format, where text wrapped by {{}} are place holders.
+            Your answer should always follow this strict format, where text wrapped by %% are place holders.
             
             -----METHODS-----
-            {{New methods, MUST have the rewritten method with the same signature}}
+            %%New methods, MUST have the rewritten method with the same signature%%
             -----NOTES-----
-            {{AI_MODEL_NAME}} : {{NOTE_1}}
-            {{AI_MODEL_NAME}} : {{NOTE_2}}
-            {{AI_MODEL_NAME_2}} : {{NOTE_3}}
+            %%AI_MODEL_NAME%% : %%NOTE_1%%
+            %%AI_MODEL_NAME%% : %%NOTE_2%%
+            %%AI_MODEL_NAME_2%% : %%NOTE_3%%
             
             
             
-            All {{Note_n}} must be maximum of 50 words and contain suggestions, not comments.
-            {{AI_MODEL_NAME}} entries might contain other AI model names different than yours, that is because
-            multiple AI are interacting with it, but you must only use your own name when adding notes.
+            All %%Note_n%% must be maximum of 50 words and contain suggestions, not comments.
             Must be Java 17 language level max.
             
             
@@ -56,29 +54,29 @@ public class Prompts {
             """;
 
     public static final String FORMAT_USAGE_REFACTOR_CLASS = """
-            Your answer should always follow this strict format, where text wrapped by {{}} are place holders.
+            Your answer should always follow this strict format, where text wrapped by %% are place holders.
             
             -----ADDED_IMPORTS-----
-            {{Added imports of added classes or others, as long as they are implemented}}
+            %%Added imports of added classes or others, as long as they are used%%
             -----CHANGES-----
-            {{Added fields, fields should not be removed}}
-            {{Added methods and rewritten methods with the same signature, no methods should be removed}}
+            %%Added fields, fields should not be removed%%
+            %%Added methods%%
+            %%Rewritten methods with the same signature, methods can't be removed but can be rewritten%%
             -----ADDED-----
-            {{File contents with class, imports, package definition}}
+            %%File contents with class, imports, package definition%%
             ===============
-            {{File contents with class, imports, package definition n°2}}
+            %%File contents with class, imports, package definition n°2%%
             ...
             -----NOTES-----
-            {{AI_MODEL_NAME}} : {{NOTE_1}}
-            {{AI_MODEL_NAME}} : {{NOTE_2}}
-            {{AI_MODEL_NAME_2}} : {{NOTE_3}}
+            %%AI_MODEL_NAME%% : %%NOTE_1%%
+            %%AI_MODEL_NAME%% : %%NOTE_2%%
+            %%AI_MODEL_NAME_2%% : %%NOTE_3%%
             
             
             
-            All {{Note_n}} must be maximum of 50 words and contain suggestions, not comments.
-            {{AI_MODEL_NAME}} entries might contain other AI model names different than yours, that is because
-            multiple AI are interacting with it, but you must only use your own name when adding notes.
-            Must be Java 17 language level max.
+            All %%Note_n%% must be maximum of 50 words and contain suggestions, not comments.
+            Must be Java 25 language level max.
+            Changes should only contain method declarations and field declarations, so no imports or type declarations
             
             
             Example (DO NOT USE IN CONTEXT OR AS A FIRST PROMPT):
@@ -117,9 +115,9 @@ public class Prompts {
             claude : fancyClass should have a more descriptive name
             
             
+            The example is in a very dumbed down format, in the real response use meaningful package, variable, classes names and method signatures.
             
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
-            The rewritten method should maintain the same signature as the previous one.
             """;
 
     public static final String SYSTEM_REFACTOR_METHOD_VER = """
@@ -135,8 +133,7 @@ public class Prompts {
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented should not be added
-            - NOTEs are optional
-            - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
+            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
             - If you don't want to change anything, just resend the message you received without changing it
             - You can add notes with your name only
             
@@ -162,10 +159,8 @@ public class Prompts {
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented should not be added
-            - NOTEs are optional
-            - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
+            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
             - Only answer in the format provided
-            - You can add notes with your name only
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
@@ -187,19 +182,15 @@ public class Prompts {
             """
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented should not be added
-            - NOTEs are optional
-            - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
+            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented or with only a comment should not be added
+            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
             - If you don't want to change anything, just resend the message you received without changing it
-            - You can add notes with your name only
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
-            - Creating new functions in other classes
             - Adding an external dependency
-            - Suggesting changes to different classes
-            - Adding new classes
+            - Modify another existing class other than the target ones, you can add as many as you want however in the ADDED section
             
-            You can change the CHANGE section as you see fit if necessary, but not the NOTE section, you can only add to the notes, not delete them
+            You can change the CHANGES and ADDED section as you see fit if necessary, but not the NOTE section, you can only add to the notes, not delete them
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
@@ -215,17 +206,13 @@ public class Prompts {
             """
             Rules:
             - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented should not be added
-            - NOTEs are optional
-            - NOTEs should never contain explanations of yours or past actions, they merely talk about stuff you can't fix directly and tips for the user
+            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented or with only a comment should not be added
+            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
             - Only answer in the format provided
-            - You can add notes with your name only
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
-            - Creating new functions in other classes
             - Adding an external dependency
-            - Suggesting changes to different classes
-            - Adding new classes
+            - Modify another existing class other than the target ones, you can add as many as you want however in the ADDED section
             """;
     
 
