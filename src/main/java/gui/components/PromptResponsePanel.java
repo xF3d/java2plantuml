@@ -61,6 +61,8 @@ public class PromptResponsePanel extends JScrollPane {
         main.add(changesArea);
         addedClassesAreas.forEach(main::add);
         main.add(notesArea);
+
+        setViewportView(main);
     }
 
     private JPanel setupLabelArea(String title, String contents) {
