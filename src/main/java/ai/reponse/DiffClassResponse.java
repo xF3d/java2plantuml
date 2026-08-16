@@ -7,6 +7,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.Name;
 import file.FileLogger;
+import translate.structure.pkg.PackageManager;
 import translate.translator.SimpleTranslator;
 import util.ProjectJavaParser;
 
@@ -72,7 +73,10 @@ public record DiffClassResponse(
                 .clone();
 
 
-        TypeDeclaration<?> originalClazz = originalCu.findFirst(TypeDeclaration.class).orElseThrow();
+        TypeDeclaration<?> originalClazz = originalCu.findFirst(
+                TypeDeclaration.class,
+                c -> PackageManager.resolveTypeDeclaration(c).equals(clazz)
+        ).orElseThrow();
 
         NodeList<ImportDeclaration> imports = parseImports();
         if (imports == null) throw new RuntimeException("impossible");
@@ -98,17 +102,25 @@ public record DiffClassResponse(
                 .map(Name::asString)
                 .orElse("");
 
-        var typeDecl = cu.findFirst(TypeDeclaration.class);
-        var nameDecl = typeDecl.orElseThrow().getNameAsString();
+        var typeDecl = cu.getChildNodes().stream()
+                .filter(TypeDeclaration.class::isInstance)
+                .map(TypeDeclaration.class::cast)
+                .filter(it -> it.getAccessSpecifier() == AccessSpecifier.PUBLIC)
+                .findFirst()
+                .orElseThrow();
+        var nameDecl = typeDecl.getNameAsString();
 
         Path newFile;
         if (packageDecl.isEmpty()) {
             newFile = toAdd.resolve(nameDecl + ".java");
         } else {
-            newFile = toAdd.resolve(packageDecl.replace(".", File.separator));
+            newFile = toAdd
+                    .resolve(packageDecl.replace(".", File.separator))
+                    .resolve(nameDecl + ".java");
         }
 
         try {
+            Files.createDirectories(newFile.getParent());
             Files.writeString(newFile, cu.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
