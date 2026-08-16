@@ -66,6 +66,8 @@ public class PromptResponsePanel extends JScrollPane {
     }
 
     private JPanel setupLabelArea(String title, String contents) {
+        if (contents.trim().isEmpty()) return new JPanel();
+
         var panel = new JPanel();
         GuiUtils.setVerticalLayout(panel);
 
