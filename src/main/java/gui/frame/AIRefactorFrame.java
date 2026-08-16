@@ -24,7 +24,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -40,7 +39,7 @@ public class AIRefactorFrame extends JFrame {
     private int currentCard = 0;
     private final AtomicInteger cardSize = new AtomicInteger(0);
 
-    private ApplicableDiff[] responses = new ApplicableDiff[0];
+    private ArrayList<ApplicableDiff> responses = new ArrayList<>();
     private boolean[] selected = new boolean[0];
 
     private final AtomicInteger generation = new AtomicInteger(0);
@@ -156,7 +155,7 @@ public class AIRefactorFrame extends JFrame {
 
         JMenuItem showAll = new JMenuItem("All");
         showAll.addActionListener(e -> dummyProject.showDiffs(
-                Arrays.stream(responses).filter(d -> !d.isEmpty()).toList()
+                responses.stream().filter(d -> !d.isEmpty()).toList()
         ));
 
         showMenu.add(showSelected);
@@ -173,7 +172,7 @@ public class AIRefactorFrame extends JFrame {
 
         JMenuItem approveAll = new JMenuItem("All");
         approveAll.addActionListener(e -> dummyProject.applyDiffs(
-                Arrays.stream(responses).filter(d -> !d.isEmpty()).toList()
+                responses.stream().filter(d -> !d.isEmpty()).toList()
         ));
 
         approveMenu.add(approveSelected);
@@ -195,7 +194,7 @@ public class AIRefactorFrame extends JFrame {
         }
 
         final int finalTotalSize = totalSize;
-        responses = new DiffMethodResponse[finalTotalSize];
+        responses = new ArrayList<>(finalTotalSize);
         selected = new boolean[finalTotalSize];
 
         int gen = generation.get();
@@ -238,9 +237,7 @@ public class AIRefactorFrame extends JFrame {
         Map<String, ComplexityClass> problematicClasses = complexityTranslator.getProblematicClasses();
 
         int totalSize = problematicClasses.size();
-
-        responses = new DiffMethodResponse[totalSize];
-        selected = new boolean[totalSize];
+        initialize(totalSize);
 
         int gen = generation.get();
         for (var complexityClass : problematicClasses.values()) {
@@ -335,11 +332,10 @@ public class AIRefactorFrame extends JFrame {
         reset(null);
 
         int size = diffs.size();
-        responses = new DiffMethodResponse[size];
-        selected = new boolean[size];
+        initialize(size);
         for (int i = 0; i < size; i++) {
-            var response = diffs.get(i);
-            responses[i] = response;
+            ApplicableDiff response = diffs.get(i);
+            responses.set(i, response);
             addCard(response);
         }
     }
@@ -352,7 +348,7 @@ public class AIRefactorFrame extends JFrame {
         cards.revalidate();
         cards.repaint();
 
-        responses = new DiffMethodResponse[0];
+        responses = new ArrayList<>();
         selected = new boolean[0];
 
         dummyProject = new DummyProject(complexityTranslator);
@@ -364,15 +360,24 @@ public class AIRefactorFrame extends JFrame {
         cardSize.set(0);
     }
 
-    public void addCard(ApplicableDiff diff) {
+    private void initialize(int size) {
+        responses = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            responses.add(null);
+        }
+
+        selected = new boolean[size];
+    }
+
+    public synchronized void addCard(ApplicableDiff diff) {
         int current = cardSize.getAndIncrement();
         String pageNString = String.valueOf(current + 1);
-        responses[current] = diff;
+        responses.set(current, diff);
         JPanel panel = new JPanel();
         GuiUtils.setVerticalLayout(panel);
 
         String name = diff.origin().replace(MemberFormatter.PACKAGE_DELIMITER, ".");
-        panel.add(new JLabel("Page " + pageNString + "/" + responses.length));
+        panel.add(new JLabel("Page " + pageNString + "/" + responses.size()));
         panel.add(new JLabel(name));
         panel.add(new PromptResponsePanel(diff));
 
@@ -389,10 +394,10 @@ public class AIRefactorFrame extends JFrame {
 
     public List<ApplicableDiff> getSelected() {
         ArrayList<ApplicableDiff> selectedResponses = new ArrayList<>();
-        for (int i = 0; i < responses.length; i++) {
+        for (int i = 0; i < responses.size(); i++) {
             if (!selected[i]) continue;
 
-            var response = responses[i];
+            var response = responses.get(i);
             if (response.isEmpty()) continue;
 
             selectedResponses.add(response);
