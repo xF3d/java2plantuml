@@ -280,7 +280,7 @@ public class AIRefactorFrame extends JFrame {
         try {
             JacksonMapper.getMapper()
                     .writerFor(ApplicableDiffTypeList.TYPE)
-                    .writeValue(exportFile, List.of(responses));
+                    .writeValue(exportFile, responses);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(
                     null,
