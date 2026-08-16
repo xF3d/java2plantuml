@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public record DiffClassResponse(
         String clazz,
@@ -42,26 +43,15 @@ public record DiffClassResponse(
         }
 
         List<String> toProcess = data.orElse("ADDED", List.of());
-        List<StringBuilder> codeBuilder = new ArrayList<>();
-
-        for (var line : toProcess) {
-            if (codeBuilder.isEmpty()) {
-                codeBuilder.add(new StringBuilder(line));
-                continue;
-            }
-
-            if (line.strip().equals(SEPARATOR)) {
-                codeBuilder.add(new StringBuilder(line));
-            } else {
-                codeBuilder.getLast().append(line);
-            }
-        }
+        StringBuilder codeBuilder = new StringBuilder();
+        toProcess.forEach(it -> codeBuilder.append(it).append("\n"));
+        String[] split = codeBuilder.toString().split(Pattern.quote(SEPARATOR));
 
         return new DiffClassResponse(
                 clazz,
                 data.orElse("ADDED_IMPORTS", List.of()),
                 data.get("CHANGES"),
-                codeBuilder.stream().map(StringBuilder::toString).toList(),
+                List.of(split),
                 data.orElse("NOTES", List.of())
         );
     }
