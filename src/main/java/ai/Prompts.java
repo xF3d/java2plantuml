@@ -26,15 +26,7 @@ public class Prompts {
             -----METHODS-----
             %%New methods, MUST have the rewritten method with the same signature%%
             -----NOTES-----
-            %%AI_MODEL_NAME%% : %%NOTE_1%%
-            %%AI_MODEL_NAME%% : %%NOTE_2%%
-            %%AI_MODEL_NAME_2%% : %%NOTE_3%%
-            
-            
-            
-            All %%Note_n%% must be maximum of 50 words and contain suggestions, not comments.
-            Must be Java 17 language level max.
-            
+            %%Different or no NOTES%%
             
             Example (DO NOT USE IN CONTEXT OR AS A FIRST PROMPT):
             -----METHODS-----
@@ -46,51 +38,50 @@ public class Prompts {
                 System.out.println("Inside new method");
             }
             -----NOTES-----
-            chatgpt-GEN : myCalc's class might be a overabstraction, consider removing them
-            grok : anotherClass's behaviour could be replaced with a Strategy design pattern
-            claude : fancyClass should have a more descriptive name
+            myCalc's class might be a overabstraction, consider removing them
             
-            
-            
+            All %%NOTE_n%% must be maximum of 50 words and contain suggestions, not comments.
+            Must be Java 25 language level max.
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
             The rewritten method should maintain the same signature as the previous one.
+            All methods created or modified should contain the full implementation if they are not abstract.
             """;
 
     public static final String FORMAT_USAGE_REFACTOR_CLASS = """
-            Your answer should always follow this strict format, where text wrapped by %% are place holders.
+            Your answer should always follow this strict format.
             
             -----ADDED_IMPORTS-----
-            %%Added imports of added classes or others, as long as they are used%%
+            <added-imports>
             -----CHANGES-----
-            %%Added fields, fields should not be removed%%
-            %%Added methods%%
-            %%Rewritten methods with the same signature, methods can't be removed but can be rewritten%%
+            <added-fields>
+            <added-methods>
+            <rewritten-methods>
             -----ADDED-----
-            %%File contents with class, imports, package definition%%
+            <class-file-x>
             ===============
-            %%File contents with class, imports, package definition n°2%%
-            ...
+            <class-file-x>
             -----NOTES-----
-            %%AI_MODEL_NAME%% : %%NOTE_1%%
-            %%AI_MODEL_NAME%% : %%NOTE_2%%
-            %%AI_MODEL_NAME_2%% : %%NOTE_3%%
+            <note-x>
+            <note-x>
             
+            Where you replace the placeholders:
+            <added-imports>: with added imports to the SELECTED_CLASS
+            <added-fields>: with added fields to the SELECTED_CLASS
+            <added-methods>: with added methods to the SELECTED_CLASS
+            <rewritten-methods>: with rewritten methods, with the same signature as the past method, to swap out in SELECTED_CLASS
+            <class-file-x>: one or more classes you want to add, the file will be added at the defined package declaration and must contain a type definition and imports, 
+            useful if you want to extract some code or functionality to another class. The added class must not already exist somewhere else.
+            <note-x>: one or more notes containing suggestion for the user that you can't do directly within this format, for instance removing methods and fields isn't allowed
             
+            Example answer after getting sent class context and making the required tool calls:
             
-            All %%Note_n%% must be maximum of 50 words and contain suggestions, not comments.
-            Must be Java 25 language level max.
-            Changes should only contain method declarations and field declarations, so no imports or type declarations
-            
-            
-            Example (DO NOT USE IN CONTEXT OR AS A FIRST PROMPT):
             -----ADDED_IMPORTS-----
-            import org.my.otherpackage.Calculator;
-            import org.my.package.MyPrinter;
+            import org.my.package;
+            import org.my.otherpackage;
             -----CHANGES-----
-            private int c;
-            
-            public void myMethod(int a, int b) {
-                this.c = new Calculator(a, b).add();
+            public void rewrittenMethod() {
+                newMethod();
+                oldMethod();
             }
             
             private void newMethod() {
@@ -98,7 +89,7 @@ public class Prompts {
             }
             -----ADDED-----
             package org.my.package;
-            
+
             public class MyPrinter {
                 public static void print(String toprint) {
                     System.out.println(toprint);
@@ -113,14 +104,17 @@ public class Prompts {
                 }
             }
             -----NOTES-----
-            chatgpt-GEN : myCalc's class might be a overabstraction, consider removing them
-            grok : anotherClass's behaviour could be replaced with a Strategy design pattern
-            claude : fancyClass should have a more descriptive name
             
             
-            The example is in a very dumbed down format, in the real response use meaningful package, variable, classes names and method signatures.
+            All notes must be maximum of 50 words and contain suggestions, not comments.
+            Must be Java 25 language level max.
+            Changes should only contain method declarations and field declarations, so no imports or type declarations
+            Everything wrapped in a <> are placeholders, and as such should not be inserted in the answer.
+            All methods created or modified should contain the full implementation if they are not abstract, stub methods with only comments.
             
+            The example used is to give you a better understanding of the format only, don't reuse the names and use proper naming in real output
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
+            You cannot edit any other class other than the SELECTED_CLASS.
             """;
 
     public static final String SYSTEM_REFACTOR_METHOD_VER = """
@@ -133,12 +127,9 @@ public class Prompts {
             """
             + FORMAT_USAGE_REFACTOR_METHOD +
             """
-            Rules:
-            - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented should not be added
-            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
-            - If you don't want to change anything, just resend the message you received without changing it
-            - You can add notes with your name only
+            You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
+            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            If you don't want to change anything, just resend the message you received without changing it
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
@@ -159,11 +150,9 @@ public class Prompts {
             """
             + FORMAT_USAGE_REFACTOR_METHOD +
             """
-            Rules:
-            - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented should not be added
-            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
-            - Only answer in the format provided
+            You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
+            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            Only answer in the format provided
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
@@ -180,14 +169,15 @@ public class Prompts {
             - CodeSmells (which are indeed problems that need to be addressed).
             - Previous response
             
+            You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
+            Use the doesClassExist calls mainly to double check that a class doesn't exist already.
+            
             """
             + FORMAT_USAGE_REFACTOR_CLASS +
             """
-            Rules:
-            - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented or with only a comment should not be added
-            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
-            - If you don't want to change anything, just resend the message you received without changing it
+            You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
+            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            If you don't want to change anything, just resend the message you received without changing it
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Adding an external dependency
@@ -200,6 +190,9 @@ public class Prompts {
             You are an AI agent named "%s-GEN" that given a class's info, some tools,
             with some problematic metrics and/or code smells, has the job to fix said issues.
             
+            You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
+            Use the doesClassExist calls mainly to double check that a class doesn't exist already.
+            
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
             - CodeSmells (which are indeed problems that need to be addressed).
@@ -207,11 +200,9 @@ public class Prompts {
             """
             + FORMAT_USAGE_REFACTOR_CLASS +
             """
-            Rules:
-            - You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            - You can create new functions only if you implement them fully yourself. That means that blueprints, or anything not fully implemented or with only a comment should not be added
-            - NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
-            - Only answer in the format provided
+            You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
+            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            Only answer in the format provided
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Adding an external dependency
@@ -252,22 +243,25 @@ public class Prompts {
             
             """;
 
+    public static final String CORE_CLASS_CONTEXT = """
+            SELECTED_CLASS
+            %s
+            
+            METHODS_IN_CLASS
+            %s
+            
+            CLASS_METRICS
+            %s
+            
+            CLASS_CODE_SMELLS
+            %s
+            
+            """;
 
     public static String formattedClassContext(ComplexityClass clazz, boolean metricsForEach) {
         CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
-        ArrayList<String> imports = new ArrayList<>(cu.getImports().size());
-        for (ImportDeclaration singleImport : cu.getImports()) {
-            String importString = singleImport.getNameAsString();
-            if (singleImport.isStatic()) {
-                importString = "static " + importString;
-            }
+        ArrayList<String> imports = getImportStrings(cu);
 
-            if (singleImport.isAsterisk()) {
-                importString += ".*";
-            }
-
-            imports.add(importString);
-        }
 
         String importString = String.join("\n", imports);
 
@@ -308,6 +302,7 @@ public class Prompts {
             fieldStrings += recordDeclaration.getParameters().stream()
                     .map(Parameter::getName)
                     .map(SimpleName::asString)
+                    .map(it -> "record property " + it)
                     .collect(Collectors.joining("\n"));
         }
 
@@ -327,7 +322,7 @@ public class Prompts {
 
         return Prompts.CLASS_CONTEXT.formatted(
                 importString,
-                decl.getNameAsString(),
+                decl.getNameAsString() + " : " + decl.getClass().getSimpleName(),
                 fieldStrings,
                 methodSignaturesString,
                 classMetrics,
@@ -358,5 +353,52 @@ public class Prompts {
         }
 
         return imports;
+    }
+
+    public static String formattedCoreClassContext(ComplexityClass clazz) {
+        CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
+
+        var decl = clazz.getNode();
+        ArrayList<String> methodSignatures = new ArrayList<>(decl.getMethods().size());
+        for (var methodDecl : decl.getMethods()) {
+            String signature = methodDecl.getSignature().asString();
+
+            methodSignatures.add(signature + " Metrics --> " + clazz.getMethods()
+                    .get(signature)
+                    .evalResult()
+                    .metricsAi("; ")
+            );
+        }
+
+        for (var ctorDecl : decl.getConstructors()) {
+            String signature = ctorDecl.getSignature().asString();
+
+            methodSignatures.add(signature + " Metrics --> " + clazz.getMethods()
+                    .get(signature)
+                    .evalResult()
+                    .metricsAi("; ")
+            );
+        }
+
+        String methodSignaturesString = String.join("\n", methodSignatures);
+
+        String classMetrics;
+        String classSmells;
+        try {
+
+            var clzResult = clazz.getComplexityResult().get();
+            classMetrics = clzResult.metricsAi();
+            classSmells = clzResult.codeSmellsAi();
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Prompts.CORE_CLASS_CONTEXT.formatted(
+                cu.toString(),
+                methodSignaturesString,
+                classMetrics,
+                classSmells
+        );
     }
 }

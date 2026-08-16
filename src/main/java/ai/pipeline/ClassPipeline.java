@@ -30,7 +30,7 @@ public class ClassPipeline extends AIPipeline {
         return AiServices.builder(BaseChat.class)
                 .chatModel(suggestionModel)
                 .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_GEN.formatted(suggestionModel.defaultRequestParameters().modelName()))
-                .tools(tool)
+                //.tools(tool)
                 .build();
     }
 
@@ -43,7 +43,7 @@ public class ClassPipeline extends AIPipeline {
                     AiServices.builder(BaseChat.class)
                             .chatModel(verifierModel)
                             .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_VER.formatted(verifierModel.defaultRequestParameters().modelName()))
-                            .tools(tool)
+                            //.tools(tool)
                             .build()
             );
         }
@@ -53,7 +53,7 @@ public class ClassPipeline extends AIPipeline {
 
     @Override
     public ValidatedResponse ask() {
-        String mainMessage = Prompts.formattedClassContext(clazz, true);
+        String mainMessage = Prompts.formattedCoreClassContext(clazz);
         return message(mainMessage);
     }
 }
