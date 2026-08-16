@@ -1,10 +1,7 @@
 package ai.reponse;
 
 import com.github.javaparser.ParseResult;
-import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.ImportDeclaration;
-import com.github.javaparser.ast.NodeList;
-import com.github.javaparser.ast.PackageDeclaration;
+import com.github.javaparser.ast.*;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -84,11 +81,9 @@ public record DiffClassResponse(
         CompilationUnit changes = parseChanges();
         if (changes == null) throw new RuntimeException("impossible");
 
-        // TODO: Address replace method
-        changes.findAll(MethodDeclaration.class).forEach(m -> ApplicableDiff.addOrReplaceMethod(m, originalClazz));
-
-
-        changes.findAll(FieldDeclaration.class).forEach(originalClazz::addMember);
+        getChildren(changes, MethodDeclaration.class).forEach(m -> ApplicableDiff.addOrReplaceMethod(m, originalClazz));
+        getChildren(changes, TypeDeclaration.class).forEach(originalClazz::addMember);
+        getChildren(changes, FieldDeclaration.class).forEach(originalClazz::addMember);
 
         try {
             Files.writeString(toUpdatePath, originalCu.toString());
@@ -209,5 +204,16 @@ public record DiffClassResponse(
         );
 
         return new SectionData(map).toString();
+    }
+
+    private static <T> List<T> getChildren(Node n, Class<T> type) {
+        List<T> out = new ArrayList<>();
+        for (var c : n.getChildNodes()) {
+            if (type.isInstance(c)) {
+                out.add((T) c);
+            }
+        }
+
+        return out;
     }
 }
