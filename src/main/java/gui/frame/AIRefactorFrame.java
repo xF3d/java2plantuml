@@ -379,7 +379,7 @@ public class AIRefactorFrame extends JFrame {
         String name = diff.origin().replace(MemberFormatter.PACKAGE_DELIMITER, ".");
         panel.add(new JLabel("Page " + pageNString + "/" + responses.size()));
         panel.add(new JLabel(name));
-        panel.add(new PromptResponsePanel(diff));
+        panel.add(new PromptResponsePanel(diff, complexityTranslator));
 
         JCheckBox checkBox = new JCheckBox("Approve");
         checkBox.setFocusable(false);

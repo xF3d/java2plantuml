@@ -37,6 +37,8 @@ public interface ApplicableDiff {
 
     ApplicableDiff withNotes(List<String> notes);
 
+    String getOriginalCode(SimpleTranslator translator);
+
     static void addOrReplaceMethod(MethodDeclaration newMethod, TypeDeclaration<?> typeDefinition) {
         NodeList<BodyDeclaration<?>> members = typeDefinition.getMembers();
 

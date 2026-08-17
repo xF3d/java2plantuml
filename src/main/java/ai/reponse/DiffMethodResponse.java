@@ -77,6 +77,11 @@ public record DiffMethodResponse(
     }
 
     @Override
+    public String getOriginalCode(SimpleTranslator translator) {
+        return translator.getMethodDeclaration(clazz, method).toString();
+    }
+
+    @Override
     public boolean isValid() {
         if (isEmpty()) return false;
 

@@ -207,6 +207,11 @@ public record DiffClassResponse(
     }
 
     @Override
+    public String getOriginalCode(SimpleTranslator translator) {
+        return translator.getTypeDeclaration(clazz).toString();
+    }
+
+    @Override
     public String asAi() {
         var map = Map.of(
                 "ADDED_IMPORTS", addedImports,

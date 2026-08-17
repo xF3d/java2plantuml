@@ -4,6 +4,7 @@ import ai.reponse.ApplicableDiff;
 import ai.reponse.DiffClassResponse;
 import ai.reponse.DiffMethodResponse;
 import gui.GuiUtils;
+import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -11,7 +12,10 @@ import java.util.List;
 
 public class PromptResponsePanel extends JScrollPane {
 
-    public PromptResponsePanel(ApplicableDiff response) {
+    private final ComplexityTranslator translator;
+
+    public PromptResponsePanel(ApplicableDiff response, ComplexityTranslator translator) {
+        this.translator = translator;
         if (response.isEmpty()) {
             setViewportView(new JLabel("There was an error"));
             return;
@@ -30,9 +34,11 @@ public class PromptResponsePanel extends JScrollPane {
         JPanel main = new JPanel();
         GuiUtils.setVerticalLayout(main);
 
+        JPanel originalArea = setupOriginal(response);
         JPanel newMethodsArea = setupLabelArea("New Methods", String.join("\n", response.newMethods()));
         JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
 
+        main.add(originalArea);
         main.add(newMethodsArea);
         main.add(notesArea);
 
@@ -43,6 +49,7 @@ public class PromptResponsePanel extends JScrollPane {
         JPanel main = new JPanel();
         GuiUtils.setVerticalLayout(main);
 
+        JPanel originalArea = setupOriginal(response);
         JPanel addedImportsArea = setupLabelArea("Added Imports", String.join("\n", response.addedImports()));
         JPanel changesArea = setupLabelArea("Changes", String.join("\n", response.changes()));
 
@@ -57,6 +64,7 @@ public class PromptResponsePanel extends JScrollPane {
 
         JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
 
+        main.add(originalArea);
         main.add(addedImportsArea);
         main.add(changesArea);
         addedClassesAreas.forEach(main::add);
@@ -81,5 +89,9 @@ public class PromptResponsePanel extends JScrollPane {
         panel.add(area);
 
         return panel;
+    }
+
+    private JPanel setupOriginal(ApplicableDiff diff) {
+        return setupLabelArea("Original", diff.getOriginalCode(translator));
     }
 }
