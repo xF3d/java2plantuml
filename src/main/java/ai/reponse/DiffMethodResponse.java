@@ -87,7 +87,7 @@ public record DiffMethodResponse(
         if (isEmpty()) return false;
 
         String toParser = "class DUMMY {\n" + codeMethods() + "\n}";
-        var cuResult = ProjectJavaParser.PARSER.parse(toParser);
+        var cuResult = ProjectJavaParser.makeParser().get().parse(toParser);
         if (!cuResult.isSuccessful()) return false;
 
         var resultOpt = cuResult.getResult();
@@ -102,7 +102,7 @@ public record DiffMethodResponse(
     public List<MethodDeclaration> getAddedMethods() {
         ArrayList<MethodDeclaration> addedMethods = new ArrayList<>();
         String toParse = "class DUMMY {\n" + codeMethods() + "}\n";
-        ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(toParse);
+        ParseResult<CompilationUnit> result = ProjectJavaParser.makeParser().get().parse(toParse);
         if (result.isSuccessful() && result.getResult().isPresent()) {
             CompilationUnit codeCu = result.getResult().get();
             codeCu.findAll(MethodDeclaration.class, addedMethods::add);
@@ -123,7 +123,7 @@ public record DiffMethodResponse(
         CompilationUnit cu;
         ParseResult<CompilationUnit> parseResult;
         try {
-            parseResult = ProjectJavaParser.PARSER.parse(toUpdatePath);
+            parseResult = ProjectJavaParser.makeParser().get().parse(toUpdatePath);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

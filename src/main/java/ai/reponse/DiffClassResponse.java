@@ -164,7 +164,7 @@ public record DiffClassResponse(
     public CompilationUnit parseChanges() {
         String toParser = "class DUMMY {\n" + String.join("\n", changes) + "\n}";
 
-        var cuResult = ProjectJavaParser.PARSER.parse(toParser);
+        var cuResult = ProjectJavaParser.makeParser().get().parse(toParser);
         if (cuResult.isSuccessful()) {
             return cuResult.getResult().orElseThrow();
         }
@@ -174,7 +174,7 @@ public record DiffClassResponse(
 
     public NodeList<ImportDeclaration> parseImports() {
         String toParse = String.join("\n", addedImports) + "\n class DUMMY {}";
-        ParseResult<CompilationUnit> parsedImports = ProjectJavaParser.PARSER.parse(toParse);
+        ParseResult<CompilationUnit> parsedImports = ProjectJavaParser.makeParser().get().parse(toParse);
 
         if (parsedImports.isSuccessful()) {
             return parsedImports.getResult().orElseThrow().getImports();
@@ -187,7 +187,7 @@ public record DiffClassResponse(
         List<CompilationUnit> output = new ArrayList<>(added.size());
 
         for (var file : added) {
-            var cuResult = ProjectJavaParser.PARSER.parse(file);
+            var cuResult = ProjectJavaParser.makeParser().get().parse(file);
             if (cuResult.isSuccessful()) {
                 output.add(
                         cuResult.getResult().orElse(null)

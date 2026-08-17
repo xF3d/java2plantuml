@@ -17,6 +17,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public interface Translator {
 
@@ -31,38 +35,72 @@ public interface Translator {
     default void translateFiles(List<File> files) throws FileNotFoundException {
         PackageManagerVisitor packageManagerVisitor = new PackageManagerVisitor(getPackageManager());
 
-        List<CompilationUnit> compilationUnits = new ArrayList<>();
+        int threadCount = Math.max(1, Runtime.getRuntime().availableProcessors() / 2);
 
         long start = System.currentTimeMillis();
-        // Parse each file once and cache the CompilationUnits
-        for (var f : files) {
-            File file = f.getAbsoluteFile();
-            try {
-                ParseResult<CompilationUnit> result = ProjectJavaParser.PARSER.parse(file);
-                if (result.isSuccessful() && result.getResult().isPresent()) {
-                    compilationUnits.add(result.getResult().get());
-                } else {
-                    FileLogger.LOGGER.warning("Parsing failed for: " + file.getPath() + "\n");
-                    List<Problem> problems = result.getProblems();
-                    for (Problem problem : problems) {
-                        FileLogger.LOGGER.warning("Problem: " + problem.getMessage());
-                        problem.getLocation().ifPresent(loc -> FileLogger.LOGGER.warning(" at " + loc));
-                    }
-                }
-            } catch (FileNotFoundException e) {
-                FileLogger.LOGGER.severe("File not found: " + f.getAbsoluteFile());
-            }
-        }
 
-        long end = System.currentTimeMillis();
-        FileLogger.LOGGER.info("Time to parse sources: " + (end - start));
+        List<CompilationUnit> compilationUnits = new ArrayList<>();
+        try(ExecutorService executor = Executors.newFixedThreadPool(threadCount)) {
+            List<CompletableFuture<CompilationUnit>> futures = files.stream()
+                    .map(f -> CompletableFuture.supplyAsync(() -> {
+                        var parser = ProjectJavaParser.makeParser();
+                        File file = f.getAbsoluteFile();
+
+                        try {
+                            ParseResult<CompilationUnit> result =
+                                    parser.get().parse(file);
+
+                            if (result.isSuccessful() && result.getResult().isPresent()) {
+                                return result.getResult().get();
+                            }
+
+                            FileLogger.LOGGER.warning(
+                                    "Parsing failed for: " + file.getPath() + "\n"
+                            );
+
+                            for (Problem problem : result.getProblems()) {
+                                FileLogger.LOGGER.warning(
+                                        "Problem: " + problem.getMessage()
+                                );
+
+                                problem.getLocation().ifPresent(loc ->
+                                        FileLogger.LOGGER.warning(" at " + loc)
+                                );
+                            }
+
+                        } catch (FileNotFoundException e) {
+                            FileLogger.LOGGER.severe(
+                                    "File not found: " + file
+                            );
+                        } catch (Exception e) {
+                            FileLogger.LOGGER.severe(
+                                    "Error parsing: " + file
+                            );
+                        }
+
+                        return null;
+                    }, executor))
+                    .toList();
+
+            futures.stream()
+                    .map(CompletableFuture::join)
+                    .filter(Objects::nonNull)
+                    .forEach(compilationUnits::add);
+
+            long end = System.currentTimeMillis();
+
+            FileLogger.LOGGER.info(
+                    "Time to parse sources: " + (end - start)
+            );
+        }
 
         start = System.currentTimeMillis();
         // first construct the package map
         for (var cu : compilationUnits) {
-                cu.accept(packageManagerVisitor, null);
+            cu.accept(packageManagerVisitor, null);
         }
-        end = System.currentTimeMillis();
+
+        long end = System.currentTimeMillis();
         FileLogger.LOGGER.info("Time to create Package Map: " + (end - start));
 
         start = System.currentTimeMillis();
