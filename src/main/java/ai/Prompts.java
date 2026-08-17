@@ -16,15 +16,14 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class Prompts {
     // TODO: elemento centrale durante la presentazione: prompts
-    // TODO: aggiunta riepilogo tecniche di refactoring usate e dove
-    // TODO: mostrare metodo originale nel DiffPanel
     // TODO: dove mettere test?
-    // TODO: class context
     public static final String FORMAT_USAGE_REFACTOR_METHOD = """
             Your answer should always follow this strict format, where text wrapped by %% are place holders.
             
             -----METHODS-----
             %%New methods, MUST have the rewritten method with the same signature%%
+            -----EXPLANATION-----
+            %%Explanation of the changes/additions to the original class, max 100 words in a single line%%
             -----NOTES-----
             %%Different or no NOTES%%
             
@@ -37,6 +36,8 @@ public class Prompts {
             private void newMethod() {
                 System.out.println("Inside new method");
             }
+            -----EXPLANATION-----
+            Simplified logic
             -----NOTES-----
             myCalc's class might be a overabstraction, consider removing them
             
@@ -60,6 +61,8 @@ public class Prompts {
             <class-file-x>
             ===============
             <class-file-x>
+            -----EXPLANATION-----
+            <explanation>
             -----NOTES-----
             <note-x>
             <note-x>
@@ -71,6 +74,7 @@ public class Prompts {
             <rewritten-methods>: with rewritten methods, with the same signature as the past method, to swap out in SELECTED_CLASS
             <class-file-x>: one or more classes you want to add, the file will be added at the defined package declaration and must contain a type definition and imports, 
             useful if you want to extract some code or functionality to another class. The added class must not already exist somewhere else.
+            <explanation>: Explanation of the changes/additions to the original class, max 100 words in a single line
             <note-x>: one or more notes containing suggestion for the user that you can't do directly within this format, for instance removing methods and fields isn't allowed
             
             Example answer after getting sent class context and making the required tool calls:
@@ -103,6 +107,8 @@ public class Prompts {
                     return x + y;
                 }
             }
+            -----EXPLANATION-----
+            Extracted functionality to new classes and methods
             -----NOTES-----
             
             

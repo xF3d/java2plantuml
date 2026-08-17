@@ -21,9 +21,10 @@ public record DiffMethodResponse(
         String clazz,
         String method,
         List<String> newMethods,
+        String explanation,
         List<String> notes
 ) implements ApplicableDiff {
-    public static final DiffMethodResponse EMPTY = new DiffMethodResponse("null", "null", List.of(), List.of());
+    public static final DiffMethodResponse EMPTY = new DiffMethodResponse("null", "null", List.of(), "null", List.of());
 
     public static DiffMethodResponse fromResponse(String origin, String response) {
         if (origin == null) throw new IllegalArgumentException("Null origin");
@@ -39,12 +40,12 @@ public record DiffMethodResponse(
 
         SectionData data = SectionData.parseSections(response);
 
-        if (!data.hasSections("METHODS")) return EMPTY;
+        if (!data.hasSections("METHODS", "EXPLANATION")) return EMPTY;
 
         List<String> methods = data.get("METHODS");
         List<String> notes = data.orElse("NOTES", List.of());
 
-        return new DiffMethodResponse(clazz, method, methods, notes);
+        return new DiffMethodResponse(clazz, method, methods, data.get("EXPLANATION").getFirst(), notes);
     }
 
     @Override
@@ -73,7 +74,7 @@ public record DiffMethodResponse(
 
     @Override
     public ApplicableDiff withNotes(List<String> notes) {
-        return new DiffMethodResponse(clazz, method, newMethods, notes);
+        return new DiffMethodResponse(clazz, method, newMethods, explanation, notes);
     }
 
     @Override

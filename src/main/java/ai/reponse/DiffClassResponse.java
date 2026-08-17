@@ -26,17 +26,18 @@ public record DiffClassResponse(
         List<String> addedImports,
         List<String> changes,
         List<String> added,
+        String explanation,
         List<String> notes
 ) implements ApplicableDiff {
 
-    public static final DiffClassResponse EMPTY = new DiffClassResponse("null", List.of(), List.of(), List.of(), List.of());
+    public static final DiffClassResponse EMPTY = new DiffClassResponse("null", List.of(), List.of(), List.of(), "null", List.of());
 
     private static final String SEPARATOR = "===============";
 
     public static DiffClassResponse fromResponse(String clazz, String response) {
         var data = SectionData.parseSections(response);
 
-        if (!data.hasSections("CHANGES")) {
+        if (!data.hasSections("CHANGES", "EXPLANATION")) {
             return EMPTY;
         }
 
@@ -50,6 +51,7 @@ public record DiffClassResponse(
                 data.orElse("ADDED_IMPORTS", List.of()),
                 data.get("CHANGES"),
                 List.of(split),
+                data.get("EXPLANATION").getFirst(),
                 data.orElse("NOTES", List.of())
         );
     }
@@ -203,7 +205,7 @@ public record DiffClassResponse(
 
     @Override
     public ApplicableDiff withNotes(List<String> notes) {
-        return new DiffClassResponse(clazz, addedImports, changes, added, notes);
+        return new DiffClassResponse(clazz, addedImports, changes, added, explanation, notes);
     }
 
     @Override
@@ -217,6 +219,7 @@ public record DiffClassResponse(
                 "ADDED_IMPORTS", addedImports,
                 "CHANGES", changes,
                 "ADDED", List.of(String.join(SEPARATOR, added)),
+                "EXPLANATION", List.of(explanation),
                 "NOTES", Collections.<String>emptyList()
         );
 

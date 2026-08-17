@@ -33,6 +33,8 @@ public interface ApplicableDiff {
 
     List<String> notes();
 
+    String explanation();
+
     String asAi();
 
     ApplicableDiff withNotes(List<String> notes);
