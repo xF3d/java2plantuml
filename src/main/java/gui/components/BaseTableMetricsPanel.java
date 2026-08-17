@@ -151,6 +151,6 @@ public abstract class BaseTableMetricsPanel<T extends ComplexityEvaluator> exten
         // if other characters are present, keep only the number
         text = text.replaceAll("[^0-9+\\-.,Ee]", "");
 
-        return Double.parseDouble(text);
+        return Double.parseDouble(text.replace(',', '.'));
     }
 }
