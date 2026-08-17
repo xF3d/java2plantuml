@@ -135,8 +135,8 @@ public class MainFrame extends JFrame {
 
     private void generateComplexity(ActionEvent ignored) {
         backgroundExecutor.submit(() -> {
-            processInit();
             try {
+                processInit();
                 if (!complexityTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                         null,
@@ -160,8 +160,8 @@ public class MainFrame extends JFrame {
 
     private void generateRefactor(ActionEvent ingored) {
         backgroundExecutor.submit(() -> {
-            processInit();
             try {
+                processInit();
                 if (!complexityTranslator.execute(selectedDirectory)) {
                     JOptionPane.showMessageDialog(
                             null,

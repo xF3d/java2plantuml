@@ -37,12 +37,16 @@ public class ResolverUtils {
     }
 
     private static void addJavaParserTypeSolvers(File projectDirectory, CombinedTypeSolver typeSolver) {
-        System.out.println("Adding source root: " + projectDirectory.getAbsolutePath());
-        typeSolver.add(
-            new JavaParserTypeSolver(
-                sourceOf(projectDirectory)
-            )
-        );
+
+        File mainSource = sourceOf(projectDirectory);
+        if (mainSource.exists() && mainSource.isDirectory()) {
+            System.out.println("Adding source root: " + projectDirectory.getAbsolutePath());
+            typeSolver.add(
+                    new JavaParserTypeSolver(
+                            mainSource
+                    )
+            );
+        }
 
         File[] files = projectDirectory.listFiles();
         if (files == null) {
