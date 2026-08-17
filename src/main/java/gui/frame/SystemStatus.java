@@ -1,6 +1,7 @@
 package gui.frame;
 
 import gui.ComplexityGridPanel;
+import gui.GuiUtils;
 import gui.components.ClassTableMetricsPanel;
 import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;
@@ -38,9 +39,18 @@ public class SystemStatus extends JFrame {
 
         SystemChartPanel systemChartPanel = new SystemChartPanel();
         systemChartPanel.addProject("System", chartResults);
-        this.content.add(systemChartPanel);
 
+        JPanel problematicDisplay = new JPanel();
+        problematicDisplay.setLayout(new BoxLayout(problematicDisplay, BoxLayout.X_AXIS));
+
+        problematicDisplay.add(new JLabel("Problematic classes: " + translator.getProblematicClasses().size()));
+        problematicDisplay.add(new JLabel("Problematic methods: " + translator.getProblematicMethods().size()));
+
+
+        this.content.add(systemChartPanel);
         this.content.add(complexityGridPanel);
+        this.content.add(problematicDisplay);
+
         this.content.add(new ReferenceController(
             "<html><p>Classes in the system</p> <br></html>",
             translator.getClassesArray(),

@@ -79,6 +79,12 @@ public class ComplexityTranslator extends SimpleTranslator {
         };
     }
 
+    @Getter(lazy = true)
+    private final Map<String, Map<String, ComplexityMethod>> problematicMethods = evaluateProblematicMethods();
+
+    @Getter(lazy = true)
+    private final Map<String, ComplexityClass> problematicClasses = evaluateProblematicClasses();
+
     @Override
     public void handleCompilationUnit(CompilationUnit unit) {
         allCompilationUnits.add(unit);
@@ -255,7 +261,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         });
     }
 
-    public Map<String, ComplexityClass> getProblematicClasses() {
+    private Map<String, ComplexityClass> evaluateProblematicClasses() {
         var filter = Config.getInstance().getConfig().getPackageFilter();
         Map<String, ComplexityClass> output = new HashMap<>();
         for (var entry : classResultMap.entrySet()) {
@@ -273,7 +279,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         return output;
     }
 
-    public Map<String, Map<String, ComplexityMethod>> getProblematicMethods() {
+    private Map<String, Map<String, ComplexityMethod>> evaluateProblematicMethods() {
         var filter = Config.getInstance().getConfig().getPackageFilter();
         Map<String, Map<String, ComplexityMethod>> output = new HashMap<>();
         for (var methodEntry : methodResultMap.entrySet()) {
