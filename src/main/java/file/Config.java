@@ -7,12 +7,10 @@ import lombok.Getter;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
-import translate.ClassDiagramConfig;
+import translate.TranslatorsConfig;
 import translate.VisitorsBuilder;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
-import translate.translator.Translator;
-import visitors.*;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -34,8 +32,7 @@ public class Config {
         AIManager.update();
     }
 
-    private final ClassDiagramConfig.Builder configBuilder = new ClassDiagramConfig.Builder();
-    private ClassDiagramConfig config;
+    private final TranslatorsConfig config = new TranslatorsConfig();
 
     private ModelType mainModel;
     private final ArrayList<ModelType> verifyModels = new ArrayList<>();
@@ -75,24 +72,23 @@ public class Config {
         boolean showColoredAccessSpecifiers = result.getBoolean("uml_translator.show_colored_access_specifiers", () -> true);
         boolean showAssociations = result.getBoolean("uml_translator.show_associations", () -> true);
 
-        configBuilder
+        config
                 .setShowMethods(showMethods)
                 .setShowAttributes(showAttributes)
                 .setShowColoredAccessSpecifiers(showColoredAccessSpecifiers)
                 .setShowAssociations(showAssociations);
 
-        var wlArray = result.getArrayOrEmpty("uml_translator.package_whitelist");
+        var wlArray = result.getArrayOrEmpty("translators.package_whitelist");
         for (int i = 0; i < wlArray.size(); i++) {
-            configBuilder.withWhitelist(wlArray.getString(i));
+            config.withWhitelist(wlArray.getString(i));
         }
 
-        var blArray = result.getArrayOrEmpty("uml_translator.package_blacklist");
+        var blArray = result.getArrayOrEmpty("translators.package_blacklist");
         for (int i = 0; i < blArray.size(); i++) {
-            configBuilder.withBlacklist(blArray.getString(i));
+            config.withBlacklist(blArray.getString(i));
         }
 
-        config = configBuilder.build();
-
+        config.setSkipTests(result.getBoolean("translators.skip_tests", () -> false));
 
         var rawMainType = result.getString("generator.type");
         if (rawMainType != null) {

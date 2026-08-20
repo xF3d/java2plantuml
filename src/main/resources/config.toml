@@ -4,14 +4,14 @@ allow_interfaces = true
 allow_records = true
 allow_enums = true
 allow_annotations = true
+package_whitelist = []
+package_blacklist = []
 
 [uml_translator]
 show_methods = true
 show_attributes = true
 show_colored_access_specifiers = true
 show_associations = true
-package_whitelist = []
-package_blacklist = []
 
 [ai]
 verify_with_main = true
