@@ -18,31 +18,28 @@ public class DITEvaluator implements ComplexityEvaluator.Clazz {
     @Override
     public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
 
-        if (clazz instanceof RecordDeclaration || clazz instanceof EnumDeclaration) {
+        // record, enum, annotations
+        if (!(clazz instanceof ClassOrInterfaceDeclaration coi)) {
             return result(1);
         }
 
-        if (clazz instanceof ClassOrInterfaceDeclaration coi) {
-            if (coi.isInterface()) return result(1);
+        // interfaces
+        if (coi.isInterface()) return result(1);
 
-            int depth = 0;
-            try {
-                ResolvedClassDeclaration type = ResolverUtils.resolve(coi, ResolvedClassDeclaration.class);
+        int depth = 0;
+        try {
+            ResolvedClassDeclaration type = ResolverUtils.resolve(coi, ResolvedClassDeclaration.class);
 
-                while (type.getSuperClass().isPresent()) {
-                    depth++;
-                    ResolvedReferenceType whatever = type.getSuperClass().get();
-                    type = (ResolvedClassDeclaration) whatever.getTypeDeclaration().get();
-                }
-
-                return result(depth);
-            } catch (Throwable e) {
-                // we reached a library class
-                return result(depth + 1);
+            while (type.getSuperClass().isPresent()) {
+                depth++;
+                ResolvedReferenceType whatever = type.getSuperClass().get();
+                type = (ResolvedClassDeclaration) whatever.getTypeDeclaration().get();
             }
-        } else {
-            // annotation
-            return result(1);
+
+            return result(depth);
+        } catch (Throwable e) {
+            // we reached a library class
+            return result(depth + 1);
         }
     }
 
