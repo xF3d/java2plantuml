@@ -19,7 +19,7 @@ public class TranslatorsConfig {
     private boolean showColoredAccessSpecifiers;
     private boolean showAssociations;
 
-    private PackageFilter packageFilter;
+    private final PackageFilter packageFilter = new PackageFilter();
 
     private boolean skipTests;
 
