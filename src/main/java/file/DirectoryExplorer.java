@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
+import java.util.Locale;
 
 public class DirectoryExplorer {
 
@@ -28,7 +29,7 @@ public class DirectoryExplorer {
         while (!stack.isEmpty()) {
             File file = stack.pop();
 
-            if (skipTests && rootPath.relativize(file.toPath()).toString().contains("test")) continue;
+            if (skipTests && rootPath.relativize(file.toPath()).toString().toLowerCase(Locale.ROOT).contains("test")) continue;
 
             if (!file.isDirectory()) {
                 filesFound.add(file);
