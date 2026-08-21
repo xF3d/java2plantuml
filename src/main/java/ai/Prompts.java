@@ -8,6 +8,7 @@ import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.expr.SimpleName;
 import lombok.experimental.UtilityClass;
 import translate.structure.complexity.ComplexityClass;
+import translate.structure.complexity.ComplexityMethod;
 
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
@@ -216,7 +217,7 @@ public class Prompts {
             """;
     
 
-    public static final String CLASS_CONTEXT = """
+    public static final String METHOD_CONTEXT = """
             IMPORTS
             %s
             
@@ -235,9 +236,6 @@ public class Prompts {
             CLASS_CODE_SMELLS
             %s
             
-            """;
-
-    public static final String METHOD_CONTEXT = """
             METHOD_METRICS
             %s
             
@@ -249,7 +247,7 @@ public class Prompts {
             
             """;
 
-    public static final String CORE_CLASS_CONTEXT = """
+    public static final String CLASS_CONTEXT = """
             SELECTED_CLASS
             %s
             
@@ -264,7 +262,7 @@ public class Prompts {
             
             """;
 
-    public static String formattedClassContext(ComplexityClass clazz, boolean metricsForEach) {
+    public static String formattedMethodContext(ComplexityClass clazz, ComplexityMethod method) {
         CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
         ArrayList<String> imports = getImportStrings(cu);
 
@@ -276,29 +274,13 @@ public class Prompts {
         for (var methodDecl : decl.getMethods()) {
             String signature = methodDecl.getSignature().asString();
 
-            if (metricsForEach) {
-                methodSignatures.add(signature + " Metrics --> " + clazz.getMethods()
-                        .get(signature)
-                        .evalResult()
-                        .metricsAi("; ")
-                );
-            } else {
-                methodSignatures.add(signature);
-            }
+            methodSignatures.add(signature);
         }
 
         for (var ctorDecl : decl.getConstructors()) {
             String signature = ctorDecl.getSignature().asString();
 
-            if (metricsForEach) {
-                methodSignatures.add(signature + " Metrics --> " + clazz.getMethods()
-                        .get(signature)
-                        .evalResult()
-                        .metricsAi("; ")
-                );
-            } else {
-                methodSignatures.add(signature);
-            }
+            methodSignatures.add(signature);
         }
 
         String fieldStrings = decl.getFields().stream()
@@ -326,13 +308,26 @@ public class Prompts {
             throw new RuntimeException(e);
         }
 
-        return Prompts.CLASS_CONTEXT.formatted(
+        String methodMetrics;
+        String methodSmells;
+        try {
+            var mthResult = method.getComplexityResult().get();
+            methodMetrics = mthResult.metricsAi();
+            methodSmells = mthResult.codeSmellsAi();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        return Prompts.METHOD_CONTEXT.formatted(
                 importString,
                 decl.getNameAsString() + " : " + decl.getClass().getSimpleName(),
                 fieldStrings,
                 methodSignaturesString,
                 classMetrics,
-                classSmells
+                classSmells,
+                methodMetrics,
+                methodSmells,
+                method.getMethod().toString()
         );
     }
 
@@ -361,7 +356,7 @@ public class Prompts {
         return imports;
     }
 
-    public static String formattedCoreClassContext(ComplexityClass clazz) {
+    public static String formattedClassContext(ComplexityClass clazz) {
         CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
 
         var decl = clazz.getNode();
@@ -400,7 +395,7 @@ public class Prompts {
             throw new RuntimeException(e);
         }
 
-        return Prompts.CORE_CLASS_CONTEXT.formatted(
+        return Prompts.CLASS_CONTEXT.formatted(
                 cu.toString(),
                 methodSignaturesString,
                 classMetrics,

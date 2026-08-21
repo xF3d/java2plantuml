@@ -53,7 +53,7 @@ public class ClassPipeline extends AIPipeline {
 
     @Override
     public ValidatedResponse ask() {
-        String mainMessage = Prompts.formattedCoreClassContext(clazz);
+        String mainMessage = Prompts.formattedClassContext(clazz);
         return message(mainMessage);
     }
 }

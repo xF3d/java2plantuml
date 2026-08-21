@@ -13,7 +13,6 @@ import translate.structure.pkg.PackageManager;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class MethodPipeline extends AIPipeline {
     private final ComplexityClass clazz;
@@ -54,21 +53,7 @@ public class MethodPipeline extends AIPipeline {
 
     @Override
     public ValidatedResponse ask() {
-        String methodMetrics;
-        String methodSmells;
-        try {
-            var mthResult = method.getComplexityResult().get();
-            methodMetrics = mthResult.metricsAi();
-            methodSmells = mthResult.codeSmellsAi();
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
-
-        String mainMessage = Prompts.formattedClassContext(clazz, false) + Prompts.METHOD_CONTEXT.formatted(
-                methodMetrics,
-                methodSmells,
-                method.getMethod().toString()
-        );
+        String mainMessage = Prompts.formattedMethodContext(clazz, method);
 
         return message(mainMessage);
     }
