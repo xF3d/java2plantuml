@@ -1,5 +1,7 @@
 package translate.complexity;
 
+import file.FileLogger;
+
 import java.util.HashMap;
 
 public class MetricDefinitionRegistry {
@@ -11,7 +13,11 @@ public class MetricDefinitionRegistry {
 
     public static MetricDefinition get(String name) {
         var value = registry.get(name);
-        if (value == null) throw new IllegalArgumentException("Definition registry could not find metric: " + name);
+        if (value == null) {
+            FileLogger.LOGGER.warning("Metric Definition for: " + name + " not found, using no threshold");
+            return MetricDefinition.dummy(name);
+        }
+
         return value;
     }
 }

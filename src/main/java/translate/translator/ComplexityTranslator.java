@@ -14,6 +14,7 @@ import translate.complexity.evaluators.clazz.*;
 import translate.complexity.evaluators.method.CyclomaticEvaluator;
 import translate.complexity.evaluators.method.NBDEvaluator;
 import translate.complexity.evaluators.system.NumberOfClassesEvaluator;
+import translate.complexity.evaluators.system.NumberOfTestsEvaluator;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
 import translate.smells.clazz.GodClassEvaluator;
@@ -42,7 +43,8 @@ public class ComplexityTranslator extends SimpleTranslator {
 
     private final ComplexityEvaluator.System[] systemEvaluators = {
             new LOCEvaluator(),
-            new NumberOfClassesEvaluator()
+            new NumberOfClassesEvaluator(),
+            new NumberOfTestsEvaluator()
     };
     
     private final ComplexityEvaluator.Clazz[] classEvaluators;

@@ -20,6 +20,10 @@ public record MetricDefinition(String metric, double min, double max, MetricTarg
         }
     }
 
+    public static MetricDefinition dummy(String s) {
+        return new MetricDefinition(s, 0, 0, MetricTarget.NONE);
+    }
+
     public String printableThreshold() {
         return metric + " [" + DoubleFormatter.format(min) + ", " + DoubleFormatter.format(max) + "]";
     }
