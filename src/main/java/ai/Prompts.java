@@ -77,7 +77,7 @@ public class Prompts {
             <explanation>: Explanation of the changes/additions to the original class, max 100 words in a single line
             <note-x>: one or more notes containing suggestion for the user that you can't do directly within this format, for instance removing methods and fields isn't allowed
             
-            Example answer after getting sent class context and making the required tool calls:
+            Example answer after getting sent class context:
             
             -----ADDED_IMPORTS-----
             import org.my.package;
@@ -168,7 +168,7 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_VER = """
-            You are an AI agent named "%s" that given a class's info, some tools,
+            You are an AI agent named "%s" that given a class's info,
             given new implementations of methods and new methods you need to verify and improve the solution only when possible.
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
@@ -193,7 +193,7 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
-            You are an AI agent named "%s-GEN" that given a class's info, some tools,
+            You are an AI agent named "%s-GEN" that given a class's info,
             with some problematic metrics and/or code smells, has the job to fix said issues.
             
             You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
