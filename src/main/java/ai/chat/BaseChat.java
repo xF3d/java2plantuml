@@ -1,7 +1,8 @@
 package ai.chat;
 
+import dev.langchain4j.service.Result;
 import dev.langchain4j.service.UserMessage;
 
 public interface BaseChat {
-    String chat(@UserMessage String userMessage);
+    Result<String> chat(@UserMessage String userMessage);
 }

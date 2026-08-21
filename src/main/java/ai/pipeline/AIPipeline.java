@@ -4,6 +4,8 @@ import ai.AIManager;
 import ai.reponse.MessageValidator;
 import ai.reponse.ValidatedResponse;
 import ai.chat.BaseChat;
+import dev.langchain4j.model.output.TokenUsage;
+import dev.langchain4j.service.Result;
 import file.Config;
 import file.FileLogger;
 import lombok.Getter;
@@ -16,7 +18,10 @@ public abstract class AIPipeline {
     protected final String origin;
     protected final MessageValidator validator;
     protected final BaseChat suggestion;
-    protected final List<BaseChat> verifiers ;
+    protected final List<BaseChat> verifiers;
+
+    protected int outputTokenUsed = 0;
+    protected int inputTokenUsed = 0;
 
     public AIPipeline(String origin, MessageValidator validator) {
         this.origin = origin;
@@ -34,7 +39,20 @@ public abstract class AIPipeline {
         for (int i = 0; i < Config.getInstance().getValidationRetries(); i++) {
             String stringResponse;
             try {
-                stringResponse = model.chat(message);
+                Result<String> response = model.chat(message);
+                stringResponse = response.content();
+
+                TokenUsage usage = response.tokenUsage();
+                Integer in = usage.inputTokenCount();
+                if (in != null) {
+                    inputTokenUsed += in;
+                }
+
+                Integer out = usage.outputTokenCount();
+                if (out != null) {
+                    outputTokenUsed += out;
+                }
+
                 System.out.println(stringResponse);
             } catch (Exception e) {
                 lastResponse = ValidatedResponse.error(e.getMessage());
