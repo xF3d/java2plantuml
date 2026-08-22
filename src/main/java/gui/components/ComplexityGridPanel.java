@@ -1,5 +1,6 @@
-package gui;
+package gui.components;
 
+import gui.RatioGridLayout;
 import translate.complexity.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
 
@@ -31,7 +32,12 @@ public class ComplexityGridPanel extends JPanel {
     }
 
     public void addMetric(ComplexityMetricResult result) {
-        JLabel toAdd = new JLabel(result.toHtml(color));
+        JTextPane toAdd = new JTextPane();
+        toAdd.setContentType("text/html");
+        toAdd.setText(result.toHtml(color));
+        toAdd.setEditable(false);
+        toAdd.setBackground(null);
+        toAdd.setBorder(null);
         toAdd.setPreferredSize(new Dimension(toAdd.getPreferredSize().width, 30));
         this.add(toAdd);
     }

@@ -1,6 +1,6 @@
 package gui.frame;
 
-import gui.ComplexityGridPanel;
+import gui.components.ComplexityGridPanel;
 import gui.components.MethodTableMetricsPanel;
 import gui.components.ReferenceController;
 import translate.translator.ComplexityTranslator;

@@ -1,12 +1,11 @@
 package gui.frame;
 
-import gui.ComplexityGridPanel;
+import gui.components.ComplexityGridPanel;
 import gui.components.SystemChartPanel;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class CompareFrame extends JFrame {

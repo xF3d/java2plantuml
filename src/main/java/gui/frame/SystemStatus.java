@@ -1,7 +1,6 @@
 package gui.frame;
 
-import gui.ComplexityGridPanel;
-import gui.GuiUtils;
+import gui.components.ComplexityGridPanel;
 import gui.components.ClassTableMetricsPanel;
 import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;

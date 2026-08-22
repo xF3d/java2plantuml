@@ -1,6 +1,6 @@
 package gui.frame;
 
-import gui.ComplexityGridPanel;
+import gui.components.ComplexityGridPanel;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
