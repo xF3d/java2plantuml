@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 // TODO: Parse annotations of classes, methods, and fields and make it configurable
 @AllArgsConstructor
@@ -36,6 +37,10 @@ public class MemberFormatter {
     public static final String PACKAGE_DELIMITER = "::";
 
     public static final String INNER_CLASS_DELIMITER = ".";
+
+    public static final Pattern PACKAGE_PATTERN = Pattern.compile(Pattern.quote(PACKAGE_DELIMITER));
+
+    public static final Pattern INNER_CLASS_PATTERN = Pattern.compile(Pattern.quote(INNER_CLASS_DELIMITER));
 
     private final PackageManager packageManager;
 

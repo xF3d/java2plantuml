@@ -33,7 +33,7 @@ class ClassNode {
     }
 
     public boolean containsStatic(String fullInnerClazz) {
-        String[] parts = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
+        String[] parts = MemberFormatter.INNER_CLASS_PATTERN.split(fullInnerClazz);
 
         ClassNode current = this;
 

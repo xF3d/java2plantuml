@@ -5,6 +5,7 @@ import translate.component.formatter.MemberFormatter;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 class PackageNode {
     final String name;
@@ -22,7 +23,7 @@ class PackageNode {
     }
 
     public void addClassNode(String fullInnerClazz) {
-        String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
+        String[] split = MemberFormatter.INNER_CLASS_PATTERN.split(fullInnerClazz);
 
         ClassNode foundBaseClass = classes.get(split[0]);
         if (foundBaseClass == null) {
@@ -34,19 +35,8 @@ class PackageNode {
         }
     }
 
-    public ClassNode getClassNode(String fullInnerClazz) {
-        String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
-
-        ClassNode foundBaseClass = classes.get(split[0]);
-        for (int i = 1; i < split.length && foundBaseClass != null; i++) {
-            foundBaseClass = foundBaseClass.innerClasses.get(split[i]);
-        }
-
-        return foundBaseClass;
-    }
-
     public boolean containsClassStatic(String fullInnerClazz) {
-        String[] split = fullInnerClazz.split("\\" + MemberFormatter.INNER_CLASS_DELIMITER);
+        String[] split = MemberFormatter.INNER_CLASS_PATTERN.split(fullInnerClazz);
         ClassNode foundBaseClass = classes.get(split[0]);
 
         if (foundBaseClass == null) return false;
@@ -57,7 +47,7 @@ class PackageNode {
     public PackageNode getPackageNode(String packageName) {
         if (packageName == null || packageName.isEmpty()) return this;
 
-        String[] parts = packageName.split("\\" + MemberFormatter.PACKAGE_DELIMITER);
+        String[] parts = MemberFormatter.PACKAGE_PATTERN.split(packageName);
         PackageNode current = this;
 
         for (String part : parts) {
@@ -76,7 +66,7 @@ class PackageNode {
     public ClassNode getStaticPackageNode(String packageName) {
         if (packageName == null || packageName.isEmpty()) return null;
 
-        String[] parts = packageName.split("\\" + MemberFormatter.PACKAGE_DELIMITER);
+        String[] parts = MemberFormatter.PACKAGE_PATTERN.split(packageName);
 
         PackageNode currentPackage = this;
         int i;

@@ -166,6 +166,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                 try {
                     systemResultsOnlyMetrics = systemResultsOnly.get().getRawMetricData();
                 } catch (ExecutionException | InterruptedException e) {
+                    e.printStackTrace();
                     throw new RuntimeException(e);
                 }
 
@@ -223,7 +224,10 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
         // </editor-fold>
 
-        this.systemResult.whenComplete((r, e) -> computeSmells(executor));
+        this.systemResult.whenComplete((r, e) -> {
+            e.printStackTrace();
+            computeSmells(executor);
+        });
     }
 
     private void computeSmells(ExecutorService executor) {
@@ -327,6 +331,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         try {
             return systemResult.get();
         } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -335,6 +340,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         try {
             return getClass(fullClassName).getComplexityResult().get();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
@@ -343,6 +349,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         try {
             return getMethod(fullClassName, method).getComplexityResult().get();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
