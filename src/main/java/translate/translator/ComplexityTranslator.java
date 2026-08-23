@@ -101,16 +101,16 @@ public class ComplexityTranslator extends SimpleTranslator {
         computeEverything(executor);
     }
 
-    @Override
-    public boolean hasExecuted() {
-        return executed;
-    }
-
     private void computeEverything(ExecutorService executor) {
         // <editor-fold desc="Metrics">
         // calculate class stuff
+        boolean skipTests = Config.getInstance().getConfig().isSkipTests();
+
         for (var classEntry : classMap.entrySet()) {
-            classResultMap.put(classEntry.getKey(), new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
+            String fqn = classEntry.getKey();
+            if (skipTests && testClassMap.containsKey(fqn)) continue;
+
+            classResultMap.put(fqn, new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
                 ComplexityMetricResult[] resultArray = new ComplexityMetricResult[classEvaluators.length];
                 for (int i = 0; i < classEvaluators.length; i++) {
                     resultArray[i] = classEvaluators[i].calculate(this, classEntry.getValue());
@@ -121,14 +121,25 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
 
 
-        var allClasses = classMap.values();
+        var testlessClasses = new HashMap<>(classMap);
+        for (var key : testClassMap.keySet()) {
+            testlessClasses.remove(key);
+        }
+
         var classResultFutures = classResultMap.values().stream().map(ComplexityClass::getComplexityResult).toList();
 
         // system metrics
         var systemResultsOnly = CompletableFuture.supplyAsync(() -> {
             ComplexityMetricResult[] result = new ComplexityMetricResult[systemEvaluators.length];
             for (int i = 0; i < systemEvaluators.length; i++) {
-                result[i] = systemEvaluators[i].calculate(this, allClasses);
+                var eval = systemEvaluators[i];
+                if (eval instanceof NumberOfTestsEvaluator) {
+                    result[i] = eval.calculate(this, testClassMap.values());
+                } else if (skipTests) {
+                    result[i] = eval.calculate(this, testlessClasses.values());
+                } else {
+                    result[i] = eval.calculate(this, classMap.values());
+                }
             }
 
             return new ComplexityResultAggregator(result);
@@ -176,6 +187,8 @@ public class ComplexityTranslator extends SimpleTranslator {
         // calculate method stuff
         for (var classMethodEntry : methodMap.entrySet()) {
             String classFqn = classMethodEntry.getKey();
+            if (skipTests && testClassMap.containsKey(classFqn)) continue;
+
             for (var methodEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
 
@@ -201,6 +214,8 @@ public class ComplexityTranslator extends SimpleTranslator {
         // calculate constructor stuff
         for (var classMethodEntry : constructorsMap.entrySet()) {
             String classFqn = classMethodEntry.getKey();
+            if (skipTests && testClassMap.containsKey(classFqn)) continue;
+
             for (var ctorEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
 

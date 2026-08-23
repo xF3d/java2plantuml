@@ -27,7 +27,17 @@ public class NumberOfTestsEvaluator implements ComplexityEvaluator.System {
         return result(tests);
     }
 
-    private boolean isTestMethod(MethodDeclaration method) {
+    public static boolean isTestClass(TypeDeclaration<?> clazz) {
+        for (var method : clazz.findAll(MethodDeclaration.class)) {
+            if (isTestMethod(method)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public static boolean isTestMethod(MethodDeclaration method) {
         for (AnnotationExpr annotation : method.getAnnotations()) {
             if (annotation instanceof MarkerAnnotationExpr mae) {
                 if (mae.getNameAsString().equals("Test")) {

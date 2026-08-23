@@ -18,6 +18,7 @@ public class FileHandler {
         try {
             translator.translateFiles(fileList);
         } catch (Exception e) {
+            e.printStackTrace();
             FileLogger.LOGGER.severe("Problem in handling files: " + e.getMessage());
         }
     }

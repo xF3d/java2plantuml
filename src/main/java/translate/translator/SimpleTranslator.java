@@ -5,6 +5,7 @@ import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import lombok.Getter;
+import translate.complexity.evaluators.system.NumberOfTestsEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.structure.complexity.MethodLike;
 import translate.structure.pkg.PackageManager;
@@ -14,7 +15,6 @@ import translate.translator.exceptions.InvalidSelectedConstructorException;
 import translate.translator.exceptions.InvalidSelectedMethodException;
 
 import java.io.File;
-import java.io.InvalidClassException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,9 +23,11 @@ public class SimpleTranslator implements Translator {
     protected final PackageManager packageManager = new PackageManager();
     protected final MemberFormatter formatter = new MemberFormatter(packageManager);
 
+    protected final Map<String, TypeDeclaration<?>> testClassMap = new ConcurrentHashMap<>();
     protected final Map<String, TypeDeclaration<?>> classMap = new ConcurrentHashMap<>();
     protected final Map<String, Map<String, MethodDeclaration>> methodMap = new ConcurrentHashMap<>();
     protected final Map<String, Map<String, ConstructorDeclaration>> constructorsMap = new ConcurrentHashMap<>();
+
     protected boolean executed;
 
     @Override
@@ -34,6 +36,9 @@ public class SimpleTranslator implements Translator {
 
         String fullName = formatter.fullPackageName(node.findCompilationUnit().orElseThrow(), node);
         classMap.put(fullName, decl);
+        if (NumberOfTestsEvaluator.isTestClass(decl)) {
+            testClassMap.put(fullName, decl);
+        }
 
         Map<String, MethodDeclaration> methods = methodMap.get(fullName);
         if (methods == null) {
