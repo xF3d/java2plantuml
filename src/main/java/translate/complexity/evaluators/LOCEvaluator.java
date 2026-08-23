@@ -8,7 +8,9 @@ import translate.complexity.MetricDefinitionRegistry;
 import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
+import java.nio.file.Path;
 import java.util.Collection;
+import java.util.HashMap;
 
 public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvaluator.Clazz, ComplexityEvaluator.Method {
 
@@ -17,7 +19,16 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
     public ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz) {
         int lineTotal = 0;
 
-        for (CompilationUnit cu: translator.getAllCompilationUnits()) {
+        // CompilationUnit does not implement proper equals or hashCode
+        HashMap<Path, CompilationUnit> unitHashMap = new HashMap<>();
+        for (var clazz: allClazz) {
+            CompilationUnit cu = clazz.findCompilationUnit().orElseThrow();
+            Path path = cu.getStorage().orElseThrow().getPath();
+
+            unitHashMap.put(path, cu);
+        }
+
+        for (CompilationUnit cu: unitHashMap.values()) {
             var rangeOpt = cu.getRange();
             if (rangeOpt.isEmpty()) continue;
 
