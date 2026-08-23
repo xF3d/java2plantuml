@@ -2,15 +2,13 @@ package visitors;
 
 import com.github.javaparser.ast.body.EnumDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import translate.translator.Translator;
+import lombok.AllArgsConstructor;
+import translate.translator.NodeHandler;
 
+@AllArgsConstructor
 public class EnumVisitor extends VoidVisitorAdapter<Void> {
 
-    private final Translator translator;
-
-    public EnumVisitor(Translator translator){
-        this.translator=translator;
-    }
+    private final NodeHandler translator;
 
     @Override
     public void visit(EnumDeclaration n, Void arg) {

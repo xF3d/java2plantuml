@@ -2,19 +2,20 @@ package visitors;
 
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import translate.translator.Translator;
+import lombok.AllArgsConstructor;
+import translate.translator.NodeHandler;
 
+@AllArgsConstructor
 public class ClassVisitor extends VoidVisitorAdapter<Void> {
 
-    private final Translator translator;
-
-    public ClassVisitor(Translator translator){
-        this.translator=translator;
-    }
+    private final NodeHandler translator;
 
     @Override
     public void visit(ClassOrInterfaceDeclaration n, Void arg) {
-        this.translator.addNode(n);
+        if (!n.isInterface()) {
+            this.translator.addNode(n);
+        }
+
         super.visit(n, arg);
     }
 }

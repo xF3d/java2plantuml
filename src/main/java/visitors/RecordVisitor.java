@@ -2,14 +2,12 @@ package visitors;
 
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
-import translate.translator.Translator;
+import lombok.AllArgsConstructor;
+import translate.translator.NodeHandler;
 
+@AllArgsConstructor
 public class RecordVisitor extends VoidVisitorAdapter<Void> {
-    private final Translator translator;
-
-    public RecordVisitor(Translator translator){
-        this.translator=translator;
-    }
+    private final NodeHandler translator;
 
     @Override
     public void visit(RecordDeclaration n, Void arg) {

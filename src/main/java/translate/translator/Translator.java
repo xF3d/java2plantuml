@@ -22,9 +22,8 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public interface Translator {
+public interface Translator extends NodeHandler {
 
-    void addNode(Node node);
     PackageManager getPackageManager();
     boolean hasExecuted();
 
