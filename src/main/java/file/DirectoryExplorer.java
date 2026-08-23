@@ -2,11 +2,9 @@ package file;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Locale;
 
 public class DirectoryExplorer {
 
@@ -22,15 +20,10 @@ public class DirectoryExplorer {
     public void explore(File root) {
         Deque<File> stack = new ArrayDeque<>();
         stack.push(root);
-        Path rootPath = root.toPath();
 
-        boolean skipTests = Config.getInstance().getConfig().isSkipTests();
         ArrayList<File> filesFound = new ArrayList<>();
         while (!stack.isEmpty()) {
             File file = stack.pop();
-
-            if (skipTests && rootPath.relativize(file.toPath()).toString().toLowerCase(Locale.ROOT).contains("test")) continue;
-
             if (!file.isDirectory()) {
                 filesFound.add(file);
                 continue;
