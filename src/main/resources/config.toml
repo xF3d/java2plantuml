@@ -4,6 +4,7 @@ allow_interfaces = true
 allow_records = true
 allow_enums = true
 allow_annotations = true
+skip_tests = "NONE" # NONE, NORMAL, AGGRESSIVE (normal matches test methods, aggressive matches all test menstions in FQN)
 package_whitelist = []
 package_blacklist = []
 

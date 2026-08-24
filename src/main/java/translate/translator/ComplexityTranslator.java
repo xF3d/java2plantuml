@@ -1,6 +1,7 @@
 package translate.translator;
 
 import com.github.javaparser.ast.CompilationUnit;
+import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.RecordDeclaration;
@@ -37,6 +38,7 @@ public class ComplexityTranslator extends SimpleTranslator {
     private CompletableFuture<SystemResultAggregator> systemResult;
     private final Set<CompilationUnit> allCompilationUnits = new HashSet<>();
 
+    private final Map<String, TypeDeclaration<?>> testClassMap = new ConcurrentHashMap<>();
     private final Map<String, ComplexityClass> classResultMap = new ConcurrentHashMap<>();
 
     private final Map<String, Map<String, ComplexityMethod>> methodResultMap = new ConcurrentHashMap<>();
@@ -101,14 +103,27 @@ public class ComplexityTranslator extends SimpleTranslator {
         computeEverything(executor);
     }
 
+    @Override
+    public void addNode(Node node) {
+        super.addNode(node);
+
+        if (!(node instanceof TypeDeclaration<?> decl)) throw new IllegalArgumentException("Should never happen");
+
+        String fullName = formatter.fullPackageName(node.findCompilationUnit().orElseThrow(), node);
+
+        var skipTests = Config.getInstance().getConfig().getSkipTests();
+        if (skipTests.isTestClass(fullName, decl)) {
+            classMap.remove(fullName);
+            testClassMap.put(fullName, decl);
+        }
+    }
+
     private void computeEverything(ExecutorService executor) {
         // <editor-fold desc="Metrics">
         // calculate class stuff
-        boolean skipTests = Config.getInstance().getConfig().isSkipTests();
 
         for (var classEntry : classMap.entrySet()) {
             String fqn = classEntry.getKey();
-            if (skipTests && testClassMap.containsKey(fqn)) continue;
 
             classResultMap.put(fqn, new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
                 ComplexityMetricResult[] resultArray = new ComplexityMetricResult[classEvaluators.length];
@@ -121,10 +136,8 @@ public class ComplexityTranslator extends SimpleTranslator {
         }
 
 
-        var testlessClasses = new HashMap<>(classMap);
-        for (var key : testClassMap.keySet()) {
-            testlessClasses.remove(key);
-        }
+        var completeClasses = new HashMap<>(classMap);
+        completeClasses.putAll(testClassMap);
 
         var classResultFutures = classResultMap.values().stream().map(ComplexityClass::getComplexityResult).toList();
 
@@ -134,9 +147,7 @@ public class ComplexityTranslator extends SimpleTranslator {
             for (int i = 0; i < systemEvaluators.length; i++) {
                 var eval = systemEvaluators[i];
                 if (eval instanceof NumberOfTestsEvaluator) {
-                    result[i] = eval.calculate(this, testClassMap.values());
-                } else if (skipTests) {
-                    result[i] = eval.calculate(this, testlessClasses.values());
+                    result[i] = eval.calculate(this, completeClasses.values());
                 } else {
                     result[i] = eval.calculate(this, classMap.values());
                 }
@@ -187,7 +198,6 @@ public class ComplexityTranslator extends SimpleTranslator {
         // calculate method stuff
         for (var classMethodEntry : methodMap.entrySet()) {
             String classFqn = classMethodEntry.getKey();
-            if (skipTests && testClassMap.containsKey(classFqn)) continue;
 
             for (var methodEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
@@ -206,7 +216,8 @@ public class ComplexityTranslator extends SimpleTranslator {
                     return new ComplexityResultAggregator(result);
                 }, executor));
 
-                classResultMap.get(classFqn).addMethod(cmethod);
+                var classResult = classResultMap.get(classFqn);
+                if (classResult != null) classResult.addMethod(cmethod);
                 methodResultMap.get(classFqn).put(methodEntry.getKey(), cmethod);
             }
         }
@@ -214,7 +225,6 @@ public class ComplexityTranslator extends SimpleTranslator {
         // calculate constructor stuff
         for (var classMethodEntry : constructorsMap.entrySet()) {
             String classFqn = classMethodEntry.getKey();
-            if (skipTests && testClassMap.containsKey(classFqn)) continue;
 
             for (var ctorEntry : classMethodEntry.getValue().entrySet()) {
                 methodResultMap.putIfAbsent(classFqn, new HashMap<>());
@@ -233,7 +243,9 @@ public class ComplexityTranslator extends SimpleTranslator {
                     return new ComplexityResultAggregator(result);
                 }, executor));
 
-                classResultMap.get(classFqn).addMethod(cmethod);
+                var classResult = classResultMap.get(classFqn);
+                if (classResult != null) classResult.addMethod(cmethod);
+
                 methodResultMap.get(classFqn).put(ctorEntry.getKey(), cmethod);
             }
         }

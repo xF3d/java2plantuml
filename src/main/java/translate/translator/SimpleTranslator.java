@@ -23,7 +23,6 @@ public class SimpleTranslator implements Translator {
     protected final PackageManager packageManager = new PackageManager();
     protected final MemberFormatter formatter = new MemberFormatter(packageManager);
 
-    protected final Map<String, TypeDeclaration<?>> testClassMap = new ConcurrentHashMap<>();
     protected final Map<String, TypeDeclaration<?>> classMap = new ConcurrentHashMap<>();
     protected final Map<String, Map<String, MethodDeclaration>> methodMap = new ConcurrentHashMap<>();
     protected final Map<String, Map<String, ConstructorDeclaration>> constructorsMap = new ConcurrentHashMap<>();
@@ -36,9 +35,6 @@ public class SimpleTranslator implements Translator {
 
         String fullName = formatter.fullPackageName(node.findCompilationUnit().orElseThrow(), node);
         classMap.put(fullName, decl);
-        if (NumberOfTestsEvaluator.isTestClass(decl)) {
-            testClassMap.put(fullName, decl);
-        }
 
         Map<String, MethodDeclaration> methods = methodMap.get(fullName);
         if (methods == null) {

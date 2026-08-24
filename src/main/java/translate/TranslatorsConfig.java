@@ -1,11 +1,17 @@
 package translate;
 
+import com.github.javaparser.ast.body.MethodDeclaration;
+import com.github.javaparser.ast.body.TypeDeclaration;
+import gui.frame.MainFrame;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.Accessors;
+import translate.complexity.evaluators.system.NumberOfTestsEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.structure.uml.PackageFilter;
+
+import java.util.Locale;
 
 @Accessors(chain = true)
 @Setter
@@ -21,7 +27,41 @@ public class TranslatorsConfig {
 
     private final PackageFilter packageFilter = new PackageFilter();
 
-    private boolean skipTests;
+    private TestFiltering skipTests;
+
+    public enum TestFiltering {
+        NONE {
+            @Override
+            public boolean isTestClass(String fqn, TypeDeclaration<?> clazz) {
+                return false;
+            }
+        }, NORMAL {
+            @Override
+            public boolean isTestClass(String fqn, TypeDeclaration<?> clazz) {
+                for (var method : clazz.findAll(MethodDeclaration.class)) {
+                    if (NumberOfTestsEvaluator.isTestMethod(method)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        }, AGGRESSIVE {
+            @Override
+            public boolean isTestClass(String fqn, TypeDeclaration<?> clazz) {
+                if (NONE.isTestClass(fqn, clazz)) return true;
+
+                if (fqn.toLowerCase(Locale.ROOT).contains("test")) return true;
+
+                var path = clazz.findCompilationUnit().orElseThrow().getStorage().orElseThrow().getPath();
+                var relative = MainFrame.getSelectedDirectory().toPath().relativize(path);
+
+                return relative.toString().toLowerCase(Locale.ROOT).contains("test");
+            }
+        };
+
+        abstract public boolean isTestClass(String fqn, TypeDeclaration<?> clazz);
+    }
 
     public TranslatorsConfig withBlacklist(String entry) {
         packageFilter.add2Bl(entry.replace(".", MemberFormatter.PACKAGE_DELIMITER));

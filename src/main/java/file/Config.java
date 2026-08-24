@@ -88,7 +88,8 @@ public class Config {
             config.withBlacklist(blArray.getString(i));
         }
 
-        config.setSkipTests(result.getBoolean("translators.skip_tests", () -> false));
+        String fileSkipTests = result.getString("translators.skip_tests", () -> "NONE").toUpperCase(Locale.ROOT);
+        config.setSkipTests(TranslatorsConfig.TestFiltering.valueOf(fileSkipTests));
 
         var rawMainType = result.getString("generator.type");
         if (rawMainType != null) {
