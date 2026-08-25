@@ -2,10 +2,7 @@ package translate.translator;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
-import com.github.javaparser.ast.body.MethodDeclaration;
-import com.github.javaparser.ast.body.RecordDeclaration;
-import com.github.javaparser.ast.body.TypeDeclaration;
+import com.github.javaparser.ast.body.*;
 import file.Config;
 import lombok.Getter;
 import translate.complexity.*;
@@ -339,11 +336,16 @@ public class ComplexityTranslator extends SimpleTranslator {
 
     public List<String> getProblematicClassesUml() {
         List<String> output = new ArrayList<>();
-        for (var fullPackageName : classResultMap.keySet()) {
+        for (var classEntry : classResultMap.entrySet()) {
+            String fullPackageName = classEntry.getKey();
+            TypeDeclaration<?> node = classEntry.getValue().getNode();
+
             ComplexityResultAggregator results = evaluateClass(fullPackageName);
             if (!results.isValid()) {
-                if (classResultMap.get(fullPackageName).getNode() instanceof RecordDeclaration) {
+                if (node instanceof RecordDeclaration) {
                     output.add("record " + fullPackageName + " #Red\n");
+                } else if (node instanceof EnumDeclaration) {
+                    output.add("enum " + fullPackageName + " #Red\n");
                 } else {
                     output.add("class " + fullPackageName + " #Red\n");
                 }
