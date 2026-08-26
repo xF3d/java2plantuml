@@ -14,6 +14,7 @@ import translate.dummy.DummyProject;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 import translate.translator.ComplexityTranslator;
+import util.VirtualThreadExecutor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,7 +55,7 @@ public class AIRefactorFrame extends JFrame {
 
         this.complexityTranslator = translator;
         this.dummyProject = new DummyProject(complexityTranslator);
-        this.aiExecutor = Executors.newSingleThreadExecutor();
+        this.aiExecutor = VirtualThreadExecutor.create();
 
         CardLayout cardLayout = new CardLayout();
         this.cards = new JPanel(cardLayout);
@@ -356,7 +357,7 @@ public class AIRefactorFrame extends JFrame {
 
         currentCard = 0;
         aiExecutor.shutdownNow();
-        aiExecutor = Executors.newSingleThreadExecutor();
+        aiExecutor = VirtualThreadExecutor.create();
         cardSize.set(0);
     }
 

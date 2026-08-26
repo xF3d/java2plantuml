@@ -17,6 +17,7 @@ show_associations = true
 [ai]
 verify_with_main = true
 validation_retries = 3
+concurrency = 1
 
 [build_runner]
 mvn_path = ""

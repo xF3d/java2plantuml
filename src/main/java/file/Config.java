@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Map;
 
 @Getter
 public class Config {
@@ -39,6 +40,7 @@ public class Config {
 
     private boolean verifyWithMain;
     private long validationRetries;
+    private int concurrency;
 
     private Path mvnPath;
     private VisitorsBuilder visitorsBuilder;
@@ -97,7 +99,8 @@ public class Config {
             String mainUrl = result.getString("generator.url");
             String modelName = result.getString("generator.name");
             String mainKey = result.getString("generator.key");
-            this.mainModel = new ModelType(mainType, modelName, mainUrl, mainKey);
+            Map<String, Object> map = result.getTableOrEmpty("generator.extra_params").toMap();
+            this.mainModel = new ModelType(mainType, modelName, mainUrl, mainKey, map);
         }
 
         var verifyModels = result.getArrayOrEmpty("verify");
@@ -126,6 +129,7 @@ public class Config {
 
         verifyWithMain = result.getBoolean("ai.verify_with_main", () -> true);
         validationRetries = result.getLong("ai.validation_retries", () -> 3);
+        concurrency = Math.toIntExact(result.getLong("ai.concurrency", () -> 1));
 
         String mvnPathStr = result.getString("build_runner.mvn_path");
         if (mvnPathStr != null) {
