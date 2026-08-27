@@ -41,6 +41,7 @@ public class Config {
     private boolean verifyWithMain;
     private long validationRetries;
     private int concurrency;
+    private boolean toolCalling;
 
     private Path mvnPath;
     private VisitorsBuilder visitorsBuilder;
@@ -130,6 +131,7 @@ public class Config {
         verifyWithMain = result.getBoolean("ai.verify_with_main", () -> true);
         validationRetries = result.getLong("ai.validation_retries", () -> 3);
         concurrency = Math.toIntExact(result.getLong("ai.concurrency", () -> 1));
+        toolCalling = result.getBoolean("ai.tool_calling", () -> false);
 
         String mvnPathStr = result.getString("build_runner.mvn_path");
         if (mvnPathStr != null) {

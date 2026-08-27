@@ -5,6 +5,7 @@ import ai.chat.BaseChat;
 import ai.reponse.MessageValidator;
 import ai.reponse.ValidatedResponse;
 import dev.langchain4j.service.AiServices;
+import file.Config;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.pkg.PackageManager;
 import translate.translator.SimpleTranslator;
@@ -27,9 +28,15 @@ public class ClassPipeline extends AIPipeline {
     @Override
     protected BaseChat initSuggestion() {
         var suggestionModel = AIManager.getInstance().getSuggestionModel();
-        return AiServices.builder(BaseChat.class)
+        var builder = AiServices.builder(BaseChat.class)
                 .chatModel(suggestionModel)
-                .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_GEN.formatted(suggestionModel.defaultRequestParameters().modelName()))
+                .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_GEN.formatted(suggestionModel.defaultRequestParameters().modelName()));
+
+        if (Config.getInstance().isToolCalling()) {
+            builder.tools(tool);
+        }
+
+        return builder
                 //.tools(tool)
                 .build();
     }
@@ -39,13 +46,15 @@ public class ClassPipeline extends AIPipeline {
         ArrayList<BaseChat> output = new ArrayList<>();
         var verifiersModels = AIManager.getInstance().getVerifiers();
         for (var verifierModel : verifiersModels) {
-            output.add(
-                    AiServices.builder(BaseChat.class)
-                            .chatModel(verifierModel)
-                            .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_VER.formatted(verifierModel.defaultRequestParameters().modelName()))
-                            //.tools(tool)
-                            .build()
-            );
+            var builder = AiServices.builder(BaseChat.class)
+                    .chatModel(verifierModel)
+                    .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_VER.formatted(verifierModel.defaultRequestParameters().modelName()));
+
+            if (Config.getInstance().isToolCalling()) {
+                builder.tools(tool);
+            }
+
+            output.add(builder.build());
         }
 
         return output;

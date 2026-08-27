@@ -18,6 +18,7 @@ show_associations = true
 verify_with_main = true
 validation_retries = 3
 concurrency = 1
+tool_calling = false
 
 [build_runner]
 mvn_path = ""
