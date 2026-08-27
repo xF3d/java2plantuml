@@ -7,7 +7,7 @@ import translate.translator.SimpleTranslator;
 import translate.translator.exceptions.InvalidSelectedClassException;
 
 @AllArgsConstructor
-public class MethodBodyTool {
+public class CodeAccessTool {
     private final SimpleTranslator translator;
 
     @Tool("getMethodBody: Obtain method code of a method or constructor defined in a specified class or an error if failed")

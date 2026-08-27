@@ -15,11 +15,11 @@ import java.util.List;
 
 public class ClassPipeline extends AIPipeline {
     private final ComplexityClass clazz;
-    private final MethodBodyTool tool;
+    private final CodeAccessTool tool;
 
     public ClassPipeline(SimpleTranslator translator, ComplexityClass clazz) {
         this.clazz = clazz;
-        this.tool = new MethodBodyTool(translator);
+        this.tool = new CodeAccessTool(translator);
         String origin = PackageManager.resolveTypeDeclaration(clazz.getNode());
 
         super(origin, MessageValidator.CLASS);
