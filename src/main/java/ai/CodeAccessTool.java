@@ -22,6 +22,14 @@ public class CodeAccessTool {
         if (realFqn == null) return "ERROR: Invalid class";
 
         try {
+            // sometimes model are stupid and send <init> regardless for constructor calls
+            if (methodSignature.startsWith("<init>")) {
+                String[] split = clazz.split("\\.");
+                String className = split[split.length - 1];
+
+                methodSignature = methodSignature.replace("<init>", className);
+            }
+
             var methodDecl = translator.getMethodLike(realFqn, methodSignature);
             if (methodDecl == null) return "ERROR: Invalid method";
 
@@ -31,8 +39,28 @@ public class CodeAccessTool {
         }
     }
 
+    @Tool("getClassContents: Obtain class contents of a class")
+    public String getClassContents(
+            @P("Fully Qualified Name of the target class") String clazz
+    ) {
+        FileLogger.LOGGER.info("getClassContents tool call: " + clazz + ", " + translator);
+        if (clazz == null) return "ERROR";
+
+        String realFqn = translator.getPackageManager().mapRaw(clazz);
+        if (realFqn == null) return "ERROR: Class not present in the project";
+
+        try {
+            return translator.getTypeDeclaration(realFqn).toString();
+        } catch (InvalidSelectedClassException e) {
+            return "ERROR: Class in the project but could not be obtained";
+        }
+    }
+
+
     @Tool("doesClassExist: Obtain whatever or not a class exists with a specified FQN, can return TRUE, FALSE, ERROR")
-    public String doesClassExist(@P("Fully Qualified Name of the target class") String clazz) {
+    public String doesClassExist(
+            @P("Fully Qualified Name of the target class") String clazz
+    ) {
         FileLogger.LOGGER.info("doesClassExist tool call: " + clazz + ", " + translator);
         if (clazz == null) return "ERROR";
 
