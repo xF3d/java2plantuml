@@ -134,9 +134,10 @@ public class Prompts {
             """
             + FORMAT_USAGE_REFACTOR_METHOD +
             """
+            If you don't want to change anything, just send UNCHANGED only without this format,
+            
             You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
-            If you don't want to change anything, just resend the message you received without changing it
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
@@ -182,9 +183,10 @@ public class Prompts {
             """
             + FORMAT_USAGE_REFACTOR_CLASS +
             """
+            If you don't want to change anything, just send UNCHANGED only without this format.
+            
             You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
             NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
-            If you don't want to change anything, just resend the message you received without changing it
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Adding an external dependency

@@ -32,9 +32,15 @@ public record DiffClassResponse(
 
     public static final DiffClassResponse EMPTY = new DiffClassResponse("null", List.of(), List.of(), List.of(), "null", List.of());
 
+    public static final DiffClassResponse UNCHANGED = new DiffClassResponse("unchanged", List.of(), List.of(), List.of(), "unchanged", List.of());
+
     private static final String SEPARATOR = "===============";
 
     public static DiffClassResponse fromResponse(String clazz, String response) {
+        if (response == null) return EMPTY;
+
+        if (response.strip().equals("UNCHANGED")) return UNCHANGED;
+
         var data = SectionData.parseSections(response);
 
         if (!data.hasSections("CHANGES", "EXPLANATION")) {
@@ -159,6 +165,11 @@ public record DiffClassResponse(
     @Override
     public boolean isValid() {
         return parseChanges() != null && parseAdded().size() == added.size() && parseImports() != null;
+    }
+
+    @Override
+    public boolean isUnchanged() {
+        return this.equals(UNCHANGED);
     }
 
     public CompilationUnit parseChanges() {

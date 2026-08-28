@@ -1,6 +1,7 @@
 package ai.pipeline;
 
 import ai.AIManager;
+import ai.reponse.ApplicableDiff;
 import ai.reponse.MessageValidator;
 import ai.reponse.ValidatedResponse;
 import ai.chat.BaseChat;
@@ -92,16 +93,19 @@ public abstract class AIPipeline {
         for (int i = 0; i < verifiers.size(); i++) {
             BaseChat verifier = verifiers.get(i);
 
-            previousResponse = this.validatedChat(verifier, mainMessage + "\n Previous Response: " + previousResponse.parsed().asAi());
-
-            if (previousResponse.isError()) {
+            ValidatedResponse newResponse = this.validatedChat(verifier, mainMessage + "\n Previous Response: " + previousResponse.parsed().asAi());
+            if (newResponse.isError()) {
                 FileLogger.LOGGER.warning("Error in verifier " + previousResponse.error());
                 continue;
             }
 
+            ApplicableDiff parsedNewResponse = newResponse.parsed();
+            if (parsedNewResponse.isUnchanged()) continue;
+
+            previousResponse = newResponse;
             String name = verifiersAi.get(i).defaultRequestParameters().modelName();
             notes.addAll(
-                    previousResponse.parsed().notes()
+                    parsedNewResponse.notes()
                             .stream()
                             .map(it -> name + " : " + it)
                             .toList()

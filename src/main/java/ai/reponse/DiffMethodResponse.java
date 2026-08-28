@@ -26,6 +26,8 @@ public record DiffMethodResponse(
 ) implements ApplicableDiff {
     public static final DiffMethodResponse EMPTY = new DiffMethodResponse("null", "null", List.of(), "null", List.of());
 
+    public static final DiffMethodResponse UNCHANGED = new DiffMethodResponse("unchanged", "unchanged", List.of(), "uncahnged", List.of());
+
     public static DiffMethodResponse fromResponse(String origin, String response) {
         if (origin == null) throw new IllegalArgumentException("Null origin");
 
@@ -37,6 +39,8 @@ public record DiffMethodResponse(
 
     public static DiffMethodResponse fromResponse(String clazz, String method, String response) {
         if (response == null) return EMPTY;
+
+        if (response.strip().equals("UNCHANGED")) return UNCHANGED;
 
         SectionData data = SectionData.parseSections(response);
 
@@ -51,6 +55,11 @@ public record DiffMethodResponse(
     @Override
     public boolean isEmpty() {
         return notes.isEmpty() && newMethods.isEmpty();
+    }
+
+    @Override
+    public boolean isUnchanged() {
+        return this.equals(UNCHANGED);
     }
 
     public String codeMethods() {

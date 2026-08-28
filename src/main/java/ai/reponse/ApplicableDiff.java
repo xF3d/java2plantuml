@@ -29,6 +29,8 @@ public interface ApplicableDiff {
 
     boolean isValid();
 
+    boolean isUnchanged();
+
     String origin();
 
     List<String> notes();
