@@ -21,34 +21,37 @@ public class PromptResponsePanel extends JScrollPane {
             return;
         }
 
+
+        JPanel main = new JPanel();
+        GuiUtils.setVerticalLayout(main);
+        setViewportView(main);
+
+        // Display diff specific data
         if (response instanceof DiffMethodResponse diffMethodResponse) {
-            setupMethod(diffMethodResponse);
+            setupMethod(diffMethodResponse, main);
         } else if (response instanceof DiffClassResponse diffClassResponse) {
-            setupClass(diffClassResponse);
+            setupClass(diffClassResponse, main);
         } else {
             throw new RuntimeException("Invalid Applicable Diff detected");
         }
+
+        // Display common diff data
+        JPanel explanationArea = setupLabelArea("Explanation", response.explanation());
+        JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
+
+        main.add(explanationArea);
+        main.add(notesArea);
     }
 
-    private void setupMethod(DiffMethodResponse response) {
-        JPanel main = new JPanel();
-        GuiUtils.setVerticalLayout(main);
-
+    private void setupMethod(DiffMethodResponse response, JPanel main) {
         JPanel originalArea = setupOriginal(response);
         JPanel newMethodsArea = setupLabelArea("New Methods", String.join("\n", response.newMethods()));
-        JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
 
         main.add(originalArea);
         main.add(newMethodsArea);
-        main.add(notesArea);
-
-        setViewportView(main);
     }
 
-    private void setupClass(DiffClassResponse response) {
-        JPanel main = new JPanel();
-        GuiUtils.setVerticalLayout(main);
-
+    private void setupClass(DiffClassResponse response, JPanel main) {
         JPanel originalArea = setupOriginal(response);
         JPanel addedImportsArea = setupLabelArea("Added Imports", String.join("\n", response.addedImports()));
         JPanel changesArea = setupLabelArea("Changes", String.join("\n", response.changes()));
@@ -62,15 +65,11 @@ public class PromptResponsePanel extends JScrollPane {
             );
         }
 
-        JPanel notesArea = setupLabelArea("Notes", String.join("\n", response.notes()));
 
         main.add(originalArea);
         main.add(addedImportsArea);
         main.add(changesArea);
         addedClassesAreas.forEach(main::add);
-        main.add(notesArea);
-
-        setViewportView(main);
     }
 
     private JPanel setupLabelArea(String title, String contents) {
