@@ -25,6 +25,14 @@ public record MetricDefinition(String metric, double min, double max, MetricTarg
     }
 
     public String printableThreshold() {
-        return metric + " [" + DoubleFormatter.format(min) + ", " + DoubleFormatter.format(max) + "]";
+        return metric + " [" + formattedMin() + ", " + formattedMax() + "]";
+    }
+
+    public String formattedMin() {
+        return DoubleFormatter.format(min);
+    }
+
+    public String formattedMax() {
+        return DoubleFormatter.format(max);
     }
 }

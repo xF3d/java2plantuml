@@ -50,7 +50,7 @@ public class ComplexityMetricResult {
 
     public String toAi() {
         if (isThresholdValid()) {
-            return metric() + " range between: " + min() + " & " + max() + " value: " + formattedValue();
+            return metric() + " range between: " + formattedMin() + " & " + formattedMax() + " value: " + formattedValue();
         } else {
             return metric() + " value: " + formattedValue();
         }
