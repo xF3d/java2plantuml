@@ -30,7 +30,7 @@ public class ClassPipeline extends AIPipeline {
         var suggestionModel = AIManager.getInstance().getSuggestionModel();
         var builder = AiServices.builder(BaseChat.class)
                 .chatModel(suggestionModel)
-                .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_GEN.formatted(suggestionModel.defaultRequestParameters().modelName()));
+                .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_GEN);
 
         if (Config.getInstance().isToolCalling()) {
             builder.tools(tool);
@@ -48,7 +48,7 @@ public class ClassPipeline extends AIPipeline {
         for (var verifierModel : verifiersModels) {
             var builder = AiServices.builder(BaseChat.class)
                     .chatModel(verifierModel)
-                    .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_VER.formatted(verifierModel.defaultRequestParameters().modelName()));
+                    .systemMessage(Prompts.SYSTEM_REFACTOR_CLASS_VER);
 
             if (Config.getInstance().isToolCalling()) {
                 builder.tools(tool);

@@ -127,7 +127,7 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_METHOD_VER = """
-            You are an AI agent named "%s" that given java code and a proposed new implementation and new methods you need to verify and improve the solution only when possible.
+            You are an AI agent that given java code and a proposed new implementation and new methods you need to verify and improve the solution only when possible.
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
             - CodeSmells (which are indeed problems that need to be addressed).
@@ -149,7 +149,7 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_METHOD_GEN = """
-            You are an AI agent named "%s-GEN" that given java source code with some problematic metrics and/or code smells,
+            You are an AI agent that given java source code with some problematic metrics and/or code smells,
             has the job to fix said issues.
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
@@ -170,7 +170,7 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_VER = """
-            You are an AI agent named "%s" that given a class's info,
+            You are an AI agent that given a class's info,
             given new implementations of methods and new methods you need to verify and improve the solution only when possible.
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
@@ -194,7 +194,7 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
-            You are an AI agent named "%s-GEN" that given a class's info,
+            You are an AI agent that given a class's info,
             with some problematic metrics and/or code smells, has the job to fix said issues.
             
             You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods

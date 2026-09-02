@@ -31,7 +31,7 @@ public class MethodPipeline extends AIPipeline {
         ChatModel suggestionModel = AIManager.getInstance().getSuggestionModel();
         return AiServices.builder(BaseChat.class)
                 .chatModel(suggestionModel)
-                .systemMessage(Prompts.SYSTEM_REFACTOR_METHOD_GEN.formatted(suggestionModel.defaultRequestParameters().modelName()))
+                .systemMessage(Prompts.SYSTEM_REFACTOR_METHOD_GEN)
                 .build();
     }
 
@@ -43,7 +43,7 @@ public class MethodPipeline extends AIPipeline {
             output.add(
                     AiServices.builder(BaseChat.class)
                             .chatModel(verifierModel)
-                            .systemMessage(Prompts.SYSTEM_REFACTOR_METHOD_VER.formatted(verifierModel.defaultRequestParameters().modelName()))
+                            .systemMessage(Prompts.SYSTEM_REFACTOR_METHOD_VER)
                             .build()
             );
         }
