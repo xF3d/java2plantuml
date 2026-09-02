@@ -29,6 +29,7 @@ public class Prompts {
             %%Different or no NOTES%%
             
             Example (DO NOT USE IN CONTEXT OR AS A FIRST PROMPT):
+            
             -----METHODS-----
             public void myMethod(int a, int b) {
                 this.c = a + b;
@@ -42,6 +43,7 @@ public class Prompts {
             -----NOTES-----
             myCalc's class might be a overabstraction, consider removing them
             
+            The mandatory sections are: EXPLANATION and METHODS, if you have nothing in the other sections to add, do not send them at all. Just send the sections with data.
             All %%NOTE_n%% must be maximum of 50 words and contain suggestions, not comments.
             Must be Java 25 language level max.
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
@@ -112,10 +114,10 @@ public class Prompts {
             Extracted functionality to new classes and methods
             -----NOTES-----
             
-            
+            The mandatory sections are: EXPLANATION and CHANGES, if you have nothing in the other sections to add, do not send them at all. Just send the sections with data.
             All notes must be maximum of 50 words and contain suggestions, not comments.
             Must be Java 25 language level max.
-            Changes should only contain method declarations and field declarations, so no imports or type declarations
+            CHANGES should only contain method declarations and field declarations, so no imports or type declarations
             Everything wrapped in a <> are placeholders, and as such should not be inserted in the answer.
             All methods created or modified should contain the full implementation if they are not abstract, stub methods with only comments.
             
@@ -134,18 +136,16 @@ public class Prompts {
             """
             + FORMAT_USAGE_REFACTOR_METHOD +
             """
-            If you don't want to change anything, just send UNCHANGED only without this format,
+            If you don't want to change anything, just send UNCHANGED only without this format.
             
             You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            NOTEs if present should not contain explanations (that is what EXPLAINATION is for), they merely talk about stuff you can't fix directly and tips for the user.
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Creating new functions in other classes
             - Adding an external dependency
             - Suggesting changes to different classes
             - Adding new classes
-            
-            You can change the METHODS as you see fit if necessary, but not the NOTE section, you can only add to the notes, not delete them
             """;
 
     public static final String SYSTEM_REFACTOR_METHOD_GEN = """
@@ -186,13 +186,11 @@ public class Prompts {
             If you don't want to change anything, just send UNCHANGED only without this format.
             
             You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            NOTEs if present should not contain explanations (that is what EXPLAINATION is for), they merely talk about stuff you can't fix directly and tips for the user.
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Adding an external dependency
-            - Modify another existing class other than the target ones, you can add as many as you want however in the ADDED section
-            
-            You can change the CHANGES and ADDED section as you see fit if necessary, but not the NOTE section, you can only add to the notes, not delete them
+            - Modify another existing class other than the target one, you can add as many as you want however in the ADDED section
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
