@@ -15,7 +15,7 @@ public class DiffMethodResponseTest {
         DiffMethodResponse response = new DiffMethodResponse("testing", "whatever(int)", List.of(
                 "public void test() {",
                 "}"
-        ), List.of("Suggestion: Test"));
+        ), "", List.of("Suggestion: Test"));
 
         JacksonMapper.init();
         try {
@@ -30,7 +30,7 @@ public class DiffMethodResponseTest {
         DiffMethodResponse response = new DiffMethodResponse("testing", "whatever(int)", List.of(
                 "public void test() {",
                 "}"
-        ), List.of("Suggestion: Test"));
+        ), "", List.of("Suggestion: Test"));
 
         JacksonMapper.init();
         String serialized;
@@ -53,12 +53,12 @@ public class DiffMethodResponseTest {
         DiffMethodResponse response1 = new DiffMethodResponse("testing", "whatever(int)", List.of(
                 "public void test() {",
                 "}"
-        ), List.of("Suggestion: Test"));
+        ), "", List.of("Suggestion: Test"));
 
         DiffMethodResponse response2 = new DiffMethodResponse("another::testing", "whatever(int)", List.of(
                 "public void test() {",
                 "}"
-        ), List.of("Suggestion: Test"));
+        ), "", List.of("Suggestion: Test"));
 
         List<DiffMethodResponse> responses = List.of(response1, response2);
         JacksonMapper.init();
