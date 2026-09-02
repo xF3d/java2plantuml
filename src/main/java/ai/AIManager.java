@@ -81,7 +81,7 @@ public class AIManager {
         var pipeline = new ClassPipeline(translator, clazz);
         var validated = pipeline.ask();
         if (!validated.isValid()) {
-            FileLogger.LOGGER.warning("Fix method suggestion validation error, last error: " + validated.error());
+            FileLogger.LOGGER.warning("Fix class suggestion validation error, last error: " + validated.error());
             return DiffClassResponse.EMPTY;
         }
 

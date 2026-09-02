@@ -5,6 +5,7 @@ import ai.model.APIType;
 import ai.model.ModelType;
 import lombok.Getter;
 import org.tomlj.Toml;
+import org.tomlj.TomlArray;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
 import translate.TranslatorsConfig;
@@ -61,6 +62,8 @@ public class Config {
             toml = Files.readString(getConfigPath());
         } catch (IOException e) {
             regenDefaults();
+            FileLogger.LOGGER.warning("Invalid or missing config detected");
+            e.printStackTrace();
             return;
         }
 
@@ -100,8 +103,8 @@ public class Config {
             String mainUrl = result.getString("generator.url");
             String modelName = result.getString("generator.name");
             String mainKey = result.getString("generator.key");
-            Map<String, Object> map = result.getTableOrEmpty("generator.extra_params").toMap();
-            this.mainModel = new ModelType(mainType, modelName, mainUrl, mainKey, map);
+            TomlTable tableParams = result.getTableOrEmpty("generator.extra_params");
+            this.mainModel = new ModelType(mainType, modelName, mainUrl, mainKey, toml2map(tableParams));
         }
 
         var verifyModels = result.getArrayOrEmpty("verify");
@@ -151,5 +154,21 @@ public class Config {
 
     public Path getConfigPath() {
         return Path.of(CONFIG_NAME);
+    }
+
+    private static Map<String, Object> toml2map(TomlTable table) {
+        Map<String, Object> result = table.toMap();
+        var keys = result.keySet();
+
+        for (var key : keys) {
+            var value = result.get(key);
+            if (value instanceof TomlTable valueTable) {
+                result.put(key, toml2map(valueTable));
+            } else if (value instanceof TomlArray valueArray) {
+                result.put(key, valueArray.toList());
+            }
+        }
+
+        return result;
     }
 }
