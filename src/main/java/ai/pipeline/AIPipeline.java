@@ -5,6 +5,7 @@ import ai.reponse.ApplicableDiff;
 import ai.reponse.MessageValidator;
 import ai.reponse.ValidatedResponse;
 import ai.chat.BaseChat;
+import dev.langchain4j.data.message.TextContent;
 import dev.langchain4j.model.output.TokenUsage;
 import dev.langchain4j.service.Result;
 import file.Config;
@@ -40,7 +41,7 @@ public abstract class AIPipeline {
         for (int i = 0; i < Config.getInstance().getValidationRetries(); i++) {
             String stringResponse;
             try {
-                Result<String> response = model.chat(message);
+                Result<String> response = model.chat(TextContent.from(message));
                 stringResponse = response.content();
 
                 TokenUsage usage = response.tokenUsage();
