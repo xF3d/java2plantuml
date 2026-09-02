@@ -57,6 +57,7 @@ public abstract class AIPipeline {
                 System.out.println(stringResponse);
             } catch (Exception e) {
                 lastResponse = ValidatedResponse.error(e.getMessage());
+                e.printStackTrace();
                 continue;
             }
 
