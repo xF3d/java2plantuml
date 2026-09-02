@@ -29,7 +29,6 @@ public class VirtualThreadExecutor extends AbstractExecutorService {
                 command.run();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
-                throw new RejectedExecutionException(e);
             } finally {
                 if (acquired) {
                     permits.release();
