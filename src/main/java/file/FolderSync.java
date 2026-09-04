@@ -56,6 +56,10 @@ public final class FolderSync {
         // Remove anything not present in source
         try (var stream = Files.list(destination)) {
             for (Path dstChild : stream.toList()) {
+                if (shouldIgnore(dstChild)) {
+                    continue;
+                }
+
                 if (!expectedNames.contains(dstChild.getFileName().toString())) {
                     deleteRecursively(dstChild);
                 }
@@ -137,6 +141,8 @@ public final class FolderSync {
 
     private static boolean shouldIgnore(Path path) {
         String name = path.getFileName().toString();
+        if (name.equals(".git")) return true;
+
         return name.endsWith(".lock") || name.endsWith(".lck") || name.endsWith(".tmp");
     }
 }
