@@ -6,6 +6,7 @@ import file.FolderSync;
 import gui.frame.CompareFrame;
 import gui.frame.MainFrame;
 import translate.translator.ComplexityTranslator;
+import translate.translator.SimpleTranslator;
 
 import javax.swing.*;
 import java.io.File;
@@ -20,7 +21,7 @@ import java.util.concurrent.Executors;
 public class DummyProject {
     private final Path dummyLocation;
     private CompletableFuture<Void> copyingTask;
-    private ComplexityTranslator dummyTranslator = null;
+    private SimpleTranslator dummyTranslator = null;
     private final ComplexityTranslator originalTranslator;
     private final BuildRunner buildRunner;
 
@@ -91,7 +92,7 @@ public class DummyProject {
             throw new RuntimeException(e);
         }
 
-        this.dummyTranslator = new ComplexityTranslator();
+        this.dummyTranslator = new SimpleTranslator();
         this.dummyTranslator.execute(dummyLocation.toFile());
     }
 
