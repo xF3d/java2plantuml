@@ -221,7 +221,7 @@ public record DiffClassResponse(
 
     @Override
     public String getOriginalCode(SimpleTranslator translator) {
-        return translator.getTypeDeclaration(clazz).toString();
+        return translator.getTypeDeclaration(clazz).findCompilationUnit().orElseThrow().toString();
     }
 
     @Override
