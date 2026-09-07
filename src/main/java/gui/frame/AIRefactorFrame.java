@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,6 +46,7 @@ public class AIRefactorFrame extends JFrame {
 
     private final AtomicInteger generation = new AtomicInteger(0);
     private DummyProject dummyProject;
+    private ExecutorService backgroundExecutor = Executors.newSingleThreadExecutor();
 
     public AIRefactorFrame(ComplexityTranslator translator) {
         super("AI Refactoring");
@@ -68,6 +70,7 @@ public class AIRefactorFrame extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 aiExecutor.shutdownNow();
+                backgroundExecutor.shutdownNow();
             }
         });
         FrameManager.addFrame(this);
@@ -169,12 +172,14 @@ public class AIRefactorFrame extends JFrame {
         JMenu approveMenu = new JMenu("Approve");
 
         JMenuItem approveSelected = new JMenuItem("Selected");
-        approveSelected.addActionListener(e -> dummyProject.applyDiffs(getSelected()));
+        approveSelected.addActionListener(_ -> backgroundExecutor.submit(() ->
+                dummyProject.applyDiffs(getSelected())
+        ));
 
         JMenuItem approveAll = new JMenuItem("All");
-        approveAll.addActionListener(e -> dummyProject.applyDiffs(
+        approveAll.addActionListener(_ -> backgroundExecutor.submit(() -> dummyProject.applyDiffs(
                 responses.stream().filter(d -> !d.isEmpty()).toList()
-        ));
+        )));
 
         approveMenu.add(approveSelected);
         approveMenu.add(approveAll);
