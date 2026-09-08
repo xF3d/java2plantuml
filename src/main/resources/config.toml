@@ -28,12 +28,35 @@ metric = "CBO"
 max = 13.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce coupling between the class and external classes/packages. Prefer dependency
+injection, programming to interfaces, encapsulating implementation details, and
+moving responsibilities to the class that owns the relevant data or behavior.
+Extract cohesive responsibilities into well-defined classes when a class depends
+on too many unrelated collaborators. Replace direct construction of dependencies
+with injected dependencies where appropriate.
+
+Avoid merely wrapping dependencies in pass-through methods, introducing excessive
+interfaces with only one trivial implementation, or creating "manager"/"utility"
+classes whose only purpose is to hide existing coupling.
+"""
 
 [[metric_definitions]]
 metric = "DIT"
 max = 3.0
 min = 1.0
 target = "LOWER"
+repair_strategy = """
+Reduce inheritance depth by preferring composition and delegation over inheritance
+when the subclass does not represent a genuine substitutable specialization.
+Move shared behavior into composition-based collaborators or flatten unnecessary
+intermediate inheritance layers. If inheritance is required, remove redundant
+abstract or implementation-only layers and keep the hierarchy shallow.
+
+Avoid replacing inheritance with excessive delegation layers that add no
+meaningful abstraction, or flattening a hierarchy when inheritance expresses a
+valid and stable "is-a" relationship.
+"""
 
 [[metric_definitions]]
 metric = "FanIn"
@@ -46,54 +69,157 @@ metric = "FanOut"
 max = 29.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the number of distinct classes that this class directly depends on.
+Group related operations behind cohesive abstractions, encapsulate external
+interactions, extract responsibilities into specialized collaborators, and
+replace unnecessary direct dependencies with a suitable higher-level abstraction.
+
+Avoid introducing a facade or wrapper solely to hide a large dependency list,
+creating generic "service" or "manager" classes that accumulate unrelated
+responsibilities, or replacing direct dependencies with unnecessary layers of
+indirection. Preserve dependencies that are genuinely required by the class's
+responsibility.
+"""
 
 [[metric_definitions]]
 metric = "LCOM*"
 max = 0.725
 min = -0.00000001
 target = "LOWER"
+repair_strategy = """
+Increase cohesion by ensuring that methods in a class operate on a meaningful
+and related subset of the class's state. Group methods and fields that participate
+in the same responsibility, and extract unrelated responsibilities into separate
+classes. Use Extract Class when distinct groups of fields and methods form
+coherent concepts. Move behavior toward the data it primarily manipulates.
+
+Avoid splitting a class into many tiny classes merely to improve the metric,
+creating data-only classes with behavior moved elsewhere, or adding artificial
+field accesses just to make methods appear connected.
+"""
 
 [[metric_definitions]]
 metric = "NOC"
 max = 3.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the number of direct subclasses when a class has accumulated too many
+specializations. Prefer composition, strategy objects, configuration, or
+delegation when subclasses exist only to vary a small part of behavior. Merge
+redundant subclasses when they represent no meaningful distinction.
+
+Avoid removing legitimate polymorphic subclasses solely to reduce the metric,
+replacing subclasses with large conditional or switch statements, or introducing
+a generic strategy hierarchy that is more complex than the original inheritance.
+"""
 
 [[metric_definitions]]
 metric = "NOF"
 max = 8.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the number of fields when they represent multiple unrelated responsibilities
+or duplicated state. Encapsulate related state into cohesive value objects or
+extract a responsibility into another class. Remove redundant fields and derive
+values from existing state where appropriate. Prefer local variables for
+short-lived computation rather than persistent object state.
+
+Avoid simply deleting fields while moving equivalent state into global/static
+variables, collections, maps, or generic context objects.
+"""
+
 
 [[metric_definitions]]
 metric = "NOM"
 max = 14.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the number of methods when the class contains multiple responsibilities.
+Extract cohesive behavior into appropriately named classes, move behavior to the
+object that owns the relevant data, and remove redundant or trivial forwarding
+methods. Combine closely related private methods when doing so improves clarity.
+
+Avoid deleting methods by replacing them with large methods, moving all methods
+into generic utility/service classes, or creating excessive one-method classes.
+"""
 
 [[metric_definitions]]
 metric = "RFC"
 max = 50.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the number of methods that can potentially execute in response to a
+request by simplifying responsibilities and limiting the class's interaction
+surface. Extract cohesive responsibilities, delegate complex workflows to
+focused collaborators, reduce unnecessary method calls, and simplify public
+entry points. Use command/query separation where appropriate and keep methods
+focused on a single responsibility.
+
+Avoid hiding calls behind generic wrappers, facades, reflection, callbacks, or
+large utility classes just to make the measured response set smaller.
+"""
 
 [[metric_definitions]]
 metric = "WMC-Cyclomatic"
 max = 34.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the aggregate cyclomatic complexity of methods in the class. Extract
+complex behavior into focused methods or cohesive collaborators, use early
+returns and guard clauses to reduce nesting, extract repeated or complicated
+conditions into well-named methods or variables, and replace deeply nested
+conditionals with polymorphism or strategy objects when the variation represents
+a genuine domain concept. Simplify boolean expressions and remove redundant
+branches.
+
+Avoid merely moving complexity into another large method or class, creating
+dummy utility classes containing only static methods, replacing readable
+conditionals with unnecessarily elaborate design patterns, or using polymorphism
+for trivial two-branch logic. The goal is simpler behavior, not merely relocating
+the measured complexity.
+"""
 
 [[metric_definitions]]
 metric = "Cyclomatic"
 max = 4.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce the number of independent execution paths in individual methods. Use
+early returns and guard clauses, extract complex conditional logic into focused
+methods, simplify boolean expressions, remove redundant branches, and use
+polymorphism or strategy objects when a conditional represents genuine behavioral
+variation. Extract independent algorithms or responsibilities into separate
+methods or cohesive classes.
+
+Avoid deeply nested if/else structures, long switch statements, duplicated
+conditional logic, clever boolean expressions, and replacing a simple conditional
+with unnecessary abstraction. Do not merely move a complex method to another
+class or split it into artificial one-line methods solely to lower the metric.
+"""
 
 [[metric_definitions]]
 metric = "NBD"
 max = 3.0
 min = 0.0
 target = "LOWER"
+repair_strategy = """
+Reduce maximum nesting depth by using guard clauses and early returns, extracting
+nested blocks into focused methods, simplifying conditional logic, and replacing
+deeply nested control flow with polymorphism or strategy objects when appropriate.
+Invert conditions when that makes the normal execution path clearer.
+
+Avoid merely extracting each nested block into trivial methods without improving
+the underlying design, using deeply nested anonymous callbacks or lambdas to hide
+nesting, or replacing understandable control flow with unnecessarily complex
+patterns.
+"""
 
 [[metric_definitions]]
 metric = "LOC"

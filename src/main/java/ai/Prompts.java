@@ -7,6 +7,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.expr.SimpleName;
 import lombok.experimental.UtilityClass;
+import translate.complexity.ComplexityMetricResult;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 
@@ -75,7 +76,7 @@ public class Prompts {
             <added-fields>: with added fields to the SELECTED_CLASS
             <added-methods>: with added methods to the SELECTED_CLASS
             <rewritten-methods>: with rewritten methods, with the same signature as the past method, to swap out in SELECTED_CLASS
-            <class-file-x>: one or more classes you want to add, the file will be added at the defined package declaration and must contain a type definition and imports, 
+            <class-file-x>: one or more classes you want to add, the file will be added at the defined package declaration and must contain a type definition and imports,
             useful if you want to extract some code or functionality to another class. The added class must not already exist somewhere else.
             <explanation>: Explanation of the changes/additions to the original class, max 100 words in a single line
             <note-x>: one or more notes containing suggestion for the user that you can't do directly within this format, for instance removing methods and fields isn't allowed
@@ -150,7 +151,9 @@ public class Prompts {
 
     public static final String SYSTEM_REFACTOR_METHOD_GEN = """
             You are an AI agent that given java source code with some problematic metrics and/or code smells,
-            has the job to fix said issues.
+            has the job to improve the code quality of the system,
+            not always a bad threshold requires some kind of fix depending on the context.
+            
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
             - CodeSmells (which are indeed problems that need to be addressed).
@@ -172,6 +175,7 @@ public class Prompts {
     public static final String SYSTEM_REFACTOR_CLASS_VER = """
             You are an AI agent that given a class's info,
             given new implementations of methods and new methods you need to verify and improve the solution only when possible.
+            
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
             - CodeSmells (which are indeed problems that need to be addressed).
@@ -194,8 +198,9 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
-            You are an AI agent that given a class's info,
-            with some problematic metrics and/or code smells, has the job to fix said issues.
+            You are an AI agent that given a class's info, with some problematic metrics and/or code smells,
+            has the job to improve the code quality of the system,
+            not always a bad threshold requires some kind of fix depending on the context.
             
             You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
             Use the doesClassExist calls mainly to double check that a class doesn't exist already.
@@ -296,24 +301,36 @@ public class Prompts {
 
         String methodSignaturesString = String.join("\n", methodSignatures);
 
-        String classMetrics;
-        String classSmells;
-        try {
-
-            var clzResult = clazz.getComplexityResult().get();
-            classMetrics = clzResult.metricsAi();
-            classSmells = clzResult.codeSmellsAi();
-
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        String[] resolvedClassPrint = processClass(clazz);
+        String classMetrics = resolvedClassPrint[0];
+        String classSmells = resolvedClassPrint[1];
+        String metricRepairStrategies = resolvedClassPrint[2];
 
         String methodMetrics;
         String methodSmells;
         try {
             var mthResult = method.getComplexityResult().get();
-            methodMetrics = mthResult.metricsAi();
+
+            ArrayList<String> methodMetricsList = new ArrayList<>();
+            ArrayList<String> methodRepairStrategyList = new ArrayList<>();
+            for (ComplexityMetricResult metric : mthResult.getRawMetricData()) {
+                methodMetricsList.add(metric.toAi());
+
+                if (!metric.isValid()) {
+                    String repair = metric.fullRepairStrategy();
+                    if (repair != null)
+                        methodRepairStrategyList.add(repair);
+                }
+            }
+
+
+            methodMetrics = String.join("\n", methodMetricsList);
             methodSmells = mthResult.codeSmellsAi();
+
+            if (metricRepairStrategies == null)
+                metricRepairStrategies = String.join("\n", methodRepairStrategyList);
+            else
+                metricRepairStrategies += "\n" + String.join("\n", methodRepairStrategyList);
         } catch (InterruptedException | ExecutionException e) {
             throw new RuntimeException(e);
         }
@@ -328,7 +345,7 @@ public class Prompts {
                 methodMetrics,
                 methodSmells,
                 method.getMethod().toString()
-        );
+        ) + "\nREPAIR_STRATEGIES: \n" + metricRepairStrategies;
     }
 
     private static ArrayList<String> getImportStrings(CompilationUnit cu) {
@@ -383,23 +400,49 @@ public class Prompts {
 
         String methodSignaturesString = String.join("\n", methodSignatures);
 
-        String classMetrics;
-        String classSmells;
-        try {
-
-            var clzResult = clazz.getComplexityResult().get();
-            classMetrics = clzResult.metricsAi();
-            classSmells = clzResult.codeSmellsAi();
-
-        } catch (InterruptedException | ExecutionException e) {
-            throw new RuntimeException(e);
-        }
+        String[] resolvedClassPrint = processClass(clazz);
+        String classMetrics = resolvedClassPrint[0];
+        String classSmells = resolvedClassPrint[1];
+        String metricRepairStrategies = resolvedClassPrint[2];
 
         return Prompts.CLASS_CONTEXT.formatted(
                 cu.toString(),
                 methodSignaturesString,
                 classMetrics,
                 classSmells
-        );
+        ) + "\nREPAIR_STRATEGIES: \n" + metricRepairStrategies;
+    }
+
+    private static String[] processClass(ComplexityClass clazz) {
+        String classMetrics;
+        String classSmells;
+        String metricRepairStrategies;
+        try {
+
+            var clzResult = clazz.getComplexityResult().get();
+
+            ArrayList<String> classMetricsList = new ArrayList<>();
+            ArrayList<String> classRepairStrategyList = new ArrayList<>();
+            for (ComplexityMetricResult metric : clzResult.getRawMetricData()) {
+                classMetricsList.add(metric.toAi());
+
+                if (!metric.isValid()) {
+                    String repair = metric.fullRepairStrategy();
+                    if (repair != null)
+                        classRepairStrategyList.add(repair);
+                }
+            }
+
+            classMetrics = String.join("\n", classMetricsList);
+            classSmells = clzResult.codeSmellsAi();
+            metricRepairStrategies = String.join("\n", classRepairStrategyList);
+
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new String[] {
+                classMetrics, classSmells, metricRepairStrategies
+        };
     }
 }

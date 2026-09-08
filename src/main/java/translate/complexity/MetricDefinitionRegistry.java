@@ -3,6 +3,7 @@ package translate.complexity;
 import file.FileLogger;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class MetricDefinitionRegistry {
     private static final HashMap<String, MetricDefinition> registry = new HashMap<>();
@@ -19,5 +20,9 @@ public class MetricDefinitionRegistry {
         }
 
         return value;
+    }
+
+    public static List<MetricDefinition> getAll() {
+        return List.copyOf(registry.values());
     }
 }
