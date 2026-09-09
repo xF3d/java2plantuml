@@ -1,11 +1,16 @@
 package gui.frame;
 
+import gui.components.ClassTableMetricsPanel;
 import gui.components.ComplexityGridPanel;
+import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;
 import translate.complexity.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.List;
 
 public class CompareFrame extends JFrame {
@@ -30,6 +35,12 @@ public class CompareFrame extends JFrame {
 
         addGridPanel("Original metrics: ", displayOriginal[1]);
         addGridPanel("Updated metrics: ", displayDummy[1]);
+
+        this.content.add(new ReferenceController(
+                "<html><p>Updated Classes in the system</p> <br></html>",
+                dummyTranslator.getClassesArray(),
+                (_) -> new ClassTableMetricsPanel(dummyTranslator)
+        ));
 
         setContentPane(new JScrollPane(content));
 
