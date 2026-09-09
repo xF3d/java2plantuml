@@ -26,7 +26,7 @@ public record DiffMethodResponse(
 ) implements ApplicableDiff {
     public static final DiffMethodResponse EMPTY = new DiffMethodResponse("null", "null", List.of(), "null", List.of());
 
-    public static final DiffMethodResponse UNCHANGED = new DiffMethodResponse("unchanged", "unchanged", List.of(), "uncahnged", List.of());
+    public static final DiffMethodResponse UNCHANGED = new DiffMethodResponse("unchanged", "unchanged", List.of("// unchanged"), "unchanged", List.of());
 
     public static DiffMethodResponse fromResponse(String origin, String response) {
         if (origin == null) throw new IllegalArgumentException("Null origin");

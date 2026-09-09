@@ -32,7 +32,7 @@ public record DiffClassResponse(
 
     public static final DiffClassResponse EMPTY = new DiffClassResponse("null", List.of(), List.of(), List.of(), "null", List.of());
 
-    public static final DiffClassResponse UNCHANGED = new DiffClassResponse("unchanged", List.of(), List.of(), List.of(), "unchanged", List.of());
+    public static final DiffClassResponse UNCHANGED = new DiffClassResponse("unchanged", List.of(), List.of("// Unchanged"), List.of(), "unchanged", List.of());
 
     private static final String SEPARATOR = "===============";
 

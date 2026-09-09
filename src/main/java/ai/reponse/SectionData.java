@@ -75,11 +75,14 @@ public class SectionData {
         StringBuilder result = new StringBuilder();
 
         for (Map.Entry<String, List<String>> entry : sections.entrySet()) {
+            var val = entry.getValue();
+            if (val.isEmpty()) continue;
+
             result.append("-----")
                     .append(entry.getKey())
                     .append("-----\n");
 
-            for (String line : entry.getValue()) {
+            for (String line : val) {
                 result.append(line).append('\n');
             }
         }
