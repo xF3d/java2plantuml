@@ -17,6 +17,16 @@ import java.util.stream.Collectors;
 
 @UtilityClass
 public class Prompts {
+    public static final String TECHNIQUES = """
+            Prioritize using consolidated refactoring techniques such as, but not limited to:
+            - Extract Method
+            - Extract Class
+            - Guard Clauses
+            - Replace Conditional with Polymorphism
+            - Replace Repeated Code with Shared Abstraction
+            - Conditional consolidation/simplification
+            """;
+
     // TODO: elemento centrale durante la presentazione: prompts
     // TODO: dove mettere test?
     public static final String FORMAT_USAGE_REFACTOR_METHOD = """
@@ -50,7 +60,7 @@ public class Prompts {
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
             The rewritten method should maintain the same signature as the previous one.
             All methods created or modified should contain the full implementation if they are not abstract.
-            """;
+            """ + TECHNIQUES;
 
     public static final String FORMAT_USAGE_REFACTOR_CLASS = """
             Your answer should always follow this strict format.
@@ -125,7 +135,7 @@ public class Prompts {
             The example used is to give you a better understanding of the format only, don't reuse the names and use proper naming in real output
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
             You cannot edit any other class other than the SELECTED_CLASS.
-            """;
+            """ + TECHNIQUES;
 
     public static final String SYSTEM_REFACTOR_METHOD_VER = """
             You are an AI agent that given java code and a proposed new implementation and new methods you need to verify and improve the solution only when possible.
