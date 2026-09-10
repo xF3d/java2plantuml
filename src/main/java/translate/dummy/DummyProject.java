@@ -42,14 +42,10 @@ public class DummyProject {
         init();
 
         for (var diff : diffs) {
-            try {
-                diff.apply(originalTranslator, diff.getPath(dummyTranslator));
-            } catch (Exception ignored) {
-                // method is not present anymore
-            }
+            diff.apply(originalTranslator, diff.getPath(dummyTranslator));
         }
 
-        var tempTranslator = new ComplexityTranslator();
+        ComplexityTranslator tempTranslator = new ComplexityTranslator();
         tempTranslator.execute(dummyLocation.toFile());
 
         new CompareFrame(originalTranslator, tempTranslator);
