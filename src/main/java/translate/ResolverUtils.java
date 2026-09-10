@@ -78,6 +78,9 @@ public class ResolverUtils {
     }
 
     public static File sourceOf(File file) {
-        return new File(file, "src/main/java");
+        File srcMainJava = new File(file, "src/main/java");
+        if (srcMainJava.exists()) return srcMainJava;
+
+        return new File(file, "src");
     }
 }

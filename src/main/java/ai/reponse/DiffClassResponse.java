@@ -69,7 +69,7 @@ public record DiffClassResponse(
             return;
         }
 
-        Path projectRoot = getJavaRoot(toUpdatePath);
+        Path projectRoot = getSrcRoot(toUpdatePath);
         List<CompilationUnit> addedClasses = parseAdded();
 
         for (var clazz : addedClasses) {
@@ -100,6 +100,7 @@ public record DiffClassResponse(
         try {
             Files.writeString(toUpdatePath, originalCu.toString());
         } catch (IOException e) {
+            FileLogger.LOGGER.severe("Fail during write to: " + toUpdatePath);
             throw new RuntimeException(e);
         }
     }
@@ -135,18 +136,22 @@ public record DiffClassResponse(
         }
     }
 
-    private static Path getJavaRoot(Path path) {
+    private static Path getSrcRoot(Path path) {
         Path current = path;
 
         while (current != null) {
             Path fileName = current.getFileName();
-            if (fileName != null && fileName.toString().equals("java")) {
-                return current;
+            if (fileName != null) {
+                String stringFilename = fileName.toString();
+                if (stringFilename.equals("src") || stringFilename.equals("java")) {
+                    return current;
+                }
             }
+
             current = current.getParent();
         }
 
-        throw new IllegalArgumentException("Could not find 'java' directory from: " + path);
+        throw new IllegalArgumentException("Could not find main project directory from: " + path);
     }
 
     @Override
