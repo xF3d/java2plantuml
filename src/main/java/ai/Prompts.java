@@ -12,6 +12,7 @@ import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -161,8 +162,10 @@ public class Prompts {
 
     public static final String SYSTEM_REFACTOR_METHOD_GEN = """
             You are an AI agent that given java source code with some problematic metrics and/or code smells,
-            has the job to improve the code quality of the system,
-            not always a bad threshold requires some kind of fix depending on the context.
+            has the job to improve the code quality, readability of the system,
+            not always a bad threshold requires some kind of fix depending on the context,
+            also more fixes might be required, independently from the metric results
+            (a basic example might be repeated code or conditional that can be simplified).
             
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
@@ -210,7 +213,9 @@ public class Prompts {
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
             You are an AI agent that given a class's info, with some problematic metrics and/or code smells,
             has the job to improve the code quality of the system,
-            not always a bad threshold requires some kind of fix depending on the context.
+            not always a bad threshold requires some kind of fix depending on the context,
+            also more fixes might be required, independently from the metric results
+            (a basic example might be repeated code or conditional that can be simplified).
             
             You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
             Use the doesClassExist calls mainly to double check that a class doesn't exist already.
@@ -388,22 +393,44 @@ public class Prompts {
 
         var decl = clazz.getNode();
         ArrayList<String> methodSignatures = new ArrayList<>(decl.getMethods().size());
+        HashSet<String> mthRepairStrategies = new HashSet<>();
+
         for (var methodDecl : decl.getMethods()) {
             String signature = methodDecl.getSignature().asString();
-
-            methodSignatures.add(signature + " Metrics --> " + clazz.getMethods()
+            var methodResultAggregator = clazz.getMethods()
                     .get(signature)
-                    .evalResult()
+                    .evalResult();
+
+            for (var metric : methodResultAggregator.getRawMetricData()) {
+                if (!metric.isValid()) {
+                    var repair = metric.repairStrategy();
+                    if (repair != null) {
+                        mthRepairStrategies.add(repair);
+                    }
+                }
+            }
+
+            methodSignatures.add(signature + " Metrics --> " + methodResultAggregator
                     .metricsAi("; ")
             );
         }
 
         for (var ctorDecl : decl.getConstructors()) {
             String signature = ctorDecl.getSignature().asString();
-
-            methodSignatures.add(signature + " Metrics --> " + clazz.getMethods()
+            var methodResultAggregator = clazz.getMethods()
                     .get(signature)
-                    .evalResult()
+                    .evalResult();
+
+            for (var metric : methodResultAggregator.getRawMetricData()) {
+                if (!metric.isValid()) {
+                    var repair = metric.repairStrategy();
+                    if (repair != null) {
+                        mthRepairStrategies.add(repair);
+                    }
+                }
+            }
+
+            methodSignatures.add(signature + " Metrics --> " + methodResultAggregator
                     .metricsAi("; ")
             );
         }
@@ -413,7 +440,7 @@ public class Prompts {
         String[] resolvedClassPrint = processClass(clazz);
         String classMetrics = resolvedClassPrint[0];
         String classSmells = resolvedClassPrint[1];
-        String metricRepairStrategies = resolvedClassPrint[2];
+        String metricRepairStrategies = String.join("\n", mthRepairStrategies) + "\n" + resolvedClassPrint[2];
 
         return Prompts.CLASS_CONTEXT.formatted(
                 cu.toString(),
