@@ -54,6 +54,6 @@ public interface ApplicableDiff {
             }
         }
 
-        typeDefinition.addMember(newMethod);
+        typeDefinition.addMember(newMethod.clone());
     }
 }
