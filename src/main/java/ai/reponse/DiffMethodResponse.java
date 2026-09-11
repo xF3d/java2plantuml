@@ -123,7 +123,7 @@ public record DiffMethodResponse(
     }
 
     @Override
-    public void apply(SimpleTranslator originalTranslator, Path toUpdatePath) {
+    public void apply(SimpleTranslator newTranslator, Path toUpdatePath) {
         if (!isValid()) {
             FileLogger.LOGGER.warning("Invalid Apply Patch Method: Invalid");
             return;
@@ -143,7 +143,7 @@ public record DiffMethodResponse(
             cu = null;
         }
 
-        var originalMethod = originalTranslator.getMethodDeclaration(clazz, method);
+        MethodDeclaration originalMethod = newTranslator.getMethodDeclaration(clazz, method);
         List<MethodDeclaration> addedMethods = getAddedMethods();
 
         // find declaring class

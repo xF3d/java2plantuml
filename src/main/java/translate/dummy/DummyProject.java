@@ -42,7 +42,7 @@ public class DummyProject {
         init();
 
         for (var diff : diffs) {
-            diff.apply(originalTranslator, diff.getPath(dummyTranslator));
+            diff.apply(dummyTranslator, diff.getPath(dummyTranslator));
         }
 
         ComplexityTranslator tempTranslator = new ComplexityTranslator();
@@ -71,11 +71,7 @@ public class DummyProject {
         init();
 
         for (var diff : diffs) {
-            try {
-                diff.apply(originalTranslator, diff.getPath(originalTranslator));
-            } catch (Exception e) {
-                // method is not present anymore
-            }
+            diff.apply(originalTranslator, diff.getPath(originalTranslator));
         }
     }
 

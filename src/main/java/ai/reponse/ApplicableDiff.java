@@ -21,7 +21,7 @@ import java.util.List;
         @JsonSubTypes.Type(value = DiffClassResponse.class, name = "class")
 })
 public interface ApplicableDiff {
-    void apply(SimpleTranslator originalTranslator, Path toUpdatePath);
+    void apply(SimpleTranslator newTranslator, Path toUpdatePath);
 
     Path getPath(SimpleTranslator translator);
 

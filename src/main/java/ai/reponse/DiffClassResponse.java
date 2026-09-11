@@ -2,6 +2,7 @@ package ai.reponse;
 
 import com.github.javaparser.ParseResult;
 import com.github.javaparser.ast.*;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
@@ -15,10 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 public record DiffClassResponse(
@@ -56,14 +54,14 @@ public record DiffClassResponse(
                 clazz,
                 data.orElse("ADDED_IMPORTS", List.of()),
                 data.get("CHANGES"),
-                List.of(split),
+                Arrays.stream(split).filter(it -> !it.isBlank()).toList(),
                 data.get("EXPLANATION").getFirst(),
                 data.orElse("NOTES", List.of())
         );
     }
 
     @Override
-    public void apply(SimpleTranslator originalTranslator, Path toUpdatePath) {
+    public void apply(SimpleTranslator newTranslator, Path toUpdatePath) {
         if (!isValid()) {
             FileLogger.LOGGER.warning("Invalid Apply Patch Class: Invalid");
             return;
@@ -76,10 +74,8 @@ public record DiffClassResponse(
             applyAddClass(projectRoot, clazz);
         }
 
-        CompilationUnit originalCu = originalTranslator.getTypeDeclaration(clazz)
-                .findCompilationUnit().orElseThrow()
-                .clone();
-
+        CompilationUnit originalCu = newTranslator.getTypeDeclaration(clazz)
+                .findCompilationUnit().orElseThrow();
 
         TypeDeclaration<?> originalClazz = originalCu.findFirst(
                 TypeDeclaration.class,
@@ -90,7 +86,7 @@ public record DiffClassResponse(
         if (imports == null) throw new RuntimeException("impossible");
         imports.forEach(originalCu::addImport);
 
-        CompilationUnit changes = parseChanges();
+        ClassOrInterfaceDeclaration changes = parseChanges();
         if (changes == null) throw new RuntimeException("impossible");
 
         getChildren(changes, MethodDeclaration.class).forEach(m -> ApplicableDiff.addOrReplaceMethod(m, originalClazz));
@@ -111,12 +107,15 @@ public record DiffClassResponse(
                 .map(Name::asString)
                 .orElse("");
 
-        var typeDecl = cu.getChildNodes().stream()
+        Optional<TypeDeclaration> typeDeclOpt = cu.getChildNodes().stream()
                 .filter(TypeDeclaration.class::isInstance)
                 .map(TypeDeclaration.class::cast)
                 .filter(it -> it.getAccessSpecifier() == AccessSpecifier.PUBLIC)
-                .findFirst()
-                .orElseThrow();
+                .findFirst();
+        if (typeDeclOpt.isEmpty()) return;
+
+        var typeDecl = typeDeclOpt.get();
+
         var nameDecl = typeDecl.getNameAsString();
 
         Path newFile;
@@ -177,12 +176,20 @@ public record DiffClassResponse(
         return this.equals(UNCHANGED);
     }
 
-    public CompilationUnit parseChanges() {
-        String toParser = "class DUMMY {\n" + String.join("\n", changes) + "\n}";
+    public ClassOrInterfaceDeclaration parseChanges() {
+        String toParser = "class DUMMY {\n"
+                + String.join("\n", changes)
+                + "\n}";
 
         var cuResult = ProjectJavaParser.makeParser().get().parse(toParser);
+
         if (cuResult.isSuccessful()) {
-            return cuResult.getResult().orElseThrow();
+            CompilationUnit cu = cuResult.getResult().orElseThrow();
+
+            return cu.findFirst(
+                    ClassOrInterfaceDeclaration.class,
+                    c -> c.getNameAsString().equals("DUMMY")
+            ).orElseThrow();
         }
 
         return null;
@@ -242,7 +249,7 @@ public record DiffClassResponse(
         return new SectionData(map).toString();
     }
 
-    private static <T> List<T> getChildren(Node n, Class<T> type) {
+    private static <T> List<T> getChildren(ClassOrInterfaceDeclaration n, Class<T> type) {
         List<T> out = new ArrayList<>();
         for (var c : n.getChildNodes()) {
             if (type.isInstance(c)) {
