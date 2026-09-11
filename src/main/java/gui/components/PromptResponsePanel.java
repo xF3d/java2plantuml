@@ -4,6 +4,8 @@ import ai.reponse.ApplicableDiff;
 import ai.reponse.DiffClassResponse;
 import ai.reponse.DiffMethodResponse;
 import gui.GuiUtils;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import translate.translator.ComplexityTranslator;
 
 import javax.swing.*;
@@ -45,7 +47,7 @@ public class PromptResponsePanel extends JScrollPane {
 
     private void setupMethod(DiffMethodResponse response, JPanel main) {
         JPanel originalArea = setupOriginal(response);
-        JPanel newMethodsArea = setupLabelArea("New Methods", String.join("\n", response.newMethods()));
+        JPanel newMethodsArea = setupCodeArea("New Methods", String.join("\n", response.newMethods()));
 
         main.add(originalArea);
         main.add(newMethodsArea);
@@ -53,15 +55,15 @@ public class PromptResponsePanel extends JScrollPane {
 
     private void setupClass(DiffClassResponse response, JPanel main) {
         JPanel originalArea = setupOriginal(response);
-        JPanel addedImportsArea = setupLabelArea("Added Imports", String.join("\n", response.addedImports()));
-        JPanel changesArea = setupLabelArea("Changes", String.join("\n", response.changes()));
+        JPanel addedImportsArea = setupCodeArea("Added Imports", String.join("\n", response.addedImports()));
+        JPanel changesArea = setupCodeArea("Changes", String.join("\n", response.changes()));
 
         List<JPanel> addedClassesAreas = new ArrayList<>();
         List<String> added = response.added();
         for (int i = 0; i < added.size(); i++) {
             String code = added.get(i);
             addedClassesAreas.add(
-                    setupLabelArea("Added Class " + (i + 1), code)
+                    setupCodeArea("Added Class " + (i + 1), code)
             );
         }
 
@@ -90,7 +92,27 @@ public class PromptResponsePanel extends JScrollPane {
         return panel;
     }
 
+    private JPanel setupCodeArea(String title, String contents) {
+        if (contents.trim().isEmpty()) return new JPanel();
+
+        var panel = new JPanel();
+        GuiUtils.setVerticalLayout(panel);
+
+        var label = new JLabel(title);
+        var area = new RSyntaxTextArea();
+        area.setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_JAVA);
+        area.setCodeFoldingEnabled(true);
+        area.setEditable(false);
+        area.setFocusable(false);
+        area.setText(contents);
+
+        panel.add(label);
+        panel.add(area);
+
+        return panel;
+    }
+
     private JPanel setupOriginal(ApplicableDiff diff) {
-        return setupLabelArea("Original", diff.getOriginalCode(translator));
+        return setupCodeArea("Original", diff.getOriginalCode(translator));
     }
 }
