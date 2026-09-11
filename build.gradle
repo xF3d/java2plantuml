@@ -47,6 +47,7 @@ dependencies {
 
     // GUI
     implementation 'com.fifesoft:rsyntaxtextarea:4.0.1'
+    implementation 'com.formdev:flatlaf:3.7.2'
 }
 
 jar {
