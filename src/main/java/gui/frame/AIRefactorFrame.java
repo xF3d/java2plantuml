@@ -155,12 +155,18 @@ public class AIRefactorFrame extends JFrame {
         JMenu showMenu = new JMenu("Compare");
 
         JMenuItem showSelected = new JMenuItem("Selected");
-        showSelected.addActionListener(e -> dummyProject.showDiffs(getSelected()));
+        showSelected.addActionListener(e -> {
+            FileLogger.LOGGER.info("Comparing selected");
+            backgroundExecutor.submit(() -> dummyProject.showDiffs(getSelected()));
+        });
 
         JMenuItem showAll = new JMenuItem("All");
-        showAll.addActionListener(e -> dummyProject.showDiffs(
-                responses.stream().filter(d -> !d.isEmpty()).toList()
-        ));
+        showAll.addActionListener(e -> {
+            FileLogger.LOGGER.info("Comparing all");
+            backgroundExecutor.submit(() -> dummyProject.showDiffs(
+                    responses.stream().filter(d -> !d.isEmpty()).toList()
+            ));
+        });
 
         showMenu.add(showSelected);
         showMenu.add(showAll);
@@ -172,14 +178,20 @@ public class AIRefactorFrame extends JFrame {
         JMenu approveMenu = new JMenu("Approve");
 
         JMenuItem approveSelected = new JMenuItem("Selected");
-        approveSelected.addActionListener(_ -> backgroundExecutor.submit(() ->
+        approveSelected.addActionListener(_ -> {
+            FileLogger.LOGGER.info("Applying selected");
+            backgroundExecutor.submit(() ->
                 dummyProject.applyDiffs(getSelected())
-        ));
+            );
+        });
 
         JMenuItem approveAll = new JMenuItem("All");
-        approveAll.addActionListener(_ -> backgroundExecutor.submit(() -> dummyProject.applyDiffs(
-                responses.stream().filter(d -> !d.isEmpty()).toList()
-        )));
+        approveAll.addActionListener(_ -> {
+            FileLogger.LOGGER.info("Applying all");
+            backgroundExecutor.submit(() -> dummyProject.applyDiffs(
+                    responses.stream().filter(d -> !d.isEmpty()).toList()
+            ));
+        });
 
         approveMenu.add(approveSelected);
         approveMenu.add(approveAll);
