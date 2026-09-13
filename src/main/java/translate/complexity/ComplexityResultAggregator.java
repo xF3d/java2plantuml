@@ -18,7 +18,7 @@ public class ComplexityResultAggregator {
         for (ComplexityMetricResult result : results) {
             if (result == null) continue;
 
-            metrics.put(result.metric(), result);
+            metrics.put(result.getDefinition().metric(), result);
         }
 
         this.rawMetricData = results;

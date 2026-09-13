@@ -42,9 +42,9 @@ public class SystemChartPanel extends JPanel {
 
             for (int i = 0; i < metrics.size(); i++) {
                 var metric = metrics.get(i);
-                names[i] = metric.metric();
+                names[i] = metric.getDefinition().metric();
                 values[i] = metric.normalize();
-                toolTips[i] = metric.printableThreshold();
+                toolTips[i] = metric.getDefinition().printableThreshold();
             }
 
             chart.setRadiiLabels(names);

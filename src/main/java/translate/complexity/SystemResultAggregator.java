@@ -16,13 +16,13 @@ public class SystemResultAggregator {
         for (ComplexityMetricResult result : classMetrics) {
             if (result == null) continue;
 
-            this.classMetrics.put(result.metric(), result);
+            this.classMetrics.put(result.getDefinition().metric(), result);
         }
 
         for (ComplexityMetricResult result : systemMetrics) {
             if (result == null) continue;
 
-            this.systemMetrics.put(result.metric(), result);
+            this.systemMetrics.put(result.getDefinition().metric(), result);
         }
     }
 
@@ -43,7 +43,7 @@ public class SystemResultAggregator {
         ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
 
         for (var result : systemMetrics.values()) {
-            if (result.isThresholdValid()) {
+            if (result.getDefinition().isThresholdValid()) {
                 chartResults.add(result);
             }
 
@@ -51,7 +51,7 @@ public class SystemResultAggregator {
         }
 
         for (var result : classMetrics.values()) {
-            if (result.isThresholdValid()) {
+            if (result.getDefinition().isThresholdValid()) {
                 chartResults.add(result);
             }
 

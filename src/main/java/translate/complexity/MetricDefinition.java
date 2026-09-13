@@ -39,4 +39,8 @@ public record MetricDefinition(String metric, double min, double max, MetricTarg
     public String fullRepairStrategy() {
         return metric + " : " + repairStrategy;
     }
+
+    public boolean isThresholdValid() {
+        return target != MetricTarget.NONE;
+    }
 }
