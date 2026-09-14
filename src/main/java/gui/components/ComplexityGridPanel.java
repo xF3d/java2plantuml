@@ -1,7 +1,7 @@
 package gui.components;
 
 import gui.RatioGridLayout;
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
 
 import javax.swing.*;

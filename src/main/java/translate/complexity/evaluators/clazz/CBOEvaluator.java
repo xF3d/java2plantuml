@@ -9,8 +9,7 @@ import lombok.AllArgsConstructor;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.ComplexityMetricResult;
-import translate.structure.complexity.ComplexityClass;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.structure.pkg.PackageManager;
 import translate.translator.ComplexityTranslator;
 

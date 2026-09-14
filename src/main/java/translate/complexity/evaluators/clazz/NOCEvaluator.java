@@ -9,7 +9,7 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.structure.pkg.PackageManager;
 import translate.translator.ComplexityTranslator;
 

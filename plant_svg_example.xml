@@ -256,7 +256,7 @@
                   x="3392.9847" y="772.5332">+build() : ClassDiagramConfig
             </text>
         </g><!--class ComplexityMetricResult-->
-        <g class="entity" data-qualified-name="translate.complexity.ComplexityMetricResult" data-source-line="68"
+        <g class="entity" data-qualified-name="translate.complexity.result.ComplexityMetricResult" data-source-line="68"
            id="ent0019">
             <rect fill="#F1F1F1" height="118.4375" rx="2.5" ry="2.5" style="stroke:#181818;stroke-width:0.5;"
                   width="179.0342" x="7100.9847" y="227"/>

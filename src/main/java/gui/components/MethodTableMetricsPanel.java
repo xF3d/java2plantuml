@@ -1,7 +1,7 @@
 package gui.components;
 
 import gui.frame.MethodFrame;
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.translator.ComplexityTranslator;
 

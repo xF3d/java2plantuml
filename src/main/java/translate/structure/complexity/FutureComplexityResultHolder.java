@@ -1,6 +1,6 @@
 package translate.structure.complexity;
 
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
 
 import java.util.concurrent.CompletableFuture;

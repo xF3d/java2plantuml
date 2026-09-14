@@ -1,7 +1,7 @@
 package translate.complexity.evaluators;
 
 import com.github.javaparser.ast.body.TypeDeclaration;
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.MetricDefinition;
 import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;

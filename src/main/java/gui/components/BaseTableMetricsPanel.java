@@ -1,6 +1,6 @@
 package gui.components;
 
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;

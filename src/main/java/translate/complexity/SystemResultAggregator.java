@@ -1,6 +1,7 @@
 package translate.complexity;
 
 import lombok.Getter;
+import translate.complexity.result.ComplexityMetricResult;
 
 import java.util.*;
 

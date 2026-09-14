@@ -1,13 +1,11 @@
 package translate.complexity.evaluators.clazz;
 
-import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import translate.complexity.MetricDefinition;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.ComplexityMetricResult;
-import translate.complexity.MetricTarget;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 

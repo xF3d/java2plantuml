@@ -13,6 +13,7 @@ import translate.complexity.evaluators.method.CyclomaticEvaluator;
 import translate.complexity.evaluators.method.NBDEvaluator;
 import translate.complexity.evaluators.system.NumberOfClassesEvaluator;
 import translate.complexity.evaluators.system.NumberOfTestsEvaluator;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
 import translate.smells.clazz.GodClassEvaluator;

@@ -4,7 +4,7 @@ import gui.components.ComplexityGridPanel;
 import gui.components.ClassTableMetricsPanel;
 import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.SystemResultAggregator;
 import translate.translator.ComplexityTranslator;
 
