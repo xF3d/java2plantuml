@@ -1,5 +1,6 @@
 package translate.structure.complexity;
 
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.ComplexityResultAggregator;
 
@@ -17,7 +18,7 @@ public interface FutureComplexityResultHolder {
         }
     }
 
-    default ComplexityMetricResult evalMetric(String key) {
+    default BoundedResult evalMetric(String key) {
         return evalResult().getMetric(key);
     }
 

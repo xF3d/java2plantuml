@@ -4,7 +4,7 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.TypeDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
 import com.github.javaparser.ast.expr.MarkerAnnotationExpr;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
@@ -14,7 +14,7 @@ import java.util.Collection;
 
 public class NumberOfTestsEvaluator implements ComplexityEvaluator.System {
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz) {
         int tests = 0;
         for (var clazz : allClazz) {
             for (var method : clazz.findAll(MethodDeclaration.class)) {

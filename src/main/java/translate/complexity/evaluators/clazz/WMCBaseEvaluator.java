@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import translate.complexity.MetricDefinition;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
@@ -16,7 +16,7 @@ public class WMCBaseEvaluator implements ComplexityEvaluator.Clazz {
     private final MetricDefinition definition;
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         double accumulator = 0;
 
         for (var method : clazz.getMethods()) {

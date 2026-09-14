@@ -1,26 +1,27 @@
 package translate.complexity;
 
 import lombok.Getter;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 
 import java.util.*;
 
 @Getter
 public class SystemResultAggregator {
-    private final Map<String, ComplexityMetricResult> classMetrics = new HashMap<>();
-    private final Map<String, ComplexityMetricResult> systemMetrics = new HashMap<>();
+    private final Map<String, BoundedResult> classMetrics = new HashMap<>();
+    private final Map<String, BoundedResult> systemMetrics = new HashMap<>();
 
     @Getter(lazy = true)
     private final boolean isValid = calculateValid();
 
-    public SystemResultAggregator(ComplexityMetricResult[] classMetrics, ComplexityMetricResult[] systemMetrics) {
-        for (ComplexityMetricResult result : classMetrics) {
+    public SystemResultAggregator(BoundedResult[] classMetrics, BoundedResult[] systemMetrics) {
+        for (BoundedResult result : classMetrics) {
             if (result == null) continue;
 
             this.classMetrics.put(result.getDefinition().metric(), result);
         }
 
-        for (ComplexityMetricResult result : systemMetrics) {
+        for (BoundedResult result : systemMetrics) {
             if (result == null) continue;
 
             this.systemMetrics.put(result.getDefinition().metric(), result);
@@ -39,9 +40,9 @@ public class SystemResultAggregator {
         return true;
     }
 
-    public ArrayList<ComplexityMetricResult>[] displayList() {
-        ArrayList<ComplexityMetricResult> chartResults = new ArrayList<>();
-        ArrayList<ComplexityMetricResult> otherResults = new ArrayList<>();
+    public ArrayList<BoundedResult>[] displayList() {
+        ArrayList<BoundedResult> chartResults = new ArrayList<>();
+        ArrayList<BoundedResult> otherResults = new ArrayList<>();
 
         for (var result : systemMetrics.values()) {
             if (result.getDefinition().isThresholdValid()) {

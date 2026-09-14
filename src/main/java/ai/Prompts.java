@@ -7,7 +7,7 @@ import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.RecordDeclaration;
 import com.github.javaparser.ast.expr.SimpleName;
 import lombok.experimental.UtilityClass;
-import translate.complexity.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
 
@@ -60,6 +60,7 @@ public class Prompts {
             Must be Java 25 language level max.
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
             The rewritten method should maintain the same signature as the previous one.
+            You can increase but not decrease method visibility when replacing.
             All methods created or modified should contain the full implementation if they are not abstract.
             """ + TECHNIQUES;
 
@@ -95,7 +96,7 @@ public class Prompts {
             Example answer after getting sent class context:
             
             -----ADDED_IMPORTS-----
-            import org.my.package;
+            import org.my.package.MyPrinter;
             import org.my.otherpackage;
             -----CHANGES-----
             public void rewrittenMethod() {
@@ -124,7 +125,6 @@ public class Prompts {
             }
             -----EXPLANATION-----
             Extracted functionality to new classes and methods
-            -----NOTES-----
             
             The mandatory sections are: EXPLANATION and CHANGES, if you have nothing in the other sections to add, do not send them at all. Just send the sections with data.
             All notes must be maximum of 50 words and contain suggestions, not comments.
@@ -132,6 +132,7 @@ public class Prompts {
             CHANGES should only contain method declarations and field declarations, so no imports or type declarations
             Everything wrapped in a <> are placeholders, and as such should not be inserted in the answer.
             All methods created or modified should contain the full implementation if they are not abstract, stub methods with only comments.
+            You can increase but not decrease method visibility when replacing.
             
             The example used is to give you a better understanding of the format only, don't reuse the names and use proper naming in real output
             Don't use a preamble or an after message, just give me the answer in said format, nothing more, nothing less.
@@ -328,13 +329,13 @@ public class Prompts {
 
             ArrayList<String> methodMetricsList = new ArrayList<>();
             ArrayList<String> methodRepairStrategyList = new ArrayList<>();
-            for (ComplexityMetricResult metric : mthResult.getRawMetricData()) {
+            for (BoundedResult metric : mthResult.getRawMetricData()) {
                 methodMetricsList.add(metric.toAi());
 
                 if (!metric.isValid()) {
-                    String repair = metric.fullRepairStrategy();
+                    String repair = metric.getDefinition().repairStrategy();
                     if (repair != null)
-                        methodRepairStrategyList.add(repair);
+                        methodRepairStrategyList.add(metric.getDefinition().fullRepairStrategy());
                 }
             }
 
@@ -403,9 +404,9 @@ public class Prompts {
 
             for (var metric : methodResultAggregator.getRawMetricData()) {
                 if (!metric.isValid()) {
-                    var repair = metric.repairStrategy();
+                    var repair = metric.getDefinition().repairStrategy();
                     if (repair != null) {
-                        mthRepairStrategies.add(repair);
+                        mthRepairStrategies.add(metric.getDefinition().fullRepairStrategy());
                     }
                 }
             }
@@ -423,9 +424,9 @@ public class Prompts {
 
             for (var metric : methodResultAggregator.getRawMetricData()) {
                 if (!metric.isValid()) {
-                    var repair = metric.repairStrategy();
+                    var repair = metric.getDefinition().repairStrategy();
                     if (repair != null) {
-                        mthRepairStrategies.add(repair);
+                        mthRepairStrategies.add(metric.getDefinition().fullRepairStrategy());
                     }
                 }
             }
@@ -460,11 +461,11 @@ public class Prompts {
 
             ArrayList<String> classMetricsList = new ArrayList<>();
             ArrayList<String> classRepairStrategyList = new ArrayList<>();
-            for (ComplexityMetricResult metric : clzResult.getRawMetricData()) {
+            for (BoundedResult metric : clzResult.getRawMetricData()) {
                 classMetricsList.add(metric.toAi());
 
                 if (!metric.isValid()) {
-                    String repair = metric.fullRepairStrategy();
+                    String repair = metric.getDefinition().repairStrategy();
                     if (repair != null)
                         classRepairStrategyList.add(repair);
                 }

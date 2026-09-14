@@ -1,7 +1,7 @@
 package translate.complexity.evaluators;
 
 import com.github.javaparser.ast.body.TypeDeclaration;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.MetricDefinition;
 import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
@@ -12,11 +12,11 @@ public interface ComplexityEvaluator {
     MetricDefinition getDefinition();
 
     interface System extends ComplexityEvaluator {
-        ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz);
+        BoundedResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz);
     }
 
     interface Clazz extends ComplexityEvaluator {
-        ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz);
+        BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz);
 
         /**
          * Whatever or not this metric result can be aggregated to get a system evaluation
@@ -27,10 +27,10 @@ public interface ComplexityEvaluator {
     }
 
     interface Method extends ComplexityEvaluator {
-        ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method);
+        BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method);
     }
 
-    default ComplexityMetricResult result(double value) {
-        return new ComplexityMetricResult(getDefinition(), value);
+    default BoundedResult result(double value) {
+        return getDefinition().result(value);
     }
 }

@@ -15,14 +15,14 @@ import lombok.Getter;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.structure.complexity.MethodLike;
 import translate.translator.ComplexityTranslator;
 
 public class CyclomaticEvaluator implements ComplexityEvaluator.Method {
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
         var optBody = method.body();
         if (optBody.isEmpty()) {
             return result(1);

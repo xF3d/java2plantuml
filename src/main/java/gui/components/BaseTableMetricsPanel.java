@@ -1,5 +1,6 @@
 package gui.components;
 
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.component.formatter.MemberFormatter;
@@ -142,7 +143,7 @@ public abstract class BaseTableMetricsPanel<T extends ComplexityEvaluator> exten
 
     public abstract String[] getReferences();
 
-    public abstract ComplexityMetricResult[] evaluateReference(String reference);
+    public abstract BoundedResult[] evaluateReference(String reference);
 
     private static double extractDouble(String html) {
         // remove HTML tags

@@ -4,6 +4,7 @@ import gui.components.ClassTableMetricsPanel;
 import gui.components.ComplexityGridPanel;
 import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 import translate.translator.ComplexityTranslator;
 
@@ -54,7 +55,7 @@ public class CompareFrame extends JFrame {
         FrameManager.addFrame(this);
     }
 
-    private void addGridPanel(String title, List<ComplexityMetricResult> resultList) {
+    private void addGridPanel(String title, List<BoundedResult> resultList) {
         content.add(new JLabel(title));
 
         var metricPanel = new ComplexityGridPanel();

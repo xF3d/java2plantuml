@@ -60,7 +60,7 @@ valid and stable "is-a" relationship.
 
 [[metric_definitions]]
 metric = "FanIn"
-max = 1.7976931348623157e308 # Double.MAX_VALUE
+max = 9999.0 # Double.MAX_VALUE
 min = 0.0
 target = "NONE"
 
@@ -84,6 +84,7 @@ responsibility.
 
 [[metric_definitions]]
 metric = "LCOM*"
+type = "DOUBLE"
 max = 0.725
 min = -0.00000001
 target = "LOWER"
@@ -223,12 +224,12 @@ patterns.
 
 [[metric_definitions]]
 metric = "LOC"
-max = 1.7976931348623157e308 # Double.MAX_VALUE
+max = 9999.0
 min = -1.0
 target = "NONE"
 
 [[metric_definitions]]
 metric = "Number of Classes"
-max = 1.7976931348623157e308 # Double.MAX_VALUE
+max = 9999.0
 min = -1.0
 target = "NONE"

@@ -13,6 +13,7 @@ import translate.complexity.evaluators.method.CyclomaticEvaluator;
 import translate.complexity.evaluators.method.NBDEvaluator;
 import translate.complexity.evaluators.system.NumberOfClassesEvaluator;
 import translate.complexity.evaluators.system.NumberOfTestsEvaluator;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
@@ -124,7 +125,7 @@ public class ComplexityTranslator extends SimpleTranslator {
             String fqn = classEntry.getKey();
 
             classResultMap.put(fqn, new ComplexityClass(classEntry.getValue(), CompletableFuture.supplyAsync(() -> {
-                ComplexityMetricResult[] resultArray = new ComplexityMetricResult[classEvaluators.length];
+                BoundedResult[] resultArray = new BoundedResult[classEvaluators.length];
                 for (int i = 0; i < classEvaluators.length; i++) {
                     resultArray[i] = classEvaluators[i].calculate(this, classEntry.getValue());
                 }
@@ -141,7 +142,7 @@ public class ComplexityTranslator extends SimpleTranslator {
 
         // system metrics
         var systemResultsOnly = CompletableFuture.supplyAsync(() -> {
-            ComplexityMetricResult[] result = new ComplexityMetricResult[systemEvaluators.length];
+            BoundedResult[] result = new ComplexityMetricResult[systemEvaluators.length];
             for (int i = 0; i < systemEvaluators.length; i++) {
                 var eval = systemEvaluators[i];
                 if (eval instanceof NumberOfTestsEvaluator) {
@@ -161,9 +162,9 @@ public class ComplexityTranslator extends SimpleTranslator {
                     .map(CompletableFuture::join)
                     .toList(), executor
             ).thenApplyAsync(classResults -> {
-                if (classResults.isEmpty()) return new SystemResultAggregator(new ComplexityMetricResult[0], systemResultsOnly.join().getRawMetricData());
+                if (classResults.isEmpty()) return new SystemResultAggregator(new BoundedResult[0], systemResultsOnly.join().getRawMetricData());
 
-                ComplexityMetricResult[] classResultMetrics = new ComplexityMetricResult[classEvaluators.length];
+                BoundedResult[] classResultMetrics = new BoundedResult[classEvaluators.length];
 
                 // get classes evaluation
                 for (int i = 0; i < classEvaluators.length; i++) {
@@ -179,10 +180,10 @@ public class ComplexityTranslator extends SimpleTranslator {
                         averageValue += m.getValue() / size;
                     }
 
-                    classResultMetrics[i] = new ComplexityMetricResult(definition, averageValue);
+                    classResultMetrics[i] = definition.result(averageValue);
                 }
 
-                ComplexityMetricResult[] systemResultsOnlyMetrics;
+                    BoundedResult[] systemResultsOnlyMetrics;
                 try {
                     systemResultsOnlyMetrics = systemResultsOnly.get().getRawMetricData();
                 } catch (ExecutionException | InterruptedException e) {
@@ -205,7 +206,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                 MethodLike<?> methodLike = MethodLike.of(method);
 
                 var cmethod = new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
-                    ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
+                    BoundedResult[] result = new BoundedResult[methodEvaluators.length];
 
                     for (int i = 0; i < methodEvaluators.length; i++) {
                         result[i] = methodEvaluators[i].calculate(this, classNode, methodLike);
@@ -232,7 +233,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                 MethodLike<?> methodLike = MethodLike.of(ctor);
 
                 var cmethod = new ComplexityMethod(methodLike, CompletableFuture.supplyAsync(() -> {
-                    ComplexityMetricResult[] result = new ComplexityMetricResult[methodEvaluators.length];
+                    BoundedResult[] result = new BoundedResult[methodEvaluators.length];
 
                     for (int i = 0; i < methodEvaluators.length; i++) {
                         result[i] = methodEvaluators[i].calculate(this, classNode, methodLike);

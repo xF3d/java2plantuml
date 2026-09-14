@@ -2,7 +2,7 @@ package translate.complexity.evaluators;
 
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.TypeDeclaration;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.structure.complexity.MethodLike;
@@ -16,7 +16,7 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
 
     // system eval
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, Collection<TypeDeclaration<?>> allClazz) {
         int lineTotal = 0;
 
         // CompilationUnit does not implement proper equals or hashCode
@@ -41,7 +41,7 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
 
     // class eval
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         var rangeOpt = clazz.getRange();
         if (rangeOpt.isEmpty()) return result(0);
 
@@ -52,7 +52,7 @@ public class LOCEvaluator implements ComplexityEvaluator.System, ComplexityEvalu
 
     // method eval
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz, MethodLike<?> method) {
         var rangeOpt = method.raw().getRange();
         if (rangeOpt.isEmpty()) return result(0);
 

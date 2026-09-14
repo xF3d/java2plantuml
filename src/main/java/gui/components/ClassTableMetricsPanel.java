@@ -1,6 +1,7 @@
 package gui.components;
 
 import gui.frame.ClassFrame;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.translator.ComplexityTranslator;
@@ -26,7 +27,7 @@ public class ClassTableMetricsPanel extends BaseTableMetricsPanel<ComplexityEval
     }
 
     @Override
-    public ComplexityMetricResult[] evaluateReference(String reference) {
+    public BoundedResult[] evaluateReference(String reference) {
         return translator.evaluateClass(reference).getRawMetricData();
     }
 }

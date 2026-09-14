@@ -10,7 +10,7 @@ import com.github.javaparser.ast.visitor.VoidVisitorAdapter;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.translator.ComplexityTranslator;
 
 import java.util.*;
@@ -22,7 +22,7 @@ import java.util.*;
 public class LCOMStarEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         Set<String> fields = new HashSet<>();
         for (var field : clazz.getFields()) {
             if (field.isStatic()) continue;

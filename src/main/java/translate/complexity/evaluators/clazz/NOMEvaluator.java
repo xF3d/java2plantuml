@@ -4,7 +4,7 @@ import com.github.javaparser.ast.body.TypeDeclaration;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.translator.ComplexityTranslator;
 
 /**
@@ -13,7 +13,7 @@ import translate.translator.ComplexityTranslator;
 public class NOMEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         return result(clazz.getMethods().size());
     }
 

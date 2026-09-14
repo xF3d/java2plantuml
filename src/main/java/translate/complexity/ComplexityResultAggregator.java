@@ -1,22 +1,23 @@
 package translate.complexity;
 
 import lombok.Getter;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 
 import java.util.*;
 
 @Getter
 public class ComplexityResultAggregator {
-    private final Map<String, ComplexityMetricResult> metrics = new HashMap<>();
+    private final Map<String, BoundedResult> metrics = new HashMap<>();
     private final Set<String> codeSmells = new HashSet<>();
 
-    private final ComplexityMetricResult[] rawMetricData;
+    private final BoundedResult[] rawMetricData;
 
     @Getter(lazy = true)
     private final boolean isValid = calculateValid();
 
-    public ComplexityResultAggregator(ComplexityMetricResult[] results) {
-        for (ComplexityMetricResult result : results) {
+    public ComplexityResultAggregator(BoundedResult[] results) {
+        for (BoundedResult result : results) {
             if (result == null) continue;
 
             metrics.put(result.getDefinition().metric(), result);
@@ -33,7 +34,7 @@ public class ComplexityResultAggregator {
         return true;
     }
 
-    public ComplexityMetricResult getMetric(String key) {
+    public BoundedResult getMetric(String key) {
         return metrics.get(key);
     }
 

@@ -9,7 +9,7 @@ import com.github.javaparser.ast.type.ClassOrInterfaceType;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.structure.pkg.PackageManager;
 import translate.translator.ComplexityTranslator;
 
@@ -22,7 +22,7 @@ public class NOCEvaluator implements ComplexityEvaluator.Clazz {
     private final Map<String, Integer> nocMap = new ConcurrentHashMap<>();
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         if (clazz instanceof RecordDeclaration || clazz instanceof EnumDeclaration) {
             return result(0);
         }

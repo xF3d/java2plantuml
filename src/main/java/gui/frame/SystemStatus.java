@@ -4,6 +4,7 @@ import gui.components.ComplexityGridPanel;
 import gui.components.ClassTableMetricsPanel;
 import gui.components.ReferenceController;
 import gui.components.SystemChartPanel;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 import translate.complexity.SystemResultAggregator;
 import translate.translator.ComplexityTranslator;
@@ -22,8 +23,8 @@ public class SystemStatus extends JFrame {
         SystemResultAggregator systemMetrics = translator.evaluateSystem();
 
         var results = systemMetrics.displayList();
-        ArrayList<ComplexityMetricResult> chartResults = results[0];
-        ArrayList<ComplexityMetricResult> otherResults = results[1];
+        ArrayList<BoundedResult> chartResults = results[0];
+        ArrayList<BoundedResult> otherResults = results[1];
 
         // </editor-fold>
 

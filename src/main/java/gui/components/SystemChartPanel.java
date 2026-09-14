@@ -3,6 +3,7 @@ package gui.components;
 import org.knowm.xchart.RadarChart;
 import org.knowm.xchart.RadarChartBuilder;
 import org.knowm.xchart.XChartPanel;
+import translate.complexity.result.BoundedResult;
 import translate.complexity.result.ComplexityMetricResult;
 
 import javax.swing.*;
@@ -11,9 +12,9 @@ import java.awt.event.MouseEvent;
 import java.util.*;
 
 public class SystemChartPanel extends JPanel {
-    private final HashMap<String, List<ComplexityMetricResult>> projectMetrics = new HashMap<>();
+    private final HashMap<String, List<BoundedResult>> projectMetrics = new HashMap<>();
 
-    public void addProject(String name, List<ComplexityMetricResult> chartResults) {
+    public void addProject(String name, List<BoundedResult> chartResults) {
         projectMetrics.put(name, chartResults);
         updateChart();
     }
@@ -29,7 +30,7 @@ public class SystemChartPanel extends JPanel {
 
         for (var entry : projectMetrics.entrySet()) {
             String name = entry.getKey();
-            List<ComplexityMetricResult> metrics = entry.getValue();
+            List<BoundedResult> metrics = entry.getValue();
 
 
             String[] names = new String[metrics.size()];

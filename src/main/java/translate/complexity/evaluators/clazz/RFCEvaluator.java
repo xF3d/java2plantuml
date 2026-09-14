@@ -12,7 +12,7 @@ import translate.ResolverUtils;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.component.formatter.MemberFormatter;
 import translate.translator.ComplexityTranslator;
 
@@ -27,7 +27,7 @@ import java.util.Set;
 public class RFCEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
         // this is for inherited methods aswell, but throws errors when parameter can't be found
         int nlm;
         try {

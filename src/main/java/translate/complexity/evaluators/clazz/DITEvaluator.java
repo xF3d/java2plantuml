@@ -7,14 +7,14 @@ import com.github.javaparser.resolution.types.ResolvedReferenceType;
 import translate.complexity.MetricDefinition;
 import translate.complexity.MetricDefinitionRegistry;
 import translate.complexity.evaluators.ComplexityEvaluator;
-import translate.complexity.result.ComplexityMetricResult;
+import translate.complexity.result.BoundedResult;
 import translate.ResolverUtils;
 import translate.translator.ComplexityTranslator;
 
 public class DITEvaluator implements ComplexityEvaluator.Clazz {
 
     @Override
-    public ComplexityMetricResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
+    public BoundedResult calculate(ComplexityTranslator translator, TypeDeclaration<?> clazz) {
 
         // record, enum, annotations
         if (!(clazz instanceof ClassOrInterfaceDeclaration coi)) {
