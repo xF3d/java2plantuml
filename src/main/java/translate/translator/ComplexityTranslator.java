@@ -142,7 +142,7 @@ public class ComplexityTranslator extends SimpleTranslator {
 
         // system metrics
         var systemResultsOnly = CompletableFuture.supplyAsync(() -> {
-            BoundedResult[] result = new ComplexityMetricResult[systemEvaluators.length];
+            BoundedResult[] result = new BoundedResult[systemEvaluators.length];
             for (int i = 0; i < systemEvaluators.length; i++) {
                 var eval = systemEvaluators[i];
                 if (eval instanceof NumberOfTestsEvaluator) {
