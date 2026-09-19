@@ -23,4 +23,14 @@ public class ComplexityMetricResult implements BoundedResult {
     public double normalize() {
         return this.definition.target().normalize(value, definition.min(), definition.max());
     }
+
+    @Override
+    public String toAi() {
+        var definition = getDefinition();
+        if (definition.isThresholdValid()) {
+            return definition.metric() + " range between: " + definition.formattedMin() + " & " + definition.formattedMax() + " value: " + formattedValue();
+        } else {
+            return definition.metric() + " value: " + formattedValue();
+        }
+    }
 }

@@ -33,14 +33,7 @@ public interface BoundedResult {
         }
     }
 
-    default String toAi() {
-        var definition = getDefinition();
-        if (definition.isThresholdValid()) {
-            return definition.metric() + " range between: " + definition.formattedMin() + " & " + definition.formattedMax() + " value: " + formattedValue();
-        } else {
-            return definition.metric() + " value: " + formattedValue();
-        }
-    }
+    String toAi();
 
     default String formattedValue() {
         return DoubleFormatter.format(getValue());
