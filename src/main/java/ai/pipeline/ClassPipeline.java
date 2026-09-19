@@ -8,16 +8,18 @@ import dev.langchain4j.service.AiServices;
 import file.Config;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.pkg.PackageManager;
-import translate.translator.SimpleTranslator;
+import translate.translator.ComplexityTranslator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClassPipeline extends AIPipeline {
+    private final ComplexityTranslator translator;
     private final ComplexityClass clazz;
     private final CodeAccessTool tool;
 
-    public ClassPipeline(SimpleTranslator translator, ComplexityClass clazz) {
+    public ClassPipeline(ComplexityTranslator translator, ComplexityClass clazz) {
+        this.translator = translator;
         this.clazz = clazz;
         this.tool = new CodeAccessTool(translator);
         String origin = PackageManager.resolveTypeDeclaration(clazz.getNode());
@@ -62,7 +64,7 @@ public class ClassPipeline extends AIPipeline {
 
     @Override
     public ValidatedResponse ask() {
-        String mainMessage = Prompts.formattedClassContext(clazz);
+        String mainMessage = Prompts.formattedClassContext(translator, clazz);
         return message(mainMessage);
     }
 }

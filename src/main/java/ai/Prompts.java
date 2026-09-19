@@ -10,6 +10,7 @@ import lombok.experimental.UtilityClass;
 import translate.complexity.result.BoundedResult;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
+import translate.translator.ComplexityTranslator;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -266,9 +267,14 @@ public class Prompts {
             ORIGINAL_SELECTED_METHOD
             %s
             
+            REPAIR_STRATEGIES
+            %s
             """;
 
     public static final String CLASS_CONTEXT = """
+            SYSTEM_METRICS
+            %s
+            
             SELECTED_CLASS
             %s
             
@@ -281,6 +287,8 @@ public class Prompts {
             CLASS_CODE_SMELLS
             %s
             
+            REPAIR_STRATEGIES
+            %s
             """;
 
     public static String formattedMethodContext(ComplexityClass clazz, ComplexityMethod method) {
@@ -360,8 +368,9 @@ public class Prompts {
                 classSmells,
                 methodMetrics,
                 methodSmells,
-                method.getMethod().toString()
-        ) + "\nREPAIR_STRATEGIES: \n" + metricRepairStrategies;
+                method.getMethod().toString(),
+                metricRepairStrategies
+        );
     }
 
     private static ArrayList<String> getImportStrings(CompilationUnit cu) {
@@ -389,7 +398,7 @@ public class Prompts {
         return imports;
     }
 
-    public static String formattedClassContext(ComplexityClass clazz) {
+    public static String formattedClassContext(ComplexityTranslator translator, ComplexityClass clazz) {
         CompilationUnit cu = clazz.getNode().findCompilationUnit().orElseThrow();
 
         var decl = clazz.getNode();
@@ -444,11 +453,13 @@ public class Prompts {
         String metricRepairStrategies = String.join("\n", mthRepairStrategies) + "\n" + resolvedClassPrint[2];
 
         return Prompts.CLASS_CONTEXT.formatted(
+                translator.evaluateSystem().metricsAi() + "\n",
                 cu.toString(),
                 methodSignaturesString,
                 classMetrics,
-                classSmells
-        ) + "\nREPAIR_STRATEGIES: \n" + metricRepairStrategies;
+                classSmells,
+                metricRepairStrategies
+        );
     }
 
     private static String[] processClass(ComplexityClass clazz) {

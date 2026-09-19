@@ -62,4 +62,26 @@ public class SystemResultAggregator {
 
         return new ArrayList[] {chartResults, otherResults};
     }
+
+    public List<String> metricsAiList() {
+        ArrayList<String> out = new ArrayList<>();
+
+        for (var metric : classMetrics.values()) {
+            out.add(metric.toAi());
+        }
+
+        for (var metric : systemMetrics.values()) {
+            out.add(metric.toAi());
+        }
+
+        return out;
+    }
+
+    public String metricsAi() {
+        return metricsAi("\n");
+    }
+
+    public String metricsAi(String joining) {
+        return String.join(joining, metricsAiList());
+    }
 }

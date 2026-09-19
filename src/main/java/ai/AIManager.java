@@ -5,12 +5,12 @@ import ai.pipeline.MethodPipeline;
 import ai.reponse.DiffClassResponse;
 import ai.reponse.DiffMethodResponse;
 import dev.langchain4j.model.chat.ChatModel;
+import file.Config;
 import file.FileLogger;
 import lombok.Getter;
 import translate.structure.complexity.ComplexityClass;
 import translate.structure.complexity.ComplexityMethod;
-import file.Config;
-import translate.translator.SimpleTranslator;
+import translate.translator.ComplexityTranslator;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -75,7 +75,7 @@ public class AIManager {
         return (DiffMethodResponse) validated.parsed();
     }
 
-    public DiffClassResponse fixClass(SimpleTranslator translator, ComplexityClass clazz) {
+    public DiffClassResponse fixClass(ComplexityTranslator translator, ComplexityClass clazz) {
         if (suggestionModel == null) throw new IllegalCallerException();
 
         var pipeline = new ClassPipeline(translator, clazz);
