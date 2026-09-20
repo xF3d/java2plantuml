@@ -64,7 +64,7 @@ public class DummyProject {
             exe.shutdown();
             e.printStackTrace();
         });*/
-
+        recopy();
     }
 
     public void applyDiffs(List<? extends ApplicableDiff> diffs) {
