@@ -1,7 +1,6 @@
 package translate.dummy;
 
 import ai.reponse.ApplicableDiff;
-import buildapi.runner.BuildRunner;
 import file.FolderSync;
 import gui.frame.CompareFrame;
 import gui.frame.MainFrame;
@@ -23,14 +22,12 @@ public class DummyProject {
     private CompletableFuture<Void> copyingTask;
     private SimpleTranslator dummyTranslator = null;
     private final ComplexityTranslator originalTranslator;
-    private final BuildRunner buildRunner;
 
     public DummyProject(Path dummyLocation, ComplexityTranslator originalTranslator) {
         this.dummyLocation = dummyLocation;
         this.originalTranslator = originalTranslator;
 
         File mainProject = MainFrame.getSelectedDirectory();
-        this.buildRunner = BuildRunner.of(mainProject.toPath());
         recopy();
     }
 
@@ -50,20 +47,6 @@ public class DummyProject {
 
         new CompareFrame(originalTranslator, tempTranslator);
 
-        /*
-        var dummyResult = CompletableFuture.supplyAsync( () -> buildRunner.test(dummyLocation), exe);
-        var originalResult = CompletableFuture.supplyAsync( () -> buildRunner.test(MainFrame.getSelectedDirectory().toPath()), exe);
-
-        dummyResult.thenCombineAsync(originalResult, (dummy, original) -> {
-            SwingUtilities.invokeLater(
-                    () -> new CompareFrame(originalTranslator, tempTranslator, original, dummy)
-            );
-            return null;
-        }, exe).whenComplete((r, e) -> {
-            recopy();
-            exe.shutdown();
-            e.printStackTrace();
-        });*/
         recopy();
     }
 
