@@ -19,6 +19,7 @@ verify_with_main = true
 validation_retries = 3
 concurrency = 1
 tool_calling = false
+word_token_factor = 5.0 # used to estimate token costs, should include retries amounts & validation
 
 [build_runner]
 mvn_path = ""

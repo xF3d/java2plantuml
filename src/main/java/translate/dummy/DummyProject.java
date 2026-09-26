@@ -27,7 +27,6 @@ public class DummyProject {
         this.dummyLocation = dummyLocation;
         this.originalTranslator = originalTranslator;
 
-        File mainProject = MainFrame.getSelectedDirectory();
         recopy();
     }
 

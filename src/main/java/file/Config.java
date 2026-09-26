@@ -43,6 +43,7 @@ public class Config {
     private long validationRetries;
     private int concurrency;
     private boolean toolCalling;
+    private double wordTokenFactor;
 
     private Path mvnPath;
     private VisitorsBuilder visitorsBuilder;
@@ -135,6 +136,7 @@ public class Config {
         validationRetries = result.getLong("ai.validation_retries", () -> 3);
         concurrency = Math.toIntExact(result.getLong("ai.concurrency", () -> 1));
         toolCalling = result.getBoolean("ai.tool_calling", () -> false);
+        wordTokenFactor = result.getDouble("ai.word_token_factor", () -> 5.0);
 
         String mvnPathStr = result.getString("build_runner.mvn_path");
         if (mvnPathStr != null) {

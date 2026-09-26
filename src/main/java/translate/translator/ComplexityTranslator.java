@@ -1,11 +1,15 @@
 package translate.translator;
 
+import ai.AIManager;
+import ai.Prompts;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.Node;
 import com.github.javaparser.ast.body.*;
 import file.Config;
 import lombok.Getter;
-import translate.complexity.*;
+import translate.complexity.ComplexityResultAggregator;
+import translate.complexity.MetricDefinition;
+import translate.complexity.SystemResultAggregator;
 import translate.complexity.evaluators.ComplexityEvaluator;
 import translate.complexity.evaluators.LOCEvaluator;
 import translate.complexity.evaluators.clazz.*;
@@ -14,7 +18,6 @@ import translate.complexity.evaluators.method.NBDEvaluator;
 import translate.complexity.evaluators.system.NumberOfClassesEvaluator;
 import translate.complexity.evaluators.system.NumberOfTestsEvaluator;
 import translate.complexity.result.BoundedResult;
-import translate.complexity.result.ComplexityMetricResult;
 import translate.smells.CodeSmellEvaluator;
 import translate.smells.clazz.DataClassEvaluator;
 import translate.smells.clazz.GodClassEvaluator;
@@ -47,7 +50,7 @@ public class ComplexityTranslator extends SimpleTranslator {
             new NumberOfClassesEvaluator(),
             new NumberOfTestsEvaluator()
     };
-    
+
     private final ComplexityEvaluator.Clazz[] classEvaluators;
 
     private final ComplexityEvaluator.Method[] methodEvaluators = {
@@ -82,11 +85,9 @@ public class ComplexityTranslator extends SimpleTranslator {
         };
     }
 
-    @Getter(lazy = true)
-    private final Map<String, Map<String, ComplexityMethod>> problematicMethods = evaluateProblematicMethods();
+    private Map<String, Map<String, ComplexityMethod>> problematicMethods;
 
-    @Getter(lazy = true)
-    private final Map<String, ComplexityClass> problematicClasses = evaluateProblematicClasses();
+    private Map<String, ComplexityClass> problematicClasses;
 
     @Override
     public void handleCompilationUnit(CompilationUnit unit) {
@@ -157,42 +158,43 @@ public class ComplexityTranslator extends SimpleTranslator {
 
         // cumulative system metrics
         this.systemResult = CompletableFuture.allOf(classResultFutures.toArray(CompletableFuture[]::new))
-            .thenApplyAsync(v ->
-                classResultFutures.stream()
-                    .map(CompletableFuture::join)
-                    .toList(), executor
-            ).thenApplyAsync(classResults -> {
-                if (classResults.isEmpty()) return new SystemResultAggregator(new BoundedResult[0], systemResultsOnly.join().getRawMetricData());
+                .thenApplyAsync(v ->
+                        classResultFutures.stream()
+                                .map(CompletableFuture::join)
+                                .toList(), executor
+                ).thenApplyAsync(classResults -> {
+                    if (classResults.isEmpty())
+                        return new SystemResultAggregator(new BoundedResult[0], systemResultsOnly.join().getRawMetricData());
 
-                BoundedResult[] classResultMetrics = new BoundedResult[classEvaluators.length];
+                    BoundedResult[] classResultMetrics = new BoundedResult[classEvaluators.length];
 
-                // get classes evaluation
-                for (int i = 0; i < classEvaluators.length; i++) {
-                    var ev = classEvaluators[i];
-                    if (!ev.usefulForSystem()) continue;
+                    // get classes evaluation
+                    for (int i = 0; i < classEvaluators.length; i++) {
+                        var ev = classEvaluators[i];
+                        if (!ev.usefulForSystem()) continue;
 
-                    MetricDefinition definition = ev.getDefinition();
-                    String name = definition.metric();
-                    double averageValue = 0.0;
-                    double size = classResults.size();
-                    for (var classResult : classResults) {
-                        var m = classResult.getMetric(name);
-                        averageValue += m.getValue() / size;
+                        MetricDefinition definition = ev.getDefinition();
+                        String name = definition.metric();
+                        double averageValue = 0.0;
+                        double size = classResults.size();
+                        for (var classResult : classResults) {
+                            var m = classResult.getMetric(name);
+                            averageValue += m.getValue() / size;
+                        }
+
+                        classResultMetrics[i] = definition.result(averageValue);
                     }
 
-                    classResultMetrics[i] = definition.result(averageValue);
-                }
-
                     BoundedResult[] systemResultsOnlyMetrics;
-                try {
-                    systemResultsOnlyMetrics = systemResultsOnly.get().getRawMetricData();
-                } catch (ExecutionException | InterruptedException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException(e);
-                }
+                    try {
+                        systemResultsOnlyMetrics = systemResultsOnly.get().getRawMetricData();
+                    } catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                        throw new RuntimeException(e);
+                    }
 
-                return new SystemResultAggregator(classResultMetrics, systemResultsOnlyMetrics);
-            }, executor);
+                    return new SystemResultAggregator(classResultMetrics, systemResultsOnlyMetrics);
+                }, executor);
 
         // calculate method stuff
         for (var classMethodEntry : methodMap.entrySet()) {
@@ -269,7 +271,7 @@ public class ComplexityTranslator extends SimpleTranslator {
                         complexityClass.getComplexityResult().join().addSmell(classSmellEvaluator.getType());
                     }
                 }
-            },executor));
+            }, executor));
 
             String fqn = classEntry.getKey();
             for (var methodEntry : methodResultMap.get(fqn).values()) {
@@ -360,6 +362,7 @@ public class ComplexityTranslator extends SimpleTranslator {
         return output;
     }
 
+    // <editor-fold desc="Evaluate">
     public SystemResultAggregator evaluateSystem() {
         try {
             return systemResult.get();
@@ -386,6 +389,7 @@ public class ComplexityTranslator extends SimpleTranslator {
             throw new RuntimeException(e);
         }
     }
+    // </editor-fold>
 
     public ComplexityClass getClass(String fullClassName) {
         var result = classResultMap.get(fullClassName);
@@ -444,5 +448,48 @@ public class ComplexityTranslator extends SimpleTranslator {
 
     public String[] getMethodsArray(String className) {
         return methodResultMap.get(className).keySet().toArray(String[]::new);
+    }
+
+
+    // x M tokens
+    public double fixClassInputEstimate() {
+        double count = 0;
+        for (var clazz : getProblematicClasses().values()) {
+            String mainMessage = Prompts.formattedClassContext(this, clazz);
+            count += AIManager.estimateTokens(mainMessage);
+        }
+
+        return count / 1_000_000;
+    }
+
+    // x M tokens
+    public double fixMethodInputEstimate() {
+        double count = 0;
+        for (var clazzEntry : getProblematicMethods().entrySet()) {
+            ComplexityClass clazz = getClass(clazzEntry.getKey());
+
+            for (var method : clazzEntry.getValue().values()) {
+                String mainMessage = Prompts.formattedMethodContext(clazz, method);
+                count += AIManager.estimateTokens(mainMessage);
+            }
+        }
+
+        return count / 1_000_000;
+    }
+
+    public Map<String, Map<String, ComplexityMethod>> getProblematicMethods() {
+        if (this.problematicMethods == null) {
+            this.problematicMethods = evaluateProblematicMethods();
+        }
+
+        return this.problematicMethods;
+    }
+
+    public Map<String, ComplexityClass> getProblematicClasses() {
+        if (this.problematicClasses == null) {
+            this.problematicClasses = evaluateProblematicClasses();
+        }
+
+        return this.problematicClasses;
     }
 }

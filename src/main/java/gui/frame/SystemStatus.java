@@ -43,8 +43,8 @@ public class SystemStatus extends JFrame {
         JPanel problematicDisplay = new JPanel();
         problematicDisplay.setLayout(new BoxLayout(problematicDisplay, BoxLayout.X_AXIS));
 
-        problematicDisplay.add(new JLabel("Problematic classes: " + translator.getProblematicClasses().size()));
-        problematicDisplay.add(new JLabel("Problematic methods: " + translator.getProblematicMethods().size()));
+        problematicDisplay.add(new JLabel("Problematic classes: " + translator.getProblematicClasses().size() + " Token Estimate: " + translator.fixClassInputEstimate()));
+        problematicDisplay.add(new JLabel("Problematic methods: " + translator.getProblematicMethods().size() + " Token Estimate: " + translator.fixMethodInputEstimate()));
 
 
         this.content.add(systemChartPanel);

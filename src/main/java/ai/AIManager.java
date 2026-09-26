@@ -87,4 +87,19 @@ public class AIManager {
 
         return (DiffClassResponse) validated.parsed();
     }
+
+    public static long countWords(String text) {
+        if (text == null || text.isBlank()) {
+            return 0;
+        }
+
+        return text.trim().split("\\s+").length;
+    }
+
+    public static long estimateTokens(String text) {
+        long words = countWords(text);
+
+        // Rough estimate for mixed natural language/code.
+        return (long) Math.ceil(words * Config.getInstance().getWordTokenFactor());
+    }
 }
