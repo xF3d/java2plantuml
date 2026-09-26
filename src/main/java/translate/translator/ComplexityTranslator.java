@@ -299,9 +299,10 @@ public class ComplexityTranslator extends SimpleTranslator {
         for (var entry : classResultMap.entrySet()) {
             String fullPackageName = entry.getKey();
             if (!filter.isValid(fullPackageName)) continue;
+            if (testClassMap.containsKey(fullPackageName)) continue;
 
-            var clazz = entry.getValue();
-            var results = clazz.evalResult();
+            ComplexityClass clazz = entry.getValue();
+            ComplexityResultAggregator results = clazz.evalResult();
 
             if (!results.isValid()) {
                 output.put(fullPackageName, clazz);
@@ -319,6 +320,7 @@ public class ComplexityTranslator extends SimpleTranslator {
             HashMap<String, ComplexityMethod> methodInvalidMap = new HashMap<>();
 
             if (!filter.isValid(classFqn)) continue;
+            if (testClassMap.containsKey(classFqn)) continue;
 
             for (var classEntry : methodEntry.getValue().entrySet()) {
                 String signature = classEntry.getKey();
