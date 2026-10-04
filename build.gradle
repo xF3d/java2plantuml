@@ -41,10 +41,6 @@ dependencies {
     // AI dump
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.20.0'
 
-    // Build runner
-    implementation 'org.apache.maven.shared:maven-invoker:3.3.0'
-    implementation 'org.gradle:gradle-tooling-api:9.1.0'
-
     // GUI
     implementation 'com.fifesoft:rsyntaxtextarea:4.0.1'
     implementation 'com.formdev:flatlaf:3.7.2'
