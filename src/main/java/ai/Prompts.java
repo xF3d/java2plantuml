@@ -30,7 +30,6 @@ public class Prompts {
             """;
 
     // TODO: elemento centrale durante la presentazione: prompts
-    // TODO: dove mettere test?
     public static final String FORMAT_USAGE_REFACTOR_METHOD = """
             Your answer should always follow this strict format, where text wrapped by %% are place holders.
             
@@ -128,11 +127,9 @@ public class Prompts {
             Extracted functionality to new classes and methods
             
             The mandatory sections are: EXPLANATION and CHANGES, if you have nothing in the other sections to add, do not send them at all. Just send the sections with data.
-            All notes must be maximum of 50 words and contain suggestions, not comments.
             Must be Java 25 language level max.
-            CHANGES should only contain method declarations and field declarations, so no imports or type declarations
             Everything wrapped in a <> are placeholders, and as such should not be inserted in the answer.
-            All methods created or modified should contain the full implementation if they are not abstract, stub methods with only comments.
+            All methods created or modified should contain the full implementation if they are not declared abstract.
             You can increase but not decrease method visibility when replacing.
             
             The example used is to give you a better understanding of the format only, don't reuse the names and use proper naming in real output
@@ -188,15 +185,13 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_VER = """
-            You are an AI agent that given a class's info,
-            given new implementations of methods and new methods you need to verify and improve the solution only when possible.
+            Given a class's info and proposed changes you need to verify and improve the solution only when possible.
             
             You will be also given relevant context like:
             - Metrics (which themselves don't necessarily indicate problems).
             - CodeSmells (which are indeed problems that need to be addressed).
             - Previous response
             
-            You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
             Use the doesClassExist calls mainly to double check that a class doesn't exist already.
             
             """
@@ -205,7 +200,7 @@ public class Prompts {
             If you don't want to change anything, just send UNCHANGED only without this format.
             
             You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            NOTEs if present should not contain explanations (that is what EXPLAINATION is for), they merely talk about stuff you can't fix directly and tips for the user.
+            NOTEs if present should not contain explanations (that is what EXPLAINATION is for).
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
             - Adding an external dependency
@@ -213,13 +208,12 @@ public class Prompts {
             """;
 
     public static final String SYSTEM_REFACTOR_CLASS_GEN = """
-            You are an AI agent that given a class's info, with some problematic metrics and/or code smells,
-            has the job to improve the code quality of the system,
+            Given a class's info, with some problematic metrics and/or code smells,
+            you must improve the code quality of the system,
             not always a bad threshold requires some kind of fix depending on the context,
             also more fixes might be required, independently from the metric results
             (a basic example might be repeated code or conditional that can be simplified).
             
-            You should focus your getMethodBody calls on the SELECTED_CLASS, especially the problematic or long methods
             Use the doesClassExist calls mainly to double check that a class doesn't exist already.
             
             You will be also given relevant context like:
@@ -230,7 +224,7 @@ public class Prompts {
             + FORMAT_USAGE_REFACTOR_CLASS +
             """
             You must not change the logic of the code, the past behaviour must be preserved, the structure however can be changed
-            NOTEs are optional, must be with your name, and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
+            NOTEs are optional and should never contain explanations of your actions, they merely talk about stuff you can't fix directly and tips for the user
             Only answer in the format provided
             
             There are actions that you cannot do directly, however you can suggest them in a NOTE section:
