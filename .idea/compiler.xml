@@ -8,8 +8,8 @@
         <processorPath useClasspath="false">
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.48/6858f13541bab505384f07053c5a7b539bbfd3e3/lombok-1.18.48.jar" />
         </processorPath>
-        <module name="java2plantuml.main" />
-        <module name="java2plantuml.test" />
+        <module name="JOverview.main" />
+        <module name="JOverview.test" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="25">

@@ -1,25 +1,12 @@
-# Java2Plantuml
-This is a library which started from the CMPE202 course project [UML-Coder](https://github.com/nguyensjsu/uml-coder-2017). There was a need to develop a library which converts the java source code into plantuml syntax and then feed it to plantuml library to generate class diagrams.
+# JOverview
 
+A program to scan and evaluate a project status, 
+using metrics and a PlantUML overview of the project classes,
+bundled with AI support to suggest appropriate changes when any metric goes below the expected threshold.
 
-## Using jar file
+Most options are configurable in `config.toml`
 
-  1. Use the following command to use the jar file.
-     ```sh
-        java -jar java2plantuml.jar source
-     ```
-     "source" can be path to file or a folder.
-  2. File "ouput.puml" will be generated with plantuml syntax for class diagram.
+# Acknowledgments
 
-## Use it in existing project
-
-1. Look into example on how to use the api for generating class diagram syntax into MainDriver.java file.
-
-
-
-## References
-
-1. [JavaParser Wiki](https://github.com/javaparser/javaparser/wiki)
-2. [JavaParser Javadoc](http://www.javadoc.io/doc/com.github.javaparser/javaparser-core/3.4.0)
-3. [Federico Tomassetti Blog](https://tomassetti.me/getting-started-with-javaparser-analyzing-java-code-programmatically/)
-4. [PlantUml](http://plantuml.com/)
+Some of the code has been taken from the java2plantuml project:
+https://github.com/mirajp1/java2plantuml
